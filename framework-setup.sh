@@ -9,6 +9,7 @@ popd &> /dev/null
 
 # Symlink the dotfiles command.
 ln -sf "$DOTFILES_DIR/dotfiles.sh" "$DOTFILES_BIN_DIR/dotfiles"
+bash "$DOTFILES_DIR/install.sh"
 
 if which dotfiles &> /dev/null; then
   echo 'It worked! Now you should have a "dotfiles" command.'
