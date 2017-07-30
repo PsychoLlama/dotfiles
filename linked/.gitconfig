@@ -2,6 +2,7 @@
   a = add -A
   d = diff
   l = log --pretty=oneline
+  f = fetch --prune
   amend = commit --amend
 [user]
   email = Jesse_Gibson@me.com
