@@ -38,6 +38,8 @@ function dotfiles_link_everything {
   }
 
   link .zshrc ~/.zshrc
+  link .tmux.conf ~/.tmux.conf
+  link init.vim ~/.config/nvim/init.vim
 }
 
 # Update the dotfiles repo.
