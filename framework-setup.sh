@@ -1,4 +1,5 @@
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
+set -e
 
 DOTFILES_BIN_DIR=/usr/local/bin
 

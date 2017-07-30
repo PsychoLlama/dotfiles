@@ -51,7 +51,7 @@ function main {
   function install_via_curl {
     local install_script=`curl -fsSL "$1"`
 
-    if verify_hash "$2" `cat "$file_name"`; then
+    if verify_hash "$2" "$install_script"; then
       echo "Hmmm, an install script looks sketchy. The integrity doesn't match."
       echo "    URL: $1"
       exit 1
@@ -71,7 +71,7 @@ function main {
   }
 
   function install_oh_my_zsh {
-    if [[ ! -z "$ZSH" ]]; then
+    if [[ -d ~/.oh-my-zsh ]]; then
       return 0
     fi
 
