@@ -37,21 +37,27 @@ function main {
     install "$1"
   }
 
+  function verify_hash {
+    local integrity=`openssl sha1 <<< "$2"`
+
+    if [[ "$integrity" != "$1" ]]; then
+      return 1
+    fi
+
+    return 0
+  }
+
   # Install to a /tmp file and verify the integrity hash.
   function install_via_curl {
-    local file_name=/tmp/`basename $1`
-    curl -fsSL "$1" > "$file_name"
+    local install_script=`curl -fsSL "$1"`
 
-    local integrity=`openssl sha1 "$file_name" | awk '{print $2}'`
-
-    if [[ "$integrity" != "$2" ]]; then
+    if verify_hash "$2" `cat "$file_name"`; then
       echo "Hmmm, an install script looks sketchy. The integrity doesn't match."
       echo "    URL: $1"
       exit 1
     fi
 
-    bash "$file_name"
-    rm "$file_name"
+    eval "$install_script"
   }
 
   function install_zsh {
@@ -87,12 +93,28 @@ function main {
     install "$pkg_name"
   }
 
+  function install_llama_zsh_theme {
+    if [[ -f ~/.oh-my-zsh/themes/llama.zsh-theme ]]; then
+      return 0
+    fi
+
+    local theme=`curl https://cdn.rawgit.com/PsychoLlama/llama.zsh-theme/29f66554ed63609becbbd60e80f75aa4a8e72c49/llama.zsh-theme`
+
+    if ! verify_hash "803c3c044e238f54ecf91d62c729bc746fe6c0ee" "$theme"; then
+      echo "llama zsh theme install failed. The hash doesn't match."
+      exit 1
+    fi
+
+    echo "$theme" > ~/.oh-my-zsh/themes/llama.zsh-theme
+  }
+
   ensure curl
   ensure openssl
 
   install_zsh
   install_oh_my_zsh
   install_silver_searcher
+  install_llama_zsh_theme
 }
 
 main
