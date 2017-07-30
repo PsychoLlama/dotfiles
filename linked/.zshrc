@@ -7,16 +7,10 @@ ZSH_THEME='llama'
 export N_PREFIX=~/.n
 export PATH=$N_PREFIX/bin:$PATH
 export PATH=$(yarn global bin):$PATH
-export ANDROID_HOME=/usr/local/opt/android-sdk
 export ZSH=~/.oh-my-zsh
 export EDITOR=nvim
 export PORT=8080
-
-
-### Tools ###
-source ~/.cargo/env
-source ~/.travis/travis.sh
-source $ZSH/oh-my-zsh.sh
+export TERM=xterm-256color
 
 
 ### Aliases ###
@@ -26,7 +20,7 @@ alias empty='empty-trash'
 alias todo='task'
 alias :q='exit'
 alias :qa='tmux kill-session'
-alias v='nvim'
+alias v='nvim -p'
 alias t='tmux'
 alias ch='git checkout'
 alias b='git branch'
@@ -44,21 +38,6 @@ function edit {
   tmuxinator start edit -n ${session_name}
 }
 
-function remote {
-  local dir=${PWD}
-  cd ~
-
-  if [[ "$1" == "up" ]]; then
-    vagrant up
-  elif [[ "$1" == "down" ]]; then
-    vagrant halt
-    return $?
-  fi
-
-  vagrant ssh krikkit -c 'tmuxinator start HireVue'
-  cd $dir
-}
-
 function s {
   $(git rev-parse --is-inside-work-tree 2&> /dev/null)
 
@@ -73,3 +52,17 @@ function s {
 function tdd {
   ~/get-test-script.js | xargs yarn
 }
+
+function gag {
+  ag $@ --ignore node_modules --ignore '*.bundle.*' --ignore schema.js
+}
+
+
+# Kickstart the oh-my-zsh framework.
+source $ZSH/oh-my-zsh.sh
+
+
+# Not all functions and aliases should be shared.
+if [[ -e ~/.zsh-env-specific ]]; then
+  source ~/.zsh-env-specific
+fi
