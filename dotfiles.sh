@@ -73,6 +73,7 @@ function dotfiles_print_help {
   indent 2 "link    - Symlink everything in 'dotfiles/linked'"
   indent 2 "update  - Pull dotfile changes from git"
   indent 2 "install - Install system-wide dependencies"
+  indent 2 "dir     - Print the dotfiles directory"
 
   echo ""
 }
@@ -92,6 +93,9 @@ case "$1" in
     ;;
   "install")
     dotfiles_install
+    ;;
+  "dir")
+    echo "$DOTFILES_DIR"
     ;;
   *)
     if [[ ! -z "$1" && "$1" != "--help" ]]; then
