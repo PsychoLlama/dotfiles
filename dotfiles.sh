@@ -32,7 +32,9 @@ function dotfiles_link_everything {
     mkdir -p `dirname $2`
 
     # Create symlink.
-    ln -sf "$DOTFILES_DIR/linked/$1" "$2"
+    if [[ ! -L "$2" ]]; then
+      ln -sf "$file_to_link" "$2"
+    fi
 
     echo "Success: $1"
   }
