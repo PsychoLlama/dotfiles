@@ -50,7 +50,7 @@ function s {
 }
 
 function tdd {
-  ~/get-test-script.js | xargs yarn
+  `dotfiles dir`/utils/get-package-test-script.js | xargs yarn
 }
 
 function gag {
