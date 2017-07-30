@@ -14,4 +14,5 @@ if which dotfiles &> /dev/null; then
   echo 'It worked! Now you should have a "dotfiles" command.'
 else
   echo "Hmmm, that didn't work. Is ${DOTFILES_BIN_DIR} in your path?"
+  exit 1
 fi
