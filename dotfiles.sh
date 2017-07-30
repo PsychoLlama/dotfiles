@@ -52,6 +52,8 @@ function dotfiles_update {
 
   echo Updating dotfiles...
   git pull origin master
+  dotfiles install
+  dotfiles link
 
   popd &> /dev/null
 }
