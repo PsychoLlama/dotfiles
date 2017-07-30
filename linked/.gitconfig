@@ -1,0 +1,12 @@
+[alias]
+  a = add -A
+  d = diff
+  l = log --pretty=oneline
+  amend = commit --amend
+[user]
+  email = Jesse_Gibson@me.com
+  name = Jesse Gibson
+[core]
+  editor = nvim
+[push]
+  followTags = true
