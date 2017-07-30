@@ -1,0 +1,19 @@
+# ~/.tmuxinator/edit.yml
+
+root: <%= @args[0] %>
+
+windows:
+  - Code:
+      layout: a0c6,178x50,0,0{98x50,0,0,0,79x50,99,0,3}
+      panes:
+        - nvim ./
+        - tdd
+      post:
+        - tmux resize-pane -R 20
+  - Build:
+      layout: main-vertical
+  - Commit:
+      layout: d9be,178x50,0,0{89x50,0,0,2,88x50,90,0,4}
+      panes:
+        - git status
+        - git diff HEAD
