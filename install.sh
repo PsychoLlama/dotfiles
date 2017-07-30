@@ -108,13 +108,30 @@ function main {
     echo "$theme" > ~/.oh-my-zsh/themes/llama.zsh-theme
   }
 
+  # A node version manager, alternative to nvm.
+  function install_n {
+    if installed n; then
+      return 0
+    fi
+
+    git clone https://github.com/tj/n.git /tmp/n-bin
+
+    pushd /tmp/n-bin &> /dev/null
+    make
+    popd &> /dev/null
+
+    rm -r /tmp/n-bin
+  }
+
   ensure curl
   ensure openssl
+  ensure yarn
 
   install_zsh
   install_oh_my_zsh
   install_silver_searcher
   install_llama_zsh_theme
+  install_n
 }
 
 main
