@@ -123,6 +123,14 @@ function main {
     rm -r /tmp/n-bin
   }
 
+  function install_node {
+    if installed node; then
+      return 0
+    fi
+
+    n latest
+  }
+
   ensure curl
   ensure openssl
   ensure yarn
@@ -133,6 +141,7 @@ function main {
   install_silver_searcher
   install_llama_zsh_theme
   install_n
+  install_node
 }
 
 main
