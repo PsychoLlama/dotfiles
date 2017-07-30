@@ -126,6 +126,7 @@ function main {
   ensure curl
   ensure openssl
   ensure yarn
+  ensure tmux
 
   install_zsh
   install_oh_my_zsh
