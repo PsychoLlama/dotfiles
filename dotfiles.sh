@@ -70,8 +70,9 @@ function dotfiles_print_help {
   echo ""
 
   indent 1 "Usage: dotfiles [command]"
-  indent 2 "link   - Symlink everything in 'dotfiles/linked'"
-  indent 2 "update - Pull dotfile changes from git"
+  indent 2 "link    - Symlink everything in 'dotfiles/linked'"
+  indent 2 "update  - Pull dotfile changes from git"
+  indent 2 "install - Install system-wide dependencies"
 
   echo ""
 }
