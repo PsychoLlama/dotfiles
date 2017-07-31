@@ -86,8 +86,8 @@ function main {
     local pkg_name="the_silver_searcher"
 
     # Goes by a different name on aptitude.
-    if has apt-get; then
-      pkg_name="$pkg_name-ag"
+    if installed apt-get; then
+      pkg_name="silversearcher-ag"
     fi
 
     install "$pkg_name"
