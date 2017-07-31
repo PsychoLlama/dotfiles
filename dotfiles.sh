@@ -45,7 +45,7 @@ function dotfiles_link_everything {
   link .tmux.conf ~/.tmux.conf
   link init.vim ~/.config/nvim/init.vim
   link .gitconfig ~/.gitconfig
-  link .tmuxinator ~/.tmuxinator
+  link .tmuxinator/edit.yml ~/.tmuxinator/edit.yml
 }
 
 # Update the dotfiles repo.
