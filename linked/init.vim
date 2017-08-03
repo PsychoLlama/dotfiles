@@ -223,3 +223,7 @@ inoremap <silent><expr> <TAB>
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
   endfunction"}}}
+
+if filereadable(glob('~/.custom-scripts/init.vim'))
+  source ~/.custom-scripts/init.vim
+endif
