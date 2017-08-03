@@ -63,6 +63,6 @@ source $ZSH/oh-my-zsh.sh
 
 
 # Not all functions and aliases should be shared.
-if [[ -e ~/.zsh-env-specific ]]; then
-  source ~/.zsh-env-specific
+if [[ -e ~/.custom-scripts/.zshrc ]]; then
+  source ~/.custom-scripts/.zshrc
 fi
