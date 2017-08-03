@@ -23,7 +23,7 @@ alias :qa='tmux kill-session'
 alias v='nvim -p'
 alias t='tmux'
 alias ch='git checkout'
-alias b='git branch'
+alias b='git branch --verbose'
 alias c='git commit'
 
 
