@@ -194,6 +194,34 @@ function main {
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
   }
 
+  function install_neovim {
+    if installed nvim; then
+      return 0
+    fi
+
+    local pkg="neovim"
+    if installed apt-get; then
+      local ppa="ppa:neovim-ppa/stable"
+
+      source /etc/os-release
+      if [[ "$VERSION" =~ "^14.04" ]]; then
+        ppa="ppa:neovim-ppa/unstable"
+
+      fi
+
+      # Add the neovim ppa.
+      sudo add-apt-repository "$ppa" <<< "\n"
+      sudo apt-get update
+
+      install python-dev
+      install python-pip
+      install python3-dev
+      install python3-pip
+    fi
+
+    install "$pkg"
+  }
+
   ensure curl
   ensure openssl
   ensure tmux
@@ -209,6 +237,7 @@ function main {
   install_n
   install_node
   install_vundle
+  install_neovim
 }
 
 main
