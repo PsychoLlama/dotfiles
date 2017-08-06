@@ -225,7 +225,7 @@ function main {
   }
 
   function install_neovim_plugins {
-    if ! pip3 show neovim &> /dev/null; then
+    if ! python3 -c "import neovim" &> /dev/null; then
       pip3 install neovim &> /dev/null
     fi
 
