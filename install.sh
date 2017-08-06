@@ -78,6 +78,27 @@ function main {
     install_via_curl https://cdn.rawgit.com/robbyrussell/oh-my-zsh/d848c94804918138375041a9f800f401bec12068/tools/install.sh f423ddfb1d0b6a849b229be5b07a032c10e13c6f
   }
 
+  function install_ruby {
+    if has ruby; then
+      return 0
+    fi
+
+    local pkg="ruby"
+    if installed apt-get; then
+      pkg="ruby-full"
+    fi
+
+    install "$pkg"
+  }
+
+  function install_tmuxinator {
+    if installed tmuxinator; then
+      return 0
+    fi
+
+    gem install tmuxinator
+  }
+
   function install_silver_searcher {
     if installed ag; then
       return 0
@@ -138,6 +159,8 @@ function main {
 
   install_zsh
   install_oh_my_zsh
+  install_ruby
+  install_tmuxinator
   install_silver_searcher
   install_llama_zsh_theme
   install_n
