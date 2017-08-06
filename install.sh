@@ -79,7 +79,7 @@ function main {
   }
 
   function install_ruby {
-    if has ruby; then
+    if installed ruby; then
       return 0
     fi
 
@@ -152,10 +152,19 @@ function main {
     n latest
   }
 
+  function install_vundle {
+    if [[ -d ~/.vim/bundle/Vundle.vim ]]; then
+      return 0
+    fi
+
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  }
+
   ensure curl
   ensure openssl
   ensure yarn
   ensure tmux
+  ensure build-essential
 
   install_zsh
   install_oh_my_zsh
@@ -165,6 +174,7 @@ function main {
   install_llama_zsh_theme
   install_n
   install_node
+  install_vundle
 }
 
 main
