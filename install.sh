@@ -17,8 +17,8 @@ function main {
     INSTALL_CMD="sudo apt-get install -y"
   elif installed yum; then
     INSTALL_CMD="sudo yum install"
-  elif installed zypper; then
-    INSTALL_CMD="sudo zypper install"
+  elif installed pacman; then
+    INSTALL_CMD="sudo pacman -S"
   else
     echo "How do you install things on this machine?!?"
   fi
@@ -60,6 +60,15 @@ function main {
     eval "$install_script"
   }
 
+  function ensure_apt_add_command {
+    if installed add-apt-repository; then
+      return 0
+    fi
+
+    install software-properties-common
+    install python-software-properties
+  }
+
   function install_zsh {
     if installed zsh; then
       return 0
@@ -76,6 +85,31 @@ function main {
     fi
 
     install_via_curl https://cdn.rawgit.com/robbyrussell/oh-my-zsh/d848c94804918138375041a9f800f401bec12068/tools/install.sh f423ddfb1d0b6a849b229be5b07a032c10e13c6f
+  }
+
+  function install_yarn {
+    if installed yarn; then
+      return 0
+    fi
+
+    local pkg="yarn"
+
+    # Don't install node too.
+    if installed brew; then
+      pkg="yarn --ignore-dependencies"
+    fi
+
+    if installed apt-get; then
+      ensure_apt_add_command
+
+      # Add yarn package provider.
+      curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+      sudo apt-get update
+    fi
+
+    install "$pkg"
   }
 
   function install_ruby {
@@ -162,12 +196,12 @@ function main {
 
   ensure curl
   ensure openssl
-  ensure yarn
   ensure tmux
   ensure build-essential
 
   install_zsh
   install_oh_my_zsh
+  install_yarn
   install_ruby
   install_tmuxinator
   install_silver_searcher
