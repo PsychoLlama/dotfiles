@@ -221,6 +221,7 @@ function main {
 
     install "$pkg"
     mkdir -p ~/.vim/backup
+    sudo chmod 777 ~/.vim/backup
   }
 
   function install_neovim_plugins {
