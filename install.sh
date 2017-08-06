@@ -224,7 +224,11 @@ function main {
   }
 
   function install_neovim_plugins {
-    nvim +PluginInstall +qa
+    if ! pip3 show neovim &> /dev/null; then
+      pip3 install neovim &> /dev/null
+    fi
+
+    nvim +PluginInstall +UpdateRemotePlugins +qa
   }
 
   ensure curl
