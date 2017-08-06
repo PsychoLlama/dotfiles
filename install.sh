@@ -220,6 +220,11 @@ function main {
     fi
 
     install "$pkg"
+    mkdir -p ~/.vim/backup
+  }
+
+  function install_neovim_plugins {
+    nvim +PluginInstall +qa
   }
 
   ensure curl
@@ -238,6 +243,7 @@ function main {
   install_node
   install_vundle
   install_neovim
+  install_neovim_plugins
 }
 
 main
