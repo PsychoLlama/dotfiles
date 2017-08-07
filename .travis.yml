@@ -1,0 +1,9 @@
+language: c
+
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      dist: xenial
+
+script: ./framework-setup.sh
