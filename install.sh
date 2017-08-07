@@ -144,7 +144,7 @@ function main {
       return 0
     fi
 
-    gem install tmuxinator
+    sudo gem install tmuxinator
   }
 
   function install_silver_searcher {
@@ -183,13 +183,13 @@ function main {
       return 0
     fi
 
-    git clone https://github.com/tj/n.git /tmp/n-bin
+    git clone https://github.com/tj/n.git ~/.n-bin &> /dev/null
 
-    pushd /tmp/n-bin &> /dev/null
-    make
+    pushd ~/.n-bin &> /dev/null
+    sudo make
     popd &> /dev/null
 
-    rm -r /tmp/n-bin
+    rm -rf ~/.n-bin
   }
 
   function install_node {
@@ -197,7 +197,7 @@ function main {
       return 0
     fi
 
-    n latest
+    N_PREFIX=~/.n n latest
   }
 
   function install_vundle {
