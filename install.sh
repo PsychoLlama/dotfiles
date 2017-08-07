@@ -223,12 +223,14 @@ function main {
 
     local pkg="neovim"
     if installed apt-get; then
-      local ppa="ppa:neovim-ppa/stable"
-
       source /etc/os-release
-      if [[ "$VERSION" =~ "^14.04" ]]; then
-        ppa="ppa:neovim-ppa/unstable"
 
+      local ppa="ppa:neovim-ppa/unstable"
+      local major_version="${VERSION:0:2}"
+
+      # High chance this will break some day.
+      if [[ "$major_version" > 15 ]]; then
+        ppa="ppa:neovim-ppa/stable"
       fi
 
       # Add the neovim ppa.
