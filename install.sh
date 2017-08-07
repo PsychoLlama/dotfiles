@@ -89,7 +89,7 @@ function main {
     fi
 
     install zsh
-    chsh -s zsh
+    chsh -s `which zsh`
     zsh <<< "dotfiles install"
     exit
   }
@@ -187,7 +187,7 @@ function main {
     git clone https://github.com/tj/n.git ~/.n-bin &> /dev/null
 
     pushd ~/.n-bin &> /dev/null
-    sudo make
+    sudo make &> /dev/null
     popd &> /dev/null
 
     rm -rf ~/.n-bin
@@ -198,13 +198,7 @@ function main {
       return 0
     fi
 
-    # Ensures the needed vars in .zshrc are exported.
-    if [[ -z "$ZSH" ]]; then
-      zsh <<< "dotfiles install"
-      exit
-    fi
-
-    n latest
+    N_PREFIX=~/.n n latest
   }
 
   function install_vundle {
