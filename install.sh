@@ -40,6 +40,11 @@ function main {
   function verify_hash {
     local integrity=`openssl sha1 <<< "$2"`
 
+    # Some systems print junk before the hash.
+    if ! installed brew; then
+      integrity=`echo $integrity | awk '{print $2}'`
+    fi
+
     if [[ "$integrity" != "$1" ]]; then
       return 1
     fi
@@ -229,7 +234,7 @@ function main {
       pip3 install neovim &> /dev/null
     fi
 
-    nvim +PluginInstall +UpdateRemotePlugins +qa
+    nvim +PluginInstall +UpdateRemotePlugins +qa &> /dev/null
   }
 
   ensure curl
