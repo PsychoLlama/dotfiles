@@ -1,16 +1,8 @@
-" Ignore everything if you're using peasant vim.
-if v:progname =~? 'evim'
-  finish
-endif
-
 " Use Vim settings, not Vi.
 " Side effects require this line to be set immediately.
 set nocompatible
 
-" Don't use the global shell.
-set shell=bash
-
-" Set the runtime path to include Vundle and initialize
+" Set the runtime path to include Vundle and initialize.
 set runtimepath+=~/.vim/bundle/Vundle.vim
 
 " Let the plugins begin!
