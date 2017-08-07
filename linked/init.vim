@@ -18,7 +18,6 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plugin 'git://git.wincent.com/command-t.git'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'editorconfig/editorconfig-vim'
@@ -36,7 +35,6 @@ Plugin 'jparise/vim-graphql'
 Plugin 'rust-lang/rust.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-markdown'
 Plugin 'isRuslan/vim-es6'
 Plugin 'cespare/vim-toml'
