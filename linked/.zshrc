@@ -54,7 +54,16 @@ function tdd {
 }
 
 function gag {
-  ag $@ --ignore node_modules --ignore '*.bundle.*' --ignore schema.js
+  ag $@\
+    --ignore node_modules\
+    --ignore '*.bundle.*'\
+    --ignore schema.js\
+    --ignore dist\
+    --ignore coverage
+}
+
+function vs {
+  nvim -p `gag $@ -l`
 }
 
 
