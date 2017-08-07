@@ -8,18 +8,9 @@ pushd `dirname $0` &> /dev/null
 DOTFILES_DIR=`pwd -P`
 popd &> /dev/null
 
-function update_apt_cache {
-  local cache=/var/cache/apt/pkgcache.bin
-  local elapsed=$(expr `date +%s` - `stat --format=%Y $cache`)
-
-  # Update if the cache is more than a day old.
-  if [[ "$elapsed" > 86400 ]]; then
-    sudo apt-get update
-  fi
-}
-
+# Make sure the cache is fresh.
 if which apt-get &> /dev/null; then
-  update_apt_cache
+  sudo apt-get update
 fi
 
 # Symlink the dotfiles command.

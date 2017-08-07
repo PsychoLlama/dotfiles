@@ -90,8 +90,6 @@ function main {
 
     install zsh
     chsh -s `which zsh`
-    zsh <<< "dotfiles install"
-    exit
   }
 
   function install_oh_my_zsh {
