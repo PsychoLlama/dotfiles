@@ -63,7 +63,9 @@ function main {
       exit 1
     fi
 
-    eval "$install_script"
+    set +e
+    bash <<< "$install_script"
+    set -e
   }
 
   function ensure_apt_add_command {
