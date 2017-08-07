@@ -21,5 +21,15 @@ if ! which dotfiles &> /dev/null; then
   export PATH="$DOTFILES_BIN_DIR:$PATH"
 fi
 
-dotfiles link
+dotfiles link &> /dev/null
+
+# oh-my-zsh gets all huffy when it sees another .zshrc file.
+unlink ~/.zshrc
 dotfiles install
+
+dotfiles link &> /dev/null
+
+# Log out for the new shell to take effect.
+if [[ "$SHELL" != `which zsh` ]]; then
+  echo "All done. Log out for the changes to take effect."
+fi
