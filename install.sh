@@ -197,7 +197,13 @@ function main {
       return 0
     fi
 
-    N_PREFIX=~/.n n latest
+    # Ensures the needed vars in .zshrc are exported.
+    if [[ -z "$ZSH" ]]; then
+      zsh <<< "dotfiles install"
+      exit
+    fi
+
+    n latest
   }
 
   function install_vundle {
