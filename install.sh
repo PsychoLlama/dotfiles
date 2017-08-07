@@ -263,6 +263,7 @@ function main {
   ensure curl
   ensure openssl
   ensure tmux
+  ensure python3
 
   install_make
   install_zsh
