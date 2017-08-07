@@ -1,3 +1,6 @@
 language: c
 sudo: required
 script: ./framework-setup.sh
+os:
+  - osx
+  - linux
