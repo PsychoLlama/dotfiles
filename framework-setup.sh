@@ -9,6 +9,7 @@ DOTFILES_DIR=`pwd -P`
 popd &> /dev/null
 
 # Symlink the dotfiles command.
+touch ~/.hushlogin
 ln -sf "$DOTFILES_DIR/dotfiles.sh" "$DOTFILES_BIN_DIR/dotfiles"
 bash "$DOTFILES_DIR/install.sh"
 

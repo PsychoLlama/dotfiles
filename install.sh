@@ -56,7 +56,7 @@ function main {
   function install_via_curl {
     local install_script=`curl -fsSL "$1"`
 
-    if verify_hash "$2" "$install_script"; then
+    if ! verify_hash "$2" "$install_script"; then
       echo "Hmmm, an install script looks sketchy. The integrity doesn't match."
       echo "    URL: $1"
       exit 1
@@ -89,7 +89,8 @@ function main {
 
     install zsh
     chsh -s zsh
-    zsh
+    zsh <<< "dotfiles install"
+    exit
   }
 
   function install_oh_my_zsh {
@@ -242,7 +243,11 @@ function main {
       pip3 install neovim &> /dev/null
     fi
 
-    nvim +PluginInstall +UpdateRemotePlugins +qa &> /dev/null
+    # Source the vimrc in non-interactive mode.
+    nvim\
+      -u /dev/null\
+      +"silent so ~/.config/nvim/init.vim"\
+      +PluginInstall +UpdateRemotePlugins +qa
   }
 
   ensure curl
