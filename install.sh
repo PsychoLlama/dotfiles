@@ -74,6 +74,14 @@ function main {
     install python-software-properties
   }
 
+  function install_make {
+    if installed make; then
+      return 0
+    fi
+
+    install build-essential
+  }
+
   function install_zsh {
     if installed zsh; then
       return 0
@@ -240,8 +248,8 @@ function main {
   ensure curl
   ensure openssl
   ensure tmux
-  ensure build-essential
 
+  install_make
   install_zsh
   install_oh_my_zsh
   install_yarn
