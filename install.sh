@@ -91,6 +91,13 @@ function main {
     fi
 
     install zsh
+
+    # Don't attempt to change shell on Travis CI.
+    # The build will hang forever.
+    if [[ ! -z "$CI" ]]; then
+      return 0
+    fi
+
     chsh -s `which zsh`
   }
 
