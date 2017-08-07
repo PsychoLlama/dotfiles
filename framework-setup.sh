@@ -24,11 +24,11 @@ fi
 
 # Symlink the dotfiles command.
 sudo ln -sf "$DOTFILES_DIR/dotfiles.sh" "$DOTFILES_BIN_DIR/dotfiles"
-bash "$DOTFILES_DIR/install.sh"
 
-if which dotfiles &> /dev/null; then
-  echo 'It worked! Now you should have a "dotfiles" command.'
-else
-  echo "Hmmm, that didn't work. Is ${DOTFILES_BIN_DIR} in your path?"
-  exit 1
+# Make sure `dotfiles` exists as a command.
+if ! which dotfiles &> /dev/null; then
+  export PATH="$DOTFILES_BIN_DIR:$PATH"
 fi
+
+dotfiles link
+dotfiles install
