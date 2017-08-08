@@ -1,8 +1,3 @@
-" Ignore everything if you're using peasant vim.
-if v:progname =~? 'evim'
-  finish
-endif
-
 " Use Vim settings, not Vi.
 " Side effects require this line to be set immediately.
 set nocompatible
@@ -16,39 +11,33 @@ set runtimepath+=~/.vim/bundle/Vundle.vim
 " Let the plugins begin!
 call plug#begin('~/.vim/plugged')
 
-Plug 'VundleVim/Vundle.vim'
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'vim-airline/vim-airline-themes'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'jelera/vim-javascript-syntax'
-Plug 'scrooloose/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
-Plug 'raichoo/purescript-vim'
+Plug 'raichoo/purescript-vim', { 'for': 'purescript' }
 Plug 'jiangmiao/auto-pairs'
-Plug 'hashivim/vim-vagrant'
-Plug 'Konstruktionist/vim'
-Plug 'lambdatoast/elm.vim'
-Plug 'davinche/godown-vim'
-Plug 'jparise/vim-graphql'
-Plug 'rust-lang/rust.vim'
+Plug 'hashivim/vim-vagrant', { 'for': 'ruby' }
+Plug 'lambdatoast/elm.vim', { 'for': 'elm' }
+Plug 'davinche/godown-vim', { 'for': 'markdown' }
+Plug 'jparise/vim-graphql', { 'for': 'graphql' }
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-markdown'
-Plug 'isRuslan/vim-es6'
+Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'cespare/vim-toml'
 Plug 'mbbill/undotree'
+Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'mattn/emmet-vim'
-Plug 'eslint/eslint'
-Plug 'fatih/vim-go'
+Plug 'eslint/eslint', { 'for': 'javascript' }
+Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'w0rp/ale'
 
 " Themes
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'liuchengxu/space-vim-dark'
-Plug 'dunckr/vim-monokai-soda'
-Plug 'trevordmiller/nova-vim'
 Plug 'joshdick/onedark.vim'
 
 call plug#end()
