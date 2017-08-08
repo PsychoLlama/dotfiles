@@ -208,12 +208,15 @@ function main {
     N_PREFIX=~/.n n latest
   }
 
-  function install_vundle {
-    if [[ -d ~/.vim/bundle/Vundle.vim ]]; then
-      return 0
+  function install_vim_plug {
+    local target=~/.local/share/nvim/site/autoload/plug.vim
+
+    if [[ -f "$target" ]]; then
+      return
     fi
 
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   }
 
   function install_neovim {
@@ -257,7 +260,7 @@ function main {
     nvim\
       -u /dev/null\
       +"silent so ~/.config/nvim/init.vim"\
-      +PluginInstall +UpdateRemotePlugins +qa
+      +PlugInstall +UpdateRemotePlugins +qa
   }
 
   ensure curl
@@ -274,7 +277,7 @@ function main {
   install_llama_zsh_theme
   install_n
   install_node
-  install_vundle
+  install_vim_plug
   install_neovim
   install_neovim_plugins
 }

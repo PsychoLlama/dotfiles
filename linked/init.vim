@@ -14,44 +14,44 @@ set shell=bash
 set runtimepath+=~/.vim/bundle/Vundle.vim
 
 " Let the plugins begin!
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'vim-airline/vim-airline'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'raichoo/purescript-vim'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'hashivim/vim-vagrant'
-Plugin 'Konstruktionist/vim'
-Plugin 'lambdatoast/elm.vim'
-Plugin 'davinche/godown-vim'
-Plugin 'jparise/vim-graphql'
-Plugin 'rust-lang/rust.vim'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-markdown'
-Plugin 'isRuslan/vim-es6'
-Plugin 'cespare/vim-toml'
-Plugin 'mbbill/undotree'
-Plugin 'mattn/emmet-vim'
-Plugin 'eslint/eslint'
-Plugin 'fatih/vim-go'
-Plugin 'w0rp/ale'
+Plug 'VundleVim/Vundle.vim'
+Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plug 'vim-airline/vim-airline-themes'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'jelera/vim-javascript-syntax'
+Plug 'scrooloose/nerdcommenter'
+Plug 'vim-airline/vim-airline'
+Plug 'airblade/vim-gitgutter'
+Plug 'raichoo/purescript-vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'hashivim/vim-vagrant'
+Plug 'Konstruktionist/vim'
+Plug 'lambdatoast/elm.vim'
+Plug 'davinche/godown-vim'
+Plug 'jparise/vim-graphql'
+Plug 'rust-lang/rust.vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-markdown'
+Plug 'isRuslan/vim-es6'
+Plug 'cespare/vim-toml'
+Plug 'mbbill/undotree'
+Plug 'mattn/emmet-vim'
+Plug 'eslint/eslint'
+Plug 'fatih/vim-go'
+Plug 'w0rp/ale'
 
 " Themes
-Plugin 'tyrannicaltoucan/vim-quantum'
-Plugin 'liuchengxu/space-vim-dark'
-Plugin 'dunckr/vim-monokai-soda'
-Plugin 'trevordmiller/nova-vim'
-Plugin 'joshdick/onedark.vim'
+Plug 'tyrannicaltoucan/vim-quantum'
+Plug 'liuchengxu/space-vim-dark'
+Plug 'dunckr/vim-monokai-soda'
+Plug 'trevordmiller/nova-vim'
+Plug 'joshdick/onedark.vim'
 
-call vundle#end()
+call plug#end()
 
 " Reload files changed outside vim.
 set autoread
