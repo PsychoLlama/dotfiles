@@ -146,18 +146,14 @@ set softtabstop=2
 set tabstop=2
 set autoindent
 
-" Show invisibles.
-set list
-" set listchars=tab:>-,trail:·
-set listchars=tab:··,trail:·
-
 " Editor style.
 let g:onedark_termcolors=16
+let g:netrw_banner=0
 colorscheme onedark
 
-" Add line numbers.
-set number
-
+set listchars=tab:··,trail:· " set listchars=tab:>-,trail:·
+set list " Show invisibles.
+set number " Add line numbers.
 set nofoldenable " Disable code folding.
 set shortmess+=I
 set wildmenu
@@ -167,7 +163,6 @@ set laststatus=2
 set backupcopy=yes
 set backupdir=~/.vim/backup
 set updatetime=250
-let g:netrw_banner=0
 
 " -- Keymaps --
 noremap <silent> <c-h> :tabp<CR>
@@ -175,6 +170,9 @@ noremap <silent> <c-l> :tabn<CR>
 noremap <silent> <c-n> :Te<CR>
 noremap <c-j> <c-w>j
 noremap <c-k> <c-w>k
+
+" -- Auto commands --
+autocmd BufNewFile,BufRead .tmux.conf set syntax=sh
 
 " -- Linting --
 " A.L.E.
