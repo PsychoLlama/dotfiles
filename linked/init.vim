@@ -31,13 +31,13 @@ Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'vim-airline/vim-airline-themes'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'scrooloose/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
 Plug 'raichoo/purescript-vim', { 'for': 'purescript' }
 Plug 'joshdick/onedark.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'hashivim/vim-vagrant', { 'for': 'ruby' }
+Plug 'tpope/vim-commentary'
 Plug 'lambdatoast/elm.vim', { 'for': 'elm' }
 Plug 'davinche/godown-vim', { 'for': 'markdown' }
 Plug 'jparise/vim-graphql', { 'for': 'graphql' }
@@ -92,7 +92,6 @@ autocmd FileType text setlocal textwidth=78
 command! Customize tabe ~/.config/nvim/init.vim
 
 " Plugin config
-let g:NERDSpaceDelims=1
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_flow = 1
 let g:ale_linters = {
