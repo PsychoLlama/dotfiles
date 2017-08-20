@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 set runtimepath+=expand('~/.vim')
 set backspace=indent,eol,start
 set wildmode=longest,list,full
@@ -62,13 +64,6 @@ if ! filereadable(&undodir)
   call system('mkdir -p ' . &undodir)
 endif
 
-" Resume last known cursor position.
-autocmd BufReadPost *
-  \ if line("'\"") > 1 && line("'\"") <= line("$") |
-  \   exe "normal! g`\"" |
-  \ endif
-augroup END
-
 let g:onedark_termcolors=16
 colorscheme onedark
 
@@ -81,9 +76,18 @@ noremap <silent> <c-n> :Te<CR>
 noremap <c-j> <c-w>j
 noremap <c-k> <c-w>k
 
-autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
-autocmd BufNewFile,BufRead .eslintrc,.babelrc set filetype=json
-autocmd FileType text setlocal textwidth=78
+augroup resume_last_cursor_position
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+augroup END
+
+augroup rando_file_settings
+  autocmd BufNewFile,BufRead .eslintrc,.babelrc set filetype=json
+  autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
+  autocmd FileType text setlocal textwidth=78
+augroup END
 
 command! Customize tabe ~/.config/nvim/init.vim
 
@@ -115,8 +119,8 @@ let g:ale_linters = {
 
 call deoplete#enable()
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
+  let l:col = col('.') - 1
+  return !l:col || getline('.')[l:col - 1]  =~ '\s'
 endfunction
 
 inoremap <silent><expr> <TAB>

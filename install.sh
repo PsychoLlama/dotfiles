@@ -32,7 +32,7 @@ function main {
   # Install the thing if it doesn't exist.
   function ensure {
     if installed "$1"; then
-      return 0
+      return
     fi
 
     install "$1"
@@ -50,7 +50,7 @@ function main {
       return 1
     fi
 
-    return 0
+    return
   }
 
   # Install to a /tmp file and verify the integrity hash.
@@ -70,7 +70,7 @@ function main {
 
   function ensure_apt_add_command {
     if installed add-apt-repository; then
-      return 0
+      return
     fi
 
     install software-properties-common
@@ -79,7 +79,7 @@ function main {
 
   function install_make {
     if installed make; then
-      return 0
+      return
     fi
 
     install build-essential
@@ -87,7 +87,7 @@ function main {
 
   function install_zsh {
     if installed zsh; then
-      return 0
+      return
     fi
 
     install zsh
@@ -95,7 +95,7 @@ function main {
     # Don't attempt to change shell on Travis CI.
     # The build will hang forever.
     if [[ ! -z "$CI" ]]; then
-      return 0
+      return
     fi
 
     chsh -s `which zsh`
@@ -103,7 +103,7 @@ function main {
 
   function install_oh_my_zsh {
     if [[ -d ~/.oh-my-zsh ]]; then
-      return 0
+      return
     fi
 
     install_via_curl https://cdn.rawgit.com/robbyrussell/oh-my-zsh/d848c94804918138375041a9f800f401bec12068/tools/install.sh f423ddfb1d0b6a849b229be5b07a032c10e13c6f &> /dev/null
@@ -111,7 +111,7 @@ function main {
 
   function install_yarn {
     if installed yarn; then
-      return 0
+      return
     fi
 
     local pkg="yarn"
@@ -136,7 +136,7 @@ function main {
 
   function install_ruby {
     if installed ruby; then
-      return 0
+      return
     fi
 
     local pkg="ruby"
@@ -149,7 +149,7 @@ function main {
 
   function install_tmuxinator {
     if installed tmuxinator; then
-      return 0
+      return
     fi
 
     sudo gem install tmuxinator
@@ -157,7 +157,7 @@ function main {
 
   function install_silver_searcher {
     if installed ag; then
-      return 0
+      return
     fi
 
     local pkg_name="the_silver_searcher"
@@ -172,7 +172,7 @@ function main {
 
   function install_llama_zsh_theme {
     if [[ -f ~/.oh-my-zsh/themes/llama.zsh-theme ]]; then
-      return 0
+      return
     fi
 
     local theme=`curl https://cdn.rawgit.com/PsychoLlama/llama.zsh-theme/29f66554ed63609becbbd60e80f75aa4a8e72c49/llama.zsh-theme`
@@ -188,7 +188,7 @@ function main {
   # A node version manager, alternative to nvm.
   function install_n {
     if installed n; then
-      return 0
+      return
     fi
 
     git clone https://github.com/tj/n.git ~/.n-bin &> /dev/null
@@ -202,7 +202,7 @@ function main {
 
   function install_node {
     if installed node; then
-      return 0
+      return
     fi
 
     N_PREFIX=~/.n n latest
@@ -221,7 +221,7 @@ function main {
 
   function install_neovim {
     if installed nvim; then
-      return 0
+      return
     fi
 
     local pkg="neovim"
@@ -263,6 +263,12 @@ function main {
       +PlugInstall +UpdateRemotePlugins +qa
   }
 
+  function install_vint {
+    if ! installed vint; then
+      pip3 install vim-vint &> /dev/null
+    fi
+  }
+
   ensure curl
   ensure openssl
   ensure tmux
@@ -281,6 +287,7 @@ function main {
   install_vim_plug
   install_neovim
   install_neovim_plugins
+  install_vint
 }
 
 main
