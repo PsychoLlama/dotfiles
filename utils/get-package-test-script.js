@@ -12,11 +12,22 @@ try {
 
 const { scripts = {} } = json;
 
-if ('test:watch' in scripts) {
-  process.stdout.write('test:watch');
-} else if ('test' in scripts) {
-  process.stdout.write('test -- --watch');
-} else {
-  console.error('No test script found.');
+if (typeof scripts.test !== 'string' || /no test specified/.test(scripts.test)) {
+  console.error('This project has no tests.');
   process.exit(1);
 }
+
+const testScript = scripts.test;
+
+if (/jest/.test(testScript)) {
+  process.stdout.write('jest -- --watch --collectCoverage=false');
+  process.exit();
+}
+
+if (/mocha/.test(testScript)) {
+  process.stdout.write('test -- --watch --reporter min');
+  process.exit();
+}
+
+// I don't care enough about other testing frameworks.
+process.stdout.write('test -- --watch');

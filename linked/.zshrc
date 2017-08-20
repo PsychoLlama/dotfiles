@@ -50,7 +50,11 @@ function s {
 }
 
 function tdd {
-  `dotfiles dir`/utils/get-package-test-script.js | xargs yarn
+  local script=$(`dotfiles dir`/utils/get-package-test-script.js)
+
+  if [[ "$?" == 0 ]]; then
+    echo "$script" | xargs yarn
+  fi
 }
 
 function gag {
