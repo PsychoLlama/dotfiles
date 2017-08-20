@@ -30,8 +30,6 @@ set list
 
 call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plug 'vim-airline/vim-airline-themes'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
@@ -47,6 +45,7 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'tpope/vim-repeat'
 Plug 'cespare/vim-toml'
 Plug 'mileszs/ack.vim'
@@ -107,14 +106,9 @@ let g:netrw_banner=0
 
 let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
-cnoreabbrev aG Ack
-cnoreabbrev Ag Ack
-cnoreabbrev AG Ack
 
 let g:ale_linters = {
 \   'javascript': ['eslint'],
-\   'json': ['jsonlint'],
-\   'yaml': ['yamllint'],
 \   'rust': ['rustc'],
 \   'vim': ['vint'],
 \ }
