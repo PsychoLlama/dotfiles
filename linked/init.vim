@@ -125,10 +125,17 @@ function! s:check_back_space() abort
   return !l:col || getline('.')[l:col - 1]  =~ '\s'
 endfunction
 
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ deoplete#mappings#manual_complete()
+function! s:deoplete_tab_completion() abort
+  if pumvisible()
+    return "\<C-n>"
+  elseif check_back_space()
+    return "\<TAB>"
+  else
+    return deoplete#mappings#manual_complete()
+  endif
+endfunction
+
+inoremap <silent><expr><TAB> <SID>deoplete_tab_completion()
 
 " Check for environment-specific vim settings.
 if filereadable(glob('~/.custom-scripts/init.vim'))
