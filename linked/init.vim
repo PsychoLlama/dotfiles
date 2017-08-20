@@ -34,6 +34,7 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'vim-airline/vim-airline'
+Plug 'mitermayer/vim-prettier', { 'for': ['javascript', 'graphql'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'raichoo/purescript-vim', { 'for': 'purescript' }
 Plug 'joshdick/onedark.vim'
@@ -101,6 +102,9 @@ let @t = "Sit('', () => {jA;kkl"
 let @c = "Sconsole.log('');hh"
 
 " Plugin config
+let g:prettier#config#bracket_spacing = 'true'
+let g:prettier#exec_cmd_async = 1
+
 let g:netrw_list_hide='^.DS_Store$,^.git/$,^../$,^./$'
 let g:netrw_localrmdir='rm -r'
 let g:netrw_use_errorwindow=0
