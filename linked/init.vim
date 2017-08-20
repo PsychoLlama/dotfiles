@@ -68,6 +68,10 @@ autocmd BufReadPost *
 augroup END
 
 let g:onedark_termcolors=16
+
+let g:netrw_list_hide='^.DS_Store$,^.git/$,^../$,^./$'
+let g:netrw_localrmdir='rm -r'
+let g:netrw_use_errorwindow=0
 let g:netrw_banner=0
 
 filetype plugin indent on
