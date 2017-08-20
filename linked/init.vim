@@ -128,10 +128,10 @@ endfunction
 function! s:deoplete_tab_completion() abort
   if pumvisible()
     return "\<C-n>"
-  elseif check_back_space()
+  elseif s:check_back_space()
     return "\<TAB>"
   else
-    return deoplete#mappings#manual_complete()
+    return g:deoplete#mappings#manual_complete()
   endif
 endfunction
 
