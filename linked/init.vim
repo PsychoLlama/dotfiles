@@ -47,6 +47,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'tpope/vim-repeat'
 Plug 'cespare/vim-toml'
+Plug 'mileszs/ack.vim'
 Plug 'mbbill/undotree'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'mattn/emmet-vim'
@@ -61,7 +62,7 @@ if ! filereadable(&undodir)
   call system('mkdir -p ' . &undodir)
 endif
 
-" Always jump to the last known cursor position.
+" Resume last known cursor position.
 autocmd BufReadPost *
   \ if line("'\"") > 1 && line("'\"") <= line("$") |
   \   exe "normal! g`\"" |
@@ -69,14 +70,9 @@ autocmd BufReadPost *
 augroup END
 
 let g:onedark_termcolors=16
-
-let g:netrw_list_hide='^.DS_Store$,^.git/$,^../$,^./$'
-let g:netrw_localrmdir='rm -r'
-let g:netrw_use_errorwindow=0
-let g:netrw_banner=0
+colorscheme onedark
 
 filetype plugin indent on
-colorscheme onedark
 syntax on
 
 noremap <silent> <c-h> :tabp<CR>
@@ -92,8 +88,17 @@ autocmd FileType text setlocal textwidth=78
 command! Customize tabe ~/.config/nvim/init.vim
 
 " Plugin config
-let g:javascript_plugin_jsdoc = 1
-let g:javascript_plugin_flow = 1
+let g:netrw_list_hide='^.DS_Store$,^.git/$,^../$,^./$'
+let g:netrw_localrmdir='rm -r'
+let g:netrw_use_errorwindow=0
+let g:netrw_banner=0
+
+let g:ackprg = 'ag --vimgrep --smart-case'
+cnoreabbrev ag Ack
+cnoreabbrev aG Ack
+cnoreabbrev Ag Ack
+cnoreabbrev AG Ack
+
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'json': ['jsonlint'],
