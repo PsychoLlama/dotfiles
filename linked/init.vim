@@ -4,7 +4,7 @@ set wildmode=longest,list,full
 set listchars=tab:··,trail:·
 set backupdir=~/.vim/backup
 set backupcopy=yes
-set updatetime=250
+set updatetime=0
 set softtabstop=2
 set nofoldenable
 set shiftwidth=2
@@ -31,6 +31,7 @@ Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'vim-airline/vim-airline-themes'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'scrooloose/nerdcommenter'
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
 Plug 'raichoo/purescript-vim', { 'for': 'purescript' }
@@ -84,13 +85,14 @@ noremap <silent> <c-n> :Te<CR>
 noremap <c-j> <c-w>j
 noremap <c-k> <c-w>k
 
-autocmd BufNewFile,BufRead .tmux.conf set syntax=sh
-autocmd BufNewFile,BufRead .eslintrc,.babelrc set syntax=json
+autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
+autocmd BufNewFile,BufRead .eslintrc,.babelrc set filetype=json
 autocmd FileType text setlocal textwidth=78
 
 command! Customize tabe ~/.config/nvim/init.vim
 
 " Plugin config
+let g:NERDSpaceDelims=1
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_flow = 1
 let g:ale_linters = {
