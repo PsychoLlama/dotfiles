@@ -44,6 +44,7 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+Plug 'tpope/vim-repeat'
 Plug 'cespare/vim-toml'
 Plug 'mbbill/undotree'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
