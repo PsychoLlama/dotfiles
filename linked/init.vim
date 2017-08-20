@@ -91,6 +91,7 @@ command! Customize tabe ~/.config/nvim/init.vim
 let @b = 'SbeforeEach(() => {jA;kkj'
 let @d = "Sdescribe('', () => {jA;kkf'"
 let @t = "Sit('', () => {jA;kkl"
+let @c = "Sconsole.ll€kbog('');hhiq€kb"
 
 " Plugin config
 let g:netrw_list_hide='^.DS_Store$,^.git/$,^../$,^./$'
