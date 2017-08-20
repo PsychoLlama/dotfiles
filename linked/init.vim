@@ -30,6 +30,7 @@ set list
 
 call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
