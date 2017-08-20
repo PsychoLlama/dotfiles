@@ -80,7 +80,7 @@ noremap <c-j> <c-w>j
 noremap <c-k> <c-w>k
 
 autocmd BufNewFile,BufRead .tmux.conf set syntax=sh
-autocmd BufNewFile,BufRead .*rc set syntax=json
+autocmd BufNewFile,BufRead .eslintrc,.babelrc set syntax=json
 autocmd FileType text setlocal textwidth=78
 
 command! Customize tabe ~/.config/nvim/init.vim
