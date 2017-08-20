@@ -89,16 +89,12 @@ command! Customize tabe ~/.config/nvim/init.vim
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_flow = 1
 let g:ale_linters = {
-  \ 'javascript': ['eslint'],
-  \ 'html': ['htmlhint'],
-  \ 'json': ['jsonlint'],
-  \ 'yaml': ['yamllint'],
-  \ 'sass': ['sasslint'],
-  \ 'scss': ['sasslint'],
-  \ 'rust': ['rustc'],
-  \ 'css': ['stylelint'],
-  \ 'vim': ['vint'],
-  \ }
+\   'javascript': ['eslint'],
+\   'json': ['jsonlint'],
+\   'yaml': ['yamllint'],
+\   'rust': ['rustc'],
+\   'vim': ['vint'],
+\ }
 
 call deoplete#enable()
 function! s:check_back_space() abort
