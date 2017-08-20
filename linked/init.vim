@@ -138,6 +138,6 @@ endfunction
 inoremap <silent><expr><TAB> <SID>deoplete_tab_completion()
 
 " Check for environment-specific vim settings.
-if filereadable(glob('~/.custom-scripts/init.vim'))
+if filereadable(expand('~/.custom-scripts/init.vim'))
   source ~/.custom-scripts/init.vim
 endif
