@@ -77,6 +77,7 @@ noremap <c-j> <c-w>j
 noremap <c-k> <c-w>k
 
 augroup resume_last_cursor_position
+  autocmd!
   autocmd BufReadPost *
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
@@ -84,6 +85,7 @@ augroup resume_last_cursor_position
 augroup END
 
 augroup rando_file_settings
+  autocmd!
   autocmd BufNewFile,BufRead .eslintrc,.babelrc set filetype=json
   autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
   autocmd FileType text setlocal textwidth=78
