@@ -99,7 +99,7 @@ command! Customize tabe ~/.config/nvim/init.vim
 let @b = 'SbeforeEach(() => {jA;kkj'
 let @d = "Sdescribe('', () => {jA;kkf'"
 let @t = "Sit('', () => {jA;kkl"
-let @c = "Sconsole.log('');hh"
+let @c = "Sconsole.log('');hhh"
 
 " Plugin config
 let g:prettier#config#bracket_spacing = 'true'

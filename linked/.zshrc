@@ -63,7 +63,8 @@ function gag {
     --ignore '*.bundle.*'\
     --ignore schema.js\
     --ignore dist\
-    --ignore coverage
+    --ignore coverage\
+    --ignore '*.js.map'
 }
 
 function vs {
