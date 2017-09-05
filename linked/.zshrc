@@ -71,6 +71,16 @@ function vs {
   nvim -p `gag $@ -l`
 }
 
+function goto {
+  local result=`git ls-files | grep $1 | head -1`
+
+  if [[ -z "$result" ]]; then
+    echo "Nothing matched."
+    return
+  fi
+
+  cd `dirname ${result}`
+}
 
 # Kickstart the oh-my-zsh framework.
 source $ZSH/oh-my-zsh.sh
