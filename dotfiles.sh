@@ -4,7 +4,7 @@ set -e
 DOTFILES_DIR=$(dirname `readlink $0`)
 
 # Add symlinks to each file.
-function dotfiles_link_everything {
+function link_everything {
   function resolve_file_location {
     echo "$DOTFILES_DIR/linked/$1"
   }
@@ -38,7 +38,7 @@ function dotfiles_link_everything {
       ln -sf "$file_to_link" "$2"
     fi
 
-    echo "Success: $1"
+    echo "Linked: $1"
   }
 
   link .zshrc ~/.zshrc
@@ -49,7 +49,7 @@ function dotfiles_link_everything {
 }
 
 # Update the dotfiles repo.
-function dotfiles_update {
+function update {
   pushd "$DOTFILES_DIR" &> /dev/null
 
   echo Updating dotfiles...
@@ -61,7 +61,7 @@ function dotfiles_update {
 }
 
 # Show the usage screen.
-function dotfiles_print_help {
+function print_help {
 
   # Add an indent level to messages.
   function indent {
@@ -76,7 +76,7 @@ function dotfiles_print_help {
 
   echo ""
 
-  indent 1 "Usage: dotfiles [command]"
+  indent 1 "Usage: dotfiles <command>"
   indent 2 "link    - Symlink everything in 'dotfiles/linked'"
   indent 2 "update  - Pull dotfile changes from git"
   indent 2 "install - Install system-wide dependencies"
@@ -87,20 +87,20 @@ function dotfiles_print_help {
 }
 
 # Install all the dependencies.
-function dotfiles_install {
+function install {
   bash "$DOTFILES_DIR/install.sh"
 }
 
 # Figure out what command to run.
 case "$1" in
   "link")
-    dotfiles_link_everything
+    link_everything
     ;;
   "update")
-    dotfiles_update
+    update
     ;;
   "install")
-    dotfiles_install
+    install
     ;;
   "dir" | "repo")
     echo "$DOTFILES_DIR"
@@ -108,14 +108,13 @@ case "$1" in
   *)
     if [[ ! -z "$1" && "$1" != "--help" ]]; then
       echo "Invalid command '$@'. Showing help instead."
-      dotfiles_print_help
+      print_help
 
       # Probably a typo. Make them feel the pain!
       exit 1
-    else
-
-      # Exit safely
-      dotfiles_print_help
     fi
+
+    # Exit safely
+    print_help
     ;;
 esac
