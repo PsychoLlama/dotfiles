@@ -3,6 +3,10 @@
   d = diff
   l = log --pretty=oneline
   f = fetch --prune
+  r = reset
+  p = push --set-upstream origin
+  s = stash
+  pl = pull
   amend = commit --amend
 [user]
   email = Jesse_Gibson@me.com
