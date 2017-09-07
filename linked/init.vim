@@ -48,7 +48,8 @@ Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plug 'rstacruz/sparkup', { 'rtp': 'vim/' }
+Plug 'chrisbra/csv.vim', { 'for': 'csv' }
 Plug 'tpope/vim-repeat'
 Plug 'cespare/vim-toml'
 Plug 'mileszs/ack.vim'
