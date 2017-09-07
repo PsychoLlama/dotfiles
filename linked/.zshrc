@@ -34,23 +34,21 @@ function mkcd {
 }
 
 function edit {
-  local session_name=$(basename ${PWD})
+  local session_name=`basename ${PWD}`
   tmuxinator start edit -n ${session_name}
 }
 
 function s {
-  $(git rev-parse --is-inside-work-tree 2&> /dev/null)
-
-  if [[ $? != 0 ]]; then
+  if ! git rev-parse --is-inside-work-tree &> /dev/null; then
     echo "Not a git repo."
     return 1
-  else
-    git status
   fi
+
+  git status
 }
 
 function tdd {
-  local script=$(`dotfiles dir`/utils/get-package-test-script.js)
+  local script=$($(dotfiles dir)/utils/get-package-test-script.js)
 
   if [[ "$?" == 0 ]]; then
     echo "$script" | xargs yarn
