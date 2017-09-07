@@ -106,7 +106,7 @@ let @c = "Sconsole.log('');hhh"
 let g:prettier#config#bracket_spacing = 'true'
 let g:prettier#exec_cmd_async = 1
 
-let g:netrw_list_hide='^.DS_Store$,^.git/$,^../$,^./$'
+let g:netrw_list_hide='^.DS_Store$,^.git/$,^\.\./$,^\./$'
 let g:netrw_localrmdir='rm -r'
 let g:netrw_use_errorwindow=0
 let g:netrw_banner=0
