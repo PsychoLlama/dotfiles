@@ -269,6 +269,12 @@ function main {
     fi
   }
 
+  function install_shellcheck {
+    if ! installed shellcheck; then
+      install shellcheck &> /dev/null
+    fi
+  }
+
   ensure curl
   ensure openssl
   ensure tmux
@@ -288,6 +294,7 @@ function main {
   install_neovim
   install_neovim_plugins
   install_vint
+  install_shellcheck
 }
 
 main

@@ -1,12 +1,7 @@
-### Setup ###
-plugins=(git z docker vagrant tmux)
-ZSH_THEME='llama'
-
+#!/usr/bin/env zsh
 
 ### Variables ###
 export N_PREFIX=~/.n
-export PATH=$N_PREFIX/bin:$PATH
-export PATH=$(yarn global bin):$PATH
 export ZSH=~/.oh-my-zsh
 export EDITOR=nvim
 export PORT=8080
@@ -30,12 +25,12 @@ alias c='git commit'
 ### Functions ###
 function mkcd {
   mkdir -p "$1"
-  cd "$1"
+  cd "$1" || return 1
 }
 
 function edit {
-  local session_name=`basename ${PWD}`
-  tmuxinator start edit -n ${session_name}
+  local session_name="$(basename "$PWD")"
+  tmuxinator start edit -n "$session_name"
 }
 
 function s {
@@ -48,7 +43,8 @@ function s {
 }
 
 function tdd {
-  local script=$($(dotfiles dir)/utils/get-package-test-script.js)
+  local utils="$(dotfiles dir)"/utils
+  local script="$("$utils"/get-package-test-script.js)"
 
   if [[ "$?" == 0 ]]; then
     echo "$script" | xargs yarn
@@ -56,33 +52,37 @@ function tdd {
 }
 
 function gag {
-  ag $@\
-    --ignore node_modules\
-    --ignore '*.bundle.*'\
-    --ignore schema.js\
-    --ignore dist\
-    --ignore coverage\
+  ag "$@" \
+    --ignore node_modules \
+    --ignore '*.bundle.*' \
+    --ignore schema.js \
+    --ignore dist \
+    --ignore coverage \
     --ignore '*.js.map'
 }
 
 function vs {
-  nvim -p `gag $@ -l`
+  nvim -p $(gag "$@" -l)
 }
 
 function goto {
-  local result=`git ls-files | grep $1 | head -1`
+  local result="$(git ls-files | grep $1 | head -1)"
 
   if [[ -z "$result" ]]; then
     echo "Nothing matched."
     return
   fi
 
-  cd `dirname ${result}`
+  cd "$(dirname "$result")" || return 1
 }
 
 # Kickstart the oh-my-zsh framework.
-source $ZSH/oh-my-zsh.sh
+plugins=(git z docker vagrant tmux)
+ZSH_THEME='llama'
 
+source $ZSH/oh-my-zsh.sh
+export PATH="$(yarn global bin)":"$PATH"
+export PATH="$N_PREFIX"/bin:"$PATH"
 
 # Not all functions and aliases should be shared.
 if [[ -e ~/.custom-scripts/.zshrc ]]; then

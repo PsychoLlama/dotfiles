@@ -116,6 +116,9 @@ cnoreabbrev ag Ack
 
 let g:ale_linters = {
 \   'javascript': ['eslint'],
+\   'bash': ['shellcheck'],
+\   'zsh': ['shellcheck'],
+\   'sh': ['shellcheck'],
 \   'rust': ['rustc'],
 \   'vim': ['vint'],
 \ }
