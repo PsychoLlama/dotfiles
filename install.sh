@@ -2,6 +2,24 @@
 set -e
 
 function main {
+  function announce {
+    if [[ -z "$VERBOSE" ]]; then
+      return
+    fi
+
+    local msg="$@"
+    local border=""
+
+    for i in $(seq ${#msg}); do
+      border="$border#"
+    done
+
+    echo
+    echo "$border"
+    echo "$@"
+    echo "$border"
+    echo
+  }
 
   # Whether a command exists.
   function installed {
@@ -35,6 +53,7 @@ function main {
       return
     fi
 
+    announce Installing "$1"
     install "$1"
   }
 
@@ -82,6 +101,7 @@ function main {
       return
     fi
 
+    announce Installing make
     install build-essential
   }
 
@@ -90,6 +110,7 @@ function main {
       return
     fi
 
+    announce Installing zsh
     install zsh
 
     # Don't attempt to change shell on Travis CI.
@@ -106,6 +127,7 @@ function main {
       return
     fi
 
+    announce Installing oh-my-zsh
     install_via_curl https://cdn.rawgit.com/robbyrussell/oh-my-zsh/d848c94804918138375041a9f800f401bec12068/tools/install.sh f423ddfb1d0b6a849b229be5b07a032c10e13c6f &> /dev/null
   }
 
@@ -114,6 +136,7 @@ function main {
       return
     fi
 
+    announce Installing yarn
     local pkg="yarn"
 
     # Don't install node too.
@@ -139,6 +162,7 @@ function main {
       return
     fi
 
+    announce Installing ruby
     local pkg="ruby"
     if installed apt-get; then
       pkg="ruby-full"
@@ -152,6 +176,7 @@ function main {
       return
     fi
 
+    announce Installing tmuxinator
     sudo gem install tmuxinator
   }
 
@@ -160,6 +185,7 @@ function main {
       return
     fi
 
+    announce Installing the silver searcher
     local pkg_name="the_silver_searcher"
 
     # Goes by a different name on aptitude.
@@ -175,6 +201,7 @@ function main {
       return
     fi
 
+    announce Installing llama.zsh-theme
     local theme=`curl https://cdn.rawgit.com/PsychoLlama/llama.zsh-theme/29f66554ed63609becbbd60e80f75aa4a8e72c49/llama.zsh-theme`
 
     if ! verify_hash "803c3c044e238f54ecf91d62c729bc746fe6c0ee" "$theme"; then
@@ -191,6 +218,7 @@ function main {
       return
     fi
 
+    announce Installing n
     git clone https://github.com/tj/n.git ~/.n-bin &> /dev/null
 
     pushd ~/.n-bin &> /dev/null
@@ -205,6 +233,7 @@ function main {
       return
     fi
 
+    announce Installing node
     N_PREFIX=~/.n n latest
   }
 
@@ -215,6 +244,7 @@ function main {
       return
     fi
 
+    announce Installing vim-plug
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   }
@@ -224,6 +254,7 @@ function main {
       return
     fi
 
+    announce Installing neovim
     local pkg="neovim"
     if installed apt-get; then
       source /etc/os-release
@@ -256,6 +287,8 @@ function main {
       pip3 install neovim &> /dev/null
     fi
 
+    announce Installing neovim plugins
+
     # Source the vimrc in non-interactive mode.
     nvim\
       -u /dev/null\
@@ -265,12 +298,14 @@ function main {
 
   function install_vint {
     if ! installed vint; then
+      announce Installing vint
       pip3 install vim-vint &> /dev/null
     fi
   }
 
   function install_shellcheck {
     if ! installed shellcheck; then
+      announce Installing shellcheck
       install shellcheck &> /dev/null
     fi
   }

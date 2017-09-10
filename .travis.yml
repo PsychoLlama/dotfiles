@@ -1,6 +1,8 @@
 language: c
 sudo: required
 script: ./framework-setup.sh
+env:
+  - VERBOSE=1
 os:
   - osx
   - linux
