@@ -94,7 +94,16 @@ augroup rando_file_settings
   autocmd FileType text setlocal textwidth=78
 augroup END
 
+" Reset all progress in the file.
+function! s:git_checkout_file() abort
+  let l:target = expand('%:p')
+  let l:cmd = 'git checkout "' . l:target . '"'
+  call system(l:cmd)
+  execute 'edit!' . l:target
+endfunction
+
 command! Customize tabe ~/.config/nvim/init.vim
+command! Gcheckout call s:git_checkout_file()
 
 " Macros
 let @b = 'SbeforeEach(() => {jA;kkj'
