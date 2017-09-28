@@ -15,7 +15,6 @@ alias empty='empty-trash'
 alias todo='task'
 alias :q='exit'
 alias :qa='tmux kill-session'
-alias v='nvim -p'
 alias t='tmux'
 alias ch='git checkout'
 alias b='git branch --verbose'
@@ -59,6 +58,14 @@ function gag {
     --ignore dist \
     --ignore coverage \
     --ignore '*.js.map'
+}
+
+function v {
+  if [[ "$#" == "0" ]]; then
+    nvim .
+  else
+    nvim -p "$@"
+  fi
 }
 
 function vs {

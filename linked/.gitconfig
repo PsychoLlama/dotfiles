@@ -6,7 +6,7 @@
   r = reset
   p = push --set-upstream origin
   s = stash
-  pl = pull
+  pl = pull origin
   amend = commit --amend
 [user]
   email = Jesse_Gibson@me.com
