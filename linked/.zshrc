@@ -53,7 +53,7 @@ function tdd {
 function gag {
   ag "$@" \
     --ignore node_modules \
-    --ignore '*.bundle.*' \
+    --ignore '*bundle.*' \
     --ignore schema.js \
     --ignore dist \
     --ignore coverage \
