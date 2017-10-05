@@ -1,12 +1,11 @@
 [alias]
   a = add -A
   d = diff
-  l = log --pretty=oneline
-  f = fetch --prune
+  l = log --pretty=oneline --abbrev-commit
   r = reset
   p = push --set-upstream origin
   s = stash
-  pl = pull origin
+  pl = pull --prune origin
   amend = commit --amend
 [user]
   email = Jesse_Gibson@me.com
