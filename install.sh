@@ -247,18 +247,6 @@ function main {
     announce Installing neovim
     local pkg="neovim"
     if installed apt-get; then
-      source /etc/os-release
-
-      local ppa="ppa:neovim-ppa/unstable"
-      local major_version="${VERSION:0:2}"
-
-      # High chance this will break some day.
-      if [[ "$major_version" -gt "15" ]]; then
-        ppa="ppa:neovim-ppa/stable"
-      fi
-
-      # Add the neovim ppa.
-      sudo add-apt-repository "$ppa" <<< "\n"
       sudo apt-get update
 
       install python-dev
@@ -289,10 +277,19 @@ function main {
   }
 
   function install_vint {
-    if ! installed vint; then
-      announce Installing vint
-      pip3 install vim-vint &> /dev/null
+    if installed vint; then
+      return
     fi
+
+    # Pre-xenial distros ship with a horribly dated setuptools version.
+    local setuptools_version="$(python3 -m easy_install --version | awk '{print $2}')"
+
+    if [[ "${setuptools_version//.*/}" -lt "30" ]]; then
+      sudo -H pip3 install -U setuptools
+    fi
+
+    announce Installing vint
+    sudo -H pip3 install vim-vint > /dev/null
   }
 
   function install_shellcheck {
@@ -310,15 +307,37 @@ function main {
   # PPAs.
   if installed apt-get; then
     ensure_apt_add_command
+    UPDATE=
 
     # Yarn.
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    if ! installed yarn; then
+      curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+      UPDATE=1
+    fi
 
-    # Ruby PPA (ruby-full doesn't work pre-xenial).
-    sudo add-apt-repository ppa:brightbox/ruby-ng <<< '\n'
+    if ! installed ruby2.4; then
 
-    sudo apt-get update
+      # Ruby PPA (ruby-full doesn't work pre-xenial).
+      sudo add-apt-repository ppa:brightbox/ruby-ng <<< '\n'
+      UPDATE=1
+    fi
+
+    if ! installed nvim; then
+      neovim_ppa="ppa:neovim-ppa/stable"
+      source /etc/os-release
+
+      if [[ "${VERSION//.*/}" -lt "16" ]]; then
+        neovim_ppa="ppa:neovim-ppa/unstable"
+      fi
+
+      sudo add-apt-repository "$neovim_ppa" <<< "\n"
+      UPDATE=1
+    fi
+
+    if [[ ! -z "$UPDATE" ]]; then
+      sudo apt-get update
+    fi
   fi
 
   install_make
