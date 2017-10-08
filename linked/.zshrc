@@ -4,7 +4,6 @@
 export N_PREFIX=~/.n
 export ZSH=~/.oh-my-zsh
 export EDITOR=nvim
-export PORT=8080
 export TERM=xterm-256color
 
 
