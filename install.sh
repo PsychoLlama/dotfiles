@@ -23,7 +23,7 @@ function main {
 
   # Whether a command exists.
   function installed {
-    $(which "$1" &> /dev/null)
+    which "$1" &> /dev/null
 
     return $?
   }
@@ -74,7 +74,7 @@ function main {
 
   # Install to a /tmp file and verify the integrity hash.
   function install_via_curl {
-    local install_script=`curl -fsSL "$1"`
+    local install_script="$(curl -fsSL "$1")"
 
     if ! verify_hash "$2" "$install_script"; then
       echo "Hmmm, an install script looks sketchy. The integrity doesn't match."
@@ -144,16 +144,6 @@ function main {
       pkg="yarn --ignore-dependencies"
     fi
 
-    if installed apt-get; then
-      ensure_apt_add_command
-
-      # Add yarn package provider.
-      curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-      echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-
-      sudo apt-get update
-    fi
-
     install "$pkg"
   }
 
@@ -165,7 +155,7 @@ function main {
     announce Installing ruby
     local pkg="ruby"
     if installed apt-get; then
-      pkg="ruby-full"
+      pkg="ruby2.4"
     fi
 
     install "$pkg"
@@ -263,7 +253,7 @@ function main {
       local major_version="${VERSION:0:2}"
 
       # High chance this will break some day.
-      if [[ "$major_version" > 15 ]]; then
+      if [[ "$major_version" -gt "15" ]]; then
         ppa="ppa:neovim-ppa/stable"
       fi
 
@@ -284,7 +274,7 @@ function main {
 
   function install_neovim_plugins {
     if ! python3 -c "import neovim" &> /dev/null; then
-      pip3 install neovim &> /dev/null
+      sudo -H pip3 install neovim > /dev/null
     fi
 
     announce Installing neovim plugins
@@ -292,8 +282,10 @@ function main {
     # Source the vimrc in non-interactive mode.
     nvim\
       -u /dev/null\
-      +"silent so ~/.config/nvim/init.vim"\
-      +PlugInstall +UpdateRemotePlugins +qa
+      -c "silent so ~/.config/nvim/init.vim"\
+      -c "PlugInstall"\
+      -c "UpdateRemotePlugins"\
+      -c "qa"
   }
 
   function install_vint {
@@ -314,6 +306,20 @@ function main {
   ensure openssl
   ensure tmux
   ensure python3
+
+  # PPAs.
+  if installed apt-get; then
+    ensure_apt_add_command
+
+    # Yarn.
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+    # Ruby PPA (ruby-full doesn't work pre-xenial).
+    sudo add-apt-repository ppa:brightbox/ruby-ng <<< '\n'
+
+    sudo apt-get update
+  fi
 
   install_make
   install_zsh
