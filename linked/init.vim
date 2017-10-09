@@ -41,7 +41,6 @@ Plug 'joshdick/onedark.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'hashivim/vim-vagrant', { 'for': 'ruby' }
 Plug 'tpope/vim-commentary'
-Plug 'lambdatoast/elm.vim', { 'for': 'elm' }
 Plug 'davinche/godown-vim', { 'for': 'markdown' }
 Plug 'jparise/vim-graphql', { 'for': 'graphql' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
