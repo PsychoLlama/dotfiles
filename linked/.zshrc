@@ -40,13 +40,25 @@ function s {
   git status
 }
 
-function tdd {
+function tw {
   local utils="$(dotfiles dir)"/utils
-  local script="$("$utils"/get-package-test-script.js)"
+  read script runner <<< "$("$utils"/get-package-test-script.js)"
 
-  if [[ "$?" == 0 ]]; then
-    echo "$script" | xargs yarn
+  if [[ -z "$script" ]]; then
+    return 1
   fi
+
+  case "$runner" in
+    "jest")
+      yarn run "$script" --watch --collectCoverage=false --testPathPattern "$1"
+      ;;
+    "mocha")
+      yarn run "$script" --watch --reporter min "$1"
+      ;;
+    *)
+      yarn run "$script" --watch
+      ;;
+  esac
 }
 
 function gag {
