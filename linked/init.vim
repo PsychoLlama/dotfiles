@@ -123,7 +123,7 @@ let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 
 let g:ale_linters = {
-\   'javascript': ['eslint'],
+\   'javascript': ['eslint', 'flow'],
 \   'bash': ['shellcheck'],
 \   'zsh': ['shellcheck'],
 \   'sh': ['shellcheck'],
