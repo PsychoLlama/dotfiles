@@ -148,15 +148,16 @@ function main {
   }
 
   function install_ruby {
-    if installed ruby; then
-      return
-    fi
-
-    announce Installing ruby
     local pkg="ruby"
     if installed apt-get; then
       pkg="ruby2.4"
     fi
+
+    if installed "$pkg"; then
+      return
+    fi
+
+    announce Installing ruby
 
     install "$pkg"
   }
