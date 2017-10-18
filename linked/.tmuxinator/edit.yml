@@ -7,7 +7,7 @@ windows:
       layout: b1ca,178x51,0,0{98x51,0,0,0,79x51,99,0,3}
       panes:
         - nvim ./
-        - tdd
+        - tw .
   - Build:
       layout: main-vertical
   - Commit:
