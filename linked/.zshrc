@@ -1,23 +1,24 @@
 #!/usr/bin/env zsh
 
 ### Variables ###
-export N_PREFIX=~/.n
-export ZSH=~/.oh-my-zsh
-export EDITOR=nvim
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 export TERM=xterm-256color
+export ZSH=~/.oh-my-zsh
+export N_PREFIX=~/.n
+export EDITOR=nvim
 
 
 ### Aliases ###
-alias sudo='sudo '
-alias D='cd ~/Desktop'
+alias b='git branch --verbose'
+alias :qa='tmux kill-session'
 alias empty='empty-trash'
+alias ch='git checkout'
+alias D='cd ~/Desktop'
+alias c='git commit'
+alias sudo='sudo '
 alias todo='task'
 alias :q='exit'
-alias :qa='tmux kill-session'
 alias t='tmux'
-alias ch='git checkout'
-alias b='git branch --verbose'
-alias c='git commit'
 
 
 ### Functions ###
