@@ -6,22 +6,24 @@ set wildmode=longest,list,full
 set listchars=tab:··,trail:·
 set backupdir=~/.vim/backup
 set backupcopy=yes
-set updatetime=0
+set numberwidth=2
 set softtabstop=2
 set nofoldenable
+set updatetime=0
 set shiftwidth=2
 set shortmess+=I
 set laststatus=2
 set history=500
-set ignorecase
 set autoindent
+set ignorecase
+set shiftround
 set expandtab
-set tabstop=2
-set incsearch
 set linebreak
+set incsearch
+set tabstop=2
+set autoread
 set undofile
 set wildmenu
-set autoread
 set showcmd
 set backup
 set number
@@ -122,6 +124,8 @@ let g:netrw_banner=0
 let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 
+let g:ale_sign_error = '⊘'
+let g:ale_sign_warning = '⊝'
 let g:ale_linters = {
 \   'javascript': ['eslint', 'flow'],
 \   'bash': ['shellcheck'],
