@@ -38,7 +38,6 @@ Plug 'roxma/vim-tmux-clipboard'
 Plug 'vim-airline/vim-airline'
 Plug 'mitermayer/vim-prettier', { 'for': ['javascript', 'graphql'] }
 Plug 'airblade/vim-gitgutter'
-Plug 'raichoo/purescript-vim', { 'for': 'purescript' }
 Plug 'joshdick/onedark.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'hashivim/vim-vagrant', { 'for': 'ruby' }
@@ -58,7 +57,6 @@ Plug 'mbbill/undotree'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'mattn/emmet-vim'
 Plug 'eslint/eslint', { 'for': 'javascript' }
-Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'w0rp/ale'
 call plug#end()
 
