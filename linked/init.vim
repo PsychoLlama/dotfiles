@@ -50,8 +50,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'rstacruz/sparkup', { 'rtp': 'vim/' }
 Plug 'chrisbra/csv.vim', { 'for': 'csv' }
-Plug 'tpope/vim-repeat'
 Plug 'cespare/vim-toml'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sleuth'
 Plug 'mileszs/ack.vim'
 Plug 'mbbill/undotree'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
@@ -109,6 +110,7 @@ let @b = 'SbeforeEach(() => {jA;kkj'
 let @d = "Sdescribe('', () => {jA;kkf'"
 let @t = "Sit('', () => {jA;kkl"
 let @c = "Sconsole.log('');hhh"
+let @e = "othrow new Error('Failed to open pod bay doors.A;:w"
 
 " Plugin config
 let g:prettier#config#bracket_spacing = 'true'
