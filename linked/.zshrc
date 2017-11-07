@@ -19,6 +19,7 @@ alias sudo='sudo '
 alias todo='task'
 alias :q='exit'
 alias t='tmux'
+alias H='git diff HEAD'
 
 
 ### Functions ###
