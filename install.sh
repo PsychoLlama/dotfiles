@@ -193,9 +193,9 @@ function main {
     fi
 
     announce Installing llama.zsh-theme
-    local theme=`curl https://cdn.rawgit.com/PsychoLlama/llama.zsh-theme/c5455f41eb5be743c4fb6c220a07b31fcecd91b6/llama.zsh-theme`
+    local theme=`curl https://cdn.rawgit.com/PsychoLlama/llama.zsh-theme/53c3ba8079378bc02b159aa7c6275ade1fddaa58/llama.zsh-theme`
 
-    if ! verify_hash "e6dbc19bccff0dba85679b0630fb720eb53d9ec1" "$theme"; then
+    if ! verify_hash "af891adfd8a9684e31ebadb7830a6a95bcceda9c" "$theme"; then
       echo "llama zsh theme install failed. The hash doesn't match."
       exit 1
     fi
