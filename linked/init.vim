@@ -119,16 +119,19 @@ let g:netrw_banner=0
 let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 
-let g:ale_sign_error = '⊘'
+let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_sign_warning = '⊝'
-let g:ale_linters = {
-\   'javascript': ['eslint', 'flow'],
-\   'bash': ['shellcheck'],
-\   'zsh': ['shellcheck'],
-\   'sh': ['shellcheck'],
-\   'rust': ['rustc'],
-\   'vim': ['vint'],
-\ }
+let g:ale_sign_error = '⊘'
+
+let g:ale_fixers = {}
+let g:ale_fixers.javascript = ['prettier']
+
+let g:ale_linters = {}
+let g:ale_linters.javascript = ['eslint', 'flow']
+let g:ale_linters.bash = ['shellcheck']
+let g:ale_linters.sh = ['shellcheck']
+let g:ale_linters.rust = ['rustc']
+let g:ale_linters.vim = ['vint']
 
 function! s:check_back_space() abort
   let l:col = col('.') - 1
