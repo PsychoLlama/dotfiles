@@ -31,12 +31,10 @@ set mouse=
 set list
 
 call plug#begin('~/.vim/plugged')
-Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'vim-airline/vim-airline'
-Plug 'mitermayer/vim-prettier', { 'for': ['javascript', 'graphql'] }
 Plug 'airblade/vim-gitgutter'
 Plug 'joshdick/onedark.vim'
 Plug 'jiangmiao/auto-pairs'
@@ -113,9 +111,6 @@ let @c = "Sconsole.log('');hhh"
 let @e = "othrow new Error('Failed to open pod bay doors.A;:w"
 
 " Plugin config
-let g:prettier#config#bracket_spacing = 'true'
-let g:prettier#exec_cmd_async = 1
-
 let g:netrw_list_hide='^.DS_Store$,^.git/$,^\.\./$,^\./$'
 let g:netrw_localrmdir='rm -r'
 let g:netrw_use_errorwindow=0
@@ -135,23 +130,43 @@ let g:ale_linters = {
 \   'vim': ['vint'],
 \ }
 
-call deoplete#enable()
 function! s:check_back_space() abort
   let l:col = col('.') - 1
   return !l:col || getline('.')[l:col - 1]  =~? '\s'
 endfunction
 
-function! s:deoplete_tab_completion() abort
+function! s:show_completion_menu() abort
   if pumvisible()
-    return "\<C-n>"
-  elseif s:check_back_space()
-    return "\<TAB>"
-  else
-    return g:deoplete#mappings#manual_complete()
+    return
   endif
+
+  if s:check_back_space()
+    return "\<TAB>"
+  endif
+
+  call feedkeys("\<C-n>\<C-p>")
 endfunction
 
-inoremap <silent><expr><TAB> <SID>deoplete_tab_completion()
+function! s:tab_completion(shifting) abort
+  if pumvisible()
+    if a:shifting
+      return "\<C-p>"
+    endif
+
+    return "\<C-n>"
+  endif
+
+  return s:show_completion_menu()
+endfunction
+
+augroup complete_as_you_type
+  autocmd!
+  autocmd TextChangedI,InsertEnter * call s:show_completion_menu()
+augroup END
+
+inoremap <silent><expr><TAB> <SID>tab_completion(0)
+inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
+nnoremap <silent><leader>n :nohlsearch<cr>
 
 " Check for environment-specific vim settings.
 if filereadable(expand('~/.custom-scripts/init.vim'))
