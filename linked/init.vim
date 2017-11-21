@@ -1,5 +1,6 @@
 scriptencoding utf-8
 
+set completeopt=menu,menuone,preview,noselect
 set runtimepath+=expand('~/.vim')
 set backspace=indent,eol,start
 set wildmode=longest,list,full
@@ -13,6 +14,7 @@ set updatetime=0
 set shiftwidth=2
 set shortmess+=I
 set laststatus=2
+set pumheight=10
 set history=500
 set autoindent
 set ignorecase
@@ -134,21 +136,38 @@ let g:ale_linters.sh = ['shellcheck']
 let g:ale_linters.rust = ['rustc']
 let g:ale_linters.vim = ['vint']
 
-function! s:check_back_space() abort
+function! s:is_typing_word() abort
   let l:col = col('.') - 1
-  return !l:col || getline('.')[l:col - 1]  =~? '\s'
+
+  " Require at least 2 chars of context.
+  if l:col < 3
+    return 0
+  endif
+
+  let l:prev_chars = getline('.')[l:col - 2:l:col]
+  return l:prev_chars =~? '\w\{2}'
 endfunction
 
+let g:last_cursor_position = []
 function! s:show_completion_menu() abort
   if pumvisible()
     return
   endif
 
-  if s:check_back_space()
+  if ! s:is_typing_word()
     return "\<TAB>"
   endif
 
-  call feedkeys("\<C-n>\<C-p>")
+  " Prevent infinite loops where completion has no suggestions.
+  let l:position = getcurpos()
+  if l:position == g:last_cursor_position
+    return
+  endif
+
+  if mode() == 'i'
+    let g:last_cursor_position = l:position
+    call feedkeys("\<C-n>")
+  endif
 endfunction
 
 function! s:tab_completion(shifting) abort
