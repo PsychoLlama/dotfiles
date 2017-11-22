@@ -1,7 +1,6 @@
 scriptencoding utf-8
 
 set completeopt=menu,menuone,preview,noselect
-set runtimepath+=expand('~/.vim')
 set backspace=indent,eol,start
 set wildmode=longest,list,full
 set listchars=tab:··,trail:·
@@ -57,7 +56,6 @@ Plug 'mileszs/ack.vim'
 Plug 'mbbill/undotree'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'mattn/emmet-vim'
-Plug 'eslint/eslint', { 'for': 'javascript' }
 Plug 'w0rp/ale'
 call plug#end()
 
@@ -166,7 +164,7 @@ function! s:show_completion_menu() abort
 
   if mode() == 'i'
     let g:last_cursor_position = l:position
-    call feedkeys("\<C-n>")
+    call feedkeys("\<C-n>", 'in')
   endif
 endfunction
 
