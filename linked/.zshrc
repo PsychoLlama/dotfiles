@@ -171,7 +171,6 @@ plugins=(git z docker vagrant tmux)
 ZSH_THEME='llama'
 
 source $ZSH/oh-my-zsh.sh
-export PATH="$(yarn global bin)":"$PATH"
 export PATH="$N_PREFIX"/bin:"$PATH"
 
 # Not all functions and aliases should be shared.

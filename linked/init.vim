@@ -42,6 +42,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'hashivim/vim-vagrant', { 'for': 'ruby' }
 Plug 'tpope/vim-commentary'
 Plug 'davinche/godown-vim', { 'for': 'markdown' }
+Plug 'PsychoLlama/vim-gol', { 'on': 'GOL' }
 Plug 'jparise/vim-graphql', { 'for': 'graphql' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'tpope/vim-surround'
