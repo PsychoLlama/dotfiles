@@ -6,6 +6,7 @@ set wildmode=longest,list,full
 set listchars=tab:··,trail:·
 set backupdir=~/.vim/backup
 set backupcopy=yes
+set signcolumn=yes
 set numberwidth=2
 set softtabstop=2
 set nofoldenable
@@ -46,17 +47,13 @@ Plug 'PsychoLlama/vim-gol', { 'on': 'GOL' }
 Plug 'jparise/vim-graphql', { 'for': 'graphql' }
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-Plug 'rstacruz/sparkup', { 'rtp': 'vim/' }
 Plug 'chrisbra/csv.vim', { 'for': 'csv' }
-Plug 'cespare/vim-toml'
+Plug 'cespare/vim-toml', { 'for': 'toml' }
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-sleuth'
-Plug 'mileszs/ack.vim'
-Plug 'mbbill/undotree'
+Plug 'mileszs/ack.vim', { 'on': 'Ack' }
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'mattn/emmet-vim'
 Plug 'w0rp/ale'
 call plug#end()
 
