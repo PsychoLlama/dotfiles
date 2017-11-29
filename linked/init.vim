@@ -98,7 +98,6 @@ function! s:git_checkout_file() abort
   execute 'edit!' . l:target
 endfunction
 
-command! Customize tabe ~/.config/nvim/init.vim
 command! Gcheckout call s:git_checkout_file()
 
 " Macros
@@ -186,6 +185,8 @@ augroup END
 inoremap <silent><expr><TAB> <SID>tab_completion(0)
 inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
 nnoremap <silent><leader>n :nohlsearch<cr>
+nnoremap <silent><leader>c :tabe ~/.config/nvim/init.vim<cr>
+nnoremap <silent><leader>a :ALEDetail<cr>
 
 " Check for environment-specific vim settings.
 if filereadable(expand('~/.custom-scripts/init.vim'))
