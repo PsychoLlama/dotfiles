@@ -20,6 +20,8 @@ alias todo='task'
 alias :q='exit'
 alias t='tmux'
 alias H='git diff HEAD'
+alias HH='git diff HEAD~1'
+alias HHH='git diff HEAD~2'
 
 
 ### Functions ###
