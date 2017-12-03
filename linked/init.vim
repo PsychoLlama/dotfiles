@@ -1,6 +1,5 @@
 scriptencoding utf-8
 
-set completeopt=menu,menuone,preview,noselect
 set backspace=indent,eol,start
 set wildmode=longest,list,full
 set listchars=tab:··,trail:·
@@ -32,6 +31,9 @@ set number
 set mouse=
 set list
 
+" Get python3 executable location without newline.
+let g:python3_host_prog = substitute(system('which python3'), '\n$', '', '')
+
 call plug#begin('~/.vim/plugged')
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'editorconfig/editorconfig-vim'
@@ -41,6 +43,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'joshdick/onedark.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'hashivim/vim-vagrant', { 'for': 'ruby' }
+Plug 'Shougo/deoplete.nvim'
 Plug 'tpope/vim-commentary'
 Plug 'davinche/godown-vim', { 'for': 'markdown' }
 Plug 'PsychoLlama/vim-gol', { 'on': 'GOL' }
@@ -109,6 +112,8 @@ let @c = "Sconsole.log('');hhh"
 let @e = "othrow new Error('Failed to open pod bay doors.A;:w"
 
 " Plugin config
+let g:deoplete#enable_at_startup = 1
+
 let g:netrw_list_hide='^.DS_Store$,^.git/$,^\.\./$,^\./$'
 let g:netrw_localrmdir='rm -r'
 let g:netrw_use_errorwindow=0
@@ -145,26 +150,6 @@ function! s:is_typing_word() abort
 endfunction
 
 let g:last_cursor_position = []
-function! s:show_completion_menu() abort
-  if pumvisible()
-    return
-  endif
-
-  if ! s:is_typing_word()
-    return "\<TAB>"
-  endif
-
-  " Prevent infinite loops where completion has no suggestions.
-  let l:position = getcurpos()
-  if l:position == g:last_cursor_position
-    return
-  endif
-
-  if mode() == 'i'
-    let g:last_cursor_position = l:position
-    call feedkeys("\<C-n>", 'in')
-  endif
-endfunction
 
 function! s:tab_completion(shifting) abort
   if pumvisible()
@@ -175,13 +160,12 @@ function! s:tab_completion(shifting) abort
     return "\<C-n>"
   endif
 
-  return s:show_completion_menu()
-endfunction
+  if s:is_typing_word()
+    return "\<C-n>"
+  endif
 
-augroup complete_as_you_type
-  autocmd!
-  autocmd TextChangedI,InsertEnter * call s:show_completion_menu()
-augroup END
+  return "\t"
+endfunction
 
 inoremap <silent><expr><TAB> <SID>tab_completion(0)
 inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
