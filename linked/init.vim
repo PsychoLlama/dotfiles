@@ -57,6 +57,8 @@ Plug 'tpope/vim-repeat'
 Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'xolox/vim-notes'
+Plug 'xolox/vim-misc'
 Plug 'w0rp/ale'
 call plug#end()
 
