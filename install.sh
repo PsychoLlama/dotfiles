@@ -115,7 +115,7 @@ function main {
 
     # Don't attempt to change shell on Travis CI.
     # The build will hang forever.
-    if [[ ! -z "$CI" ]]; then
+    if [[ -n "$CI" ]]; then
       return
     fi
 
@@ -123,7 +123,7 @@ function main {
   }
 
   function install_oh_my_zsh {
-    if [[ -d ~/.oh-my-zsh ]]; then
+    if [[ -d ~/.oh-my-zsh || -n "$CI" ]]; then
       return
     fi
 
@@ -188,7 +188,7 @@ function main {
   }
 
   function install_llama_zsh_theme {
-    if [[ -f ~/.oh-my-zsh/themes/llama.zsh-theme ]]; then
+    if [[ -f ~/.oh-my-zsh/themes/llama.zsh-theme || -n "$CI" ]]; then
       return
     fi
 
@@ -336,7 +336,7 @@ function main {
       UPDATE=1
     fi
 
-    if [[ ! -z "$UPDATE" ]]; then
+    if [[ -n "$UPDATE" ]]; then
       sudo apt-get update
     fi
   fi
