@@ -87,6 +87,7 @@ augroup rando_file_settings
   autocmd!
   autocmd BufNewFile,BufRead .eslintrc,.babelrc set filetype=json
   autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
+  autocmd FileType netrw setlocal signcolumn=no
   autocmd FileType text setlocal textwidth=78
 augroup END
 
