@@ -188,6 +188,11 @@ nnoremap <silent><leader>n :nohlsearch<cr>
 nnoremap <silent><leader>c :tabe ~/.config/nvim/init.vim<cr>
 nnoremap <silent><leader>a :ALEDetail<cr>
 
+" Highlight current line number.
+set cursorline
+highlight clear CursorLine
+highlight CursorLineNr ctermfg=blue
+
 " Check for environment-specific vim settings.
 if filereadable(expand('~/.custom-scripts/init.vim'))
   source ~/.custom-scripts/init.vim
