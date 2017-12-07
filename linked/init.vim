@@ -125,9 +125,12 @@ let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 
 let g:ale_javascript_prettier_use_local_config = 1
-let g:ale_sign_warning = '⊝'
-let g:ale_sign_error = '⊘'
+let g:ale_sign_warning = '!'
+let g:ale_sign_error = 'x'
 let g:ale_fix_on_save = 1
+
+highlight clear ALEWarningSign
+highlight ALEWarningSign ctermfg=gray
 
 let g:ale_fixers = {}
 let g:ale_fixers.javascript = ['prettier']
@@ -174,6 +177,7 @@ inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
 nnoremap <silent><leader>n :nohlsearch<cr>
 nnoremap <silent><leader>c :tabe ~/.config/nvim/init.vim<cr>
 nnoremap <silent><leader>a :ALEDetail<cr>
+nnoremap <silent><leader>r :Rexplore<cr>
 
 " Highlight current line number.
 set cursorline
