@@ -298,8 +298,9 @@ function main {
       return
     fi
 
+    announce Installing pylint
     if installed brew; then
-      pip install pylint
+      pip3 install pylint
     else
       install pylint
     fi
