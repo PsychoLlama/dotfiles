@@ -293,6 +293,18 @@ function main {
     sudo -H pip3 install vim-vint > /dev/null
   }
 
+  function install_pylint {
+    if installed pylint; then
+      return
+    fi
+
+    if installed brew; then
+      pip install pylint
+    else
+      install pylint
+    fi
+  }
+
   function install_shellcheck {
     if ! installed shellcheck; then
       announce Installing shellcheck
@@ -355,6 +367,7 @@ function main {
   install_neovim
   install_neovim_plugins
   install_vint
+  install_pylint
   install_shellcheck
 }
 

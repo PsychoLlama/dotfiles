@@ -135,6 +135,7 @@ let g:ale_fixers.javascript = ['prettier']
 let g:ale_linters = {}
 let g:ale_linters.javascript = ['eslint', 'flow']
 let g:ale_linters.bash = ['shellcheck']
+let g:ale_linters.python = ['pylint']
 let g:ale_linters.sh = ['shellcheck']
 let g:ale_linters.rust = ['rustc']
 let g:ale_linters.vim = ['vint']
