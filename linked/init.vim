@@ -31,8 +31,10 @@ set number
 set mouse=
 set list
 
-" Get python3 executable location without newline.
-let g:python3_host_prog = substitute(system('which python3'), '\n$', '', '')
+" Get python3 executable location.
+if executable('python3')
+  let g:python3_host_prog = substitute(system('which python3'), '\n$', '', '')
+endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -184,6 +186,36 @@ nnoremap <silent><leader>r :Rexplore<cr>
 set cursorline
 highlight clear CursorLine
 highlight CursorLineNr ctermfg=blue
+
+function! s:edit_module_file() abort
+  let l:col = getcurpos()[2] - 1
+  let l:line = strpart(getline('.'), l:col)
+  let l:delimiter = l:line =~# "'" ? "'" : '"'
+
+  execute 'normal! mayi' . l:delimiter . '`a'
+  let l:module_name = getreg('"')
+
+  let l:folder = expand('%:p:h')
+  let l:cd_cmd = 'cd ' . shellescape(l:folder)
+  let l:require_cmd = 'try {' .
+        \ "  require.resolve('" . l:module_name . "')" .
+        \ '} catch (err) {""}'
+
+  let l:node_cmd = 'node -p ' . shellescape(l:require_cmd)
+  let l:path = substitute(system(l:cd_cmd . ' && ' . l:node_cmd), "\n", '', '')
+
+  if !filereadable(l:path)
+    echom 'Couldn''t find module "' . l:module_name . '".'
+    return
+  endif
+
+  execute 'edit ' . l:path
+endfunction
+
+augroup use_relative_file
+  autocmd!
+  autocmd FileType javascript nnoremap <buffer><silent>gf :call <SID>edit_module_file()<cr>
+augroup END
 
 " Check for environment-specific vim settings.
 if filereadable(expand('~/.custom-scripts/init.vim'))
