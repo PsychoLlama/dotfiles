@@ -192,8 +192,10 @@ function! s:edit_module_file() abort
   let l:line = strpart(getline('.'), l:col)
   let l:delimiter = l:line =~# "'" ? "'" : '"'
 
+  let l:register_contents = getreg('"')
   execute 'normal! mayi' . l:delimiter . '`a'
   let l:module_name = getreg('"')
+  call setreg('"', l:register_contents)
 
   let l:folder = expand('%:p:h')
   let l:cd_cmd = 'cd ' . shellescape(l:folder)
