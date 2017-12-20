@@ -77,12 +77,6 @@ colorscheme onedark
 filetype plugin indent on
 syntax on
 
-noremap <silent> <c-h> :tabp<CR>
-noremap <silent> <c-l> :tabn<CR>
-noremap <silent> <c-n> :Te<CR>
-noremap <c-j> <c-w>j
-noremap <c-k> <c-w>k
-
 augroup resume_last_cursor_position
   autocmd!
   autocmd BufReadPost *
@@ -176,12 +170,15 @@ function! s:tab_completion(shifting) abort
   return "\t"
 endfunction
 
+noremap <silent><C-h> :tabp<CR>
+noremap <silent><C-l> :tabn<CR>
 inoremap <silent><expr><TAB> <SID>tab_completion(0)
 inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
 nnoremap <silent><leader>n :nohlsearch<cr>
 nnoremap <silent><leader>c :tabe ~/.config/nvim/init.vim<cr>
 nnoremap <silent><leader>a :ALEDetail<cr>
 nnoremap <silent><leader>r :Rexplore<cr>
+nnoremap <silent><C-n> :Texplore<cr>
 
 " Highlight current line number.
 set cursorline

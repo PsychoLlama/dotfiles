@@ -2,7 +2,7 @@
 
 ### Variables ###
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-export TERM=xterm-256color
+export TERM=screen-256color
 export ZSH=~/.oh-my-zsh
 export N_PREFIX=~/.n
 export EDITOR=nvim
