@@ -67,8 +67,11 @@ function tw {
 
 function gag {
   ag "$@" \
+    --ignore node_modules \
     --ignore '*bundle.*' \
     --ignore schema.js \
+    --ignore dist \
+    --ignore coverage \
     --ignore '*.js.map' \
     --ignore yarn.lock \
     --ignore flow-typed
