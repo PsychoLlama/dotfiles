@@ -91,6 +91,7 @@ augroup rando_file_settings
   autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
   autocmd FileType netrw setlocal signcolumn=no
   autocmd FileType text,notes setlocal textwidth=78
+  autocmd FileType gitcommit setlocal signcolumn=no
 augroup END
 
 " Reset all progress in the file.
@@ -170,10 +171,21 @@ function! s:tab_completion(shifting) abort
   return "\t"
 endfunction
 
+function! s:toggle_copy_mode() abort
+  if &number
+    setlocal nonumber
+    setlocal signcolumn=no
+  else
+    setlocal number
+    setlocal signcolumn=yes
+  endif
+endfunction
+
 noremap <silent><C-h> :tabp<CR>
 noremap <silent><C-l> :tabn<CR>
 inoremap <silent><expr><TAB> <SID>tab_completion(0)
 inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
+nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
 nnoremap <silent><leader>n :nohlsearch<cr>
 nnoremap <silent><leader>c :tabe ~/.config/nvim/init.vim<cr>
 nnoremap <silent><leader>a :ALEDetail<cr>
