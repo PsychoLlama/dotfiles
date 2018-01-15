@@ -62,6 +62,7 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'xolox/vim-notes'
 Plug 'xolox/vim-misc'
+Plug 'mxw/vim-jsx'
 Plug 'w0rp/ale'
 call plug#end()
 
@@ -112,6 +113,8 @@ let @c = "Sconsole.log('');hhh"
 let @e = "othrow new Error('Failed to open pod bay doors.A;:w"
 
 " Plugin config
+let g:jsx_ext_required = 0
+
 let g:deoplete#enable_at_startup = 1
 
 let g:netrw_list_hide='^.DS_Store$,^.git/$,^\.\./$,^\./$'
