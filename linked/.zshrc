@@ -74,7 +74,8 @@ function gag {
     --ignore coverage \
     --ignore '*.js.map' \
     --ignore yarn.lock \
-    --ignore flow-typed
+    --ignore flow-typed \
+    --ignore static/
 }
 
 function v {
