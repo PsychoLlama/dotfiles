@@ -184,6 +184,14 @@ function! s:toggle_copy_mode() abort
   endif
 endfunction
 
+" :Rexplore only works if the file was opened via netrw.
+function! s:explore_current_dir() abort
+  let l:filename = expand('%:p:t')
+  let l:curdir = expand('%:p:h')
+  execute 'edit ' . fnameescape(l:curdir)
+  call search(l:filename)
+endfunction
+
 noremap <silent><C-h> :tabp<CR>
 noremap <silent><C-l> :tabn<CR>
 inoremap <silent><expr><TAB> <SID>tab_completion(0)
@@ -192,7 +200,7 @@ nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
 nnoremap <silent><leader>n :nohlsearch<cr>
 nnoremap <silent><leader>c :tabe ~/.config/nvim/init.vim<cr>
 nnoremap <silent><leader>a :ALEDetail<cr>
-nnoremap <silent><leader>r :Rexplore<cr>
+nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
 nnoremap <silent><C-n> :Texplore<cr>
 
 " Highlight current line number.

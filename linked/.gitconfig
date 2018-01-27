@@ -16,3 +16,7 @@
 [push]
   followTags = true
   default = current
+[merge]
+  tool = vimdiff
+[mergetool "vimdiff"]
+  cmd = nvim -d "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
