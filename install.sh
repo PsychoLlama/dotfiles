@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
+ARTIFACTS_DIR="$(dotfiles dir)/artifacts"
+
+if [[ ! -e "$ARTIFACTS_DIR" ]]; then
+  mkdir "$ARTIFACTS_DIR"
+fi
+
 function announce {
   if [[ -z "$VERBOSE" ]]; then
     return
@@ -187,7 +193,7 @@ function install_silver_searcher {
 }
 
 function install_llama_zsh_theme {
-  local DEST="$(dotfiles dir)/artifacts/llama-theme.sh"
+  local DEST="$ARTIFACTS_DIR/llama-theme.sh"
 
   if [[ -f "$DEST" || -n "$CI" ]]; then
     return
@@ -221,7 +227,7 @@ function install_n {
 }
 
 function install_z {
-  local DEST="$(dotfiles dir)/artifacts/z"
+  local DEST="$ARTIFACTS_DIR/z"
 
   if [[ -e "$DEST" ]]; then
     return
