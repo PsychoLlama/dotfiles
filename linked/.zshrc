@@ -2,6 +2,7 @@
 
 ### Variables ###
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+export PATH="$N_PREFIX/bin:$PATH"
 export TERM=screen-256color
 export ZSH=~/.oh-my-zsh
 export N_PREFIX=~/.n
@@ -171,17 +172,20 @@ function f {
     -not -path '*/venv/*'
 }
 
-# Adds `z` function (https://github.com/rupa/z).
-source "$(dotfiles dir)/artifacts/z/z.sh"
 
 # Kickstart the oh-my-zsh framework.
 plugins=(git docker vagrant tmux)
-ZSH_THEME='llama'
-
 source $ZSH/oh-my-zsh.sh
-export PATH="$N_PREFIX"/bin:"$PATH"
 
-# Not all functions and aliases should be shared.
+ARTIFACTS="$(dotfiles dir)/artifacts"
+
+# Adds `z` function (https://github.com/rupa/z).
+source "$ARTIFACTS/z/z.sh"
+
+# Use my custom shell prompt.
+source "$ARTIFACTS/llama-theme.sh"
+
+# Check for computer-specific shell utils.
 if [[ -e ~/.custom-scripts/.zshrc ]]; then
   source ~/.custom-scripts/.zshrc
 fi

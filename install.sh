@@ -187,7 +187,9 @@ function install_silver_searcher {
 }
 
 function install_llama_zsh_theme {
-  if [[ -f ~/.oh-my-zsh/themes/llama.zsh-theme || -n "$CI" ]]; then
+  local DEST="$(dotfiles dir)/artifacts/llama-theme.sh"
+
+  if [[ -f "$DEST" || -n "$CI" ]]; then
     return
   fi
 
@@ -199,7 +201,7 @@ function install_llama_zsh_theme {
     exit 1
   fi
 
-  echo "$theme" > ~/.oh-my-zsh/themes/llama.zsh-theme
+  echo "$theme" > "$DEST"
 }
 
 # A node version manager, alternative to nvm.
