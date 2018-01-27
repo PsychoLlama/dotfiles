@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-DOTFILES_DIR=$(dirname `readlink $0`)
+DOTFILES_DIR=$(dirname "$(realpath "$0")")
 
 # Add symlinks to each file.
 function link_everything {
