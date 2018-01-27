@@ -171,8 +171,11 @@ function f {
     -not -path '*/venv/*'
 }
 
+# Adds `z` function (https://github.com/rupa/z).
+source "$(dotfiles dir)/artifacts/z/z.sh"
+
 # Kickstart the oh-my-zsh framework.
-plugins=(git z docker vagrant tmux)
+plugins=(git docker vagrant tmux)
 ZSH_THEME='llama'
 
 source $ZSH/oh-my-zsh.sh

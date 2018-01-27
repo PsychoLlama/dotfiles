@@ -218,6 +218,16 @@ function install_n {
   rm -rf ~/.n-bin
 }
 
+function install_z {
+  local DEST="$(dotfiles dir)/artifacts/z"
+
+  if [[ -e "$DEST" ]]; then
+    return
+  fi
+
+  git clone https://github.com/rupa/z.git "$DEST"
+}
+
 function install_node {
   if installed node; then
     return
@@ -362,6 +372,7 @@ install_tmuxinator
 install_silver_searcher
 install_llama_zsh_theme
 install_n
+install_z
 install_node
 install_vim_plug
 install_neovim

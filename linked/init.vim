@@ -126,6 +126,7 @@ let g:ackprg = 'ag --vimgrep --smart-case'
 cnoreabbrev ag Ack
 
 let g:ale_javascript_prettier_use_local_config = 1
+let g:ale_sh_shellcheck_options = '-e SC2155'
 let g:ale_sign_warning = '!'
 let g:ale_sign_error = 'x'
 let g:ale_fix_on_save = 1
