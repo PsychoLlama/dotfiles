@@ -200,12 +200,16 @@ endfunction
 
 function! s:toggle_copy_mode() abort
   if &number
-    setlocal nonumber
-    setlocal signcolumn=no
+    setlocal nonumber signcolumn=no
   else
-    setlocal number
-    setlocal signcolumn=yes
+    setlocal number signcolumn=yes
   endif
+endfunction
+
+function! s:edit_vimrc() abort
+  let l:cmd = isdirectory(expand('%:p')) ? 'edit' : 'tabedit'
+  let l:dotfiles = substitute(system('dotfiles dir'), '\n', '', '')
+  execute l:cmd . ' ' . l:dotfiles . '/linked/init.vim'
 endfunction
 
 " :Rexplore only works if the file was opened via netrw.
@@ -222,7 +226,7 @@ inoremap <silent><expr><TAB> <SID>tab_completion(0)
 inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
 nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
 nnoremap <silent><leader>n :nohlsearch<cr>
-nnoremap <silent><leader>c :tabe ~/.config/nvim/init.vim<cr>
+nnoremap <silent><leader>c :call <SID>edit_vimrc()<cr>
 nnoremap <silent><leader>a :ALEDetail<cr>
 nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
 nnoremap <silent><C-n> :Texplore<cr>
