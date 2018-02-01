@@ -96,14 +96,30 @@ augroup rando_file_settings
 augroup END
 
 " Reset all progress in the file.
-function! s:git_checkout_file() abort
-  let l:target = expand('%:p')
-  let l:cmd = 'git checkout "' . l:target . '"'
-  call system(l:cmd)
-  execute 'edit!' . l:target
+function! s:git_reset_file() abort
+  let l:file = fnameescape(expand('%:p'))
+  let l:symlink_pointer = system('readlink ' . l:file)
+
+  " Attempt to resolve symlinks.
+  if len(l:symlink_pointer)
+    let l:file = substitute(l:symlink_pointer, '\n', '', '')
+    echom l:file
+  endif
+
+  " system(...) uses the cwd context. Not good if
+  " you execute this from a different repo.
+  let l:original_cwd = getcwd()
+  cd %:p:h
+
+  call system('git reset -- ' . l:file)
+  call system('git checkout -- ' . l:file)
+
+  execute 'cd! ' . fnameescape(l:original_cwd)
+
+  edit!
 endfunction
 
-command! Gcheckout call s:git_checkout_file()
+command! Gcheckout call s:git_reset_file()
 
 " Macros
 let @b = 'SbeforeEach(() => {jA;kkj'
@@ -156,8 +172,6 @@ function! s:is_typing_word() abort
   let l:prev_chars = getline('.')[l:col - 2:l:col]
   return l:prev_chars =~? '\w\{2}'
 endfunction
-
-let g:last_cursor_position = []
 
 function! s:tab_completion(shifting) abort
   if pumvisible()

@@ -88,6 +88,11 @@ function v {
 }
 
 function vs {
+  if [[ "$#" == "0" ]]; then
+    echo "WRONG! Try again."
+    return 1
+  fi
+
   nvim -p $(gag "$@" -l)
 }
 
