@@ -32,8 +32,17 @@ set mouse=
 set list
 
 " Get python3 executable location.
+function! s:get_exe_path(prog) abort
+  let l:path = system('which ' . shellescape(a:prog))
+  return substitute(l:path, '\n$', '', '')
+endfunction
+
 if executable('python3')
-  let g:python3_host_prog = substitute(system('which python3'), '\n$', '', '')
+  let g:python3_host_prog = s:get_exe_path('python3')
+endif
+
+if executable('python2')
+  let g:python2_host_prog = s:get_exe_path('python2')
 endif
 
 call plug#begin('~/.vim/plugged')
