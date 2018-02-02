@@ -130,6 +130,36 @@ endfunction
 
 command! Gcheckout call s:git_reset_file()
 
+function! s:execute_javascript() abort
+  if !(&filetype =~# 'javascript')
+    echo 'WHAT ARE YOU DOING!'
+    return 1
+  endif
+
+  let l:contents = []
+  let l:index = 1
+  let l:last = line('$')
+  while l:index <= l:last
+    let l:contents += [getline(l:index)]
+    let l:index += 1
+  endwhile
+
+  let l:scratchfile = '/tmp/scratch-' . reltimestr(reltime())
+  call writefile(l:contents, l:scratchfile)
+
+  copen
+  execute 'term node ' . l:scratchfile
+  normal! A
+endfunction
+
+function! s:open_scratchpad() abort
+  tabnew
+  setfiletype javascript.jsx
+  nnoremap <silent><buffer><leader>j :call <SID>execute_javascript()<cr>
+endfunction
+
+command! Scratchpad call <SID>open_scratchpad()
+
 " Macros
 let @b = 'SbeforeEach(() => {jA;kkj'
 let @d = "Sdescribe('', () => {jA;kkf'"
