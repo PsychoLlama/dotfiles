@@ -112,7 +112,14 @@ function vp {
 }
 
 function _find_file_in_repo {
-  local result="$(git ls-files | grep -i $1 | head -1)"
+  local result="$(git ls-files | grep -i $1)"
+
+  if [[ -n "$2" ]]; then
+    result="$(awk "!$2 { print }" <<< "$result")"
+  fi
+
+  # Get the top-most result.
+  result="$(head -1 <<< "$result")"
 
   if [[ -z "$result" ]]; then
     return 1
@@ -145,7 +152,7 @@ function gv {
 }
 
 function gvp {
-  local file="$(_find_file_in_repo "$1")"
+  local file="$(_find_file_in_repo "$1" "/test\\.js/")"
 
   if [[ -z "$file" ]]; then
     echo "Nope, nothing found."
