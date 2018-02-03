@@ -1,12 +1,13 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 ### Variables ###
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-export PATH="$N_PREFIX/bin:$PATH"
 export TERM=screen-256color
 export ZSH=~/.oh-my-zsh
-export N_PREFIX=~/.n
 export EDITOR=nvim
+
+export N_PREFIX=~/.n
+export PATH="$N_PREFIX/bin:$PATH"
 
 
 ### Aliases ###

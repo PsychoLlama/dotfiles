@@ -77,7 +77,16 @@ Plug 'xolox/vim-notes'
 Plug 'xolox/vim-misc'
 Plug 'mxw/vim-jsx'
 Plug 'w0rp/ale'
+Plug 'autozimu/LanguageClient-neovim', {
+      \   'do': 'bash install.sh',
+      \   'branch': 'next',
+      \ }
+
 call plug#end()
+
+let g:LanguageClient_serverCommands = {
+      \   'rust': ['rustup', 'run', 'nightly', 'rls'],
+      \ }
 
 " Add persistent undo.
 let &undodir = expand('~/.vim/undodir')
@@ -103,9 +112,10 @@ augroup rando_file_settings
   autocmd!
   autocmd BufNewFile,BufRead .eslintrc,.babelrc set filetype=json
   autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
-  autocmd FileType netrw setlocal signcolumn=no
   autocmd FileType text,notes setlocal textwidth=78
   autocmd FileType gitcommit setlocal signcolumn=no
+  autocmd FileType netrw setlocal signcolumn=no
+  autocmd FileType help wincmd _
 augroup END
 
 " Reset all progress in the file.
@@ -199,7 +209,7 @@ let g:ale_linters.javascript = ['eslint', 'flow']
 let g:ale_linters.bash = ['shellcheck']
 let g:ale_linters.python = ['pylint']
 let g:ale_linters.sh = ['shellcheck']
-let g:ale_linters.rust = ['rustc']
+let g:ale_linters.rust = ['rls']
 let g:ale_linters.vim = ['vint']
 
 function! s:is_typing_word() abort

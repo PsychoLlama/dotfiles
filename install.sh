@@ -63,11 +63,11 @@ function ensure {
 }
 
 function verify_hash {
-  local integrity=`openssl sha1 <<< "$2"`
+  local integrity="$(openssl sha1 <<< "$2")"
 
   # Some systems print junk before the hash.
   if ! installed brew; then
-    integrity=`echo $integrity | awk '{print $2}'`
+    integrity="$(echo $integrity | awk '{print $2}')"
   fi
 
   if [[ "$integrity" != "$1" ]]; then
