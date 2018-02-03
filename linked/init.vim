@@ -31,10 +31,15 @@ set number
 set mouse=
 set list
 
+" Trim dangling newlines. Mostly from system commands.
+function! s:chomp(string) abort
+  return substitute(a:string, '\n$', '', '')
+endfunction
+
 " Get python3 executable location.
 function! s:get_exe_path(prog) abort
   let l:path = system('which ' . shellescape(a:prog))
-  return substitute(l:path, '\n$', '', '')
+  return s:chomp(l:path)
 endfunction
 
 if executable('python3')
@@ -48,7 +53,6 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'roxma/vim-tmux-clipboard'
 Plug 'PsychoLlama/further.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
@@ -77,7 +81,7 @@ call plug#end()
 
 " Add persistent undo.
 let &undodir = expand('~/.vim/undodir')
-if ! filereadable(&undodir)
+if !filereadable(&undodir)
   call system('mkdir -p ' . &undodir)
 endif
 
@@ -111,7 +115,7 @@ function! s:git_reset_file() abort
 
   " Attempt to resolve symlinks.
   if len(l:symlink_pointer)
-    let l:file = substitute(l:symlink_pointer, '\n', '', '')
+    let l:file = s:chomp(l:symlink_pointer)
     echom l:file
   endif
 
@@ -131,9 +135,8 @@ endfunction
 command! Gcheckout call s:git_reset_file()
 
 function! s:execute_javascript() abort
-  if !(&filetype =~# 'javascript')
-    echo 'WHAT ARE YOU DOING!'
-    return 1
+  if &filetype !~# 'javascript'
+    return
   endif
 
   let l:contents = []
@@ -149,12 +152,11 @@ function! s:execute_javascript() abort
 
   copen
   execute 'term node ' . l:scratchfile
-  normal! A
 endfunction
 
 function! s:open_scratchpad() abort
   tabnew
-  setfiletype javascript.jsx
+  setfiletype javascript
   nnoremap <silent><buffer><leader>j :call <SID>execute_javascript()<cr>
 endfunction
 
@@ -238,7 +240,7 @@ endfunction
 
 function! s:edit_vimrc() abort
   let l:cmd = isdirectory(expand('%:p')) ? 'edit' : 'tabedit'
-  let l:dotfiles = substitute(system('dotfiles dir'), '\n', '', '')
+  let l:dotfiles = s:chomp(system('dotfiles dir'))
   execute l:cmd . ' ' . l:dotfiles . '/linked/init.vim'
 endfunction
 

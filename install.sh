@@ -124,7 +124,7 @@ function install_zsh {
     return
   fi
 
-  chsh -s `which zsh`
+  chsh -s "$(which zsh)"
 }
 
 function install_oh_my_zsh {
