@@ -1,5 +1,7 @@
 use clap::{App, SubCommand};
+use std::process;
 
+extern crate serde_json;
 extern crate clap;
 
 mod link;
@@ -14,7 +16,10 @@ fn main() {
 
     match matches.subcommand() {
         ("link", Some(_)) => {
-            link::create_plan();
+            match link::make_symlinks() {
+                Err(_) => process::exit(1),
+                _ => (),
+            };
         },
         _ => {
             println!("You gotta pass an arg. \
