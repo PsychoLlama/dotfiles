@@ -130,6 +130,7 @@ augroup rando_file_settings
   autocmd FileType gitcommit setlocal signcolumn=no | call <SID>show_git_diff()
   autocmd FileType netrw setlocal signcolumn=no
   autocmd FileType help wincmd _
+  autocmd FileType ale-preview wincmd J
 augroup END
 
 " Reset all progress in the file.
