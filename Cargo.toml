@@ -1,0 +1,8 @@
+[package]
+name = "dotfiles"
+version = "0.1.0"
+authors = ["Jesse Gibson <Jesse_Gibson@me.com>"]
+
+[dependencies.clap]
+version = "~2.29.2"
+features = ["suggestions", "color", "wrap_help"]
