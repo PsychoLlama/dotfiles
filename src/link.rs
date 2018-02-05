@@ -48,7 +48,13 @@ fn get_dotfiles_dir() -> io::Result<String> {
 }
 
 fn normalize_destination(path: &str) -> Result<String, env::VarError> {
-    let home = env::var("HOME")?;
+    let home_path = env::home_dir().expect("Couldn't locate home directory.");
+
+    let home = home_path
+        .into_os_string()
+        .into_string()
+        .expect("Weird. Couldn't parse the home directory.");
+
     let normalized = path.replace('~', &home);
 
     Ok(normalized)
