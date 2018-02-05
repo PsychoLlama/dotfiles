@@ -26,13 +26,11 @@ fn get_symlink_manifest() -> io::Result<HashMap<String, String>> {
 }
 
 fn get_dotfiles_dir() -> io::Result<String> {
-    let bin_path = env::current_exe()?;
-    let bin_path = fs::canonicalize(bin_path)?;
-
-    let bin_str = match bin_path.as_path().to_owned().to_str() {
-        None => panic!("Failed to resolve dotfiles executable."),
-        Some(value) => value.to_owned(),
-    };
+    let current_exe = env::current_exe()?;
+    let bin_str = fs::canonicalize(current_exe)?
+        .into_os_string()
+        .into_string()
+        .expect("Couldn't resolve a path to the dotfiles executable.");
 
     let exe_path = bin_str.split('/');
     let mut path: Vec<&str> = vec![];
