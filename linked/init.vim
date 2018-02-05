@@ -108,12 +108,26 @@ augroup resume_last_cursor_position
     \ endif
 augroup END
 
+function! s:show_git_diff() abort
+  vsplit new
+  wincmd L
+  setlocal modifiable
+
+  setfiletype diff
+  silent r!git diff HEAD
+  silent 1d
+
+  setlocal nomodifiable nowriteany nobuflisted buftype=nowrite bufhidden=delete
+  wincmd h
+  normal! gg
+endfunction
+
 augroup rando_file_settings
   autocmd!
   autocmd BufNewFile,BufRead .eslintrc,.babelrc set filetype=json
   autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
   autocmd FileType text,notes setlocal textwidth=78
-  autocmd FileType gitcommit setlocal signcolumn=no
+  autocmd FileType gitcommit setlocal signcolumn=no | call <SID>show_git_diff()
   autocmd FileType netrw setlocal signcolumn=no
   autocmd FileType help wincmd _
 augroup END
