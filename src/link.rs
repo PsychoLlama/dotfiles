@@ -1,10 +1,13 @@
 use std::io::{self, Error, ErrorKind};
+use std::os::unix::fs::{symlink};
 use std::collections::{HashMap};
+use std::fs::{self, File};
 use std::path::Path;
-use std::fs::File;
+use std::env;
 
 use serde_json as serde;
 
+// Reads the symlink manifest.
 fn get_symlink_manifest() -> io::Result<HashMap<String, String>> {
     let path = "linked/manifest.json";
 
@@ -23,9 +26,58 @@ fn get_symlink_manifest() -> io::Result<HashMap<String, String>> {
     return Ok(data);
 }
 
-// TODO: implement.
+fn get_dotfiles_dir() -> io::Result<String> {
+    let bin_path = env::current_exe()?;
+
+    let bin_str = match bin_path.as_path().to_owned().to_str() {
+        None => panic!("Failed to resolve dotfiles executable."),
+        Some(value) => value.to_owned(),
+    };
+
+    let exe_path = bin_str.split('/');
+    let mut path: Vec<&str> = vec![];
+
+    for value in exe_path {
+        path.push(value);
+        if value == "dotfiles" {
+            break;
+        }
+    }
+
+    return Ok(path.join("/"));
+}
+
+fn normalize_destination(path: &str) -> Result<String, env::VarError> {
+    let home = env::var("HOME")?;
+    let normalized = path.replace('~', &home);
+
+    Ok(normalized)
+}
+
+fn create_symlink(source: &str, destination: &str) -> io::Result<()> {
+    assert!(Path::new(&source).exists());
+
+    if Path::new(&destination).is_file() {
+        fs::remove_file(&destination)?;
+    }
+
+    symlink(&source, &destination)?;
+
+    Ok(())
+}
+
 pub fn make_symlinks() -> io::Result<()> {
-    let _plan = get_symlink_manifest()?;
+    let manifest = get_symlink_manifest()?;
+    let dotfiles_dir = get_dotfiles_dir()?;
+    let mut linked_dir = String::from(dotfiles_dir);
+    linked_dir.push_str("/linked/");
+
+    for (key, value) in manifest.iter() {
+        let source = value.replace("./", linked_dir.as_ref());
+        let destination = normalize_destination(&key).unwrap();
+
+        create_symlink(&source, &destination)?;
+    }
 
     return Ok(());
 }

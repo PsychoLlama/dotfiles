@@ -17,7 +17,10 @@ fn main() {
     match matches.subcommand() {
         ("link", Some(_)) => {
             match link::make_symlinks() {
-                Err(_) => process::exit(1),
+                Err(reason) => {
+                    println!("{:?}", reason);
+                    process::exit(1);
+                },
                 _ => (),
             };
         },
