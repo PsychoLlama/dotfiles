@@ -13,9 +13,8 @@ fn get_symlink_manifest() -> io::Result<HashMap<String, String>> {
 
     // Make sure the manifest exists.
     if !Path::new(path).is_file() {
-        println!("Can't find the manifest.json file. Add it, then try again.");
-
-        let error = Error::new(ErrorKind::Other, "Can't find symlink manifest.");
+        let msg = "Can't find the manifest.json file. Add it, then try again.";
+        let error = Error::new(ErrorKind::Other, msg);
         return Err(error);
     }
 
@@ -23,7 +22,7 @@ fn get_symlink_manifest() -> io::Result<HashMap<String, String>> {
     let file = File::open(path).expect("Unable to read manifest file.");
     let data: HashMap<String, String> = serde::from_reader(&file)?;
 
-    return Ok(data);
+    Ok(data)
 }
 
 fn get_dotfiles_dir() -> io::Result<String> {
@@ -45,7 +44,7 @@ fn get_dotfiles_dir() -> io::Result<String> {
         }
     }
 
-    return Ok(path.join("/"));
+    Ok(path.join("/"))
 }
 
 fn normalize_destination(path: &str) -> Result<String, env::VarError> {
@@ -80,5 +79,5 @@ pub fn make_symlinks() -> io::Result<()> {
         create_symlink(&source, &destination)?;
     }
 
-    return Ok(());
+    Ok(())
 }
