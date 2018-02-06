@@ -8,18 +8,17 @@ use std::env;
 use serde_json as serde;
 
 // Reads the symlink manifest.
-fn get_symlink_manifest() -> io::Result<HashMap<String, String>> {
-    let path = "linked/manifest.json";
+fn get_symlink_manifest(manifest_file: &str) -> io::Result<HashMap<String, String>> {
 
     // Make sure the manifest exists.
-    if !Path::new(path).is_file() {
+    if !Path::new(&manifest_file).is_file() {
         let msg = "Can't find the manifest.json file. Add it, then try again.";
         let error = Error::new(ErrorKind::Other, msg);
         return Err(error);
     }
 
     // Parse it as JSON.
-    let file = File::open(path).expect("Unable to read manifest file.");
+    let file = File::open(manifest_file).expect("Unable to read manifest file.");
     let data: HashMap<String, String> = serde::from_reader(&file)?;
 
     Ok(data)
@@ -71,10 +70,14 @@ fn create_symlink(source: &str, destination: &str) -> io::Result<()> {
 }
 
 pub fn make_symlinks() -> io::Result<()> {
-    let manifest = get_symlink_manifest()?;
     let dotfiles_dir = get_dotfiles_dir()?;
     let mut linked_dir = String::from(dotfiles_dir);
     linked_dir.push_str("/linked/");
+
+    let mut manifest_file = String::clone(&linked_dir);
+    manifest_file.push_str("/manifest.json");
+
+    let manifest = get_symlink_manifest(&manifest_file)?;
 
     for (key, value) in manifest.iter() {
         let source = value.replace("./", linked_dir.as_ref());
