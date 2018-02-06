@@ -6,6 +6,7 @@ use std::path::Path;
 use std::env;
 
 use serde_json as serde;
+use ansi_term::Color::{Yellow, Green};
 
 // Reads the symlink manifest.
 fn get_symlink_manifest(manifest_file: &str) -> io::Result<HashMap<String, String>> {
@@ -79,11 +80,24 @@ pub fn make_symlinks() -> io::Result<()> {
 
     let manifest = get_symlink_manifest(&manifest_file)?;
 
+    let arrow = Green.paint("=>");
+    let opening_brace = Yellow.paint("{");
+    let closing_brace = Yellow.paint("}");
+
     for (key, value) in manifest.iter() {
         let source = value.replace("./", linked_dir.as_ref());
         let destination = normalize_destination(&key).unwrap();
 
         create_symlink(&source, &destination)?;
+
+        let pretty_source = value.replace("./", "linked/");
+
+        println!("{} {} {} {} {}",
+                 opening_brace,
+                 key,
+                 arrow.to_string(),
+                 pretty_source,
+                 closing_brace);
     }
 
     Ok(())
