@@ -108,8 +108,23 @@ augroup resume_last_cursor_position
     \ endif
 augroup END
 
+function! g:Get_active_buffers() abort
+  let l:buffers = getbufinfo()
+  let l:visible_buffers = filter(l:buffers, {index, buffer -> buffer.loaded})
+
+  return l:visible_buffers
+endfunction
+
+function! s:close_diff_if_last_window() abort
+  if exists('b:is_diff_window') && len(g:Get_active_buffers()) is 1
+    exit
+  endif
+endfunction
+
 function! s:show_git_diff() abort
   vsplit new
+  let b:is_diff_window = v:true
+
   wincmd L
   setlocal modifiable
 
@@ -119,8 +134,14 @@ function! s:show_git_diff() abort
 
   setlocal nomodifiable nowriteany nobuflisted buftype=nowrite bufhidden=delete
   wincmd h
-  normal! gg
+
+  augroup close_diff_if_last_window
+    autocmd!
+    autocmd BufEnter * call <SID>close_diff_if_last_window()
+  augroup END
 endfunction
+
+command! H call <SID>show_git_diff()
 
 augroup rando_file_settings
   autocmd!
