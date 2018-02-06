@@ -108,12 +108,26 @@ augroup resume_last_cursor_position
     \ endif
 augroup END
 
+function! s:show_git_diff() abort
+  vsplit new
+  wincmd L
+  setlocal modifiable
+
+  setfiletype diff
+  silent r!git diff HEAD
+  silent 1d
+
+  setlocal nomodifiable nowriteany nobuflisted buftype=nowrite bufhidden=delete
+  wincmd h
+  normal! gg
+endfunction
+
 augroup rando_file_settings
   autocmd!
   autocmd BufNewFile,BufRead .eslintrc,.babelrc set filetype=json
   autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
   autocmd FileType text,notes setlocal textwidth=78
-  autocmd FileType gitcommit setlocal signcolumn=no
+  autocmd FileType gitcommit setlocal signcolumn=no | call <SID>show_git_diff()
   autocmd FileType netrw setlocal signcolumn=no
   autocmd FileType help wincmd _
   autocmd FileType ale-preview wincmd J
@@ -140,7 +154,8 @@ function! s:git_reset_file() abort
 
   execute 'cd! ' . fnameescape(l:original_cwd)
 
-  edit!
+  silent edit!
+  silent write
 endfunction
 
 command! Gcheckout call s:git_reset_file()
@@ -172,6 +187,38 @@ function! s:open_scratchpad() abort
 endfunction
 
 command! Scratchpad call <SID>open_scratchpad()
+
+function! s:search_dir_upwards(dir, cb) abort
+  if a:cb(a:dir)
+    return a:dir
+  endif
+
+  let l:dir = fnamemodify(a:dir, ':h')
+
+  " Science has gone too far.
+  if l:dir is a:dir
+    return v:null
+  endif
+
+  return s:search_dir_upwards(l:dir, a:cb)
+endfunction
+
+function! s:open_node_repl() abort
+  let l:current_dir = expand('%:p:h')
+  let l:Has_pkg_json = {dir -> file_readable(dir . '/package.json')}
+  let l:project = s:search_dir_upwards(l:current_dir, l:Has_pkg_json)
+
+  if l:project is v:null
+    let l:project = l:current_dir
+  endif
+
+  copen
+  execute 'lcd ' . fnameescape(l:project)
+  execute 'term node'
+  normal! A
+endfunction
+
+command! Node call <SID>open_node_repl()
 
 " Macros
 let @b = 'SbeforeEach(() => {jA;kkj'
