@@ -132,7 +132,9 @@ function! s:show_git_diff() abort
   silent r!git diff HEAD
   silent 1d
 
-  setlocal nomodifiable nowriteany nobuflisted buftype=nowrite bufhidden=delete
+  setlocal nomodifiable nowriteany nobuflisted nonumber
+        \ buftype=nowrite bufhidden=delete signcolumn=no listchars=
+
   wincmd h
 
   augroup close_diff_if_last_window
