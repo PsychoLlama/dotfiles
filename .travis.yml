@@ -2,6 +2,7 @@ language: rust
 sudo: required
 
 before_script:
+- pip install awscli
 - mkdir -p ~/.aws
 - echo "[default]" >> ~/.aws/credentials
 - echo "aws_access_key_id = $AWS_ACCESS_ID" >> ~/.aws/credentials
@@ -9,7 +10,7 @@ before_script:
 
 script:
 - "./framework-setup.sh"
-- cargo build --verbose --release
+- cargo build --verbose --release --color always
 after_script:
 - aws s3 cp ./target/release/dotfiles s3://llama-dotfiles/"dotfiles-$TRAVIS_OS_NAME"
 
