@@ -19,7 +19,7 @@ jobs:
   - stage: deploy
     language: python
     script: skip
-    install: skip
+    install: git rev-parse --abbrev-ref HEAD
     deploy:
       before_deploy: ./ci/predeploy.sh
       after_deploy: aws s3 rm --recursive s3://llama-dotfiles/
@@ -29,3 +29,5 @@ jobs:
         file:
           - ./dotfiles-linux
           - ./dotfiles-osx
+      on:
+        branch: what-if-rust
