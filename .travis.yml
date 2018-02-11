@@ -17,10 +17,8 @@ jobs:
     script: ./ci/run-build.sh
   - os: linux
     stage: deploy
-    before_script:
-    - ./ci/predeploy.sh
-    after_script:
-    - aws s3 rm --recursive s3://llama-dotfiles/
+    before_deploy: ./ci/predeploy.sh
+    after_deploy: aws s3 rm --recursive s3://llama-dotfiles/
     provider: releases
     skip_cleanup: true
     api_key:
