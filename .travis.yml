@@ -1,17 +1,9 @@
 language: rust
 sudo: required
 
-before_script:
+after_install:
 - sudo easy_install awscli
 - mkdir -p ~/.aws
-- echo "[default]" > ~/.aws/credentials
-- echo "aws_access_key_id = $AWS_ACCESS_ID" >> ~/.aws/credentials
-- echo "aws_secret_access_key = $AWS_ACCESS_KEY" >> ~/.aws/credentials
-
-script:
-- ./framework-setup.sh
-- cargo build --verbose --release --color always
-- aws s3 cp ./target/release/dotfiles s3://llama-dotfiles/"dotfiles-$TRAVIS_OS_NAME"
 
 env:
   matrix:
@@ -23,15 +15,22 @@ jobs:
   include:
   - os: linux
     stage: build
+    script: ./ci-build.sh
   - os: osx
     stage: build
+    script: ./ci-build.sh
+
+before_deploy:
+- aws s3 sync s3://llama-dotfiles/ ./
 
 deploy:
   provider: releases
   skip_cleanup: true
   api_key:
     secure: QnaLaRT5Q6RgFe65GoqjEwQlYG7FUdAApw1+uDcAZ7pA5cv4gipHH27iCqdmVPiKNZnpab6+NlLcgtvcZK2Z4rYVUEPT0BIikoN07XmiO8SIdYVEZNs4whL23qMQMeLtCQPx5LmTHWUNeDUbUgdnQA9q1uFvJS719Q50efPjy17kOvKben9bsfU2sGLAQJPyDkZiZEjOcksiUGy+W3mynKF4y9h+uHNeDxHZKFQsJDODZfjjxNsQwnO0ValL4vhpWlG2SB6V0XOFAbnNfmwzmmhzbnvtl/E50uGVOg2iOLqjbwy6hakPpH1PHvKxBqhbg2q2qBfNPuEc0m72Q7wdEBAR258rAsmyhoRqoUqExYTHlQ4p8atfDGrUD9BfA9mKgs3omLCgKYBt7P8MZhDsnmQUHefL6SsaKD8C4L0BJR6XgUMX1nTDl/kZxYusRw7TnFPbNRCzXSVAWvcBW/NlWw1AutIXuC3B4JG/u4kRxknynIhaRIfQuXHHp/NyIiFWGeddsJLV4eygd1k5ptGzF3rDjiNP7YpMIToDznB1cc1U8mz7y2kKXdVcQ/cWIlKrSVhNu8XwF6x0oh92PjIa+u8yjAfbRmeelICvHKy0NAkLJ+i7I/fSlMOc7a+83/EKx7AdyrTI8vLhagaRwwf06WHrK5iDWi0E6sT3obNUTEE=
-  file: "./target/release/dotfiles"
+  file:
+  - ./dotfiles-linux
+  - ./dotfiles-osx
   on:
     repo: PsychoLlama/dotfiles
     branch: what-if-rust
