@@ -17,6 +17,8 @@ jobs:
     stage: build
     script: ./ci/run-build.sh
   - stage: deploy
+    script: skip
+    language: python
     deploy:
       before_deploy: ./ci/predeploy.sh
       after_deploy: aws s3 rm --recursive s3://llama-dotfiles/
@@ -29,4 +31,4 @@ jobs:
           - ./dotfiles-osx
         on:
           repo: PsychoLlama/dotfiles
-          branch: what-if-rust
+          # branch: what-if-rust
