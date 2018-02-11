@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-./setup-s3.sh
+./ci/setup-s3.sh
 ./framework-setup.sh
 cargo build --verbose --release --color always
 aws s3 cp ./target/release/dotfiles \
