@@ -1,9 +1,6 @@
 language: rust
 sudo: required
 
-after_install:
-- ./setup-s3.sh
-
 env:
   matrix:
   - VERBOSE=1
