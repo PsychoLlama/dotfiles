@@ -31,4 +31,4 @@ jobs:
           - ./dotfiles-osx
         on:
           repo: PsychoLlama/dotfiles
-          # branch: what-if-rust
+          all_branches: true
