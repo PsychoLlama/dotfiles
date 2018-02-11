@@ -2,8 +2,7 @@ language: rust
 sudo: required
 
 after_install:
-- sudo easy_install awscli
-- mkdir -p ~/.aws
+- ./setup-s3.sh
 
 env:
   matrix:
@@ -21,6 +20,7 @@ jobs:
     script: ./ci-build.sh
 
 before_deploy:
+- ./setup-s3.sh
 - aws s3 sync s3://llama-dotfiles/ ./
 
 deploy:
