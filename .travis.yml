@@ -1,7 +1,7 @@
 language: rust
 sudo: required
 
-after_install:
+before_script:
 - python -m pip install awscli
 - mkdir -p ~/.aws
 - echo "[default]" >> ~/.aws/credentials
