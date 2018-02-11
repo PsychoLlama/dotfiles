@@ -11,14 +11,16 @@ jobs:
   include:
   - os: linux
     stage: build
-    script: ./ci-build.sh
+    script: ./ci/run-build.sh
   - os: osx
     stage: build
-    script: ./ci-build.sh
+    script: ./ci/run-build.sh
 
 before_deploy:
-- ./setup-s3.sh
-- aws s3 sync s3://llama-dotfiles/ ./
+- ./ci/predeploy.sh
+
+after_deploy:
+- aws s3 rm --recursive s3://llama-dotfiles/
 
 deploy:
   provider: releases
