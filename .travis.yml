@@ -17,7 +17,7 @@ jobs:
     stage: build
     script: ./ci/run-build.sh
   - stage: deploy
-    language: python
+    language: ruby
     script: skip
     install: git rev-parse --abbrev-ref HEAD
     deploy:
