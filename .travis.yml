@@ -21,6 +21,7 @@ jobs:
     script: skip
     install: git rev-parse --abbrev-ref HEAD
     deploy:
+      skip_cleanup: true
       before_deploy: ./ci/predeploy.sh
       after_deploy: aws s3 rm --recursive s3://llama-dotfiles/
       provider: releases
