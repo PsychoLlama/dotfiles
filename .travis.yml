@@ -10,10 +10,9 @@ env:
 os:
 - linux
 - osx
-after_install:
-- ./ci/setup-s3.sh
 script:
 - ./framework-setup.sh
 - cargo build --verbose --release --color always
 after_success:
+- ./ci/setup-s3.sh
 - aws s3 cp ./target/release/dotfiles "s3://llama-dotfiles/dotfiles-$TRAVIS_OS_NAME"
