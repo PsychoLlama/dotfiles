@@ -103,7 +103,7 @@ syntax on
 augroup resume_last_cursor_position
   autocmd!
   autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \ if line("'\"") > 1 && line("'\"") <= line("$") && &filetype != 'gitcommit' |
     \   exe "normal! g`\"" |
     \ endif
 augroup END
