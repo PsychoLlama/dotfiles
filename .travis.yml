@@ -1,8 +1,15 @@
-language: c
+language: rust
 sudo: required
-script: ./framework-setup.sh
+
 env:
+  matrix:
   - VERBOSE=1
+  global:
+  - secure: G+A5Bw/0vhLH8x7TUEk5Zb/t4Xo4CT9lbDsV/KwAl1RvGuH7QasVp9oUtMW9f6YRTpyzlugx0Rw5xe2X3cPsQ2xYUGvva3Z6d7zaDq7k0Kf1J0mkLNO/Oqw8MEd8CKwRIqGNi/ojZZmHIIbZBsHm1h/46LjIlxIK2JOmtDKBuoPfgx6gIKkMEVAC7bnumReti9fW4cJxpeFLiRvAr0+GIAC+QUj4NN9ZcY22LN946GEolTmnLLA2eCmfiAF4ajJyq6BA9ZJr+BgpzN7aMhMw8hJbFUHzfvIr+lnrTHI40qOrOuzIwskUl7KowWVrRi+w2DqPXYZ7GnPb/FIfA/34J/saCDXKuiVCliO3QKzcNqhLzS+KvPg6oWWGdrD14mEFEWJiWlq/9fxJpoCqK46//vmjwaz/Di1Jd0XRED/JN6NGBxFaQDeLJ0c8/F9hdd+TAjdE2MLjPKfbW6rBtLMsf/hb1dnp4L4SppNQ7XxgpUGyaT4Mb3qqye6rz/ekBWIxSkMOhzaWPQftaxeIU4k6nw0Ov8oOUzZVfAa1DZ6ZQr2rL6lh5MJLXiNBp/vgp8r3O2K7KLop7+ZAwCE76MXQzXSGqYREd+caaOAlngkatMXgob+XFW0qlqjujodChp+5kRCRXZxOl/kqLvY9vTpNQwLHnxaXukrbtFYHjZBUVKI=
+  - secure: VuAKOoU+Y2RvXznPPxkglw8+FLFbJs45NrVCxzXvXwi4v+tvj61R9UfQtaWimfk0vnBbPU6GZ/yOmo8FN47Cg92c9tgF5Ug0kYcdQbT5L9tv2DJ5esQJCyf0bKEZdmGqvIqPcjBl57kXKu6foPYCrgOep9q9DEiK5HQJSsKoKIMIF6RhYOG1GCLXPT9v0IFecdm6ZOVN6UyveL5tHBnibp4Yrn7r9tiU+K0Qp8FLXSsUGDt1R0veYMevPsSPmmfFgoghps1B+oVW9hEcfKSKYYzWBTvk6KstBa6Kr6vzSp3xIdJUaUrBFL16JPUv3KzujLKnZ6rgsm92iqzGo/MEGrDzw4EAqtRcQdPSfMcGixmW7SaQl0msYAjQ4EPlcffvzrV44OBubIf5fOE8gnxCboFuGy+M9gcVJpFEZVi0X0BAhyONOYmqRZNCMSfFeYi4xD3HT8O2uxJacM+X7bJ3NruFE7Ob6v7rRJMdRj+WbDU4oZa0KJUD3CZ2Y21Edj4i4iYKyxwtpNdy7V0Ci8NOobif7QrIvQuu4uAr7lYZFhqx+ye0QG9YnSpzJ83q7HXEGCcma4zzGI+nlQOVy+eiIy7GZYOhZgqhM+pMCeS8/Fwf18gnM7gFZfWYuqbEcxFx/WqWNlpX1gY8DTDsfJrS1X+dSsjjwaRFzeJyNrV6WHQ=
 os:
-  - osx
-  - linux
+- linux
+- osx
+script:
+- ./framework-setup.sh
+- cargo build --verbose --release --color always
