@@ -70,7 +70,6 @@ Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'chrisbra/csv.vim', { 'for': 'csv' }
 Plug 'cespare/vim-toml', { 'for': 'toml' }
 Plug 'tpope/vim-repeat'
-Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'xolox/vim-notes'
@@ -183,34 +182,6 @@ endfunction
 
 command! Gcheckout call s:git_reset_file()
 
-function! s:execute_javascript() abort
-  if &filetype !~# 'javascript'
-    return
-  endif
-
-  let l:contents = []
-  let l:index = 1
-  let l:last = line('$')
-  while l:index <= l:last
-    let l:contents += [getline(l:index)]
-    let l:index += 1
-  endwhile
-
-  let l:scratchfile = '/tmp/scratch-' . reltimestr(reltime())
-  call writefile(l:contents, l:scratchfile)
-
-  copen
-  execute 'term node ' . l:scratchfile
-endfunction
-
-function! s:open_scratchpad() abort
-  tabnew
-  setfiletype javascript
-  nnoremap <silent><buffer><leader>j :call <SID>execute_javascript()<cr>
-endfunction
-
-command! Scratchpad call <SID>open_scratchpad()
-
 function! s:search_dir_upwards(dir, cb) abort
   if a:cb(a:dir)
     return a:dir
@@ -259,9 +230,6 @@ let g:netrw_list_hide='^.DS_Store$,^.git/$,^\.\./$,^\./$'
 let g:netrw_localrmdir='rm -r'
 let g:netrw_use_errorwindow=0
 let g:netrw_banner=0
-
-let g:ackprg = 'ag --vimgrep --smart-case'
-cnoreabbrev ag Ack
 
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_sh_shellcheck_options = '-e SC2155'
