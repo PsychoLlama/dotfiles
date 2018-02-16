@@ -107,7 +107,10 @@ augroup resume_last_cursor_position
     \ endif
 augroup END
 
-function! g:Get_active_buffers() abort
+" A namespace for shared vimscript functions (mostly consumed from ~/.custom-scripts).
+let g:llama = { 'utils': {} }
+
+function! g:llama.utils.GetActiveBuffers() abort
   let l:buffers = getbufinfo()
   let l:visible_buffers = filter(l:buffers, {index, buffer -> buffer.loaded})
 
@@ -115,7 +118,7 @@ function! g:Get_active_buffers() abort
 endfunction
 
 function! s:close_diff_if_last_window() abort
-  if exists('b:is_diff_window') && len(g:Get_active_buffers()) is 1
+  if exists('b:is_diff_window') && len(g:llama.utils.GetActiveBuffers()) is 1
     exit
   endif
 endfunction
@@ -182,7 +185,7 @@ endfunction
 
 command! Gcheckout call s:git_reset_file()
 
-function! s:search_dir_upwards(dir, cb) abort
+function! g:llama.utils.SearchDirUpwards(dir, cb) abort
   if a:cb(a:dir)
     return a:dir
   endif
@@ -194,17 +197,23 @@ function! s:search_dir_upwards(dir, cb) abort
     return v:null
   endif
 
-  return s:search_dir_upwards(l:dir, a:cb)
+  return g:llama.utils.SearchDirUpwards(l:dir, a:cb)
 endfunction
 
-function! s:open_node_repl() abort
+function! g:llama.utils.FindProjectRoot() abort
   let l:current_dir = expand('%:p:h')
   let l:Has_pkg_json = {dir -> file_readable(dir . '/package.json')}
-  let l:project = s:search_dir_upwards(l:current_dir, l:Has_pkg_json)
+  let l:project = g:llama.utils.SearchDirUpwards(l:current_dir, l:Has_pkg_json)
 
   if l:project is v:null
     let l:project = l:current_dir
   endif
+
+  return l:project
+endfunction
+
+function! s:open_node_repl() abort
+  let l:project = g:llama.utils.FindProjectRoot()
 
   copen
   execute 'lcd ' . fnameescape(l:project)
