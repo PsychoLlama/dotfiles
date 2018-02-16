@@ -4,6 +4,7 @@ set backspace=indent,eol,start
 set wildmode=longest,list,full
 set listchars=tab:··,trail:·
 set backupdir=~/.vim/backup
+set clipboard+=unnamedplus
 set backupcopy=yes
 set signcolumn=yes
 set numberwidth=2
@@ -129,8 +130,6 @@ function! s:show_git_diff() abort
   let b:is_diff_window = v:true
 
   wincmd L
-  setlocal modifiable
-
   setfiletype diff
   silent r!git diff HEAD
   silent 1d
@@ -139,7 +138,6 @@ function! s:show_git_diff() abort
         \ buftype=nowrite bufhidden=delete signcolumn=no listchars=
 
   wincmd h
-
   augroup close_diff_if_last_window
     autocmd!
     autocmd BufEnter * call <SID>close_diff_if_last_window()
@@ -305,14 +303,24 @@ endfunction
 
 " :Rexplore only works if the file was opened via netrw.
 function! s:explore_current_dir() abort
+  if &filetype is# 'netrw'
+    return
+  endif
+
   let l:filename = expand('%:p:t')
   let l:curdir = expand('%:p:h')
   execute 'edit ' . fnameescape(l:curdir)
   call search(l:filename)
 endfunction
 
-noremap <silent><C-h> :tabp<CR>
-noremap <silent><C-l> :tabn<CR>
+" This habit must die.
+nnoremap <silent><C-h> :tabprevious<CR>
+nnoremap <silent><C-l> :tabnext<CR>
+
+" Do this instead.
+nnoremap <silent><tab> :tabnext<CR>
+nnoremap <silent><S-tab> :tabprevious<CR>
+
 inoremap <silent><expr><TAB> <SID>tab_completion(0)
 inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
 nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
