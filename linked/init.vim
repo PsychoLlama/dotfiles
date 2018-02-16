@@ -107,7 +107,8 @@ augroup resume_last_cursor_position
     \ endif
 augroup END
 
-" A namespace for shared vimscript functions (mostly consumed from ~/.custom-scripts).
+" A namespace for shared vimscript functions (mostly consumed from
+" ~/dotfiles-env).
 let g:llama = { 'utils': {} }
 
 function! g:llama.utils.GetActiveBuffers() abort
@@ -327,6 +328,6 @@ highlight clear CursorLine
 highlight CursorLineNr ctermfg=blue
 
 " Check for environment-specific vim settings.
-if filereadable(expand('~/.custom-scripts/init.vim'))
-  source ~/.custom-scripts/init.vim
+if filereadable(expand('~/dotfiles-env/init.vim'))
+  source ~/dotfiles-env/init.vim
 endif
