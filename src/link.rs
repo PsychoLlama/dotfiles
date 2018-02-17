@@ -1,8 +1,8 @@
 use std::io::{self, Error, ErrorKind};
 use std::os::unix::fs::{symlink};
 use std::collections::{HashMap};
+use std::path::{Path, PathBuf};
 use std::fs::{self, File};
-use std::path::Path;
 use std::env;
 
 use serde_json as serde;
@@ -58,9 +58,19 @@ fn normalize_destination(path: &str) -> Result<String, env::VarError> {
     Ok(normalized)
 }
 
+fn ensure_directories(dest: &str) -> io::Result<()> {
+    let mut path = PathBuf::from(dest);
+    path.pop();
+
+    fs::create_dir_all(path)?;
+
+    Ok(())
+}
+
 fn create_symlink(source: &str, destination: &str) -> io::Result<()> {
     assert!(Path::new(&source).exists());
 
+    ensure_directories(&destination)?;
     if Path::new(&destination).is_file() {
         fs::remove_file(&destination)?;
     }
