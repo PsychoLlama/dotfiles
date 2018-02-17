@@ -75,7 +75,7 @@ dotfiles link > /dev/null
 # oh-my-zsh freaks if it sees another .zshrc file.
 rm ~/.zshrc
 dotfiles install
-dotfiles link > /dev/null
+dotfiles link
 
 # Log out for the new shell to take effect.
 if [[ "$SHELL" != "$(which zsh)" ]]; then

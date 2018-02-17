@@ -52,7 +52,7 @@ case "$1" in
   "link")
     # Call through to Rust. Eventually, this dotfiles
     # script will be replaced with a Rust implementation.
-    "$DOTFILES_DIR"/target/release/dotfiles link
+    "$DOTFILES_DIR"/target/debug/dotfiles link
     ;;
   "update")
     update
