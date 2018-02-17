@@ -11,7 +11,7 @@ function link_everything {
 
   # Before linking a file, make sure it exists.
   function verify_file_exists {
-    local file=`resolve_file_location $1`
+    local file="$(resolve_file_location "$1")"
 
     if [[ ! -e "$file" ]]; then
       echo "Failure: $1"
@@ -25,13 +25,13 @@ function link_everything {
 
   # Symlink a file from `linked/`.
   function link {
-    local file_to_link=`resolve_file_location $1`
+    local file_to_link="$(resolve_file_location "$1")"
 
     # Validate the link target.
     verify_file_exists "$1" "$2"
 
     # Make sure the directory exists.
-    mkdir -p `dirname $2`
+    mkdir -p "$(dirname "$2")"
 
     # Create symlink.
     if [[ ! -L "$2" ]]; then
@@ -53,7 +53,7 @@ function update {
   pushd "$DOTFILES_DIR" &> /dev/null
 
   echo Updating dotfiles...
-  git pull origin master
+  git pull origin
   dotfiles install
   dotfiles link
 
@@ -67,8 +67,8 @@ function print_help {
   function indent {
     local indention=""
 
-    for _ in `seq 1 "$1"`; do
-      indention=`echo "$indention    "`
+    for _ in $(seq 1 "$1"); do
+      indention="$indention    "
     done
 
     echo "$indention$2"
@@ -81,7 +81,6 @@ function print_help {
   indent 2 "update  - Pull dotfile changes from git"
   indent 2 "install - Install system-wide dependencies"
   indent 2 "dir     - Print the dotfiles directory"
-  indent 2 "repo    - Synonym for 'dotfiles dir'"
 
   echo ""
 }
@@ -102,12 +101,12 @@ case "$1" in
   "install")
     install
     ;;
-  "dir" | "repo")
+  "dir")
     echo "$DOTFILES_DIR"
     ;;
   *)
     if [[ ! -z "$1" && "$1" != "--help" ]]; then
-      echo "Invalid command '$@'. Showing help instead."
+      echo "Invalid command '$*'. Showing help instead."
       print_help
 
       # Probably a typo. Make them feel the pain!
