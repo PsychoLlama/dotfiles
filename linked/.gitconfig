@@ -19,4 +19,4 @@
 [merge]
   tool = vimdiff
 [mergetool "vimdiff"]
-  cmd = nvim -d "$BASE" "$LOCAL" "$REMOTE" "$MERGED"
+  cmd = nvim -d "$MERGED" "$LOCAL" "$BASE" "$REMOTE" -c 'wincmd J'
