@@ -2,7 +2,7 @@
 You know what this is.
 
 ## Usage
-Clone this repo, then run `./framework-setup.sh`. You may need `sudo`.
+Clone this repo, then run `./setup.sh`. You may need `sudo`.
 
 ```
 Usage: dotfiles [command]

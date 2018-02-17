@@ -8,6 +8,7 @@ export EDITOR=nvim
 
 export N_PREFIX=~/.n
 export PATH="$N_PREFIX/bin:$PATH"
+export PATH=~/.cargo/bin:"$PATH"
 
 
 ### Aliases ###
@@ -199,6 +200,6 @@ source "$ARTIFACTS/z/z.sh"
 source "$ARTIFACTS/llama-theme.sh"
 
 # Check for computer-specific shell utils.
-if [[ -e ~/.custom-scripts/.zshrc ]]; then
-  source ~/.custom-scripts/.zshrc
+if [[ -e ~/dotfiles-env/.zshrc ]]; then
+  source ~/dotfiles-env/.zshrc
 fi

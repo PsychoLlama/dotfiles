@@ -4,6 +4,7 @@ set backspace=indent,eol,start
 set wildmode=longest,list,full
 set listchars=tab:··,trail:·
 set backupdir=~/.vim/backup
+set clipboard+=unnamedplus
 set backupcopy=yes
 set signcolumn=yes
 set numberwidth=2
@@ -70,7 +71,6 @@ Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'chrisbra/csv.vim', { 'for': 'csv' }
 Plug 'cespare/vim-toml', { 'for': 'toml' }
 Plug 'tpope/vim-repeat'
-Plug 'mileszs/ack.vim', { 'on': 'Ack' }
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'xolox/vim-notes'
@@ -103,24 +103,49 @@ syntax on
 augroup resume_last_cursor_position
   autocmd!
   autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \ if line("'\"") > 1 && line("'\"") <= line("$") && &filetype != 'gitcommit' |
     \   exe "normal! g`\"" |
     \ endif
 augroup END
 
+" A namespace for shared vimscript functions (mostly consumed from
+" ~/dotfiles-env).
+let g:llama = { 'utils': {} }
+
+function! g:llama.utils.GetActiveBuffers() abort
+  let l:buffers = getbufinfo()
+  let l:visible_buffers = filter(l:buffers, {index, buffer -> buffer.loaded})
+
+  return l:visible_buffers
+endfunction
+
+function! s:close_diff_if_last_window() abort
+  if exists('b:is_diff_window') && len(g:llama.utils.GetActiveBuffers()) is 1
+    exit
+  endif
+endfunction
+
 function! s:show_git_diff() abort
   vsplit new
-  wincmd L
-  setlocal modifiable
+  let b:is_diff_window = v:true
 
+  wincmd L
   setfiletype diff
   silent r!git diff HEAD
   silent 1d
 
-  setlocal nomodifiable nowriteany nobuflisted buftype=nowrite bufhidden=delete
+  setlocal nomodifiable nowriteany nobuflisted nonumber
+        \ buftype=nowrite bufhidden=delete signcolumn=no listchars=
+
   wincmd h
-  normal! gg
+
+  augroup close_diff_if_last_window
+    autocmd!
+    autocmd BufEnter * call <SID>close_diff_if_last_window()
+  augroup END
 endfunction
+
+command! H call <SID>show_git_diff()
 
 augroup rando_file_settings
   autocmd!
@@ -129,6 +154,7 @@ augroup rando_file_settings
   autocmd FileType text,notes setlocal textwidth=78
   autocmd FileType gitcommit setlocal signcolumn=no | call <SID>show_git_diff()
   autocmd FileType netrw setlocal signcolumn=no
+  autocmd FileType ale-preview wincmd J
   autocmd FileType help wincmd _
 augroup END
 
@@ -159,35 +185,7 @@ endfunction
 
 command! Gcheckout call s:git_reset_file()
 
-function! s:execute_javascript() abort
-  if &filetype !~# 'javascript'
-    return
-  endif
-
-  let l:contents = []
-  let l:index = 1
-  let l:last = line('$')
-  while l:index <= l:last
-    let l:contents += [getline(l:index)]
-    let l:index += 1
-  endwhile
-
-  let l:scratchfile = '/tmp/scratch-' . reltimestr(reltime())
-  call writefile(l:contents, l:scratchfile)
-
-  copen
-  execute 'term node ' . l:scratchfile
-endfunction
-
-function! s:open_scratchpad() abort
-  tabnew
-  setfiletype javascript
-  nnoremap <silent><buffer><leader>j :call <SID>execute_javascript()<cr>
-endfunction
-
-command! Scratchpad call <SID>open_scratchpad()
-
-function! s:search_dir_upwards(dir, cb) abort
+function! g:llama.utils.SearchDirUpwards(dir, cb) abort
   if a:cb(a:dir)
     return a:dir
   endif
@@ -199,17 +197,23 @@ function! s:search_dir_upwards(dir, cb) abort
     return v:null
   endif
 
-  return s:search_dir_upwards(l:dir, a:cb)
+  return g:llama.utils.SearchDirUpwards(l:dir, a:cb)
 endfunction
 
-function! s:open_node_repl() abort
+function! g:llama.utils.FindProjectRoot() abort
   let l:current_dir = expand('%:p:h')
   let l:Has_pkg_json = {dir -> file_readable(dir . '/package.json')}
-  let l:project = s:search_dir_upwards(l:current_dir, l:Has_pkg_json)
+  let l:project = g:llama.utils.SearchDirUpwards(l:current_dir, l:Has_pkg_json)
 
   if l:project is v:null
     let l:project = l:current_dir
   endif
+
+  return l:project
+endfunction
+
+function! s:open_node_repl() abort
+  let l:project = g:llama.utils.FindProjectRoot()
 
   copen
   execute 'lcd ' . fnameescape(l:project)
@@ -235,9 +239,6 @@ let g:netrw_list_hide='^.DS_Store$,^.git/$,^\.\./$,^\./$'
 let g:netrw_localrmdir='rm -r'
 let g:netrw_use_errorwindow=0
 let g:netrw_banner=0
-
-let g:ackprg = 'ag --vimgrep --smart-case'
-cnoreabbrev ag Ack
 
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_sh_shellcheck_options = '-e SC2155'
@@ -303,14 +304,24 @@ endfunction
 
 " :Rexplore only works if the file was opened via netrw.
 function! s:explore_current_dir() abort
+  if &filetype is# 'netrw'
+    return
+  endif
+
   let l:filename = expand('%:p:t')
   let l:curdir = expand('%:p:h')
   execute 'edit ' . fnameescape(l:curdir)
   call search(l:filename)
 endfunction
 
-noremap <silent><C-h> :tabp<CR>
-noremap <silent><C-l> :tabn<CR>
+" This habit must die.
+nnoremap <silent><C-h> :tabprevious<CR>
+nnoremap <silent><C-l> :tabnext<CR>
+
+" Do this instead.
+nnoremap <silent><tab> :tabnext<CR>
+nnoremap <silent><S-tab> :tabprevious<CR>
+
 inoremap <silent><expr><TAB> <SID>tab_completion(0)
 inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
 nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
@@ -326,6 +337,6 @@ highlight clear CursorLine
 highlight CursorLineNr ctermfg=blue
 
 " Check for environment-specific vim settings.
-if filereadable(expand('~/.custom-scripts/init.vim'))
-  source ~/.custom-scripts/init.vim
+if filereadable(expand('~/dotfiles-env/init.vim'))
+  source ~/dotfiles-env/init.vim
 endif

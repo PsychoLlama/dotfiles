@@ -1,8 +1,7 @@
-language: c
+language: rust
 sudo: required
-script: ./framework-setup.sh
-env:
-  - VERBOSE=1
+
+script: ./setup.sh
 os:
-  - osx
-  - linux
+- linux
+- osx
