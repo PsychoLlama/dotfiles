@@ -5,5 +5,5 @@ os:
 - linux
 - osx
 script:
-- ./framework-setup.sh
+- ./setup.sh
 - cargo build --verbose --release --color always
