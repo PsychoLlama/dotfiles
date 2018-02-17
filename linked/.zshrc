@@ -8,6 +8,7 @@ export EDITOR=nvim
 
 export N_PREFIX=~/.n
 export PATH="$N_PREFIX/bin:$PATH"
+export PATH=~/.cargo/bin:"$PATH"
 
 
 ### Aliases ###
