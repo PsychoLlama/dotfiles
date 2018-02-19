@@ -10,7 +10,6 @@ Usage: dotfiles [command]
     update  - Pull dotfile changes from git
     install - Install system-wide dependencies
     dir     - Print the dotfiles directory
-    repo    - Synonym for 'dotfiles dir'
 ```
 
 Now you've got a `dotfiles` command. It manages updates, symlinking, and global dependency management. If something is added to the symlink list or dependency manager, it'll be run the next time `update` is called.
