@@ -1,16 +1,15 @@
 use std::io::{self, Error, ErrorKind};
-use std::os::unix::fs::{symlink};
-use std::collections::{HashMap};
+use std::os::unix::fs::symlink;
 use std::path::{Path, PathBuf};
+use std::collections::HashMap;
 use std::fs::{self, File};
 use std::env;
 
+use ansi_term::Color::{Green, Yellow};
 use serde_json as serde;
-use ansi_term::Color::{Yellow, Green};
 
 // Reads the symlink manifest.
 fn get_symlink_manifest(manifest_file: &str) -> io::Result<HashMap<String, String>> {
-
     // Make sure the manifest exists.
     if !Path::new(&manifest_file).is_file() {
         let msg = "Can't find the manifest.json file. Add it, then try again.";
@@ -102,12 +101,14 @@ pub fn make_symlinks() -> io::Result<()> {
 
         let pretty_source = value.replace("./", "linked/");
 
-        println!("{} {} {} {} {}",
-                 opening_brace,
-                 key,
-                 arrow.to_string(),
-                 pretty_source,
-                 closing_brace);
+        println!(
+            "{} {} {} {} {}",
+            opening_brace,
+            key,
+            arrow.to_string(),
+            pretty_source,
+            closing_brace
+        );
     }
 
     Ok(())

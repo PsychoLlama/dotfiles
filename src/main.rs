@@ -2,15 +2,14 @@ use clap::{App, SubCommand};
 use std::process;
 use std::io;
 
-extern crate serde_json;
 extern crate ansi_term;
 extern crate clap;
+extern crate serde_json;
 
 mod link;
 
 fn build_cli<'a>() -> App<'a, 'a> {
-    let link = SubCommand::with_name("link")
-        .about("Creates config file symlinks");
+    let link = SubCommand::with_name("link").about("Creates config file symlinks");
 
     return App::new("dotfiles").subcommand(link);
 }
@@ -38,14 +37,14 @@ fn main() {
             println!("");
 
             return ();
-        },
+        }
     };
 
     match execute_cmd(name) {
         Err(reason) => {
             println!("Failed: {}", reason);
             process::exit(1);
-        },
+        }
         _ => (),
     }
 }
