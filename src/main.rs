@@ -34,6 +34,9 @@ fn main() {
                 .print_help()
                 .expect("Tried to write a help page, but the universe exploded.");
 
+            // Add dangling newline.
+            println!("");
+
             return ();
         },
     };

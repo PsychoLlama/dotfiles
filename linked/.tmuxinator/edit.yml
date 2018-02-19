@@ -3,15 +3,10 @@
 root: <%= @args[0] %>
 
 windows:
-  - Code:
-      layout: b1ca,178x51,0,0{98x51,0,0,0,79x51,99,0,3}
-      panes:
-        - nvim ./
-        - tw .
-  - Build:
-      layout: main-vertical
-  - Commit:
-      layout: d9be,178x50,0,0{89x50,0,0,2,88x50,90,0,4}
-      panes:
-        - git status
-        - git diff HEAD
+- Code:
+    layout: b1ca,178x51,0,0{98x51,0,0,0,79x51,99,0,3}
+    panes:
+    - nvim .
+    - tw .
+- Build:
+- Commit:
