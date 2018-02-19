@@ -323,6 +323,18 @@ function install_pylint {
   fi
 }
 
+function install_rustfmt {
+  local list="$(rustup component list)"
+  local pkg="$(grep rustfmt-preview <<< "$list")"
+
+  if [[ "$pkg" =~ installed ]]; then
+    return
+  fi
+
+  announce Installing rustfmt
+  rustup component add rustfmt-preview
+}
+
 function install_shellcheck {
   if ! installed shellcheck; then
     announce Installing shellcheck
@@ -387,4 +399,5 @@ install_neovim
 install_neovim_plugins
 install_vint
 install_pylint
+install_rustfmt
 install_shellcheck
