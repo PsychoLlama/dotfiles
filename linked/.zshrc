@@ -19,9 +19,7 @@ alias ch='git checkout'
 alias D='cd ~/Desktop'
 alias c='git commit'
 alias sudo='sudo '
-alias todo='task'
 alias :q='exit'
-alias t='tmux'
 alias H='git diff HEAD'
 alias HH='git diff HEAD~1'
 alias HHH='git diff HEAD~2'
@@ -45,6 +43,18 @@ function s {
   fi
 
   git status
+}
+
+function t {
+  # No arguments? Attach to the last session.
+  if [[ $# == 0 ]]; then
+    local recent_session="$(tmux ls | awk 'END {print $1}' | sed 's/://')"
+    tmux attach -t "$recent_session"
+    return $?
+  fi
+
+  # Otherwise treat `t` like an alias.
+  tmux "$@"
 }
 
 function tw {
