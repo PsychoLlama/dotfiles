@@ -12,6 +12,7 @@ export PATH=~/.cargo/bin:"$PATH"
 
 
 ### Aliases ###
+alias g='git'
 alias b='git branch --verbose'
 alias :qa='tmux kill-session'
 alias empty='empty-trash'
@@ -46,15 +47,27 @@ function s {
 }
 
 function t {
-  # No arguments? Attach to the last session.
-  if [[ $# == 0 ]]; then
-    local recent_session="$(tmux ls | awk 'END {print $1}' | sed 's/://')"
-    tmux attach -t "$recent_session"
+  # Arguments? Treat `t` like an alias.
+  if [[ $# != 0 ]]; then
+    tmux "$@"
     return $?
   fi
 
-  # Otherwise treat `t` like an alias.
-  tmux "$@"
+  if [[ -n "$TMUX" ]]; then
+    echo "Chill out dude. One tmux is enough." 1>&2
+    return 1
+  fi
+
+  # Attach to the most recent session, or create one.
+  local recent_session="$(tmux ls 2> /dev/null | awk 'END {print $1}' | sed 's/://')"
+
+  if [[ -z "$recent_session" ]]; then
+    tmux new
+    return $?
+  fi
+
+  tmux attach -t "$recent_session"
+  return $?
 }
 
 function tw {
