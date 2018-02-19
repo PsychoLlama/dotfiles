@@ -188,8 +188,8 @@ function f {
 
 
 # Kickstart the oh-my-zsh framework.
-plugins=(git docker vagrant tmux)
-source $ZSH/oh-my-zsh.sh
+plugins=(docker)
+source "$ZSH/oh-my-zsh.sh"
 
 ARTIFACTS="$(dotfiles dir)/artifacts"
 
