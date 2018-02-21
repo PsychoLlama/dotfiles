@@ -39,7 +39,7 @@ endfunction
 
 " Get python3 executable location.
 function! s:get_exe_path(prog) abort
-  let l:path = system('which ' . shellescape(a:prog))
+  let l:path = system('command -v ' . shellescape(a:prog))
   return s:chomp(l:path)
 endfunction
 
@@ -51,42 +51,10 @@ if executable('python2')
   let g:python2_host_prog = s:get_exe_path('python2')
 endif
 
-call plug#begin('~/.vim/plugged')
-Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'PsychoLlama/further.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'airblade/vim-gitgutter'
-Plug 'joshdick/onedark.vim'
-Plug 'jiangmiao/auto-pairs'
-Plug 'hashivim/vim-vagrant', { 'for': 'ruby' }
-Plug 'Shougo/deoplete.nvim'
-Plug 'tpope/vim-commentary'
-Plug 'davinche/godown-vim', { 'for': 'markdown' }
-Plug 'PsychoLlama/vim-gol', { 'on': 'GOL' }
-Plug 'jparise/vim-graphql', { 'for': 'graphql' }
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-Plug 'chrisbra/csv.vim', { 'for': 'csv' }
-Plug 'cespare/vim-toml', { 'for': 'toml' }
-Plug 'tpope/vim-repeat'
-Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'xolox/vim-notes'
-Plug 'xolox/vim-misc'
-Plug 'mxw/vim-jsx'
-Plug 'w0rp/ale'
-Plug 'autozimu/LanguageClient-neovim', {
-      \   'do': 'bash install.sh',
-      \   'branch': 'next',
-      \ }
+let s:dotfiles_dir = s:chomp(system('dotfiles dir'))
+let s:plugin_config = s:dotfiles_dir . '/editor/plugins.vim'
 
-call plug#end()
-
-let g:LanguageClient_serverCommands = {
-      \   'rust': ['rustup', 'run', 'nightly', 'rls'],
-      \ }
+execute 'source ' . fnameescape(s:plugin_config)
 
 " Add persistent undo.
 let &undodir = expand('~/.vim/undodir')
@@ -94,11 +62,7 @@ if !filereadable(&undodir)
   call system('mkdir -p ' . &undodir)
 endif
 
-let g:onedark_termcolors=16
-colorscheme onedark
-
 filetype plugin indent on
-syntax on
 
 augroup resume_last_cursor_position
   autocmd!
@@ -149,12 +113,11 @@ command! H call <SID>show_git_diff()
 
 augroup rando_file_settings
   autocmd!
+  autocmd FileType gitcommit setlocal signcolumn=no | call <SID>show_git_diff()
   autocmd BufNewFile,BufRead .eslintrc,.babelrc set filetype=json
   autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
   autocmd FileType text,notes setlocal textwidth=78
-  autocmd FileType gitcommit setlocal signcolumn=no | call <SID>show_git_diff()
   autocmd FileType netrw setlocal signcolumn=no
-  autocmd FileType ale-preview wincmd J
   autocmd FileType help wincmd _
 augroup END
 
@@ -166,7 +129,6 @@ function! s:git_reset_file() abort
   " Attempt to resolve symlinks.
   if len(l:symlink_pointer)
     let l:file = s:chomp(l:symlink_pointer)
-    echom l:file
   endif
 
   " system(...) uses the cwd context. Not good if
@@ -239,27 +201,6 @@ let g:netrw_list_hide='^.DS_Store$,^.git/$,^\.\./$,^\./$'
 let g:netrw_localrmdir='rm -r'
 let g:netrw_use_errorwindow=0
 let g:netrw_banner=0
-
-let g:ale_javascript_prettier_use_local_config = 1
-let g:ale_sh_shellcheck_options = '-e SC2155'
-let g:ale_sign_warning = '!'
-let g:ale_sign_error = 'x'
-let g:ale_fix_on_save = 1
-
-highlight clear ALEWarningSign
-highlight ALEWarningSign ctermfg=gray
-
-let g:ale_fixers = {}
-let g:ale_fixers.javascript = ['prettier']
-let g:ale_fixers.rust = ['rustfmt']
-
-let g:ale_linters = {}
-let g:ale_linters.javascript = ['eslint', 'flow']
-let g:ale_linters.bash = ['shellcheck']
-let g:ale_linters.python = ['pylint']
-let g:ale_linters.sh = ['shellcheck']
-let g:ale_linters.rust = ['rls']
-let g:ale_linters.vim = ['vint']
 
 function! s:is_typing_word() abort
   let l:col = col('.') - 1
@@ -354,14 +295,8 @@ inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
 nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
 nnoremap <silent><leader>n :nohlsearch<cr>
 nnoremap <silent><leader>c :call <SID>edit_vimrc()<cr>
-nnoremap <silent><leader>a :ALEDetail<cr>
 nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
 nnoremap <silent><C-n> :Texplore<cr>
-
-" Highlight current line number.
-set cursorline
-highlight clear CursorLine
-highlight CursorLineNr ctermfg=blue
 
 " Check for environment-specific vim settings.
 if filereadable(expand('~/dotfiles-env/init.vim'))
