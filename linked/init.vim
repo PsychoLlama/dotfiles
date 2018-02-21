@@ -321,7 +321,7 @@ function! s:find_authors_for_range(start, end) abort
   let l:my_name = s:chomp(system('git config user.name'))
   let l:blames = systemlist(l:cmd)
 
-  let l:committers = filter(l:blames, {k, v -> v =~# 'committer '})
+  let l:committers = filter(l:blames, {k, v -> v =~# '^committer '})
   let l:authors = map(l:committers, {k, v -> substitute(v, 'committer ', '', '')})
   let l:uniq_authors = {}
 
