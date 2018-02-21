@@ -183,7 +183,7 @@ function! s:git_reset_file() abort
   silent write
 endfunction
 
-command! Gcheckout call s:git_reset_file()
+command! Reset call s:git_reset_file()
 
 function! g:llama.utils.SearchDirUpwards(dir, cb) abort
   if a:cb(a:dir)
@@ -314,6 +314,32 @@ function! s:explore_current_dir() abort
   execute 'edit ' . fnameescape(l:curdir)
   call search(l:filename)
 endfunction
+
+function! s:find_authors_for_range(start, end) abort
+  let l:range = a:start . ',' . a:end
+  let l:cmd = 'git blame --porcelain -L ' . l:range . ' -- ' . fnameescape(expand('%:p'))
+  let l:my_name = s:chomp(system('git config user.name'))
+  let l:blames = systemlist(l:cmd)
+
+  let l:committers = filter(l:blames, {k, v -> v =~# 'committer '})
+  let l:authors = map(l:committers, {k, v -> substitute(v, 'committer ', '', '')})
+  let l:uniq_authors = {}
+
+  for l:author in l:authors
+    let l:actual_author = l:author ==? 'not committed yet' ? l:my_name : l:author
+    let l:uniq_authors[l:actual_author] = l:actual_author
+  endfor
+
+  return values(l:uniq_authors)
+endfunction
+
+function! s:find_line_author() abort range
+  let l:authors = s:find_authors_for_range(a:firstline, a:lastline)
+
+  echo join(l:authors, "\n")
+endfunction
+
+command! -range Author <line1>,<line2>call <SID>find_line_author()
 
 " This habit must die.
 nnoremap <silent><C-h> :tabprevious<CR>
