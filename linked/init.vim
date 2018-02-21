@@ -37,23 +37,10 @@ function! s:chomp(string) abort
   return substitute(a:string, '\n$', '', '')
 endfunction
 
-" Get python3 executable location.
-function! s:get_exe_path(prog) abort
-  let l:path = system('command -v ' . shellescape(a:prog))
-  return s:chomp(l:path)
-endfunction
-
-if executable('python3')
-  let g:python3_host_prog = s:get_exe_path('python3')
-endif
-
-if executable('python2')
-  let g:python2_host_prog = s:get_exe_path('python2')
-endif
-
 let s:dotfiles_dir = s:chomp(system('dotfiles dir'))
 let s:plugin_config = s:dotfiles_dir . '/editor/plugins.vim'
 
+" RELEASE THE (plugin) KRAKEN
 execute 'source ' . fnameescape(s:plugin_config)
 
 " Add persistent undo.
@@ -98,9 +85,8 @@ function! s:show_git_diff() abort
   silent r!git diff HEAD
   silent 1d
 
-  setlocal nomodifiable nowriteany nobuflisted nonumber
-        \ buftype=nowrite bufhidden=delete signcolumn=no listchars=
-
+  setlocal nomodifiable nowriteany nobuflisted nonumber listchars=
+  setlocal buftype=nowrite bufhidden=delete signcolumn=no
   wincmd h
 
   augroup close_diff_if_last_window
@@ -191,16 +177,6 @@ let @d = "Sdescribe('', () => {jA;kkf'"
 let @t = "Sit('', () => {jA;kkl"
 let @c = "Sconsole.log('');hhh"
 let @e = "othrow new Error('Failed to open pod bay doors.A;:w"
-
-" Plugin config
-let g:jsx_ext_required = 0
-
-let g:deoplete#enable_at_startup = 1
-
-let g:netrw_list_hide='^.DS_Store$,^.git/$,^\.\./$,^\./$'
-let g:netrw_localrmdir='rm -r'
-let g:netrw_use_errorwindow=0
-let g:netrw_banner=0
 
 function! s:is_typing_word() abort
   let l:col = col('.') - 1

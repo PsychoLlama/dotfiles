@@ -1,5 +1,19 @@
 scriptencoding utf-8
 
+" Get python3 executable location.
+function! s:get_exe_path(prog) abort
+  let l:path = system('command -v ' . shellescape(a:prog))
+  return substitute(l:path, '\n$', '', '')
+endfunction
+
+if executable('python3')
+  let g:python3_host_prog = s:get_exe_path('python3')
+endif
+
+if executable('python2')
+  let g:python2_host_prog = s:get_exe_path('python2')
+endif
+
 call plug#begin('~/.vim/plugged')
 
 " Filetype plugins
@@ -84,3 +98,15 @@ augroup adjust_ale_preview_pane
   autocmd!
   autocmd FileType ale-preview wincmd J
 augroup END
+
+" File browser config.
+let g:netrw_list_hide='^.DS_Store$,^.git/$,^\.\./$,^\./$'
+let g:netrw_localrmdir='rm -r'
+let g:netrw_use_errorwindow=0
+let g:netrw_banner=0
+
+" Use vim-jsx for .js extensions too.
+let g:jsx_ext_required = 0
+
+" Injects a kernel rootkit which slowly destroys the computer.
+let g:deoplete#enable_at_startup = 1
