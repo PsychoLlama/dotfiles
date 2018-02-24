@@ -76,7 +76,10 @@ function! s:find_authors_for_range(start, end) abort
   let l:range = a:start . ',' . a:end
   let l:cmd = 'git blame --porcelain -L ' . l:range . ' -- ' . fnameescape(expand('%:p'))
   let l:my_name = s:chomp(system('git config user.name'))
+
+  cd! %:p:h
   let l:blames = systemlist(l:cmd)
+  cd! -
 
   let l:committers = filter(l:blames, {k, v -> v =~# '^committer '})
   let l:authors = map(l:committers, {k, v -> substitute(v, 'committer ', '', '')})
@@ -130,13 +133,10 @@ function! s:git_reset_file() abort
 
   " system(...) uses the cwd context. Not good if
   " you execute this from a different repo.
-  let l:original_cwd = getcwd()
-  cd %:p:h
-
+  cd! %:p:h
   call system('git reset -- ' . l:file)
   call system('git checkout -- ' . l:file)
-
-  execute 'cd! ' . fnameescape(l:original_cwd)
+  cd! -
 
   silent edit!
   silent write
