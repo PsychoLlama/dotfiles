@@ -3,10 +3,6 @@ function! s:chomp(string) abort
   return substitute(a:string, '\n$', '', '')
 endfunction
 
-function! g:llama.utils.FormatDateTime(time) abort
-  return strftime('%H:%M:%S %Y-%m-%d', a:time)
-endfunction
-
 let g:llama.metrics = { 'filename': expand('~/.vim/metrics.json') }
 let g:llama.metrics.default_state = { 'events': {}, 'mappings': {} }
 
@@ -33,10 +29,9 @@ function! g:llama.metrics.TrackEvent(event_name, metadata) abort dict
     let l:metrics.events[a:event_name] = []
   endif
 
-  let l:metric = copy(a:metadata)
-  let l:metric.time = g:llama.utils.FormatDateTime(localtime())
-
+  let l:metric = extend({ 'time': localtime() }, a:metadata, 'error')
   let l:metrics.events[a:event_name] += [l:metric]
+
   call l:self.Write(l:metrics)
 endfunction
 
@@ -96,7 +91,7 @@ endfunction
 function! s:find_line_author() abort range
   let l:authors = s:find_authors_for_range(a:firstline, a:lastline)
 
-  echo join(l:authors, "\n")
+  echom join(l:authors, "\n")
 
   let l:start_char = a:firstline == 0 || a:firstline == 1 ? '^' : a:firstline
   let l:end_char = a:lastline == line('$') ? '$' : a:lastline
@@ -146,6 +141,7 @@ endfunction
 
 command! Reset call s:git_reset_file()
 
+" :Readme <module>
 function! s:open_package_readme(module) abort range
   let l:cmd = 'npm info ' . shellescape(a:module) . ' readme'
   let l:readme = systemlist(l:cmd)
