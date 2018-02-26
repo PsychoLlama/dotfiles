@@ -1,10 +1,12 @@
 [alias]
   a = add -A
   d = diff
-  l = log --pretty=oneline --abbrev-commit
+  l = log --abbrev-commit -1000 --format='%Cgreen%t%Creset: %cn (%C(yellow)%ar%Creset)%n%s%n%n%b'
   r = reset
+  rr = reset --hard HEAD
   p = push --set-upstream origin
   s = stash
+  ss = stash save --include-untracked
   pl = pull --prune origin
   amend = commit --amend
   ls = ls-files

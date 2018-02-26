@@ -1,12 +1,16 @@
-" I'd put this function in g:llama.utils, but... keystrokes.
-function! s:chomp(string) abort
-  return substitute(a:string, '\n$', '', '')
-endfunction
+let s:chomp = g:llama.utils.chomp
 
-let g:llama.metrics = { 'filename': expand('~/.vim/metrics.json') }
-let g:llama.metrics.default_state = { 'events': {}, 'mappings': {} }
+let g:llama.metrics = {
+      \   'filename': expand('~/.vim/metrics.json'),
+      \   'default_state': {
+      \     'mappings': {},
+      \     'events': {},
+      \   },
+      \ }
 
-function! g:llama.metrics.Read() abort dict
+let s:metrics = g:llama.metrics
+
+function! s:metrics.Read() abort dict
   if !filereadable(l:self.filename)
     call writefile([json_encode(l:self.default_state)], l:self.filename)
   endif
@@ -16,13 +20,13 @@ function! g:llama.metrics.Read() abort dict
   return json_decode(l:contents)
 endfunction
 
-function! g:llama.metrics.Write(metrics) abort dict
+function! s:metrics.Write(metrics) abort dict
   let l:contents = json_encode(a:metrics)
 
   call writefile([l:contents], l:self.filename)
 endfunction
 
-function! g:llama.metrics.TrackEvent(event_name, metadata) abort dict
+function! s:metrics.TrackEvent(event_name, metadata) abort dict
   let l:metrics = l:self.Read()
 
   if !has_key(l:metrics.events, a:event_name)
@@ -33,6 +37,20 @@ function! g:llama.metrics.TrackEvent(event_name, metadata) abort dict
   let l:metrics.events[a:event_name] += [l:metric]
 
   call l:self.Write(l:metrics)
+endfunction
+
+
+" Replace buffer contents with a list of lines.
+function! g:llama.utils.SetPaneContents(lines) abort
+  1,$ delete
+
+  let l:index = 0
+  while l:index < len(a:lines)
+    let l:line = a:lines[l:index]
+    call setline(l:index, l:line)
+
+    let l:index += 1
+  endwhile
 endfunction
 
 
@@ -91,30 +109,34 @@ endfunction
 function! s:find_line_author() abort range
   let l:authors = s:find_authors_for_range(a:firstline, a:lastline)
 
-  echom join(l:authors, "\n")
+  echo join(l:authors, "\n")
 
   let l:start_char = a:firstline == 0 || a:firstline == 1 ? '^' : a:firstline
   let l:end_char = a:lastline == line('$') ? '$' : a:lastline
   let l:range = l:start_char . ',' . l:end_char
 
-  call g:llama.metrics.TrackEvent(':Author', { 'range': l:range })
+  call s:metrics.TrackEvent(':Author', { 'range': l:range })
 endfunction
 
 command! -range Author <line1>,<line2>call <SID>find_line_author()
+
 
 " :Node repl
 function! s:open_node_repl() abort
   let l:project = g:llama.utils.FindProjectRoot()
 
-  copen
+  new Node Repl
+  wincmd J
+  resize 10
   execute 'lcd ' . fnameescape(l:project)
-  execute 'term node'
+  term node
   normal! A
 
-  call g:llama.metrics.TrackEvent(':Node', {})
+  call s:metrics.TrackEvent(':Node', {})
 endfunction
 
 command! Node call <SID>open_node_repl()
+
 
 " :Reset (resets the file to HEAD state)
 function! s:git_reset_file() abort
@@ -136,10 +158,11 @@ function! s:git_reset_file() abort
   silent edit!
   silent write
 
-  call g:llama.metrics.TrackEvent(':Reset', {})
+  call s:metrics.TrackEvent(':Reset', {})
 endfunction
 
 command! Reset call s:git_reset_file()
+
 
 " :Readme <module>
 function! s:open_package_readme(module) abort range
@@ -155,16 +178,36 @@ function! s:open_package_readme(module) abort range
   execute 'new ' . fnameescape(a:module) . ' (readme)'
   setfiletype markdown
 
-  let l:index = 0
-  while l:index < len(l:readme)
-    call setline(l:index, l:readme[l:index])
-    let l:index += 1
-  endwhile
+  call g:llama.utils.SetPaneContents(l:readme)
 
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
   setlocal listchars= nomodifiable nowriteany nobuflisted
 
-  call g:llama.metrics.TrackEvent(':Readme', { 'module': a:module })
+  call s:metrics.TrackEvent(':Readme', { 'module': a:module })
 endfunction
 
 command! -nargs=1 Readme call <SID>open_package_readme(<f-args>)
+
+" :Diff
+function! s:show_file_diff() abort
+  let l:filename = expand('%:t')
+  let l:pane_name = l:filename . ' diff'
+
+  lcd! %:p:h
+  let l:diff_actual = systemlist('git diff -- ' . fnameescape(l:filename))
+  lcd! -
+
+  execute 'new ' . l:pane_name
+  wincmd J
+  resize 20
+
+  call g:llama.utils.SetPaneContents(l:diff_actual)
+
+  setfiletype diff
+  setlocal buftype=nowrite bufhidden=delete signcolumn=no
+  setlocal listchars= nomodifiable nowriteany nobuflisted nonumber
+
+  call s:metrics.TrackEvent(':Diff', {})
+endfunction
+
+command! Diff call <SID>show_file_diff()
