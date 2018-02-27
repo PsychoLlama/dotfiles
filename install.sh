@@ -362,7 +362,7 @@ if installed apt-get; then
   if ! installed ruby2.4; then
 
     # Ruby PPA (ruby-full doesn't work pre-xenial).
-    sudo add-apt-repository ppa:brightbox/ruby-ng <<< '\n'
+    sudo add-apt-repository -y ppa:brightbox/ruby-ng
     UPDATE=1
   fi
 
@@ -374,7 +374,7 @@ if installed apt-get; then
       neovim_ppa="ppa:neovim-ppa/unstable"
     fi
 
-    sudo add-apt-repository "$neovim_ppa" <<< "\n"
+    sudo add-apt-repository -y "$neovim_ppa"
     UPDATE=1
   fi
 
