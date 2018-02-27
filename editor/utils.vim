@@ -47,7 +47,9 @@ function! g:llama.utils.SetPaneContents(lines) abort
   let l:index = 0
   while l:index < len(a:lines)
     let l:line = a:lines[l:index]
-    call setline(l:index, l:line)
+
+    " Lines start at 1.
+    call setline(l:index + 1, l:line)
 
     let l:index += 1
   endwhile
@@ -168,7 +170,7 @@ command! Reset call s:git_reset_file()
 function! s:open_package_readme(module) abort range
   let l:cmd = 'npm info ' . shellescape(a:module) . ' readme'
   let l:readme = systemlist(l:cmd)
-  let l:readme = l:readme[:len(l:readme) - 3]
+  let l:readme = l:readme[1:len(l:readme) - 3]
 
   if v:shell_error
     echo 'Huh, you sure that module exists? (' . a:module . ')'
