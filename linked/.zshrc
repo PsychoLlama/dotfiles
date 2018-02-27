@@ -209,6 +209,10 @@ function f {
     -not -path '*/venv/*'
 }
 
+function space {
+  docker run -itv "$PWD":/home/overlord/project --network=host devmachine:latest "/var/dotfiles-setup/open-workspace.sh"
+}
+
 
 # Kickstart the oh-my-zsh framework.
 plugins=(docker)
