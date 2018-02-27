@@ -38,10 +38,10 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 " Rando utils.
 Plug 'davinche/godown-vim', { 'for': 'markdown' }
-Plug 'PsychoLlama/vim-gol', { 'on': 'GOL' }
 Plug 'PsychoLlama/further.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Shougo/deoplete.nvim'
+Plug 'PsychoLlama/vim-gol'
 Plug 'mbbill/undotree'
 Plug 'w0rp/ale'
 
