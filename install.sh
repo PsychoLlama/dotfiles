@@ -49,7 +49,7 @@ fi
 
 # Best-effort install. Prone to breakage.
 function install {
-  $INSTALL_CMD $1 1> /dev/null
+  $INSTALL_CMD "$1" 1> /dev/null
 }
 
 # Install the thing if it doesn't exist.
@@ -234,6 +234,7 @@ function install_z {
   fi
 
   git clone https://github.com/rupa/z.git "$DEST"
+  touch ~/.z
 }
 
 function install_node {
@@ -292,6 +293,9 @@ function install_neovim_plugins {
     -c "PlugInstall"\
     -c "UpdateRemotePlugins"\
     -c "qa"
+
+  # Don't ask on startup.
+  mkdir -p ~/.vim/plugged/vim-notes/misc/notes/user/
 }
 
 function install_vint {
