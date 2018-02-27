@@ -9,7 +9,7 @@ function cmd_exists {
   command -v "$1" &> /dev/null
 }
 
-function as_root() {
+function as_root {
   # This could be run in a docker container.
   if [[ "$(whoami)" == "root" ]]; then
     "$@"
@@ -31,7 +31,7 @@ if cmd_exists apt-get; then
     as_root add-apt-repository -y ppa:ubuntu-toolchain-r/test
     as_root apt-get update
 
-    as_root apt-get install -y gcc-6
+    as_root apt-get install -y gcc
   fi
 fi
 
