@@ -197,6 +197,11 @@ function! s:show_file_diff() abort
   let l:diff_actual = systemlist('git diff -- ' . fnameescape(l:filename))
   lcd! -
 
+  if v:shell_error
+    echo 'Diff command failed.'
+    return
+  endif
+
   call s:metrics.TrackEvent(':Diff', {})
 
   if len(l:diff_actual) == 0
