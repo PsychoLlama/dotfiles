@@ -42,7 +42,7 @@ endfunction
 
 " Replace buffer contents with a list of lines.
 function! g:llama.utils.SetPaneContents(lines) abort
-  1,$ delete
+  % delete
 
   let l:index = 0
   while l:index < len(a:lines)
@@ -197,6 +197,13 @@ function! s:show_file_diff() abort
   let l:diff_actual = systemlist('git diff -- ' . fnameescape(l:filename))
   lcd! -
 
+  call s:metrics.TrackEvent(':Diff', {})
+
+  if len(l:diff_actual) == 0
+    echo 'No local changes.'
+    return
+  endif
+
   execute 'new ' . l:pane_name
   wincmd J
   resize 20
@@ -206,8 +213,6 @@ function! s:show_file_diff() abort
   setfiletype diff
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
   setlocal listchars= nomodifiable nowriteany nobuflisted nonumber
-
-  call s:metrics.TrackEvent(':Diff', {})
 endfunction
 
 command! Diff call <SID>show_file_diff()
