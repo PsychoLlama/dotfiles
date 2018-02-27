@@ -4,4 +4,4 @@ set -e
 git clone https://github.com/PsychoLlama/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 
-./setup.sh
+VERBOSE=1 ./setup.sh

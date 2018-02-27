@@ -11,6 +11,6 @@ usermod -aG sudo overlord
 echo 'overlord ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/overlord
 
 # Allow passwordless `chsh`.
-echo 'auth sufficient pam_wheel.so trust group=sudo' >> /etc/pam.d/chsh
+sed -i '/auth\s*required/ s/required/sufficient/' /etc/pam.d/chsh
 
 su -c /var/dotfiles-setup/install-dotfiles.sh overlord
