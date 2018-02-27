@@ -49,7 +49,7 @@ fi
 
 # Best-effort install. Prone to breakage.
 function install {
-  $INSTALL_CMD "$1" 1> /dev/null
+  $INSTALL_CMD $1 1> /dev/null
 }
 
 # Install the thing if it doesn't exist.
