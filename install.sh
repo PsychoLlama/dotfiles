@@ -12,10 +12,10 @@ function announce {
     return
   fi
 
-  local msg="$@"
+  local msg="$*"
   local border=""
 
-  for i in $(seq ${#msg}); do
+  for _ in $(seq ${#msg}); do
     border="$border#"
   done
 
@@ -67,7 +67,7 @@ function verify_hash {
 
   # Some systems print junk before the hash.
   if ! installed brew; then
-    integrity="$(echo $integrity | awk '{print $2}')"
+    integrity="$(echo "$integrity" | awk '{print $2}')"
   fi
 
   if [[ "$integrity" != "$1" ]]; then
@@ -165,6 +165,31 @@ function install_ruby {
   announce Installing ruby
 
   install "$pkg"
+}
+
+function install_tmux {
+  if installed tmux; then
+    return
+  fi
+
+  announce Installing tmux
+
+  local DEST="$ARTIFACTS_DIR/tmux"
+  git clone https://github.com/tmux/tmux.git "$DEST"
+  cd "$DEST"
+
+  sh autogen.sh > /dev/null
+
+  # Assumes the only possible failure is missing packages.
+  ./configure > /dev/null || {
+    sudo apt-get install -y libevent-dev libncurses5-dev
+    ./configure
+  }
+
+  make > /dev/null
+  sudo make install
+
+  rm -rf "$DEST"
 }
 
 function install_tmuxinator {
@@ -348,7 +373,7 @@ function install_shellcheck {
 
 ensure curl
 ensure openssl
-ensure tmux
+ensure automake
 ensure python3
 
 # PPAs.
@@ -392,6 +417,7 @@ install_zsh
 install_oh_my_zsh
 install_yarn
 install_ruby
+install_tmux
 install_tmuxinator
 install_silver_searcher
 install_llama_zsh_theme
