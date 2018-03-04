@@ -62,11 +62,6 @@ function! s:tabwarn(action) abort
   execute a:action
 endfunction
 
-" This habit must die.
-nnoremap <silent><C-h> :call <SID>tabwarn('tabprevious')<CR>
-nnoremap <silent><C-l> :call <SID>tabwarn('tabnext')<CR>
-
-" Do this instead.
 nnoremap <silent><tab> :tabnext<CR>
 nnoremap <silent><S-tab> :tabprevious<CR>
 
