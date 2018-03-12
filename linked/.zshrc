@@ -129,8 +129,10 @@ function vp {
     test_file="$test_file.spec.js"
   elif [[ -f "$test_file.test.js" ]]; then
     test_file="__tests__/$file_name.test.js"
+  elif [[ -d "__tests__" ]]; then
+    test_file="__tests__/"
   else
-    test_file="."
+    test_file="./"
   fi
 
   v "$file_name.js" "$test_file"
