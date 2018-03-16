@@ -79,7 +79,7 @@ function tw {
   fi
 
   case "$runner" in
-    "jest")
+    "jest" | "react-scripts")
       yarn run "$script" --watch --collectCoverage=false --testPathPattern "$1"
       ;;
     "mocha")
@@ -93,15 +93,16 @@ function tw {
 
 function gag {
   ag "$@" \
-    --ignore node_modules \
     --ignore '*bundle.*' \
-    --ignore schema.js \
-    --ignore dist \
-    --ignore coverage \
     --ignore '*.js.map' \
     --ignore yarn.lock \
-    --ignore flow-typed \
-    --ignore static/
+    --ignore schema.js \
+    --ignore node_modules/ \
+    --ignore dist/ \
+    --ignore coverage/ \
+    --ignore flow-typed/ \
+    --ignore static/ \
+    --ignore build/
 }
 
 function v {

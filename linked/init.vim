@@ -93,7 +93,7 @@ function! s:show_git_diff() abort
   silent r!git diff HEAD
   silent 1d
 
-  setlocal nomodifiable nowriteany nobuflisted nonumber listchars=
+  setlocal nomodifiable nowriteany nobuflisted nonumber listchars=tab:--
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
   wincmd h
 
