@@ -306,11 +306,26 @@ function install_neovim {
   sudo chmod 777 ~/.vim/backup
 }
 
-function install_neovim_plugins {
-  if ! python3 -c "import neovim" &> /dev/null; then
-    sudo -H pip3 install neovim > /dev/null
+function install_python_neovim_plugin {
+  if python3 -c 'import neovim' &> /dev/null; then
+    return
   fi
 
+  announce Installing python neovim plugin
+  sudo -H pip3 install neovim > /dev/null
+}
+
+function install_neovim_plugins {
+  local hash_file="$ARTIFACTS_DIR/plugins-hash.txt"
+  local plugins_sha="$(openssl sha256 editor/plugins.vim | awk '{print $2}')"
+  local last_sha="$(cat "$hash_file" 2> /dev/null || echo "no prior hash")"
+
+  # Only re-install plugins when the plugins.vim file changes.
+  if [[ "$last_sha" == "$plugins_sha" ]]; then
+    return
+  fi
+
+  echo "$plugins_sha" > "$hash_file"
   announce Installing neovim plugins
 
   # Source the vimrc in non-interactive mode.
@@ -428,6 +443,7 @@ install_z
 install_node
 install_vim_plug
 install_neovim
+install_python_neovim_plugin
 install_neovim_plugins
 install_vint
 install_pylint
