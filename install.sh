@@ -174,12 +174,13 @@ function install_tmux {
 
   announce Installing tmux
 
+  local START_DIR="$PWD"
   local DEST="$ARTIFACTS_DIR/tmux"
   git clone https://github.com/tmux/tmux.git "$DEST"
   cd "$DEST"
 
   git checkout --quiet bd71cbbe276432ce8869baa0f2d55433e1ab820c
-  sh autogen.sh > /dev/null
+  sh autogen.sh &> /dev/null
 
   # Assumes the only possible failure is missing packages.
   ./configure > /dev/null || {
@@ -187,10 +188,11 @@ function install_tmux {
     ./configure
   }
 
-  make > /dev/null
-  sudo make install
+  make &> /dev/null
+  sudo make install &> /dev/null
 
   rm -rf "$DEST"
+  cd "$START_DIR"
 }
 
 function install_tmuxinator {
