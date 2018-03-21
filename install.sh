@@ -297,6 +297,10 @@ function install_lua {
     platform="macosx"
   fi
 
+  if [[ "$platform" == "linux" ]]; then
+    sudo apt-get install -y libreadline-dev > /dev/null
+  fi
+
   make "$platform" test &> /dev/null
   sudo make install &> /dev/null
 
