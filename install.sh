@@ -273,6 +273,41 @@ function install_node {
   N_PREFIX=~/.n n latest
 }
 
+function install_lua {
+  if installed lua; then
+    return
+  fi
+
+  announce Installing lua
+
+  # Download lua (from https://www.lua.org/download.html).
+  local tar_file="lua-5.3.4.tar.gz"
+  curl -sSL https://www.lua.org/ftp/lua-5.3.4.tar.gz -o "$ARTIFACTS_DIR/$tar_file"
+
+  # Extract everything.
+  pushd "$ARTIFACTS_DIR" > /dev/null
+  tar -xzf "$tar_file"
+
+  local lua_dir="${tar_file/.tar.gz/}"
+  pushd "$lua_dir" > /dev/null
+
+  # Compile for the relevant platform.
+  local platform="linux"
+  if installed pbcopy; then
+    platform="macosx"
+  fi
+
+  make "$platform" test &> /dev/null
+  sudo make install &> /dev/null
+
+  # Remove build artifacts.
+  popd > /dev/null
+  rm -rf "$lua_dir"
+  rm "$tar_file"
+
+  popd > /dev/null
+}
+
 function install_vim_plug {
   local target=~/.local/share/nvim/site/autoload/plug.vim
 
@@ -441,6 +476,7 @@ install_llama_zsh_theme
 install_n
 install_z
 install_node
+install_lua
 install_vim_plug
 install_neovim
 install_python_neovim_plugin
