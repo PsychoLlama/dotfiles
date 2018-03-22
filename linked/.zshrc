@@ -80,15 +80,19 @@ function tw {
 
   case "$runner" in
     "jest" | "react-scripts")
-      yarn run "$script" --watch --collectCoverage=false --testPathPattern "$1"
+      yarn --silent run "$script" --watch --collectCoverage=false --testPathPattern "$1"
       ;;
     "mocha")
-      yarn run "$script" --watch --reporter min "$1"
+      yarn --silent run "$script" --watch --reporter min "$1"
       ;;
     *)
-      yarn run "$script" --watch
+      yarn --silent run "$script" --watch
       ;;
   esac
+}
+
+function tws {
+  yarn --silent run "$1" --watch --collectCoverage=false --testPathPattern "$2"
 }
 
 function gag {

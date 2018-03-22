@@ -108,19 +108,19 @@ function! s:find_authors_for_range(start, end) abort
   return values(l:uniq_authors)
 endfunction
 
-function! s:find_line_author() abort range
-  let l:authors = s:find_authors_for_range(a:firstline, a:lastline)
+function! s:find_line_author(start, end) abort
+  let l:authors = s:find_authors_for_range(a:start, a:end)
 
   echo join(l:authors, "\n")
 
-  let l:start_char = a:firstline == 0 || a:firstline == 1 ? '^' : a:firstline
-  let l:end_char = a:lastline == line('$') ? '$' : a:lastline
+  let l:start_char = a:start == 0 || a:start == 1 ? '^' : a:start
+  let l:end_char = a:end == line('$') ? '$' : a:end
   let l:range = l:start_char . ',' . l:end_char
 
   call s:metrics.TrackEvent(':Author', { 'range': l:range })
 endfunction
 
-command! -range Author <line1>,<line2>call <SID>find_line_author()
+command! -range Author call <SID>find_line_author(<line1>, <line2>)
 
 
 " :Node repl
