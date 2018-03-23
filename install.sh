@@ -200,7 +200,7 @@ function install_tmuxinator {
   fi
 
   announce Installing tmuxinator
-  sudo gem install tmuxinator
+  sudo gem install tmuxinator > /dev/null
 }
 
 function install_silver_searcher {
