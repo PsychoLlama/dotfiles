@@ -39,15 +39,11 @@ if installed brew; then
   INSTALL_CMD="brew install"
 elif installed apt-get; then
   INSTALL_CMD="sudo apt-get install -y"
-elif installed yum; then
-  INSTALL_CMD="sudo yum install"
-elif installed pacman; then
-  INSTALL_CMD="sudo pacman -S"
 else
-  echo "How do you install things on this machine?!?"
+  echo "Unsupported platform. Sorry, loser."
 fi
 
-# Best-effort install. Prone to breakage.
+# Best-effort install.
 function install {
   $INSTALL_CMD $1 1> /dev/null
 }
@@ -90,6 +86,24 @@ function install_via_curl {
   set +e
   bash <<< "$install_script"
   set -e
+}
+
+function ensure_python3 {
+  if installed python3; then
+    return
+  fi
+
+  local pkg="python3"
+  install "$pkg" || {
+    if ! installed brew; then
+      return $?
+    fi
+
+    # On Travis CI mac seems to come pre-installed with an
+    # old version of python. Force python3.
+    brew upgrade "$pkg"
+    brew link --overwrite "$pkg"
+  }
 }
 
 function ensure_apt_add_command {
@@ -453,10 +467,7 @@ function install_shellcheck {
 ensure curl
 ensure openssl
 ensure automake
-
-if ! installed pbcopy; then
-  ensure python3
-fi
+ensure_python3
 
 # PPAs.
 if installed apt-get; then
