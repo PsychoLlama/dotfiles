@@ -453,7 +453,10 @@ function install_shellcheck {
 ensure curl
 ensure openssl
 ensure automake
-ensure python3
+
+if ! installed pbcopy; then
+  ensure python3
+fi
 
 # PPAs.
 if installed apt-get; then
