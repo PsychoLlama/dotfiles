@@ -312,6 +312,28 @@ function install_lua {
   popd > /dev/null
 }
 
+function install_luarocks {
+  if installed luarocks; then
+    return
+  fi
+
+  announce Installing luarocks
+  local dest="$ARTIFACTS_DIR/luarocks"
+  git clone https://github.com/luarocks/luarocks "$dest" &> /dev/null
+
+  pushd "$dest" > /dev/null
+
+  # v2.4.4
+  git checkout --quiet e98b4094490ce5c45dc727cf95e19cae879cc2a4
+
+  ./configure
+  make build > /dev/null
+  make install > /dev/null
+
+  popd > /dev/null
+  rm -rf "$dest"
+}
+
 function install_vim_plug {
   local target=~/.local/share/nvim/site/autoload/plug.vim
 
@@ -482,6 +504,7 @@ install_n
 install_z
 install_node
 install_lua
+install_luarocks
 install_vim_plug
 install_neovim
 install_python_neovim_plugin
