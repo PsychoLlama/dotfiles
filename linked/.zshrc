@@ -216,10 +216,10 @@ function f {
     -not -path '*/venv/*'
 }
 
-function space {
-  docker run -itv "$PWD":/home/overlord/project --network=host devmachine:latest "/var/dotfiles-setup/open-workspace.sh"
-}
-
+# Export Lua module path variables.
+if command -v luarocks > /dev/null; then
+  eval "$(luarocks path)"
+fi
 
 # Kickstart the oh-my-zsh framework.
 plugins=(docker)
