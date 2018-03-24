@@ -54,14 +54,6 @@ function! s:explore_current_dir() abort
   call search(l:filename)
 endfunction
 
-function! s:tabwarn(action) abort
-  if localtime() % 3 == 0
-    echoerr 'Use tab instead!'
-  endif
-
-  execute a:action
-endfunction
-
 nnoremap <silent><tab> :tabnext<CR>
 nnoremap <silent><S-tab> :tabprevious<CR>
 
