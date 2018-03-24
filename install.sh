@@ -326,9 +326,9 @@ function install_luarocks {
   # v2.4.4
   git checkout --quiet e98b4094490ce5c45dc727cf95e19cae879cc2a4
 
-  ./configure
+  ./configure > /dev/null
   make build > /dev/null
-  make install > /dev/null
+  sudo make install > /dev/null
 
   popd > /dev/null
   rm -rf "$dest"
