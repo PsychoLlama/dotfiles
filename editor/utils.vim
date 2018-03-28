@@ -223,3 +223,22 @@ function! s:show_file_diff() abort
 endfunction
 
 command! Diff call <SID>show_file_diff()
+
+" :Z ...args
+function! s:z_to_dir(...) abort
+  let l:z_path = system('printf "$(dotfiles dir)/artifacts/z/z.sh"')
+  let l:search = join(a:000, ' ')
+  let l:cmd = 'source ' . fnameescape(l:z_path) . '; _z -l ' . shellescape(l:search)
+
+  let l:matches = systemlist(l:cmd)
+  if len(l:matches) is 0
+    echo 'Nothing matches that description ("' . l:search . '").'
+    return
+  endif
+
+  " Ignore the frecency metric, just pull the dirname.
+  let l:directory = matchstr(l:matches[0], '\v/.*')
+  execute 'edit ' . l:directory
+endfunction
+
+command! -nargs=+ Z call <SID>z_to_dir(<f-args>)

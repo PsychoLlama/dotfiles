@@ -110,7 +110,7 @@ augroup rando_file_settings
   autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
   autocmd FileType text,notes setlocal textwidth=78
   autocmd FileType netrw setlocal signcolumn=no
-  autocmd FileType help wincmd _
+  autocmd FileType help,man wincmd _
 augroup END
 
 " Macros
