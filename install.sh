@@ -392,7 +392,7 @@ function install_python_neovim_plugin {
 
 function install_neovim_plugins {
   local hash_file="$ARTIFACTS_DIR/plugins-hash.txt"
-  local plugins_location="$(dotfiles dir)/editor/plugins.vim"
+  local plugins_location="$(dotfiles dir)/editor/autoload/editor/plugins.vim"
   local plugins_sha="$(openssl sha256 "$plugins_location" | awk '{print $2}')"
   local last_sha="$(cat "$hash_file" 2> /dev/null || echo "no prior hash")"
 
