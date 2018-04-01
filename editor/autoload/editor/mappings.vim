@@ -59,3 +59,7 @@ nnoremap <silent><leader>n :nohlsearch<cr>
 nnoremap <silent><leader>c :call <SID>edit_vimrc()<cr>
 nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
 nnoremap <silent><C-n> :Texplore<cr>
+
+function! editor#mappings#Init() abort
+	return v:true
+endfunction

@@ -112,3 +112,7 @@ let g:jsx_ext_required = 0
 
 " Injects a kernel rootkit which slowly destroys the computer.
 let g:deoplete#enable_at_startup = 1
+
+function! editor#plugins#Init() abort
+	return v:true
+endfunction
