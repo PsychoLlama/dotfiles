@@ -1,5 +1,3 @@
-let s:chomp = g:llama.utils.chomp
-
 function! s:is_typing_word() abort
   let l:col = col('.') - 1
 
@@ -38,7 +36,7 @@ endfunction
 
 function! s:edit_vimrc() abort
   let l:cmd = isdirectory(expand('%:p')) ? 'edit' : 'tabedit'
-  let l:dotfiles = s:chomp(system('dotfiles dir'))
+  let l:dotfiles = editor#util#chomp(system('dotfiles dir'))
   execute l:cmd . ' ' . l:dotfiles . '/editor/settings.vim'
 endfunction
 

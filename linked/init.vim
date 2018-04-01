@@ -1,18 +1,16 @@
 scriptencoding utf-8
 
+" Resolve path to the editor/ directory.
+let s:filename = resolve(expand('<sfile>'))
+let s:dotfiles_dir = fnamemodify(s:filename, ':h:h')
+let s:editor_dir = s:dotfiles_dir . '/editor'
+
+execute 'set runtimepath+=' . fnameescape(s:editor_dir)
+
 " A namespace for shared vimscript functions (mostly consumed from
 " ~/dotfiles-env).
 let g:llama = { 'utils': {} }
 
-" Trim dangling newlines. Mostly from system commands.
-function! g:llama.utils.chomp(string) abort
-  return substitute(a:string, '\n$', '', '')
-endfunction
-
-" Save keystrokes!
-let s:chomp = g:llama.utils.chomp
-
-let s:dotfiles_dir = s:chomp(system('dotfiles dir'))
 let s:main_settings = s:dotfiles_dir . '/editor/settings.vim'
 let s:plugin_config = s:dotfiles_dir . '/editor/plugins.vim'
 let s:utilities = s:dotfiles_dir . '/editor/utils.vim'

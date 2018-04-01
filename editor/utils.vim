@@ -1,96 +1,10 @@
-let s:chomp = g:llama.utils.chomp
-
-let g:llama.metrics = {
-      \   'filename': expand('~/.vim/metrics.json'),
-      \   'default_state': {
-      \     'mappings': {},
-      \     'events': {},
-      \   },
-      \ }
-
-let s:metrics = g:llama.metrics
-
-function! s:metrics.Read() abort dict
-  if !filereadable(l:self.filename)
-    call writefile([json_encode(l:self.default_state)], l:self.filename)
-  endif
-
-  let l:contents = readfile(l:self.filename)
-
-  return json_decode(l:contents)
-endfunction
-
-function! s:metrics.Write(metrics) abort dict
-  let l:contents = json_encode(a:metrics)
-
-  call writefile([l:contents], l:self.filename)
-endfunction
-
-function! s:metrics.TrackEvent(event_name, metadata) abort dict
-  let l:metrics = l:self.Read()
-
-  if !has_key(l:metrics.events, a:event_name)
-    let l:metrics.events[a:event_name] = []
-  endif
-
-  let l:metric = extend({ 'time': localtime() }, a:metadata, 'error')
-  let l:metrics.events[a:event_name] += [l:metric]
-
-  call l:self.Write(l:metrics)
-endfunction
-
-
-" Replace buffer contents with a list of lines.
-function! g:llama.utils.SetPaneContents(lines) abort
-  % delete
-
-  let l:index = 0
-  while l:index < len(a:lines)
-    let l:line = a:lines[l:index]
-
-    " Lines start at 1.
-    call setline(l:index + 1, l:line)
-
-    let l:index += 1
-  endwhile
-endfunction
-
-
-" Search every parent directory until a predicate is satisfied.
-function! g:llama.utils.SearchDirUpwards(dir, cb) abort
-  if a:cb(a:dir)
-    return a:dir
-  endif
-
-  let l:dir = fnamemodify(a:dir, ':h')
-
-  " Science has gone too far.
-  if l:dir is a:dir
-    return v:null
-  endif
-
-  return g:llama.utils.SearchDirUpwards(l:dir, a:cb)
-endfunction
-
-" Locate the directory defining package.json.
-function! g:llama.utils.FindProjectRoot() abort
-  let l:current_dir = expand('%:p:h')
-  let l:Has_pkg_json = {dir -> file_readable(dir . '/package.json')}
-  let l:project = g:llama.utils.SearchDirUpwards(l:current_dir, l:Has_pkg_json)
-
-  if l:project is v:null
-    let l:project = l:current_dir
-  endif
-
-  return l:project
-endfunction
 
 
 " :<range>Author
 function! s:find_authors_for_range(start, end) abort
   let l:range = a:start . ',' . a:end
   let l:cmd = 'git blame --porcelain -L ' . l:range . ' -- ' . fnameescape(expand('%:p'))
-  let l:my_name = s:chomp(system('git config user.name'))
+  let l:my_name = editor#util#chomp(system('git config user.name'))
 
   cd! %:p:h
   let l:blames = systemlist(l:cmd)
@@ -117,7 +31,7 @@ function! s:find_line_author(start, end) abort
   let l:end_char = a:end == line('$') ? '$' : a:end
   let l:range = l:start_char . ',' . l:end_char
 
-  call s:metrics.TrackEvent(':Author', { 'range': l:range })
+  call editor#metrics#TrackEvent(':Author', { 'range': l:range })
 endfunction
 
 command! -range Author call <SID>find_line_author(<line1>, <line2>)
@@ -125,7 +39,7 @@ command! -range Author call <SID>find_line_author(<line1>, <line2>)
 
 " :Node repl
 function! s:open_node_repl() abort
-  let l:project = g:llama.utils.FindProjectRoot()
+  let l:project = editor#util#FindPackageRoot()
 
   new Node Repl
   wincmd J
@@ -134,7 +48,7 @@ function! s:open_node_repl() abort
   term node
   normal! A
 
-  call s:metrics.TrackEvent(':Node', {})
+  call editor#metrics#TrackEvent(':Node', {})
 endfunction
 
 command! Node call <SID>open_node_repl()
@@ -147,7 +61,7 @@ function! s:git_reset_file() abort
 
   " Attempt to resolve symlinks.
   if len(l:symlink_pointer)
-    let l:file = s:chomp(l:symlink_pointer)
+    let l:file = editor#util#chomp(l:symlink_pointer)
   endif
 
   " system(...) uses the cwd context. Not good if
@@ -160,7 +74,7 @@ function! s:git_reset_file() abort
   silent edit!
   silent write
 
-  call s:metrics.TrackEvent(':Reset', {})
+  call editor#metrics#TrackEvent(':Reset', {})
 endfunction
 
 command! Reset call s:git_reset_file()
@@ -180,12 +94,12 @@ function! s:open_package_readme(module) abort range
   execute 'new ' . fnameescape(a:module) . ' (readme)'
   setfiletype markdown
 
-  call g:llama.utils.SetPaneContents(l:readme)
+  call editor#util#SetPaneContents(l:readme)
 
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
   setlocal listchars= nomodifiable nowriteany nobuflisted
 
-  call s:metrics.TrackEvent(':Readme', { 'module': a:module })
+  call editor#metrics#TrackEvent(':Readme', { 'module': a:module })
 endfunction
 
 command! -nargs=1 Readme call <SID>open_package_readme(<f-args>)
@@ -204,7 +118,7 @@ function! s:show_file_diff() abort
     return
   endif
 
-  call s:metrics.TrackEvent(':Diff', {})
+  call editor#metrics#TrackEvent(':Diff', {})
 
   if len(l:diff_actual) == 0
     echo 'No local changes.'
@@ -215,7 +129,7 @@ function! s:show_file_diff() abort
   wincmd J
   resize 20
 
-  call g:llama.utils.SetPaneContents(l:diff_actual)
+  call editor#util#SetPaneContents(l:diff_actual)
 
   setfiletype diff
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
