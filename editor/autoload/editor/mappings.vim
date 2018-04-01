@@ -61,5 +61,5 @@ nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
 nnoremap <silent><C-n> :Texplore<cr>
 
 function! editor#mappings#Init() abort
-	return v:true
+  return v:true
 endfunction

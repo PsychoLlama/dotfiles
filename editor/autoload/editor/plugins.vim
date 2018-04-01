@@ -114,5 +114,5 @@ let g:jsx_ext_required = 0
 let g:deoplete#enable_at_startup = 1
 
 function! editor#plugins#Init() abort
-	return v:true
+  return v:true
 endfunction
