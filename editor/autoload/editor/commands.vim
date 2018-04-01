@@ -1,5 +1,3 @@
-
-
 " :<range>Author
 function! s:find_authors_for_range(start, end) abort
   let l:range = a:start . ',' . a:end
@@ -22,7 +20,7 @@ function! s:find_authors_for_range(start, end) abort
   return values(l:uniq_authors)
 endfunction
 
-function! s:find_line_author(start, end) abort
+function! editor#commands#Author(start, end) abort
   let l:authors = s:find_authors_for_range(a:start, a:end)
 
   echo join(l:authors, "\n")
@@ -34,28 +32,24 @@ function! s:find_line_author(start, end) abort
   call editor#metrics#TrackEvent(':Author', { 'range': l:range })
 endfunction
 
-command! -range Author call <SID>find_line_author(<line1>, <line2>)
-
 
 " :Node repl
-function! s:open_node_repl() abort
+function! editor#commands#Node() abort
   let l:project = editor#util#FindPackageRoot()
 
   new Node Repl
   wincmd J
   resize 10
   execute 'lcd ' . fnameescape(l:project)
-  term node
+  execute 'term node'
   normal! A
 
   call editor#metrics#TrackEvent(':Node', {})
 endfunction
 
-command! Node call <SID>open_node_repl()
-
 
 " :Reset (resets the file to HEAD state)
-function! s:git_reset_file() abort
+function! editor#commands#Reset() abort
   let l:file = fnameescape(expand('%:p'))
   let l:symlink_pointer = system('readlink ' . l:file)
 
@@ -77,11 +71,9 @@ function! s:git_reset_file() abort
   call editor#metrics#TrackEvent(':Reset', {})
 endfunction
 
-command! Reset call s:git_reset_file()
-
 
 " :Readme <module>
-function! s:open_package_readme(module) abort range
+function! editor#commands#Readme(module) abort range
   let l:cmd = 'npm info ' . shellescape(a:module) . ' readme'
   let l:readme = systemlist(l:cmd)
   let l:readme = l:readme[1:len(l:readme) - 3]
@@ -102,10 +94,9 @@ function! s:open_package_readme(module) abort range
   call editor#metrics#TrackEvent(':Readme', { 'module': a:module })
 endfunction
 
-command! -nargs=1 Readme call <SID>open_package_readme(<f-args>)
 
 " :Diff
-function! s:show_file_diff() abort
+function! editor#commands#Diff() abort
   let l:filename = expand('%:t')
   let l:pane_name = l:filename . ' diff'
 
@@ -136,10 +127,9 @@ function! s:show_file_diff() abort
   setlocal listchars= nomodifiable nowriteany nobuflisted nonumber
 endfunction
 
-command! Diff call <SID>show_file_diff()
 
 " :Z ...args
-function! s:z_to_dir(...) abort
+function! editor#commands#Z(...) abort
   let l:z_path = system('printf "$(dotfiles dir)/artifacts/z/z.sh"')
   let l:search = join(a:000, ' ')
   let l:cmd = 'source ' . fnameescape(l:z_path) . '; _z -l ' . shellescape(l:search)
@@ -154,5 +144,3 @@ function! s:z_to_dir(...) abort
   let l:directory = matchstr(l:matches[0], '\v/.*')
   execute 'edit ' . l:directory
 endfunction
-
-command! -nargs=+ Z call <SID>z_to_dir(<f-args>)
