@@ -53,13 +53,21 @@ if !filereadable(&undodir)
 endif
 
 filetype plugin indent on
+function! s:resume_last_cursor_position() abort
+  " There's no guarantee &filetype is ready.
+  if expand('%:p:t') is# 'COMMIT_EDITMSG'
+    return
+  endif
+
+  let l:last_line = line("'\"")
+  if l:last_line > 1 && l:last_line < line('$')
+    normal! g`"
+  endif
+endfunction
 
 augroup resume_last_cursor_position
   autocmd!
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") && &filetype != 'gitcommit' |
-    \   exe "normal! g`\"" |
-    \ endif
+  autocmd BufReadPost * call <SID>resume_last_cursor_position()
 augroup END
 
 function! s:show_git_diff() abort
