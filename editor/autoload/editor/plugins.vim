@@ -116,3 +116,17 @@ let g:deoplete#enable_at_startup = 1
 function! editor#plugins#Init() abort
   return v:true
 endfunction
+
+" Neovim's Buit-in system clipboard integration.
+let g:clipboard = {
+      \   'name': 'tmux',
+      \   'copy': {
+      \      '+': 'tmux load-buffer -',
+      \      '*': 'tmux load-buffer -',
+      \    },
+      \   'paste': {
+      \      '+': 'tmux save-buffer -',
+      \      '*': 'tmux save-buffer -',
+      \   },
+      \   'cache_enabled': 1,
+      \ }
