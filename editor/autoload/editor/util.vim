@@ -33,16 +33,3 @@ function! editor#util#SearchDirUpwards(dir, cb) abort
 
   return editor#util#SearchDirUpwards(l:dir, a:cb)
 endfunction
-
-" Locate the directory defining package.json.
-function! editor#util#FindPackageRoot() abort
-  let l:current_dir = expand('%:p:h')
-  let l:Has_pkg_json = {dir -> file_readable(dir . '/package.json')}
-  let l:project = editor#util#SearchDirUpwards(l:current_dir, l:Has_pkg_json)
-
-  if l:project is v:null
-    let l:project = l:current_dir
-  endif
-
-  return l:project
-endfunction

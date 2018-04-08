@@ -1,5 +1,6 @@
 command! -range Author call editor#commands#Author(<line1>, <line2>)
 command! -nargs=1 Readme call editor#commands#Readme(<f-args>)
+command! OpenTestFile call editor#commands#OpenTestFile()
 command! -nargs=+ Z call editor#commands#Z(<f-args>)
 command! Reset call editor#commands#Reset()
 command! Diff call editor#commands#Diff()

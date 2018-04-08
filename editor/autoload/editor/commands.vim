@@ -35,7 +35,7 @@ endfunction
 
 " :Node repl
 function! editor#commands#Node() abort
-  let l:project = editor#util#FindPackageRoot()
+  let l:project = editor#js#FindPackageRoot()
 
   new Node Repl
   wincmd J
@@ -143,4 +143,17 @@ function! editor#commands#Z(...) abort
   " Ignore the frecency metric, just pull the dirname.
   let l:directory = matchstr(l:matches[0], '\v/.*')
   execute 'edit ' . l:directory
+endfunction
+
+
+" :OpenTestFile
+function! editor#commands#OpenTestFile() abort
+  let l:test_file = editor#js#LocateTestFile()
+
+  if l:test_file is v:null
+    echo 'No test file.'
+    return
+  endif
+
+  execute 'tabnew ' . fnameescape(l:test_file)
 endfunction
