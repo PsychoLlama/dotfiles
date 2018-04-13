@@ -21,6 +21,11 @@ function! s:find_authors_for_range(start, end) abort
 endfunction
 
 function! editor#commands#Author(start, end) abort
+  if &modified
+    echo 'Save your changes first.'
+    return
+  endif
+
   let l:authors = s:find_authors_for_range(a:start, a:end)
 
   echo join(l:authors, "\n")
@@ -101,7 +106,7 @@ function! editor#commands#Diff() abort
   let l:pane_name = l:filename . ' diff'
 
   lcd! %:p:h
-  let l:diff_actual = systemlist('git diff -- ' . fnameescape(l:filename))
+  let l:diff_actual = systemlist('git diff HEAD -- ' . fnameescape(l:filename))
   lcd! -
 
   if v:shell_error

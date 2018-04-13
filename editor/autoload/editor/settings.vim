@@ -71,17 +71,19 @@ augroup resume_last_cursor_position
 augroup END
 
 function! s:show_git_diff() abort
-  vsplit new
+  let l:mount_point = winwidth('.') >= 72 * 2 ? 'L' : 'J'
+
+  vsplit Diff
   let b:is_diff_window = v:true
 
-  wincmd L
+  execute 'wincmd ' . l:mount_point
   setfiletype diff
-  silent r!git diff HEAD
-  silent 1d
+  call setline(1, systemlist('git diff HEAD'))
 
   setlocal nomodifiable nowriteany nobuflisted nonumber listchars=tab:--
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
-  wincmd h
+  let l:focus_point = l:mount_point is# 'L' ? 'h' : 'k'
+  execute 'wincmd ' . l:focus_point
 
   augroup close_diff_if_last_window
     autocmd!
