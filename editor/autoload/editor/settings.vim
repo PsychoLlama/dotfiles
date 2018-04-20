@@ -78,7 +78,15 @@ function! s:show_git_diff() abort
 
   execute 'wincmd ' . l:mount_point
   setfiletype diff
-  call setline(1, systemlist('git diff HEAD'))
+
+  let l:diff_lines = systemlist('git diff HEAD')
+
+  " Show full diff for amended commits.
+  if len(l:diff_lines) == 0
+    let l:diff_lines = systemlist('git diff HEAD^')
+  endif
+
+  call setline(1, l:diff_lines)
 
   setlocal nomodifiable nowriteany nobuflisted nonumber listchars=tab:--
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
