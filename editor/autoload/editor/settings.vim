@@ -79,7 +79,7 @@ function! s:show_git_diff() abort
   execute 'wincmd ' . l:mount_point
   setfiletype diff
 
-  let l:diff_lines = systemlist('git diff HEAD')
+  let l:diff_lines = systemlist('git diff --staged')
 
   " Show full diff for amended commits.
   if len(l:diff_lines) == 0
