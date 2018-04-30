@@ -32,20 +32,6 @@ set number
 set mouse=
 set list
 
-" Get every non-backgrounded buffer object.
-function! s:get_active_buffers() abort
-  let l:buffers = getbufinfo()
-  let l:visible_buffers = filter(l:buffers, {index, buffer -> buffer.loaded})
-
-  return l:visible_buffers
-endfunction
-
-function! s:close_diff_if_last_window() abort
-  if exists('b:is_diff_window') && len(s:get_active_buffers()) is 1
-    exit
-  endif
-endfunction
-
 " Add persistent undo.
 let &undodir = expand('~/.vim/undodir')
 if !filereadable(&undodir)
@@ -70,42 +56,10 @@ augroup resume_last_cursor_position
   autocmd BufReadPost * call <SID>resume_last_cursor_position()
 augroup END
 
-function! s:show_git_diff() abort
-  let l:mount_point = winwidth('.') >= 72 * 2 ? 'L' : 'J'
-
-  vsplit Diff
-  let b:is_diff_window = v:true
-
-  execute 'wincmd ' . l:mount_point
-  setfiletype diff
-
-  let l:diff_lines = systemlist('git diff --staged')
-
-  " Show full diff for amended commits.
-  if len(l:diff_lines) == 0
-    let l:diff_lines = systemlist('git diff HEAD^')
-  endif
-
-  call setline(1, l:diff_lines)
-
-  setlocal nomodifiable nowriteany nobuflisted nonumber listchars=tab:--
-  setlocal buftype=nowrite bufhidden=delete signcolumn=no
-  let l:focus_point = l:mount_point is# 'L' ? 'h' : 'k'
-  execute 'wincmd ' . l:focus_point
-
-  augroup close_diff_if_last_window
-    autocmd!
-    autocmd BufEnter * call <SID>close_diff_if_last_window()
-  augroup END
-endfunction
-
 augroup rando_file_settings
   autocmd!
-  autocmd FileType gitcommit setlocal signcolumn=no | call <SID>show_git_diff()
-  autocmd BufNewFile,BufRead .eslintrc,.babelrc set filetype=json
-  autocmd BufNewFile,BufRead .tmux.conf set filetype=sh
+  autocmd FileType netrw,gitcommit setlocal signcolumn=no
   autocmd FileType text,notes setlocal textwidth=78
-  autocmd FileType netrw setlocal signcolumn=no
   autocmd FileType help,man wincmd _
 augroup END
 
