@@ -115,8 +115,6 @@ func! s:ParseBlameOutput(output)
     if s:IsHash(l:header)
       let l:blame = deepcopy(s:BLAME_TEMPLATE)
       call s:AddShaDetails(l:line, l:blame)
-      let l:blame.sha = l:header
-
       call add(l:line_blames, l:blame)
     elseif l:line =~# '\v^\t'
       call s:AddLineContents(l:line, l:blame)
