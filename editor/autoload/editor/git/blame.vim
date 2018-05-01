@@ -1,4 +1,9 @@
-" Get the blame for the given file.
+" Parse the git blame for any given file.
+"
+" Format reference:
+" https://git-scm.com/docs/git-blame#_the_porcelain_format
+
+" Get the blame string output.
 func! s:GetBlameOutput(file)
   let l:cmd = 'git blame --line-porcelain -- ' . fnameescape(a:file)
 
@@ -39,7 +44,8 @@ let s:BLAME_TEMPLATE = {
       \   'sha': v:null,
       \ }
 
-" Whether the header is a git sha.
+" The git sha marks the start of blame dictionaries.
+" It will always be 40 characters.
 func! s:IsHash(header)
   return strlen(a:header) is 40
 endfunc
@@ -53,23 +59,10 @@ func! s:AddShaDetails(line, blame)
   let a:blame.line.number = str2nr(l:parts[2])
 endfunc
 
-" Whether it's the actual line contents.
-func! s:IsLineContents(line)
-  return a:line =~# '\v^\t'
-endfunc
-
 " Parse and inject the line contents.
 func! s:AddLineContents(line, blame)
   let l:contents = substitute(a:line, '\v^\t', '', '')
   let a:blame.line.contents = l:contents
-endfunc
-
-func! s:IsAuthorLine(line)
-  return a:line =~# '\v^author'
-endfunc
-
-func! s:IsCommitterLine(line)
-  return a:line =~# '\v^committer'
 endfunc
 
 let s:AUTHOR_NAME_MAP = {
@@ -79,6 +72,7 @@ let s:AUTHOR_NAME_MAP = {
       \   '-tz': 'zone',
       \ }
 
+" Add author/committer metadata.
 func! s:AddAuthorDetails(header, line, author)
   let l:header_key = substitute(a:header, '\v^(author|committer)', '', '')
   let l:key = s:AUTHOR_NAME_MAP[l:header_key]
@@ -96,10 +90,8 @@ func! s:AddAuthorDetails(header, line, author)
   let a:author[l:key] = l:content
 endfunc
 
-func! s:IsPrevShaLine(header)
-  return a:header is# 'previous'
-endfunc
-
+" Contains information about the file prior to the commit.
+" 'previous <sha> <filename>'
 func! s:AddPrevShaDetails(header, line, blame)
   let l:value = s:StripHeader(a:header, a:line)
   let l:delimiter_index = stridx(l:value, ' ')
@@ -108,10 +100,7 @@ func! s:AddPrevShaDetails(header, line, blame)
   let a:blame.prev_sha = l:value[0:l:delimiter_index - 1]
 endfunc
 
-func! s:IsSummaryLine(header)
-  return a:header is# 'summary'
-endfunc
-
+" `summary` is the git commit title.
 func! s:AddSummaryDetails(header, line, blame)
   let a:blame.summary = s:StripHeader(a:header, a:line)
 endfunc
@@ -129,15 +118,15 @@ func! s:ParseBlameOutput(output)
       let l:blame.sha = l:header
 
       call add(l:line_blames, l:blame)
-    elseif s:IsLineContents(l:line)
+    elseif l:line =~# '\v^\t'
       call s:AddLineContents(l:line, l:blame)
-    elseif s:IsAuthorLine(l:line)
+    elseif l:header =~# 'author'
       call s:AddAuthorDetails(l:header, l:line, l:blame.author)
-    elseif s:IsCommitterLine(l:line)
+    elseif l:header =~# 'committer'
       call s:AddAuthorDetails(l:header, l:line, l:blame.committer)
-    elseif s:IsPrevShaLine(l:header)
+    elseif l:header is# 'previous'
       call s:AddPrevShaDetails(l:header, l:line, l:blame)
-    elseif s:IsSummaryLine(l:header)
+    elseif l:header is# 'summary'
       call s:AddSummaryDetails(l:header, l:line, l:blame)
     endif
   endfor
