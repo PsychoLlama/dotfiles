@@ -33,3 +33,19 @@ function! editor#util#SearchDirUpwards(dir, cb) abort
 
   return editor#util#SearchDirUpwards(l:dir, a:cb)
 endfunction
+
+" Turn a file or dir into a candidate for system('cd ...')
+" Used to set $PWD before calling a command.
+function! editor#util#GetEscapedDir(file) abort
+  let l:target = isdirectory(a:file) ? a:file : fnamemodify(a:file, ':h')
+
+  return fnameescape(l:target)
+endfunction
+
+" Execute a system command in a directory.
+function! editor#util#ExecInDir(dir, cmd) abort
+  let l:cmd = 'cd ' . editor#util#GetEscapedDir(a:dir) . '; '
+  let l:cmd .= a:cmd
+
+  return systemlist(l:cmd)
+endfunction
