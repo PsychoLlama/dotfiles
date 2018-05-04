@@ -1,15 +1,12 @@
 " :<range>Author
 function! s:find_authors_for_range(start, end) abort
-  let l:range = a:start . ',' . a:end
-  let l:cmd = 'git blame --porcelain -L ' . l:range . ' -- ' . fnameescape(expand('%:p'))
   let l:my_name = editor#util#chomp(system('git config user.name'))
+  let l:line_blames = editor#git#blame#GetFileBlame({
+        \   'ranges': [[a:start, a:end]],
+        \   'file': expand('%:p'),
+        \ })
 
-  cd! %:p:h
-  let l:blames = systemlist(l:cmd)
-  cd! -
-
-  let l:committers = filter(l:blames, {k, v -> v =~# '^committer '})
-  let l:authors = map(l:committers, {k, v -> substitute(v, 'committer ', '', '')})
+  let l:authors = map(l:line_blames, { k, v -> v.author.name })
   let l:uniq_authors = {}
 
   for l:author in l:authors
