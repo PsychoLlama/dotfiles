@@ -17,7 +17,6 @@
 [core]
   editor = nvim
 [push]
-  followTags = true
   default = current
 [merge]
   tool = vimdiff

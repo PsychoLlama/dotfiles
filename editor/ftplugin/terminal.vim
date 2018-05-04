@@ -1,0 +1,1 @@
+setlocal nonumber signcolumn=no
