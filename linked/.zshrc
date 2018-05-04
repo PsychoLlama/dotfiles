@@ -95,6 +95,33 @@ function tws {
   yarn --silent run "$1" --watch --collectCoverage=false --testPathPattern "$2"
 }
 
+# Open man pages in Neovim.
+function man {
+  if [[ "$#" == 0 ]]; then
+    echo 'I find your lack of arguments disturbing.'
+    return 1
+  fi
+
+  if [[ "$#" != 1 ]]; then
+    command man "$@"
+    return "$?"
+  fi
+
+  # Prevent `local` from obscuring the exit code.
+  local page_contents
+  local exit_code
+
+  page_contents="$(command man "$@" 2>&1)"
+  exit_code="$?"
+
+  if [[ "$exit_code" != 0 ]]; then
+    echo "$page_contents"
+    return "$exit_code"
+  fi
+
+  nvim -c 'setfiletype man' - <<< "$page_contents"
+}
+
 function gag {
   ag "$@" \
     --ignore '*bundle.*' \
