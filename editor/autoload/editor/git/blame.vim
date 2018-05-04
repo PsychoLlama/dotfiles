@@ -4,10 +4,20 @@
 " https://git-scm.com/docs/git-blame#_the_porcelain_format
 
 " Get the blame string output.
-func! s:GetBlameOutput(file)
-  let l:cmd = 'git blame --line-porcelain -- ' . fnameescape(a:file)
+func! s:GetBlameOutput(config)
+  let l:cmd = 'git blame --line-porcelain '
 
-  return editor#util#ExecInDir(a:file, l:cmd)
+  " Add support for range restrictions (better performance).
+  " For example: [[1, 2], [4, 5]] locates lines 1-2 & 4-5
+  if has_key(a:config, 'ranges')
+    let l:ranges = copy(a:config.ranges)
+    call map(l:ranges, { i, range -> '-L ' . join(range, ',') })
+    let l:cmd .= join(l:ranges, ' ') . ' '
+  endif
+
+  let l:cmd .= '-- ' . fnameescape(a:config.file)
+
+  return editor#util#ExecInDir(a:config.file, l:cmd)
 endfunc
 
 " Whether the line contains the given header.
@@ -36,8 +46,8 @@ let s:AUTHOR_TEMPLATE = {
 
 let s:BLAME_TEMPLATE = {
       \   'line': { 'contents': v:null, 'number': v:null },
-      \   'committer': deepcopy(s:AUTHOR_TEMPLATE),
-      \   'author': deepcopy(s:AUTHOR_TEMPLATE),
+      \   'committer': s:AUTHOR_TEMPLATE,
+      \   'author': s:AUTHOR_TEMPLATE,
       \   'prev_filename': v:null,
       \   'prev_sha': v:null,
       \   'summary': v:null,
@@ -47,7 +57,7 @@ let s:BLAME_TEMPLATE = {
 " The git sha marks the start of blame dictionaries.
 " It will always be 40 characters.
 func! s:IsHash(header)
-  return strlen(a:header) is 40
+  return len(a:header) is 40
 endfunc
 
 " Parse the sha & line numbers.
@@ -133,11 +143,11 @@ func! s:ParseBlameOutput(output)
 endfunc
 
 " Get a list of metadata for each line.
-func! editor#git#blame#GetFileBlame(file)
-  if !editor#git#util#ExistsInsideRepo(a:file)
+func! editor#git#blame#GetFileBlame(config)
+  if !editor#git#util#ExistsInsideRepo(a:config.file)
     return v:null
   endif
 
-  let l:output = s:GetBlameOutput(a:file)
+  let l:output = s:GetBlameOutput(a:config)
   return s:ParseBlameOutput(l:output)
 endfunc
