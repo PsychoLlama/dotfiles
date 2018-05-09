@@ -11,6 +11,7 @@
   pl = pull --prune origin
   amend = commit --amend
   ls = ls-files
+  mr = !"$(dotfiles dir)/utils/get-MR-name.sh"
 [user]
   email = Jesse_Gibson@me.com
   name = Jesse Gibson
