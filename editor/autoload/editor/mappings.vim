@@ -56,7 +56,7 @@ inoremap <silent><expr><TAB> <SID>tab_completion(0)
 inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
 nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
 nnoremap <silent><leader>n :nohlsearch<cr>
-nnoremap <silent><leader>c :call <SID>edit_vimrc()<cr>
+nnoremap <silent><leader>v :call <SID>edit_vimrc()<cr>
 nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
 
 function! editor#mappings#Init() abort

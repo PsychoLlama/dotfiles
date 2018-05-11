@@ -12,4 +12,4 @@ function tmux_get_time_status {
   echo "$hours:$minutes$ampm $day"
 }
 
-TZ='America/Denver' tmux_get_time_status
+tmux_get_time_status

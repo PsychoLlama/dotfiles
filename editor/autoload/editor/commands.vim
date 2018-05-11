@@ -159,3 +159,16 @@ function! editor#commands#OpenTestFile() abort
 
   execute 'split ' . fnameescape(l:test_file)
 endfunction
+
+func! editor#commands#Details(line) abort
+  let [l:details] = editor#git#blame#GetFileBlame({
+        \   'ranges': [[a:line, a:line]],
+        \   'file': expand('%:p'),
+        \ })
+
+  let l:date = strftime('%m/%d/%Y', l:details.author.time)
+  echo l:details.sha[0:6] . ': ' . l:details.author.name . ' (' . l:date . ')'
+  echo l:details.summary
+
+  call editor#metrics#TrackEvent(':Details', { 'file': expand('%:p'), 'date': l:date })
+endfunc
