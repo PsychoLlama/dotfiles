@@ -157,5 +157,5 @@ function! editor#commands#OpenTestFile() abort
     return
   endif
 
-  execute 'tabnew ' . fnameescape(l:test_file)
+  execute 'split ' . fnameescape(l:test_file)
 endfunction
