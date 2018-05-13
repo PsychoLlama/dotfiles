@@ -13,7 +13,7 @@
   ls = ls-files
   mr = !"$(dotfiles dir)/utils/get-MR-name.sh"
 [user]
-  email = Jesse_Gibson@me.com
+  email = JesseTheGibson@gmail.com
   name = Jesse Gibson
 [core]
   editor = nvim
