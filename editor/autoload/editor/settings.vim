@@ -34,7 +34,7 @@ set list
 
 " Add persistent undo.
 let &undodir = expand('~/.vim/undodir')
-if !filereadable(&undodir)
+if !isdirectory(&undodir)
   call system('mkdir -p ' . &undodir)
 endif
 
