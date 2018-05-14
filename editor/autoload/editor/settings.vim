@@ -75,6 +75,6 @@ function! editor#settings#Init() abort
 endfunction
 
 " Check for environment-specific vim settings.
-if filereadable(expand('~/dotfiles-env/init.vim'))
-  source ~/dotfiles-env/init.vim
+if isdirectory(expand('~/dotfiles-env/editor'))
+  set runtimepath+=~/dotfiles-env/editor/
 endif
