@@ -38,6 +38,7 @@ function print_help {
   indent 2 "update  - Pull dotfile changes from git"
   indent 2 "install - Install system-wide dependencies"
   indent 2 "dir     - Print the dotfiles directory"
+  indent 2 "eject   - Gather historical files into a tarball"
 
   echo ""
 }
@@ -62,6 +63,9 @@ case "$1" in
     ;;
   "dir")
     echo "$DOTFILES_DIR"
+    ;;
+  "eject")
+    ./eject.sh
     ;;
   *)
     if [[ ! -z "$1" && "$1" != "--help" ]]; then
