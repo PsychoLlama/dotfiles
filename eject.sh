@@ -50,4 +50,6 @@ tar -czf "$parachute" "$date" &> /dev/null
 rm -rf "$target"
 popd &> /dev/null
 
+mv "$(dotfiles dir)/$parachute" ./
+
 echo "$parachute"
