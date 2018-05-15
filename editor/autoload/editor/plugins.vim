@@ -118,7 +118,7 @@ function! editor#plugins#Init() abort
 endfunction
 
 " Neovim's Buit-in system clipboard integration.
-let g:clipboard = {
+let g:clipboard = !len($TMUX) ? v:null : {
       \   'name': 'tmux',
       \   'copy': {
       \      '+': 'tmux load-buffer -',
