@@ -4,6 +4,7 @@ set -e
 
 parachute=parachute.tar.gz
 files=(
+  ~/.viminfo
   ~/.vim/backup/
   ~/.vim/undodir/
   ~/.vim/metrics.json
