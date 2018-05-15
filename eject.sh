@@ -45,7 +45,9 @@ for file in "${files[@]}"; do
   cp -LRp "$file" "$target/"
 done
 
-tar -czf "$parachute" "$target" &> /dev/null
+pushd "$(dotfiles dir)" &> /dev/null
+tar -czf "$parachute" "$date" &> /dev/null
 rm -rf "$target"
+popd &> /dev/null
 
 echo "$parachute"
