@@ -65,7 +65,7 @@ case "$1" in
     echo "$DOTFILES_DIR"
     ;;
   "eject")
-    ./eject.sh
+    "$DOTFILES_DIR/eject.sh"
     ;;
   *)
     if [[ ! -z "$1" && "$1" != "--help" ]]; then
