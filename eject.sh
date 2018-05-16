@@ -50,6 +50,8 @@ tar -czf "$parachute" "$date" &> /dev/null
 rm -rf "$target"
 popd &> /dev/null
 
-mv "$(dotfiles dir)/$parachute" ./
+if [[ "$PWD" != "$(dotfiles dir)" ]]; then
+  mv "$(dotfiles dir)/$parachute" ./
+fi
 
 echo "$parachute"
