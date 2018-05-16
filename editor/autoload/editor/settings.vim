@@ -73,8 +73,3 @@ let @e = "othrow new Error('Failed to open pod bay doors.A;:w"
 function! editor#settings#Init() abort
   return v:true
 endfunction
-
-" Check for environment-specific vim settings.
-if isdirectory(expand('~/dotfiles-env/editor'))
-  set runtimepath+=~/dotfiles-env/editor/
-endif
