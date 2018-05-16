@@ -160,6 +160,7 @@ function! editor#commands#OpenTestFile() abort
   execute 'split ' . fnameescape(l:test_file)
 endfunction
 
+" :Details
 func! editor#commands#Details(line) abort
   let [l:details] = editor#git#blame#GetFileBlame({
         \   'ranges': [[a:line, a:line]],
@@ -179,4 +180,26 @@ func! editor#commands#Details(line) abort
   echo l:details.summary
 
   call editor#metrics#TrackEvent(':Details', { 'file': expand('%:p'), 'date': l:date })
+endfunc
+
+" :Perm +x
+func! editor#commands#Permissions(...) abort
+  let l:file_path = expand('%:p')
+  let l:file = fnameescape(l:file_path)
+
+  if !filereadable(l:file_path)
+    echo 'Wait, you sure this is a file?'
+    return
+  endif
+
+  if len(a:000) == 0
+    echo editor#util#chomp(system('stat --format="%a" ' . l:file))
+    return
+  endif
+
+  let l:output = system('chmod ' . a:1 . ' ' . l:file)
+
+  if v:shell_error
+    echoerr l:output
+  endif
 endfunc
