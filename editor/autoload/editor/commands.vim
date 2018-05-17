@@ -1,7 +1,7 @@
 " :<range>Author
 function! s:find_authors_for_range(start, end) abort
   let l:my_name = editor#util#chomp(system('git config user.name'))
-  let l:line_blames = editor#git#blame#GetFileBlame({
+  let l:line_blames = git#blame#GetFileBlame({
         \   'ranges': [[a:start, a:end]],
         \   'file': expand('%:p'),
         \ })
@@ -162,7 +162,7 @@ endfunction
 
 " :Details
 func! editor#commands#Details(line) abort
-  let [l:details] = editor#git#blame#GetFileBlame({
+  let [l:details] = git#blame#GetFileBlame({
         \   'ranges': [[a:line, a:line]],
         \   'file': expand('%:p'),
         \ })

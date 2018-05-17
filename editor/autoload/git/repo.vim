@@ -5,7 +5,7 @@ func! s:HasGitRepo(dir)
 endfunc
 
 " Is this directory or one of its parents a git repo?
-func! editor#git#util#ExistsInsideRepo(target)
+func! git#repo#IsInsideRepo(target)
   let l:target = isdirectory(a:target) ? a:target : fnamemodify(a:target, ':h')
   let l:HasGitRepo = function('s:HasGitRepo')
   let l:result = editor#util#SearchDirUpwards(l:target, l:HasGitRepo)

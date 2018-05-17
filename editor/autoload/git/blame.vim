@@ -143,8 +143,8 @@ func! s:ParseBlameOutput(output)
 endfunc
 
 " Get a list of metadata for each line.
-func! editor#git#blame#GetFileBlame(config)
-  if !editor#git#util#ExistsInsideRepo(a:config.file)
+func! git#blame#GetFileBlame(config)
+  if !git#repo#IsInsideRepo(a:config.file)
     return v:null
   endif
 
