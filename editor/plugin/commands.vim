@@ -1,7 +1,6 @@
 command! -nargs=? Permissions call editor#commands#Permissions(<f-args>)
 command! -range Author call editor#commands#Author(<line1>, <line2>)
 command! -nargs=1 Readme call editor#commands#Readme(<f-args>)
-command! -range Details call editor#commands#Details(<line1>)
 command! OpenTestFile call editor#commands#OpenTestFile()
 command! -nargs=+ Z call editor#commands#Z(<f-args>)
 command! Reset call editor#commands#Reset()

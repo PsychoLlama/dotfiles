@@ -1,4 +1,3 @@
-" :<range>Author
 function! s:find_authors_for_range(start, end) abort
   let l:my_name = editor#util#chomp(system('git config user.name'))
   let l:line_blames = git#blame#GetFileBlame({
@@ -17,10 +16,36 @@ function! s:find_authors_for_range(start, end) abort
   return values(l:uniq_authors)
 endfunction
 
+func! s:PrintLineDetails(line) abort
+  let [l:details] = git#blame#GetFileBlame({
+        \   'ranges': [[a:line, a:line]],
+        \   'file': expand('%:p'),
+        \ })
+
+  let l:date = strftime('%m/%d/%Y', l:details.author.time)
+  echohl String
+  echon l:details.sha[0:6]
+  echohl Clear
+  echon ': ' . l:details.author.name . ' ('
+  echohl Type
+  echon l:date
+  echohl Clear
+  echon ')'
+
+  echo l:details.summary
+endfunc
+
+
+" :<range>Author
 function! editor#commands#Author(start, end) abort
   if &modified
     echo 'Save your changes first.'
     return
+  endif
+
+  " If there's only one selected line, show more details.
+  if a:start == a:end
+    return s:PrintLineDetails(a:start)
   endif
 
   let l:authors = s:find_authors_for_range(a:start, a:end)
@@ -160,27 +185,6 @@ function! editor#commands#OpenTestFile() abort
   execute 'split ' . fnameescape(l:test_file)
 endfunction
 
-" :Details
-func! editor#commands#Details(line) abort
-  let [l:details] = git#blame#GetFileBlame({
-        \   'ranges': [[a:line, a:line]],
-        \   'file': expand('%:p'),
-        \ })
-
-  let l:date = strftime('%m/%d/%Y', l:details.author.time)
-  echohl String
-  echon l:details.sha[0:6]
-  echohl Clear
-  echon ': ' . l:details.author.name . ' ('
-  echohl Type
-  echon l:date
-  echohl Clear
-  echon ')'
-
-  echo l:details.summary
-
-  call editor#metrics#TrackEvent(':Details', { 'file': expand('%:p'), 'date': l:date })
-endfunc
 
 " :Perm +x
 func! editor#commands#Permissions(...) abort
