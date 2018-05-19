@@ -19,6 +19,7 @@ set history=500
 set autoindent
 set ignorecase
 set shiftround
+set grepprg=ag
 set expandtab
 set linebreak
 set incsearch
