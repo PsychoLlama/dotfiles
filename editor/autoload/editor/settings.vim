@@ -4,6 +4,7 @@ set backspace=indent,eol,start
 set wildmode=longest,list,full
 set listchars=tab:··,trail:·
 set backupdir=~/.vim/backup
+set nrformats=octal,hex,bin
 set clipboard+=unnamedplus
 set backupcopy=yes
 set signcolumn=yes
