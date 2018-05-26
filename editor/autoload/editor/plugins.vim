@@ -1,10 +1,10 @@
 scriptencoding utf-8
 
 " Get python3 executable location.
-function! s:get_exe_path(prog) abort
+func! s:get_exe_path(prog) abort
   let l:path = system('command -v ' . shellescape(a:prog))
   return substitute(l:path, '\n$', '', '')
-endfunction
+endfunc
 
 if executable('python3')
   let g:python3_host_prog = s:get_exe_path('python3')
@@ -113,9 +113,9 @@ let g:jsx_ext_required = 0
 " Injects a kernel rootkit which slowly destroys the computer.
 let g:deoplete#enable_at_startup = 1
 
-function! editor#plugins#Init() abort
+func! editor#plugins#Init() abort
   return v:true
-endfunction
+endfunc
 
 " Neovim's Buit-in system clipboard integration.
 let g:clipboard = !len($TMUX) ? v:null : {

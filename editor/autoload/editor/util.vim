@@ -1,10 +1,10 @@
 " Trim dangling newlines. Mostly from system commands.
-function! editor#util#chomp(string) abort
+func! editor#util#chomp(string) abort
   return substitute(a:string, '\n$', '', '')
-endfunction
+endfunc
 
 " Replace buffer contents with a list of lines.
-function! editor#util#SetPaneContents(lines) abort
+func! editor#util#SetPaneContents(lines) abort
   % delete
 
   let l:index = 0
@@ -16,10 +16,10 @@ function! editor#util#SetPaneContents(lines) abort
 
     let l:index += 1
   endwhile
-endfunction
+endfunc
 
 " Search every parent directory until a predicate is satisfied.
-function! editor#util#SearchDirUpwards(dir, cb) abort
+func! editor#util#SearchDirUpwards(dir, cb) abort
   if a:cb(a:dir)
     return a:dir
   endif
@@ -32,20 +32,20 @@ function! editor#util#SearchDirUpwards(dir, cb) abort
   endif
 
   return editor#util#SearchDirUpwards(l:dir, a:cb)
-endfunction
+endfunc
 
 " Turn a file or dir into a candidate for system('cd ...')
 " Used to set $PWD before calling a command.
-function! editor#util#GetEscapedDir(file) abort
+func! editor#util#GetEscapedDir(file) abort
   let l:target = isdirectory(a:file) ? a:file : fnamemodify(a:file, ':h')
 
   return fnameescape(l:target)
-endfunction
+endfunc
 
 " Execute a system command in a directory.
-function! editor#util#ExecInDir(dir, cmd) abort
+func! editor#util#ExecInDir(dir, cmd) abort
   let l:cmd = 'cd ' . editor#util#GetEscapedDir(a:dir) . '; '
   let l:cmd .= a:cmd
 
   return systemlist(l:cmd)
-endfunction
+endfunc

@@ -1,4 +1,4 @@
-function! s:is_typing_word() abort
+func! s:is_typing_word() abort
   let l:col = col('.') - 1
 
   " Require at least 2 chars of context.
@@ -8,9 +8,9 @@ function! s:is_typing_word() abort
 
   let l:prev_chars = getline('.')[l:col - 2:l:col]
   return l:prev_chars =~? '\w\{2}'
-endfunction
+endfunc
 
-function! s:tab_completion(shifting) abort
+func! s:tab_completion(shifting) abort
   if pumvisible()
     if a:shifting
       return "\<C-p>"
@@ -24,24 +24,24 @@ function! s:tab_completion(shifting) abort
   endif
 
   return "\t"
-endfunction
+endfunc
 
-function! s:toggle_copy_mode() abort
+func! s:toggle_copy_mode() abort
   if &number
     setlocal nonumber signcolumn=no
   else
     setlocal number signcolumn=yes
   endif
-endfunction
+endfunc
 
-function! s:edit_vimrc() abort
+func! s:edit_vimrc() abort
   let l:cmd = isdirectory(expand('%:p')) ? 'edit' : 'tabedit'
   let l:dotfiles = editor#util#chomp(system('dotfiles dir'))
   execute l:cmd . ' ' . l:dotfiles . '/editor/autoload/editor'
-endfunction
+endfunc
 
 " :Rexplore only works if the file was opened via netrw.
-function! s:explore_current_dir() abort
+func! s:explore_current_dir() abort
   if &filetype is# 'netrw'
     return
   endif
@@ -50,7 +50,7 @@ function! s:explore_current_dir() abort
   let l:curdir = expand('%:p:h')
   execute 'edit ' . fnameescape(l:curdir)
   call search(l:filename)
-endfunction
+endfunc
 
 inoremap <silent><expr><TAB> <SID>tab_completion(0)
 inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
@@ -59,6 +59,6 @@ nnoremap <silent><leader>n :nohlsearch<cr>
 nnoremap <silent><leader>v :call <SID>edit_vimrc()<cr>
 nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
 
-function! editor#mappings#Init() abort
+func! editor#mappings#Init() abort
   return v:true
-endfunction
+endfunc

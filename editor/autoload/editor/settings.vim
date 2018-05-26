@@ -41,7 +41,7 @@ if !isdirectory(&undodir)
 endif
 
 filetype plugin indent on
-function! s:resume_last_cursor_position() abort
+func! s:resume_last_cursor_position() abort
   " There's no guarantee &filetype is ready.
   if expand('%:p:t') is# 'COMMIT_EDITMSG'
     return
@@ -51,7 +51,7 @@ function! s:resume_last_cursor_position() abort
   if l:last_line > 1 && l:last_line < line('$')
     normal! g`"
   endif
-endfunction
+endfunc
 
 augroup resume_last_cursor_position
   autocmd!
@@ -72,6 +72,6 @@ let @t = "Sit('', () => {jA;kkl"
 let @c = "Sconsole.log('');hhh"
 let @e = "othrow new Error('Failed to open pod bay doors.A;:w"
 
-function! editor#settings#Init() abort
+func! editor#settings#Init() abort
   return v:true
-endfunction
+endfunc

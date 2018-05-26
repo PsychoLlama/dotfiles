@@ -5,7 +5,7 @@ let s:default_state = {
       \   }
 
 " Read all metrics into a json file.
-function! editor#metrics#Read() abort
+func! editor#metrics#Read() abort
   if !filereadable(s:metrics_filename)
     call writefile([json_encode(s:default_state)], s:metrics_filename)
   endif
@@ -13,17 +13,17 @@ function! editor#metrics#Read() abort
   let l:contents = readfile(s:metrics_filename)
 
   return json_decode(l:contents)
-endfunction
+endfunc
 
 " Write the entire metrics table.
-function! editor#metrics#Write(metrics) abort
+func! editor#metrics#Write(metrics) abort
   let l:contents = json_encode(a:metrics)
 
   call writefile([l:contents], s:metrics_filename)
-endfunction
+endfunc
 
 " Add an entry to the events set.
-function! editor#metrics#TrackEvent(event_name, metadata) abort
+func! editor#metrics#TrackEvent(event_name, metadata) abort
   let l:metrics = editor#metrics#Read()
 
   if !has_key(l:metrics.events, a:event_name)
@@ -34,4 +34,4 @@ function! editor#metrics#TrackEvent(event_name, metadata) abort
   let l:metrics.events[a:event_name] += [l:metric]
 
   call editor#metrics#Write(l:metrics)
-endfunction
+endfunc

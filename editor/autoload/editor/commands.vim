@@ -1,4 +1,4 @@
-function! s:find_authors_for_range(start, end) abort
+func! s:find_authors_for_range(start, end) abort
   let l:my_name = editor#util#chomp(system('git config user.name'))
   let l:line_blames = git#blame#GetFileBlame({
         \   'ranges': [[a:start, a:end]],
@@ -14,7 +14,7 @@ function! s:find_authors_for_range(start, end) abort
   endfor
 
   return values(l:uniq_authors)
-endfunction
+endfunc
 
 func! s:PrintLineDetails(line) abort
   let [l:details] = git#blame#GetFileBlame({
@@ -37,7 +37,7 @@ endfunc
 
 
 " :<range>Author
-function! editor#commands#Author(start, end) abort
+func! editor#commands#Author(start, end) abort
   if &modified
     echo 'Save your changes first.'
     return
@@ -57,11 +57,11 @@ function! editor#commands#Author(start, end) abort
   let l:range = l:start_char . ',' . l:end_char
 
   call editor#metrics#TrackEvent(':Author', { 'range': l:range })
-endfunction
+endfunc
 
 
 " :Node repl
-function! editor#commands#Node() abort
+func! editor#commands#Node() abort
   let l:project = editor#js#FindPackageRoot()
 
   new Node Repl
@@ -72,11 +72,11 @@ function! editor#commands#Node() abort
   normal! A
 
   call editor#metrics#TrackEvent(':Node', {})
-endfunction
+endfunc
 
 
 " :Reset (resets the file to HEAD state)
-function! editor#commands#Reset() abort
+func! editor#commands#Reset() abort
   let l:file = fnameescape(expand('%:p'))
   let l:symlink_pointer = system('readlink ' . l:file)
 
@@ -96,11 +96,11 @@ function! editor#commands#Reset() abort
   silent write
 
   call editor#metrics#TrackEvent(':Reset', {})
-endfunction
+endfunc
 
 
 " :Readme <module>
-function! editor#commands#Readme(module) abort range
+func! editor#commands#Readme(module) abort range
   let l:cmd = 'npm info ' . shellescape(a:module) . ' readme'
   let l:readme = systemlist(l:cmd)
   let l:readme = l:readme[1:len(l:readme) - 3]
@@ -119,11 +119,11 @@ function! editor#commands#Readme(module) abort range
   setlocal listchars= nomodifiable nowriteany nobuflisted
 
   call editor#metrics#TrackEvent(':Readme', { 'module': a:module })
-endfunction
+endfunc
 
 
 " :Diff
-function! editor#commands#Diff() abort
+func! editor#commands#Diff() abort
   let l:filename = expand('%:t')
   let l:pane_name = l:filename . ' diff'
 
@@ -152,11 +152,11 @@ function! editor#commands#Diff() abort
   setfiletype diff
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
   setlocal listchars= nomodifiable nowriteany nobuflisted nonumber
-endfunction
+endfunc
 
 
 " :Z ...args
-function! editor#commands#Z(...) abort
+func! editor#commands#Z(...) abort
   let l:z_path = system('printf "$(dotfiles dir)/artifacts/z/z.sh"')
   let l:search = join(a:000, ' ')
   let l:cmd = 'source ' . fnameescape(l:z_path) . '; _z -l ' . shellescape(l:search)
@@ -170,11 +170,11 @@ function! editor#commands#Z(...) abort
   " Ignore the frecency metric, just pull the dirname.
   let l:directory = matchstr(l:matches[0], '\v/.*')
   execute 'edit ' . l:directory
-endfunction
+endfunc
 
 
 " :OpenTestFile
-function! editor#commands#OpenTestFile() abort
+func! editor#commands#OpenTestFile() abort
   let l:test_file = editor#js#LocateTestFile()
 
   if l:test_file is v:null
@@ -183,7 +183,7 @@ function! editor#commands#OpenTestFile() abort
   endif
 
   execute 'split ' . fnameescape(l:test_file)
-endfunction
+endfunc
 
 
 " :Perm +x
