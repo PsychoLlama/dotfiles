@@ -7,12 +7,17 @@
 func! s:GetBlameOutput(config)
   let l:cmd = 'git blame --line-porcelain '
 
-  " Add support for range restrictions (better performance).
+  " Support for range restrictions (better performance).
   " For example: [[1, 2], [4, 5]] locates lines 1-2 & 4-5
   if has_key(a:config, 'ranges')
     let l:ranges = copy(a:config.ranges)
     call map(l:ranges, { i, range -> '-L ' . join(range, ',') })
     let l:cmd .= join(l:ranges, ' ') . ' '
+  endif
+
+  " Query the blame at a specific point in history.
+  if has_key(a:config, 'at_revision')
+    let l:cmd .= a:config.at_revision . ' '
   endif
 
   let l:cmd .= '-- ' . fnameescape(a:config.file)
