@@ -168,10 +168,33 @@ func! stacktrace#Parse(throwpoint) abort
 endfunc
 
 " Get a new stacktrace.
-func! stacktrace#Create() abort
+func! stacktrace#Create(message) abort
   try
-    throw 'Generating new stacktrace (stacktrace#Create)'
+    throw a:message
   catch
     return stacktrace#Parse(v:throwpoint)
   endtry
+endfunc
+
+" Pretty-print a parsed stack trace.
+func! stacktrace#Print(stack, exception) abort
+  echohl Error
+  echon 'Error:'
+  echohl Clear
+  echon ' ' . a:exception
+
+  for l:trace in reverse(copy(a:stack))
+    echon "\n"
+    let l:filename = fnamemodify(l:trace.file, ':t')
+    echohl Comment
+    echon l:filename
+    echohl Clear
+    echon ' in '
+    echohl Function
+    echon l:trace.name . "\n"
+    echohl Comment
+    echo l:trace.source[l:trace.line] . "\n"
+  endfor
+
+  echohl Clear
 endfunc
