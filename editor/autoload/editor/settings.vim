@@ -71,7 +71,3 @@ let @d = "Sdescribe('', () => {jA;kkf'"
 let @t = "Sit('', () => {jA;kkl"
 let @c = "Sconsole.log('');hhh"
 let @e = "othrow new Error('Failed to open pod bay doors.A;:w"
-
-func! editor#settings#Init() abort
-  return v:true
-endfunc

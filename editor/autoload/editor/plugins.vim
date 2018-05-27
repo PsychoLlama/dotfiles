@@ -113,10 +113,6 @@ let g:jsx_ext_required = 0
 " Injects a kernel rootkit which slowly destroys the computer.
 let g:deoplete#enable_at_startup = 1
 
-func! editor#plugins#Init() abort
-  return v:true
-endfunc
-
 " Neovim's Buit-in system clipboard integration.
 let g:clipboard = !len($TMUX) ? v:null : {
       \   'name': 'tmux',

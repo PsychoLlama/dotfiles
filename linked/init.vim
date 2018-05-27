@@ -19,7 +19,12 @@ endif
 " Runtime paths added in the dotfiles preset don't take effect.
 " This is a workaround until I find a cleaner approach.
 if exists('*editor#env#GetPluginPaths')
-  let s:plugins = editor#env#GetPluginPaths()
+  let s:plugins = stacktrace#Capture(function('editor#env#GetPluginPaths'))
+
+  " Gracefully handle exceptions.
+  if s:plugins is g:stacktrace#Exception
+    let s:plugins = []
+  endif
 
   for s:plugin in s:plugins
     call s:AddPluginPath(s:plugin)
@@ -28,7 +33,4 @@ endif
 
 " My vimrc has grown beyond the grasp of a single file.
 " Files are managed similarly to a vim plugin, organized into modules.
-" Most content can be found under editor/autoload/editor/*
-call editor#settings#Init()
-call editor#plugins#Init()
-call editor#mappings#Init()
+runtime! autoload/editor/{settings,plugins,mappings}.vim
