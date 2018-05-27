@@ -191,8 +191,14 @@ func! stacktrace#Print(stack, exception) abort
     echohl Clear
     echon ' in '
     echohl Function
-    echon l:trace.name . "\n"
+    echon l:trace.name
     echohl Comment
+    echon ' (line '
+    echohl Function
+    echon l:trace.line
+    echohl Comment
+    echon ")\n"
+
     echo l:trace.source[l:trace.line] . "\n"
   endfor
 
