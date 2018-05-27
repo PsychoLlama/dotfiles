@@ -1,4 +1,19 @@
-func! s:find_authors_for_range(start, end) abort
+" Order authors by quantity of lines written.
+func! s:GetAuthorOwnership(authors, total)
+  let l:result = []
+
+  for l:author in keys(a:authors)
+    let l:owned_lines = a:authors[l:author]
+    let l:percentage = (l:owned_lines / a:total) * 100
+    let l:result += [[l:author, float2nr(round(l:percentage))]]
+  endfor
+
+  call sort(l:result, {pair1, pair2 -> pair2[1] - pair1[1]})
+
+  return l:result
+endfunc
+
+func! s:FindAuthorsForRange(start, end) abort
   let l:line_blames = git#blame#GetFileBlame({
         \   'ranges': [[a:start, a:end]],
         \   'file': expand('%:p'),
@@ -8,10 +23,10 @@ func! s:find_authors_for_range(start, end) abort
   let l:uniq_authors = {}
 
   for l:author in l:authors
-    let l:uniq_authors[l:author] = l:author
+    let l:uniq_authors[l:author] = get(l:uniq_authors, l:author, 0) + 1
   endfor
 
-  return values(l:uniq_authors)
+  return s:GetAuthorOwnership(l:uniq_authors, a:end - a:start + 1.0)
 endfunc
 
 func! s:PrintLineDetails(line) abort
@@ -46,9 +61,13 @@ func! editor#commands#Author(start, end) abort
     return s:PrintLineDetails(a:start)
   endif
 
-  let l:authors = s:find_authors_for_range(a:start, a:end)
-
-  echo join(l:authors, "\n")
+  for [l:author, l:ownership] in s:FindAuthorsForRange(a:start, a:end)
+    echohl Clear
+    echo l:author
+    echohl Comment
+    echon ' (' . l:ownership . '%)'
+    echohl Clear
+  endfor
 
   let l:start_char = a:start == 0 || a:start == 1 ? '^' : a:start
   let l:end_char = a:end == line('$') ? '$' : a:end
