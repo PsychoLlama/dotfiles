@@ -138,9 +138,28 @@ func! s:ExpandStackTrace(stacktrace) abort
   return l:result
 endfunc
 
+" If thrown outside a function, the stacktrace is structured differently.
+" /Users/overlord/dotfiles/editor/autoload/stacktrace.vim, line 179
+func! s:GenerateFileStacktrace(throwpoint) abort
+  let l:matches = matchlist(a:throwpoint, '\v(.*), line (\d+)')
+  let l:result = {}
+  let l:result.file = l:matches[1]
+  let l:result.line = str2nr(l:matches[2]) - 1
+  let l:result.source = readfile(l:result.file)
+  let l:result.ref = v:null
+  let l:result.name = fnamemodify(l:result.file, ':t')
+
+  return [l:result]
+endfunc
+
 " Example stack trace:
 " function 148[6]..149[1]..<SNR>130_Script[6]..stacktrace#Create, line 2
 func! stacktrace#Parse(throwpoint) abort
+  " Thrown outside a function.
+  if a:throwpoint =~# '\v^/'
+    return s:GenerateFileStacktrace(a:throwpoint)
+  endif
+
   let l:stack = substitute(a:throwpoint, '\v^function ', '', '')
   let l:functions = split(l:stack, '\V..')
 
