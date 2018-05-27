@@ -185,7 +185,7 @@ func! stacktrace#Print(stack, exception) abort
 
   for l:trace in reverse(copy(a:stack))
     echon "\n"
-    let l:filename = fnamemodify(l:trace.file, ':t')
+    let l:filename = fnamemodify(l:trace.file, ':.')
     echohl Comment
     echon l:filename
     echohl Clear
@@ -197,4 +197,20 @@ func! stacktrace#Print(stack, exception) abort
   endfor
 
   echohl Clear
+endfunc
+
+" Returned if the function threw. Errors are not re-emitted.
+" Use this return value to determine if the wrapped function threw.
+" `l:retval isnot# g:stacktrace#Exception`
+let g:stacktrace#Exception = { '__stacktrace#Exception': v:true }
+
+" Captures thrown exceptions, analyzing & printing them.
+func! stacktrace#Capture(CaptureTarget) abort
+  try
+    return a:CaptureTarget()
+  catch
+    let l:trace = stacktrace#Parse(v:throwpoint)
+    call stacktrace#Print(l:trace, v:exception)
+    return g:stacktrace#Exception
+  endtry
 endfunc
