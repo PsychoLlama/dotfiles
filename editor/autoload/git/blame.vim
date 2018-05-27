@@ -88,7 +88,7 @@ let s:AUTHOR_NAME_MAP = {
       \ }
 
 " Add author/committer metadata.
-func! s:AddAuthorDetails(header, line, author)
+func! s:AddAuthorDetails(header, line, author, my_name)
   let l:header_key = substitute(a:header, '\v^(author|committer)', '', '')
   let l:key = s:AUTHOR_NAME_MAP[l:header_key]
   let l:content = a:line[strlen(a:header) + 1:]
@@ -100,6 +100,11 @@ func! s:AddAuthorDetails(header, line, author)
 
   if l:key is# 'time'
     let l:content = str2nr(l:content)
+  endif
+
+  " If it's uncommitted, it's probably mine.
+  if l:key is# 'name' && l:content =~? 'not committed yet'
+    let l:content = a:my_name
   endif
 
   let a:author[l:key] = l:content
@@ -120,8 +125,22 @@ func! s:AddSummaryDetails(header, line, blame)
   let a:blame.summary = s:StripHeader(a:header, a:line)
 endfunc
 
+func! s:GetUserName(file)
+  " Get the current user's name.
+  let l:containing_folder = fnamemodify(a:file, ':h')
+  let l:cmd = 'git config user.name'
+  let l:my_name = editor#util#ExecInDir(l:containing_folder, l:cmd)
+
+  if !len(l:my_name)
+    return '<current user>'
+  endif
+
+  return l:my_name[0]
+endfunc
+
 " string[] -> Blame[]
-func! s:ParseBlameOutput(output)
+func! s:ParseBlameOutput(output, config)
+  let l:my_name = s:GetUserName(a:config.file)
   let l:line_blames = []
 
   for l:line in a:output
@@ -134,9 +153,9 @@ func! s:ParseBlameOutput(output)
     elseif l:line =~# '\v^\t'
       call s:AddLineContents(l:line, l:blame)
     elseif l:header =~# 'author'
-      call s:AddAuthorDetails(l:header, l:line, l:blame.author)
+      call s:AddAuthorDetails(l:header, l:line, l:blame.author, l:my_name)
     elseif l:header =~# 'committer'
-      call s:AddAuthorDetails(l:header, l:line, l:blame.committer)
+      call s:AddAuthorDetails(l:header, l:line, l:blame.committer, l:my_name)
     elseif l:header is# 'previous'
       call s:AddPrevShaDetails(l:header, l:line, l:blame)
     elseif l:header is# 'summary'
@@ -154,5 +173,5 @@ func! git#blame#GetFileBlame(config)
   endif
 
   let l:output = s:GetBlameOutput(a:config)
-  return s:ParseBlameOutput(l:output)
+  return s:ParseBlameOutput(l:output, a:config)
 endfunc

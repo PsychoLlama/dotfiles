@@ -1,5 +1,4 @@
 func! s:find_authors_for_range(start, end) abort
-  let l:my_name = editor#util#chomp(system('git config user.name'))
   let l:line_blames = git#blame#GetFileBlame({
         \   'ranges': [[a:start, a:end]],
         \   'file': expand('%:p'),
@@ -9,8 +8,7 @@ func! s:find_authors_for_range(start, end) abort
   let l:uniq_authors = {}
 
   for l:author in l:authors
-    let l:actual_author = l:author ==? 'not committed yet' ? l:my_name : l:author
-    let l:uniq_authors[l:actual_author] = l:actual_author
+    let l:uniq_authors[l:author] = l:author
   endfor
 
   return values(l:uniq_authors)
