@@ -381,6 +381,12 @@ function install_neovim {
   sudo chmod 777 ~/.vim/backup
 }
 
+# This is deceptive. The viml interpreter is
+# part of my dotfiles framework.
+function install_viml {
+  ln -sf "$(dotfiles dir)/linked/viml" /usr/local/bin/viml
+}
+
 function install_python_neovim_plugin {
   if python3 -c 'import neovim' &> /dev/null; then
     return
@@ -523,6 +529,7 @@ install_vim_plug
 install_neovim
 install_python_neovim_plugin
 install_neovim_plugins
+install_viml
 install_vint
 install_pylint
 install_rustfmt
