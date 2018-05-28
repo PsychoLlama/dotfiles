@@ -5,27 +5,27 @@ parachute=parachute.tar.gz
 
 # Bash 4 is required for hash tables, but mac is stuck on bash 3.
 # Zsh to the rescue.
-typeset -A files
-files[vim-info]=~/.viminfo
-files[vim-backup]=~/.vim/backup/
-files[vim-undo-history]=~/.vim/undodir/
-files[vim-metrics]=~/.vim/metrics.json
-files[repl-history-node]=~/.node_repl_history
-files[repl-history-python]=~/.python_history
-files[zsh-history]=~/.zsh_history
-files[z-weights]=~/.z
+typeset -A manifest
+manifest[vim-info]=~/.viminfo
+manifest[vim-backup]=~/.vim/backup/
+manifest[vim-undo-history]=~/.vim/undodir/
+manifest[vim-metrics]=~/.vim/metrics.json
+manifest[repl-history-node]=~/.node_repl_history
+manifest[repl-history-python]=~/.python_history
+manifest[zsh-history]=~/.zsh_history
+manifest[z-weights]=~/.z
 
 function warn {
   echo -e "WARN: $*" >&2
 }
 
-manifest=~/dotfiles-env/eject-manifest.sh
-if [[ -f "$manifest" ]]; then
-  source "$manifest"
+env_manifest=~/dotfiles-env/eject-manifest.sh
+if [[ -f "$env_manifest" ]]; then
+  source "$env_manifest"
 
   # Merge the env & base manifests.
-  for extension in "${(k)DOTFILES_MANIFEST}"; do
-    files[$extension]="${DOTFILES_MANIFEST[$extension]}"
+  for env_dest in "${(k)DOTFILES_MANIFEST}"; do
+    manifest[$env_dest]="${DOTFILES_MANIFEST[$env_dest]}"
   done
 fi
 
@@ -35,8 +35,8 @@ date="$(date +'%Y-%m-%d--%H-%M')"
 target="$(dotfiles dir)/$date"
 mkdir -p "$target"
 
-for file_dest in "${(k)files[@]}"; do
-  file_source="${files[$file_dest]}"
+for file_dest in "${(k)manifest[@]}"; do
+  file_source="${manifest[$file_dest]}"
 
   # Skip files that don't exist.
   if [[ ! -e "$file_source" ]]; then
