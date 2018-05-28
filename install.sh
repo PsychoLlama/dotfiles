@@ -384,7 +384,7 @@ function install_neovim {
 # This is deceptive. The viml interpreter is
 # part of my dotfiles framework.
 function install_viml {
-  ln -sf "$(dotfiles dir)/linked/viml" /usr/local/bin/viml
+  sudo ln -sf "$(dotfiles dir)/linked/viml" /usr/local/bin/viml
 }
 
 function install_python_neovim_plugin {
