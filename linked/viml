@@ -13,17 +13,9 @@ if [[ ! -f "$1" ]]; then
   exit 1
 fi
 
-executor="
-try
-  call execute('set runtimepath+=' . systemlist('dotfiles dir')[0] . '/editor')
-  source $1
-catch
-  echo v:exception
-  echo v:throwpoint
-  cquit
-finally
-  qall!
-endtry
+setup="
+let g:__sourcefile = '$1'
+source $(dotfiles dir)/utils/headless-env.vim
 "
 
-nvim --headless -u NONE -c "$executor"
+nvim --headless -u NONE -c "$setup"
