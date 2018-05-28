@@ -6,14 +6,14 @@ parachute=parachute.tar.gz
 # Bash 4 is required for hash tables, but mac is stuck on bash 3.
 # Zsh to the rescue.
 typeset -A files
-files[.viminfo]=~/.viminfo
+files[vim-info]=~/.viminfo
 files[vim-backup]=~/.vim/backup/
-files[vim-undodir]=~/.vim/undodir/
-files[vim-metrics.json]=~/.vim/metrics.json
-files[.node_repl_history]=~/.node_repl_history
-files[.python_history]=~/.python_history
-files[.zsh_history]=~/.zsh_history
-files[.z]=~/.z
+files[vim-undo-history]=~/.vim/undodir/
+files[vim-metrics]=~/.vim/metrics.json
+files[repl-history-node]=~/.node_repl_history
+files[repl-history-python]=~/.python_history
+files[zsh-history]=~/.zsh_history
+files[z-weights]=~/.z
 
 function warn {
   echo -e "WARN: $*" >&2
