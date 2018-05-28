@@ -17,8 +17,10 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Filetype plugins
+Plug 'davinche/godown-vim', { 'for': 'markdown' }
 Plug 'cespare/vim-toml', { 'for': 'toml' }
 Plug 'chrisbra/csv.vim', { 'for': 'csv' }
+Plug 'PsychoLlama/further.vim'
 Plug 'jparise/vim-graphql'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-markdown'
@@ -36,24 +38,21 @@ Plug 'autozimu/LanguageClient-neovim', {
       \   'branch': 'next',
       \ }
 
-" Rando utils.
-Plug 'davinche/godown-vim', { 'for': 'markdown' }
-Plug 'PsychoLlama/further.vim'
-Plug 'PsychoLlama/snake.vim'
+" Enhancements ✨
 Plug 'jiangmiao/auto-pairs'
 Plug 'Shougo/deoplete.nvim'
-Plug 'PsychoLlama/vim-gol'
+Plug 'reedes/vim-pencil'
 Plug 'mbbill/undotree'
 Plug 'w0rp/ale'
-
-" For the :Notes command.
-Plug 'xolox/vim-notes'
-Plug 'xolox/vim-misc'
 
 " Style 🦄
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
 Plug 'joshdick/onedark.vim'
+
+" Fun 🎮
+Plug 'PsychoLlama/snake.vim'
+Plug 'PsychoLlama/vim-gol'
 
 call plug#end()
 

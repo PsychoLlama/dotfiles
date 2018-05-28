@@ -1,3 +1,9 @@
+" Enable hard-wrap autoformatting.
+PencilHard
+
+setlocal textwidth=72
+call append(1, '')
+
 " Present a git diff
 func! s:OpenDiffPane() abort
   let s:mount_point = winwidth('.') >= 72 * 2 ? 'L' : 'J'
