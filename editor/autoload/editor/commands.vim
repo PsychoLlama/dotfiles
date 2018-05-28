@@ -219,7 +219,7 @@ func! editor#commands#Permissions(...) abort
   endif
 
   if len(a:000) == 0
-    echo editor#util#chomp(system('stat --format="%a" ' . l:file))
+    echo getfperm(l:file)
     return
   endif
 
