@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -e
+
+# No args.
+if [[ "$#" == 0 ]]; then
+  echo "Usage: viml <scriptfile>"
+  exit 1
+fi
+
+# Invalid file.
+if [[ ! -f "$1" ]]; then
+  echo "Error: no such file '$1'" >&2
+  exit 1
+fi
+
+executor="
+try
+  call execute('set runtimepath+=' . systemlist('dotfiles dir')[0] . '/editor')
+  source $1
+catch
+  echo v:exception
+  echo v:throwpoint
+  cquit
+finally
+  qall!
+endtry
+"
+
+nvim --headless -u NONE -c "$executor"

@@ -3,5 +3,6 @@
   "~/.config/nvim/init.vim": "./init.vim",
   "~/.gitconfig": "./.gitconfig",
   "~/.tmux.conf": "./.tmux.conf",
-  "~/.zshrc": "./.zshrc"
+  "~/.zshrc": "./.zshrc",
+  "/usr/local/bin/viml": "./viml"
 }
