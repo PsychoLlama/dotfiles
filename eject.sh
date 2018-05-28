@@ -1,27 +1,32 @@
-#!/usr/bin/env bash
-# shellcheck disable=SC1090
+#!/usr/bin/env zsh
 set -e
 
 parachute=parachute.tar.gz
-files=(
-  ~/.viminfo
-  ~/.vim/backup/
-  ~/.vim/undodir/
-  ~/.vim/metrics.json
-  ~/.node_repl_history
-  ~/.python_history
-  ~/.zsh_history
-  ~/.z
-)
+
+# Bash 4 is required for hash tables, but mac is stuck on bash 3.
+# Zsh to the rescue.
+typeset -A files
+files[.viminfo]=~/.viminfo
+files[vim-backup]=~/.vim/backup/
+files[vim-undodir]=~/.vim/undodir/
+files[vim-metrics.json]=~/.vim/metrics.json
+files[.node_repl_history]=~/.node_repl_history
+files[.python_history]=~/.python_history
+files[.zsh_history]=~/.zsh_history
+files[.z]=~/.z
 
 function warn {
   echo -e "WARN: $*" >&2
 }
 
 manifest=~/dotfiles-env/eject-manifest.sh
-if [[ -f "$manifest" && -e "$manifest" ]]; then
+if [[ -f "$manifest" ]]; then
   source "$manifest"
-  files=("${files[@]}" "${DOTFILES_MANIFEST[@]}")
+
+  # Merge the env & base manifests.
+  for extension in "${(k)DOTFILES_MANIFEST}"; do
+    files[$extension]="${DOTFILES_MANIFEST[$extension]}"
+  done
 fi
 
 # Timestamp as <date>--<time>
@@ -30,19 +35,22 @@ date="$(date +'%Y-%m-%d--%H-%M')"
 target="$(dotfiles dir)/$date"
 mkdir -p "$target"
 
-for file in "${files[@]}"; do
+for file_dest in "${(k)files[@]}"; do
+  file_source="${files[$file_dest]}"
+
   # Skip files that don't exist.
-  if [[ ! -e "$file" ]]; then
-    warn "No file or directory. Skipping $file"
+  if [[ ! -e "$file_source" ]]; then
+    warn "No file or directory. Skipping '$file_source'"
     continue
   fi
 
-  # `cp -R` handles directories with trailing slashes unexpectedly.
-  # TODO: make sure this syntax won't kill us all someday.
-  file="${file%\/}"
+  # `cp -R` only copies children if directory names end in "/".
+  if [[ -d "$file_source" && "${file_source[-1]}" == "/" ]]; then
+    file_source="${file_source:0:-1}"
+  fi
 
   # Preserving file attributes & follow symlinks.
-  cp -LRp "$file" "$target/"
+  cp -LRp "$file_source" "$target/$file_dest"
 done
 
 pushd "$(dotfiles dir)" &> /dev/null
