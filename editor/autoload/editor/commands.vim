@@ -56,6 +56,11 @@ func! editor#commands#Author(start, end) abort
     return
   endif
 
+  if isdirectory(expand('%:p'))
+    echo 'Uh, this is a directory'
+    return
+  endif
+
   " If there's only one selected line, show more details.
   if a:start == a:end
     return s:PrintLineDetails(a:start)

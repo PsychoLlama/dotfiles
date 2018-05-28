@@ -168,9 +168,10 @@ endfunc
 
 " Get a list of metadata for each line.
 func! git#blame#GetFileBlame(config)
-  if !git#repo#IsInsideRepo(a:config.file)
-    return v:null
-  endif
+  call assert#truthy(
+        \   git#repo#IsFileTracked(a:config.file),
+        \   "Can't git-blame an untracked file."
+        \ )
 
   let l:output = s:GetBlameOutput(a:config)
   return s:ParseBlameOutput(l:output, a:config)

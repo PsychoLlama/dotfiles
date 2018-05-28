@@ -30,3 +30,19 @@ func! git#repo#IsInsideRepo(...)
   let l:root = funcref('git#repo#FindRoot', a:000)()
   return l:root isnot v:null
 endfunc
+
+" Is this file tracked?
+func! git#repo#IsFileTracked(file) abort
+  if !filereadable(a:file)
+    return v:false
+  endif
+
+  let l:parent_dir = fnamemodify(a:file, ':h')
+  let l:rel_filename = './' . fnamemodify(a:file, ':t')
+  let l:cmd = 'git ls-files --error-unmatch -- ' . l:rel_filename
+
+  " The cwd may not be in a git repo.
+  call editor#util#ExecInDir(l:parent_dir, l:cmd)
+
+  return v:shell_error ? v:false : v:true
+endfunc
