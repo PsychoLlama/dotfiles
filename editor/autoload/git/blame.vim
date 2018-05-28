@@ -167,7 +167,7 @@ func! s:ParseBlameOutput(output, config)
 endfunc
 
 " Get a list of metadata for each line.
-func! git#blame#GetFileBlame(config)
+func! git#blame#(config)
   call assert#truthy(
         \   git#repo#IsFileTracked(a:config.file),
         \   "Can't git-blame an untracked file."

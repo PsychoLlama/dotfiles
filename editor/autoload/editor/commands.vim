@@ -14,7 +14,7 @@ func! s:GetAuthorOwnership(authors, total)
 endfunc
 
 func! s:FindAuthorsForRange(start, end) abort
-  let l:line_blames = git#blame#GetFileBlame({
+  let l:line_blames = git#blame#({
         \   'ranges': [[a:start, a:end]],
         \   'file': expand('%:p'),
         \ })
@@ -30,7 +30,7 @@ func! s:FindAuthorsForRange(start, end) abort
 endfunc
 
 func! s:PrintLineDetails(line) abort
-  let [l:details] = git#blame#GetFileBlame({
+  let [l:details] = git#blame#({
         \   'ranges': [[a:line, a:line]],
         \   'file': expand('%:p'),
         \ })
