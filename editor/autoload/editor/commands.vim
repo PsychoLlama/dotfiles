@@ -159,10 +159,16 @@ func! editor#commands#Diff() abort
   endif
 
   let l:file = resolve(expand('%:p'))
+
+  if !git#repo#IsFileTracked(l:file)
+    echo 'Wait a minute, this file is untracked!'
+    return
+  endif
+
   let l:diff_actual = git#diff#Raw({ 'file': l:file, 'revision': 'HEAD' })
 
   if len(l:diff_actual) == 0
-    echo 'No local changes.'
+    echo 'No changes.'
     return
   endif
 
