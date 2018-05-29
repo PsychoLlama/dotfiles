@@ -16,11 +16,6 @@ func! git#repo#FindRoot(...) abort
     let l:directory = fnamemodify(l:directory, ':h')
   endif
 
-  " Make sure the target actually exists.
-  if !isdirectory(l:directory)
-    return v:null
-  endif
-
   let l:HasGitFolder = funcref('s:HasGitFolder')
   return editor#util#SearchDirUpwards(l:directory, l:HasGitFolder)
 endfunc
@@ -32,17 +27,22 @@ func! git#repo#IsInsideRepo(...)
 endfunc
 
 " Is this file tracked?
-func! git#repo#IsFileTracked(file) abort
-  if !filereadable(a:file)
-    return v:false
+func! git#repo#IsFileTracked(file, ...) abort
+  let l:config = get(a:, 1, {})
+  let l:revision = get(l:config, 'revision', v:null)
+
+  let l:git_repo = git#repo#FindRoot(a:file)
+  let l:repo_relative = substitute(a:file, l:git_repo, '', '')
+  let l:rel_filename = simplify('./' . l:repo_relative)
+
+  let l:cmd = 'git ls-files --error-unmatch '
+  if l:revision isnot# v:null
+    let l:cmd .= '--with-tree=' . l:revision . ' '
   endif
+  let l:cmd .= '-- ' . l:rel_filename
 
-  let l:parent_dir = fnamemodify(a:file, ':h')
-  let l:rel_filename = './' . fnamemodify(a:file, ':t')
-  let l:cmd = 'git ls-files --error-unmatch -- ' . l:rel_filename
-
-  " The cwd may not be in a git repo.
-  call editor#util#ExecInDir(l:parent_dir, l:cmd)
+  " cwd may not be in a git repo.
+  call editor#util#ExecInDir(l:git_repo, l:cmd)
 
   return v:shell_error ? v:false : v:true
 endfunc

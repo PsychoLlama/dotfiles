@@ -27,3 +27,14 @@ func! assert#truthy(value, message) abort
     throw a:message
   endif
 endfunc
+
+" Throw if the value isn't the expected type.
+func! assert#type(value, type, message) abort
+  if !has_key(v:, 't_' . a:type)
+    throw 'Invalid type name ' . string(a:type)
+  endif
+
+  if type(a:value) != v:t_{a:type}
+    throw a:message
+  endif
+endfunc

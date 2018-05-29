@@ -16,20 +16,13 @@ func! s:GetBlameOutput(config)
   endif
 
   " Query the blame at a specific point in history.
-  if has_key(a:config, 'at_revision')
-    let l:cmd .= a:config.at_revision . ' '
+  if has_key(a:config, 'revision')
+    let l:cmd .= a:config.revision . ' '
   endif
 
   let l:cmd .= '-- ' . fnameescape(a:config.file)
 
   return editor#util#ExecInDir(a:config.file, l:cmd)
-endfunc
-
-" Whether the line contains the given header.
-func! s:HasHeader(header, line)
-  let l:line_header = a:line[0:strlen(a:header) - 1]
-
-  return l:line_header is# a:header
 endfunc
 
 " Remove the line header.
@@ -49,11 +42,17 @@ let s:AUTHOR_TEMPLATE = {
       \   'zone': v:null,
       \ }
 
+let s:LINE_TEMPLATE = {
+      \   'prev_number': v:null,
+      \   'contents': v:null,
+      \   'number': v:null,
+      \ }
+
 let s:BLAME_TEMPLATE = {
-      \   'line': { 'contents': v:null, 'number': v:null },
       \   'committer': s:AUTHOR_TEMPLATE,
       \   'author': s:AUTHOR_TEMPLATE,
       \   'prev_filename': v:null,
+      \   'line': s:LINE_TEMPLATE,
       \   'prev_sha': v:null,
       \   'summary': v:null,
       \   'sha': v:null,
@@ -71,6 +70,7 @@ func! s:AddShaDetails(line, blame)
   let l:parts = split(a:line, ' ')
 
   let a:blame.sha = l:parts[0]
+  let a:blame.line.prev_number = str2nr(l:parts[1])
   let a:blame.line.number = str2nr(l:parts[2])
 endfunc
 
@@ -166,13 +166,99 @@ func! s:ParseBlameOutput(output, config)
   return l:line_blames
 endfunc
 
-" Get a list of metadata for each line.
-func! git#blame#(config)
-  call assert#truthy(
-        \   git#repo#IsFileTracked(a:config.file),
-        \   "Can't git-blame an untracked file."
-        \ )
+" Turn the list of ignored commits to { [hash] => true }
+" All commits are abbreviated to 7 characters.
+func! s:GetIgnoredCommitMap() abort
+  let l:ignored = get(g:, 'git#blame#ignored_commits', [])
+  call assert#type(l:ignored, 'list', 'ignored_commits should be a list.')
 
-  let l:output = s:GetBlameOutput(a:config)
-  return s:ParseBlameOutput(l:output, a:config)
+  let l:map = {}
+  for l:commit in l:ignored
+    call assert#truthy(len(l:commit) >= 7, 'Hashes must be at least 7 characters.')
+
+    let l:commit_abbrev = l:commit[0:6]
+    let l:map[l:commit_abbrev] = v:true
+  endfor
+
+  return l:map
+endfunc
+
+" Replace blames when they exist in the prior set.
+func! s:ReplaceIgnoredCommits(results, prior) abort
+  let l:results = []
+
+  for l:blame in a:results
+    let l:deeper = get(a:prior, l:blame.prev_sha, {})
+    let l:is_ignored = has_key(l:deeper, l:blame.line.prev_number)
+
+    let l:commit = l:is_ignored ? l:deeper[l:blame.line.prev_number] : l:blame
+    call add(l:results, l:commit)
+  endfor
+
+  return l:results
+endfunc
+
+" Resolve and index prior commits
+func! s:ResolvePriorCommits(results, deeper_queries) abort
+  let l:results = copy(a:results)
+  let l:deeper_commits = {}
+
+  " Query and index: { [revision] => { [line] => blame } }
+  for l:query in values(a:deeper_queries)
+    let l:result = git#blame#(l:query)
+    let l:deeper_commits[l:query.revision] = {}
+
+    for l:blame in l:result
+      let l:deeper_commits[l:query.revision][l:blame.line.number] = l:blame
+    endfor
+  endfor
+
+  return s:ReplaceIgnoredCommits(a:results, l:deeper_commits)
+endfunc
+
+" Check metadata for blacklisted commits.
+func! s:DigDeeper(result) abort
+  let l:repo_root = git#repo#FindRoot(a:result.input.file)
+  let l:ignored = s:GetIgnoredCommitMap()
+  let l:lookups = {} " { [hash]: <blame_config> }
+
+  for l:blame in a:result.output
+    " Only dig deeper for ignored commits with more history.
+    if !has_key(l:ignored, l:blame.sha[0:6]) || !l:blame.prev_sha
+      continue
+    endif
+
+    let l:index = l:blame.prev_sha
+    if !has_key(l:lookups, l:index)
+      let l:file = l:repo_root . '/' . l:blame.prev_filename
+      let l:lookups[l:index] = {}
+      let l:lookups[l:index].file = l:file
+      let l:lookups[l:index].revision = l:index
+      let l:lookups[l:index].ranges = []
+    endif
+
+    let l:line = l:blame.line.prev_number
+    call add(l:lookups[l:index].ranges, [l:line, l:line])
+  endfor
+
+  " No queried lines had ignored commits.
+  if empty(l:lookups)
+    return a:result.output
+  endif
+
+  return s:ResolvePriorCommits(a:result.output, l:lookups)
+endfunc
+
+" Get a list of metadata for each line.
+func! git#blame#(blame)
+  let l:revision = get(a:blame, 'revision', v:null)
+  let l:track_config = { 'revision': l:revision }
+  let l:is_tracked = git#repo#IsFileTracked(a:blame.file, l:track_config)
+
+  call assert#truthy(l:is_tracked, "Can't git-blame an untracked file.")
+
+  let l:output = s:GetBlameOutput(a:blame)
+  let l:ownerships = s:ParseBlameOutput(l:output, a:blame)
+
+  return s:DigDeeper({ 'output': l:ownerships, 'input': a:blame })
 endfunc
