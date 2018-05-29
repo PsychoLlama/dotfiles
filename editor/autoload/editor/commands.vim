@@ -86,13 +86,14 @@ endfunc
 
 " :Node repl
 func! editor#commands#Node() abort
+  call assert#truthy(executable('node'), 'No node executable.')
   let l:project = editor#js#FindPackageRoot()
 
   new Node Repl
   wincmd J
   resize 10
   execute 'lcd ' . fnameescape(l:project)
-  execute 'term node'
+  call termopen('node')
   normal! A
 
   call editor#metrics#TrackEvent(':Node', {})
@@ -101,13 +102,9 @@ endfunc
 
 " :Reset (resets the file to HEAD state)
 func! editor#commands#Reset() abort
-  let l:file = fnameescape(expand('%:p'))
-  let l:symlink_pointer = system('readlink ' . l:file)
-
-  " Attempt to resolve symlinks.
-  if len(l:symlink_pointer)
-    let l:file = editor#util#chomp(l:symlink_pointer)
-  endif
+  " Resolve any symlinks.
+  let l:file = fnameescape(resolve(expand('%:p')))
+  let l:view = winsaveview()
 
   " system(...) uses the cwd context. Not good if
   " you execute this from a different repo.
@@ -116,8 +113,16 @@ func! editor#commands#Reset() abort
   call system('git checkout -- ' . l:file)
   cd! -
 
+  " Reload the file.
   silent edit!
   silent write
+
+  " Calling `edit` changes the view position.
+  call winrestview(l:view)
+
+  echohl String
+  echo 'Changes reverted.'
+  echohl None
 
   call editor#metrics#TrackEvent(':Reset', {})
 endfunc
