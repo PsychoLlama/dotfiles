@@ -24,7 +24,7 @@ if [[ -f "$env_manifest" ]]; then
   source "$env_manifest"
 
   # Merge the env & base manifests.
-  for env_dest in "${(k)DOTFILES_MANIFEST}"; do
+  for env_dest in "${(k)DOTFILES_MANIFEST[@]}"; do
     manifest[$env_dest]="${DOTFILES_MANIFEST[$env_dest]}"
   done
 fi
