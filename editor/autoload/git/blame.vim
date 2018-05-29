@@ -224,7 +224,8 @@ func! s:DigDeeper(result) abort
 
   for l:blame in a:result.output
     " Only dig deeper for ignored commits with more history.
-    if !has_key(l:ignored, l:blame.sha[0:6]) || !l:blame.prev_sha
+    let l:ignored = get(l:ignored, l:blame.sha[0:6], v:false)
+    if !l:ignored || l:blame.prev_sha is# v:null
       continue
     endif
 
