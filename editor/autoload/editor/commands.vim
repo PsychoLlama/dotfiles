@@ -153,34 +153,30 @@ endfunc
 
 " :Diff
 func! editor#commands#Diff() abort
-  let l:filename = expand('%:t')
-  let l:pane_name = l:filename . ' diff'
-
-  lcd! %:p:h
-  let l:diff_actual = systemlist('git diff HEAD -- ' . fnameescape(l:filename))
-  lcd! -
-
-  if v:shell_error
-    echo 'Diff command failed.'
+  if &modified
+    echo "Save 'em first."
     return
   endif
 
-  call editor#metrics#TrackEvent(':Diff', {})
+  let l:file = resolve(expand('%:p'))
+  let l:diff_actual = git#diff#Raw({ 'file': l:file, 'revision': 'HEAD' })
 
   if len(l:diff_actual) == 0
     echo 'No local changes.'
     return
   endif
 
-  execute 'new ' . l:pane_name
-  wincmd J
-  resize 20
+  let l:pane_name = 'diff (' . expand('%:t') . ')'
+  execute '12 new ' . l:pane_name
+  wincmd r
 
   call editor#util#SetPaneContents(l:diff_actual)
-
   setfiletype diff
+
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
   setlocal listchars= nomodifiable nowriteany nobuflisted nonumber
+
+  call editor#metrics#TrackEvent(':Diff', {})
 endfunc
 
 
