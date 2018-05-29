@@ -2,8 +2,8 @@ command! -nargs=? Permissions call stacktrace#Capture(
       \   function('editor#commands#Permissions', [<f-args>])
       \ )
 
-command! -range Author call stacktrace#Capture(
-      \   function('editor#commands#Author', [<line1>, <line2>])
+command! -range -bang Author call stacktrace#Capture(
+      \   function('editor#commands#Author', [<line1>, <line2>, <bang>0])
       \ )
 
 command! -nargs=1 Readme call stacktrace#Capture(

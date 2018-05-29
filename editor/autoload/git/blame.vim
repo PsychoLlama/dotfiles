@@ -261,5 +261,9 @@ func! git#blame#(blame)
   let l:output = s:GetBlameOutput(a:blame)
   let l:ownerships = s:ParseBlameOutput(l:output, a:blame)
 
+  if get(a:blame, 'include_all_commits')
+    return l:ownerships
+  endif
+
   return s:DigDeeper({ 'output': l:ownerships, 'input': a:blame })
 endfunc

@@ -13,8 +13,9 @@ func! s:GetAuthorOwnership(authors, total)
   return l:result
 endfunc
 
-func! s:FindAuthorsForRange(start, end) abort
+func! s:FindAuthorsForRange(start, end, all_commits) abort
   let l:line_blames = git#blame#({
+        \   'include_all_commits': a:all_commits,
         \   'ranges': [[a:start, a:end]],
         \   'file': expand('%:p'),
         \ })
@@ -29,8 +30,9 @@ func! s:FindAuthorsForRange(start, end) abort
   return s:GetAuthorOwnership(l:uniq_authors, a:end - a:start + 1.0)
 endfunc
 
-func! s:PrintLineDetails(line) abort
+func! s:PrintLineDetails(line, all_commits) abort
   let [l:details] = git#blame#({
+        \   'include_all_commits': a:all_commits,
         \   'ranges': [[a:line, a:line]],
         \   'file': expand('%:p'),
         \ })
@@ -49,8 +51,8 @@ func! s:PrintLineDetails(line) abort
 endfunc
 
 
-" :<range>Author
-func! editor#commands#Author(start, end) abort
+" :<range>Author[!]
+func! editor#commands#Author(start, end, all_commits) abort
   if &modified
     echo 'Save your changes first.'
     return
@@ -63,10 +65,10 @@ func! editor#commands#Author(start, end) abort
 
   " If there's only one selected line, show more details.
   if a:start == a:end
-    return s:PrintLineDetails(a:start)
+    return s:PrintLineDetails(a:start, a:all_commits)
   endif
 
-  for [l:author, l:ownership] in s:FindAuthorsForRange(a:start, a:end)
+  for [l:author, l:ownership] in s:FindAuthorsForRange(a:start, a:end, a:all_commits)
     echohl Clear
     echo l:author
     echohl Comment
