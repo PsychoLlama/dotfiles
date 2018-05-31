@@ -90,6 +90,9 @@ let g:ale_linters.python = ['pylint']
 let g:ale_linters.sh = ['shellcheck']
 let g:ale_linters.rust = ['rls']
 let g:ale_linters.vim = ['vint']
+let g:ale_pattern_options = {
+      \   '.*/node_modules/.*': { 'ale_enabled': v:false },
+      \ }
 
 let g:ale_fixers = {}
 let g:ale_fixers.javascript = ['prettier']
