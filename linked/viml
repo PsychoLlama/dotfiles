@@ -18,4 +18,4 @@ let g:__sourcefile = '$1'
 source $(dotfiles dir)/utils/headless-env.vim
 "
 
-nvim --headless -u NONE -c "$setup"
+nvim --headless -u NONE -c "$setup" 2>&1
