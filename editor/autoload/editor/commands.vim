@@ -100,8 +100,8 @@ func! editor#commands#Node() abort
 endfunc
 
 
-" :Reset (resets the file to HEAD state)
-func! editor#commands#Reset() abort
+" :Revert (reverts the file to HEAD state)
+func! editor#commands#Revert() abort
   " Resolve any symlinks.
   let l:file = fnameescape(resolve(expand('%:p')))
   let l:view = winsaveview()
@@ -124,7 +124,7 @@ func! editor#commands#Reset() abort
   echo 'Changes reverted.'
   echohl None
 
-  call editor#metrics#TrackEvent(':Reset', {})
+  call editor#metrics#TrackEvent(':Revert', {})
 endfunc
 
 
@@ -199,7 +199,7 @@ func! editor#commands#Z(...) abort
   endif
 
   " Ignore the frecency metric, just pull the dirname.
-  let l:directory = matchstr(l:matches[0], '\v/.*')
+  let l:directory = matchstr(l:matches[-1], '\v/.*')
   execute 'edit ' . l:directory
 endfunc
 

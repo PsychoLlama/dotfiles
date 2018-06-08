@@ -18,8 +18,8 @@ command! -nargs=+ Z call stacktrace#Capture(
       \   function('editor#commands#Z', [<f-args>])
       \ )
 
-command! Reset call stacktrace#Capture(
-      \   function('editor#commands#Reset')
+command! Revert call stacktrace#Capture(
+      \   function('editor#commands#Revert')
       \ )
 
 command! Diff call stacktrace#Capture(
