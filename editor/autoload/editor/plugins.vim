@@ -105,10 +105,11 @@ augroup adjust_ale_preview_pane
 augroup END
 
 " File browser config.
-let g:netrw_list_hide='^.DS_Store$,^.git/$,^\.\./$,^\./$'
-let g:netrw_localrmdir='rm -r'
-let g:netrw_use_errorwindow=0
-let g:netrw_banner=0
+let g:netrw_list_hide = '^.DS_Store$,^.git/$,^\.\./$,^\./$'
+let g:netrw_localrmdir = 'rm -r'
+let g:netrw_use_errorwindow = 0
+let g:netrw_banner = 0
+let g:zcd#path = systemlist('dotfiles dir')[0] . '/artifacts/z/z.sh'
 
 " Use vim-jsx for .js extensions too.
 let g:jsx_ext_required = 0
