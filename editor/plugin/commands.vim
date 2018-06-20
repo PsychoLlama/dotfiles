@@ -14,10 +14,6 @@ command! OpenTestFile call stacktrace#Capture(
       \   function('editor#commands#OpenTestFile')
       \ )
 
-command! -nargs=+ Z call stacktrace#Capture(
-      \   function('editor#commands#Z', [<f-args>])
-      \ )
-
 command! Revert call stacktrace#Capture(
       \   function('editor#commands#Revert')
       \ )

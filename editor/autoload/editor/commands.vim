@@ -185,25 +185,6 @@ func! editor#commands#Diff() abort
   call editor#metrics#TrackEvent(':Diff', {})
 endfunc
 
-
-" :Z ...args
-func! editor#commands#Z(...) abort
-  let l:z_path = system('printf "$(dotfiles dir)/artifacts/z/z.sh"')
-  let l:search = join(a:000, ' ')
-  let l:cmd = 'source ' . fnameescape(l:z_path) . '; _z -l ' . shellescape(l:search)
-
-  let l:matches = systemlist(l:cmd)
-  if len(l:matches) is 0
-    echo 'Nothing matches that description ("' . l:search . '").'
-    return
-  endif
-
-  " Ignore the frecency metric, just pull the dirname.
-  let l:directory = matchstr(l:matches[-1], '\v/.*')
-  execute 'edit ' . l:directory
-endfunc
-
-
 " :OpenTestFile
 func! editor#commands#OpenTestFile() abort
   let l:test_file = editor#js#LocateTestFile()
