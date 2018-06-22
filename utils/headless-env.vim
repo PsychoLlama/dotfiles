@@ -20,7 +20,7 @@ func! s:GetCliArgs() abort
   endwhile
 
   " Make the file name absolute.
-  let l:args[0] = getcwd() . '/' . l:args[0]
+  let l:args[0] = simplify(getcwd() . '/' . l:args[0])
 
   return l:args
 endfunc
