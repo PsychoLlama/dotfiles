@@ -48,7 +48,7 @@ func! s:explore_current_dir() abort
 
   let l:filename = expand('%:p:t')
   let l:curdir = expand('%:p:h')
-  execute 'edit ' . fnameescape(l:curdir)
+  execute 'edit! ' . fnameescape(l:curdir)
   call search(l:filename)
 endfunc
 
