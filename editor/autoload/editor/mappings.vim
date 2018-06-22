@@ -36,8 +36,8 @@ endfunc
 
 func! s:edit_vimrc() abort
   let l:cmd = isdirectory(expand('%:p')) ? 'edit' : 'tabedit'
-  let l:dotfiles = editor#util#chomp(system('dotfiles dir'))
-  execute l:cmd . ' ' . l:dotfiles . '/editor/autoload/editor'
+  let l:editor_path = dotfiles#Path('editor/autoload/editor')
+  execute l:cmd . ' ' . l:editor_path
 endfunc
 
 " :Rexplore only works if the file was opened via netrw.

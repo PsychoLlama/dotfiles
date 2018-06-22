@@ -109,7 +109,7 @@ let g:netrw_list_hide = '^.DS_Store$,^.git/$,^\.\./$,^\./$'
 let g:netrw_localrmdir = 'rm -r'
 let g:netrw_use_errorwindow = 0
 let g:netrw_banner = 0
-let g:zcd#path = systemlist('dotfiles dir')[0] . '/artifacts/z/z.sh'
+let g:zcd#path = dotfiles#Path('artifacts/z/z.sh')
 
 " Use vim-jsx for .js extensions too.
 let g:jsx_ext_required = 0
