@@ -13,9 +13,13 @@ if [[ ! -f "$1" ]]; then
   exit 1
 fi
 
-setup="
-let g:__sourcefile = '$1'
-source $(dotfiles dir)/utils/headless-env.vim
-"
+arg_file=/tmp/viml_argv_
+arg_index=0
+for arg in "$@"; do
+  echo "$arg" > "${arg_file}${arg_index}"
+  arg_index="$((arg_index + 1))"
+done
 
-nvim --headless -u NONE -c "$setup" 2>&1
+setup="source $(dotfiles dir)/utils/headless-env.vim"
+VIML_ARGV_FILE="$arg_file" VIML_ARGV_COUNT="$arg_index" \
+  nvim --headless -u NONE -c "$setup" 2>&1
