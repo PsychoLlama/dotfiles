@@ -50,6 +50,9 @@ Plug 'joshdick/onedark.vim'
 Plug 'PsychoLlama/snake.vim'
 Plug 'PsychoLlama/vim-gol'
 
+" VimScript
+Plug 'junegunn/vader.vim'
+
 call plug#end()
 
 " Color scheme
