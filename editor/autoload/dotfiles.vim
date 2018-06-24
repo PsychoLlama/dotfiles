@@ -6,6 +6,7 @@ endfunc
 
 func! dotfiles#Path(relative) abort
   let l:dotfiles_dir = dotfiles#Repo()
+  let l:path = substitute(a:relative, '\v^/', '', '')
 
-  return l:dotfiles_dir . '/' . a:relative
+  return l:dotfiles_dir . '/' . l:path
 endfunc

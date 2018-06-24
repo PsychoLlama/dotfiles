@@ -1,0 +1,26 @@
+### dotfiles#Repo(...) ###
+Execute (find the dotfiles repo):
+  let repo = dotfiles#Repo()
+  call assert#type(repo, 'string', 'Return is not a string')
+  call assert#truthy(isdirectory(repo), 'Not a directory: ' . repo)
+
+### dotfiles#Path(...) ###
+Execute (dotfiles path returns a string):
+  let result = dotfiles#Path('yolo')
+  call assert#type(result, 'string', 'Path is not a string')
+
+Execute (dotfiles path concatenation without leading slash):
+  let repo = dotfiles#Repo()
+  let path = 'artifacts/llama-theme.sh'
+  let result = dotfiles#Path(path)
+  let without_prefix = result[len(repo):]
+  let is_correct_prefix = without_prefix is# '/' . path
+  call assert#truthy(is_correct_prefix, 'Path was not added')
+
+Execute (concat with leading slash):
+  let repo = dotfiles#Repo()
+  let path = '/linked/viml'
+  let result = dotfiles#Path(path)
+  let without_prefix = result[len(repo):]
+  let is_correct_prefix = without_prefix is# path
+  call assert#truthy(is_correct_prefix, 'Extra slash was not removed')
