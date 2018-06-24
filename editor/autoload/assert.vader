@@ -1,0 +1,57 @@
+### assert#type(...) ###
+Before (utility functions):
+  func! g:ExpectError(fn)
+    try
+      call a:fn()
+      throw 'NONE'
+    catch /\v\C^(Vim)@!/
+      " Function didn't throw.
+      if v:exception is# 'NONE'
+        throw 'Expected function to throw.'
+      endif
+
+      return v:exception
+    endtry
+  endfunc
+
+Execute (passes when types match):
+  let s:types = [
+  \   ['number', -5],
+  \   ['float', 2.5],
+  \   ['string', 'hey'],
+  \   ['bool', v:false],
+  \   ['bool', v:true],
+  \   ['dict', {}],
+  \   ['list', []],
+  \   ['func', function('str2nr')],
+  \ ]
+
+  for [s:type, s:value] in s:types
+    call assert#type(s:value, s:type, 'Failed to recognize ' . s:type)
+  endfor
+
+Execute (throws when the type doesn't match):
+  call ExpectError({ -> assert#type(5, 'string', '') })
+  call ExpectError({ -> assert#type(5, 'float', '') })
+  call ExpectError({ -> assert#type(5, 'list', '') })
+
+  call ExpectError({ -> assert#type(5, 'float', '') })
+  call ExpectError({ -> assert#type(5, 'string', '') })
+
+  call ExpectError({ -> assert#type('str', 'bool', '') })
+  call ExpectError({ -> assert#type('str', 'number', '') })
+  call ExpectError({ -> assert#type('str', 'func', '') })
+  call ExpectError({ -> assert#type('str', 'dict', '') })
+
+  call ExpectError({ -> assert#type({-> 5}, 'str', '') })
+  call ExpectError({ -> assert#type({-> 5}, 'number', '') })
+
+  call ExpectError({ -> assert#type({}, 'list', '') })
+  call ExpectError({ -> assert#type({}, 'number', '') })
+
+  call ExpectError({ -> assert#type([], 'dict', '') })
+  call ExpectError({ -> assert#type([], 'string', '') })
+
+Execute (throws the provided message when types mismatch):
+  let msg = ExpectError({ -> assert#type(0, 'dict', 'YOLO') })
+  AssertEqual msg, 'YOLO'
