@@ -55,3 +55,27 @@ Execute (throws when the type doesn't match):
 Execute (throws the provided message when types mismatch):
   let msg = ExpectError({ -> assert#type(0, 'dict', 'YOLO') })
   AssertEqual msg, 'YOLO'
+
+Execute (throws if given an invalid type):
+  let msg = ExpectError({ -> assert#type(0, 'waffle', 'msg') })
+  AssertEqual msg =~# '\cinvalid', 1
+
+
+### assert#truthy(...) ###
+Execute (passes when the value is truthy):
+  call assert#truthy(v:true, 'boolean')
+  call assert#truthy(1, 'number')
+  call assert#truthy(0.5, 'float')
+  call assert#truthy({}, 'dict')
+  call assert#truthy([], 'list')
+  call assert#truthy({-> 5}, 'function')
+
+Execute (fails if the value is falsy):
+  call ExpectError({ -> assert#truthy(v:null, '') })
+  call ExpectError({ -> assert#truthy(v:false, '') })
+  call ExpectError({ -> assert#truthy(0, '') })
+  call ExpectError({ -> assert#truthy('', '') })
+
+Execute (throws the given error if the value is falsy):
+  let msg = ExpectError({ -> assert#truthy(v:false, 'economy') })
+  AssertEqual msg, 'economy'

@@ -18,7 +18,7 @@ func! s:CoerceToNumber(value) abort
 endfunc
 
 func! s:CoerceToBool(value) abort
-  return s:CoerceToNumber(a:value) ? v:true : v:false
+  return s:CoerceToNumber(a:value) != 0 ? v:true : v:false
 endfunc
 
 " Throw an error if the value is falsy.
