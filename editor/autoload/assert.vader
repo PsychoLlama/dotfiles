@@ -78,4 +78,4 @@ Execute (fails if the value is falsy):
 
 Execute (throws the given error if the value is falsy):
   let msg = ExpectError({ -> assert#truthy(v:false, 'economy') })
-  AssertEqual msg, 'wut'
+  AssertEqual msg, 'economy'
