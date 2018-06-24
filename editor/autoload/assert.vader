@@ -61,21 +61,21 @@ Execute (throws if given an invalid type):
   AssertEqual msg =~# '\cinvalid', 1
 
 
-### assert#truthy(...) ###
+### assert#(...) ###
 Execute (passes when the value is truthy):
-  call assert#truthy(v:true, 'boolean')
-  call assert#truthy(1, 'number')
-  call assert#truthy(0.5, 'float')
-  call assert#truthy({}, 'dict')
-  call assert#truthy([], 'list')
-  call assert#truthy({-> 5}, 'function')
+  call assert#(v:true, 'boolean')
+  call assert#(1, 'number')
+  call assert#(0.5, 'float')
+  call assert#({}, 'dict')
+  call assert#([], 'list')
+  call assert#({-> 5}, 'function')
 
 Execute (fails if the value is falsy):
-  call ExpectError({ -> assert#truthy(v:null, '') })
-  call ExpectError({ -> assert#truthy(v:false, '') })
-  call ExpectError({ -> assert#truthy(0, '') })
-  call ExpectError({ -> assert#truthy('', '') })
+  call ExpectError({ -> assert#(v:null, '') })
+  call ExpectError({ -> assert#(v:false, '') })
+  call ExpectError({ -> assert#(0, '') })
+  call ExpectError({ -> assert#('', '') })
 
 Execute (throws the given error if the value is falsy):
-  let msg = ExpectError({ -> assert#truthy(v:false, 'economy') })
+  let msg = ExpectError({ -> assert#(v:false, 'economy') })
   AssertEqual msg, 'economy'

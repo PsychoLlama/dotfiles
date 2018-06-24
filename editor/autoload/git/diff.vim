@@ -1,7 +1,7 @@
 " Get a human-friendly diff.
 func! git#diff#Raw(query) abort
   let l:repo_root = git#repo#FindRoot(a:query.file)
-  call assert#truthy(l:repo_root, 'Not inside a repo.')
+  call assert#(l:repo_root, 'Not inside a repo.')
   let l:cmd = 'git diff '
 
   " Diff from revision.
@@ -12,7 +12,7 @@ func! git#diff#Raw(query) abort
   let l:cmd .= '-- ' . fnameescape(a:query.file)
 
   let l:output = editor#util#ExecInDir(l:repo_root, l:cmd)
-  call assert#truthy(!v:shell_error, 'git-diff failed.')
+  call assert#(!v:shell_error, 'git-diff failed.')
 
   return l:output
 endfunc

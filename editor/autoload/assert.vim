@@ -22,7 +22,7 @@ func! s:CoerceToBool(value) abort
 endfunc
 
 " Throw an error if the value is falsy.
-func! assert#truthy(value, message) abort
+func! assert#(value, message) abort
   if !s:CoerceToBool(a:value)
     throw a:message
   endif

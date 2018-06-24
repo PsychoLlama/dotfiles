@@ -2,7 +2,7 @@
 Execute (find the dotfiles repo):
   let repo = dotfiles#Repo()
   call assert#type(repo, 'string', 'Return is not a string')
-  call assert#truthy(isdirectory(repo), 'Not a directory: ' . repo)
+  call assert#(isdirectory(repo), 'Not a directory: ' . repo)
 
 ### dotfiles#Path(...) ###
 Execute (dotfiles path returns a string):
@@ -15,7 +15,7 @@ Execute (dotfiles path concatenation without leading slash):
   let result = dotfiles#Path(path)
   let without_prefix = result[len(repo):]
   let is_correct_prefix = without_prefix is# '/' . path
-  call assert#truthy(is_correct_prefix, 'Path was not added')
+  call assert#(is_correct_prefix, 'Path was not added')
 
 Execute (concat with leading slash):
   let repo = dotfiles#Repo()
@@ -23,4 +23,4 @@ Execute (concat with leading slash):
   let result = dotfiles#Path(path)
   let without_prefix = result[len(repo):]
   let is_correct_prefix = without_prefix is# path
-  call assert#truthy(is_correct_prefix, 'Extra slash was not removed')
+  call assert#(is_correct_prefix, 'Extra slash was not removed')

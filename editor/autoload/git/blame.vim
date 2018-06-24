@@ -174,7 +174,7 @@ func! s:GetIgnoredCommitMap() abort
 
   let l:map = {}
   for l:commit in l:ignored
-    call assert#truthy(len(l:commit) >= 7, 'Hashes must be at least 7 characters.')
+    call assert#(len(l:commit) >= 7, 'Hashes must be at least 7 characters.')
 
     let l:commit_abbrev = l:commit[0:6]
     let l:map[l:commit_abbrev] = v:true
@@ -256,7 +256,7 @@ func! git#blame#(blame)
   let l:track_config = { 'revision': l:revision }
   let l:is_tracked = git#repo#IsFileTracked(a:blame.file, l:track_config)
 
-  call assert#truthy(l:is_tracked, "Can't git-blame an untracked file.")
+  call assert#(l:is_tracked, "Can't git-blame an untracked file.")
 
   let l:output = s:GetBlameOutput(a:blame)
   let l:ownerships = s:ParseBlameOutput(l:output, a:blame)

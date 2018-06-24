@@ -86,7 +86,7 @@ endfunc
 
 " :Node repl
 func! editor#commands#Node() abort
-  call assert#truthy(executable('node'), 'No node executable.')
+  call assert#(executable('node'), 'No node executable.')
   let l:project = editor#js#FindPackageRoot()
 
   new Node Repl
