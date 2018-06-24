@@ -1,17 +1,12 @@
 scriptencoding utf-8
 
-" Get python3 executable location.
-func! s:get_exe_path(prog) abort
-  let l:path = system('command -v ' . shellescape(a:prog))
-  return substitute(l:path, '\n$', '', '')
-endfunc
-
+" Set python executable paths. Used for remote neovim plugins.
 if executable('python3')
-  let g:python3_host_prog = s:get_exe_path('python3')
+  let g:python3_host_prog = exepath('python3')
 endif
 
 if executable('python2')
-  let g:python2_host_prog = s:get_exe_path('python2')
+  let g:python2_host_prog = exepath('python2')
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -95,6 +90,7 @@ let g:ale_pattern_options = {
       \   '.*/node_modules/.*': { 'ale_enabled': v:false },
       \ }
 
+" Autoformatters.
 let g:ale_fixers = {}
 let g:ale_fixers.javascript = ['prettier']
 let g:ale_fixers.rust = ['rustfmt']
