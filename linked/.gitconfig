@@ -6,6 +6,7 @@
   rr = reset --hard HEAD
   rrr = reset --hard HEAD^
   p = push --set-upstream origin
+  pf = push --set-upstream origin --force-with-lease
   s = stash
   ss = stash save --include-untracked
   pl = pull --prune origin
