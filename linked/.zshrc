@@ -26,6 +26,16 @@ alias H='git diff HEAD'
 alias HH='git diff HEAD~1'
 alias HHH='git diff HEAD~2'
 
+# Branch "dirstack"
+alias b1='ch @{-1}'
+alias b2='ch @{-2}'
+alias b3='ch @{-3}'
+alias b4='ch @{-4}'
+alias b5='ch @{-5}'
+alias b6='ch @{-6}'
+alias b7='ch @{-7}'
+alias b8='ch @{-8}'
+alias b9='ch @{-9}'
 
 ### Functions ###
 function mkcd {
