@@ -2,6 +2,7 @@
   a = add -A
   d = diff
   l = log -1000 --format='%Cgreen%h%Creset: %an (%C(yellow)%ar%Creset)%n%s%n%n%b'
+  cat = cat-file -p
   r = reset
   rr = reset --hard HEAD
   rrr = reset --hard HEAD^
@@ -13,6 +14,7 @@
   amend = commit --amend
   ls = ls-files
   mr = !"$(dotfiles dir)/utils/get-MR-name.sh"
+  branch-history = !"$(dotfiles dir)/utils/show-git-branch-history"
 [user]
   email = JesseTheGibson@gmail.com
   name = Jesse Gibson

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+declare -a branch_history=()
+limit="$((${1:-10} + 0))"
+index=1
+
+# Traverse history until either the limit is satisfied
+# or we've run out of branches.
+while (( "${#branch_history[@]}" < "$limit" )); do
+  last_index="$((${#branch_history[@]} - 1))"
+
+  if (( last_index > -1 )); then
+    last_branch="${branch_history[$last_index]}"
+  fi
+
+  # Get the branch name.
+  branch_at_index="$(git rev-parse --abbrev-ref "@{-$index}" 2> /dev/null)"
+
+  # One of two things happened:
+  # A: the branch was deleted
+  # B: we've run out of branches
+  if (( $? != 0 )); then break; fi
+
+  index="$(( index + 1 ))"
+
+  # Branch history isn't deduplicated.
+  if [[ "$branch_at_index" == "$last_branch" ]]; then
+    continue
+  fi
+
+  branch_history=("${branch_history[@]}" "$branch_at_index")
+done
+
+# Print each branch on a new line.
+for item in "${branch_history[@]}"; do
+  echo "$item"
+done
