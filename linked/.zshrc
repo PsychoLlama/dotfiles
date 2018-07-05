@@ -27,15 +27,15 @@ alias HH='git diff HEAD~1'
 alias HHH='git diff HEAD~2'
 
 # Branch "dirstack"
-alias b1='ch @{-1}'
-alias b2='ch @{-2}'
-alias b3='ch @{-3}'
-alias b4='ch @{-4}'
-alias b5='ch @{-5}'
-alias b6='ch @{-6}'
-alias b7='ch @{-7}'
-alias b8='ch @{-8}'
-alias b9='ch @{-9}'
+alias b1='git checkout "$(git branch-history 1 | tail -1)"'
+alias b2='git checkout "$(git branch-history 2 | tail -1)"'
+alias b3='git checkout "$(git branch-history 3 | tail -1)"'
+alias b4='git checkout "$(git branch-history 4 | tail -1)"'
+alias b5='git checkout "$(git branch-history 5 | tail -1)"'
+alias b6='git checkout "$(git branch-history 6 | tail -1)"'
+alias b7='git checkout "$(git branch-history 7 | tail -1)"'
+alias b8='git checkout "$(git branch-history 8 | tail -1)"'
+alias b9='git checkout "$(git branch-history 9 | tail -1)"'
 
 ### Functions ###
 function mkcd {
