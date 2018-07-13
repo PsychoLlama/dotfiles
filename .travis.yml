@@ -2,7 +2,7 @@ language: rust
 sudo: required
 
 script:
-  - ./setup.sh
+  - ./setup
   - ./editor/test.sh
 os:
 - linux
