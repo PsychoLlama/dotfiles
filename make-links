@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -e
+
+# Symlink stuff from the linked/ directory
+# Constraints:
+# - Bash v3 compatible (no hashmaps)
+# - No ./install specific tooling (this runs before ./install)
+
+dotfiles_dir="$(dotfiles dir)"
+yellow='\033[0;33m'
+green='\033[0;32m'
+gray='\033[1;37m'
+red='\033[0;31m'
+reset='\033[0;0m'
+
+function show_error {
+  echo -e "${red}Error:$reset" "$*" 1>&2
+}
+
+function shorten_path {
+  echo "${1/$HOME/~}"
+}
+
+function validate_targets {
+  while read -r src dest; do
+    local dest_path="$dotfiles_dir/linked/$dest"
+
+    if [[ ! -f "$dest_path" ]]; then
+      show_error Skipping nonexistent file \
+        "$gray($dest)$reset"
+    fi
+
+    echo "$src" "$dest"
+  done
+}
+
+function create_link {
+  local target_folder="$(dirname "$1")"
+  local src="$(shorten_path "$1")"
+  local dest="$dotfiles_dir/linked/$2"
+
+  mkdir -p "$target_folder"
+
+  ln -sf "$dest" "$1" || {
+    local plan="$gray($reset$src $green=>$reset $2$gray)$reset."
+    show_error "Symlink failed $plan"
+    return 1
+  }
+
+  echo -e "$yellow{$reset $src $green=>$reset $2 $yellow}$reset"
+}
+
+function process_manifest_output {
+  while read -r src dest; do
+    create_link "$src" "$dest"
+  done
+}
+
+# shellcheck source=linked/manifest.sh
+source "$dotfiles_dir/linked/manifest.sh"
+
+get_dotfiles_manifest \
+  | validate_targets \
+  | process_manifest_output
