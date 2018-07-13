@@ -48,16 +48,17 @@ function create_link {
   local target_folder="$(dirname "$1")"
   local src="$(shorten_path "$1")"
   local dest="$(resolve_path "$2")"
+  local pretty_dest="$(shorten_path "$dest")"
 
   mkdir -p "$target_folder"
 
   ln -sf "$dest" "$1" || {
-    local plan="$gray($reset$src $green=>$reset $2$gray)$reset."
+    local plan="$gray($reset$src $green=>$reset $pretty_dest$gray)$reset."
     show_error "Symlink failed $plan"
     return 1
   }
 
-  echo -e "$yellow{$reset $src $green=>$reset $2 $yellow}$reset"
+  echo -e "$yellow{$reset $src $green=>$reset $pretty_dest $yellow}$reset"
 }
 
 function process_manifest_output {
