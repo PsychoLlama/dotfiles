@@ -18,7 +18,7 @@ function show_error {
 }
 
 function shorten_path {
-  echo "${1/$HOME/~}"
+  sed "s+$HOME+~+" <<< "$1"
 }
 
 function resolve_path {
