@@ -57,6 +57,8 @@ if ! cmd_exists rustup; then
 
   chmod +x "$RUST_INSTALLER_DEST"
   "$RUST_INSTALLER_DEST" -y --default-toolchain nightly
+
+  PATH="$PATH":~/.cargo/bin
 fi
 
 # Compile dotfiles
