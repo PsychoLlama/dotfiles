@@ -21,13 +21,23 @@ function shorten_path {
   echo "${1/$HOME/~}"
 }
 
+function resolve_path {
+  local dest="$1"
+
+  if [[ "${dest:0:1}" == '/' ]]; then
+    echo "$1"
+  else
+    echo "$dotfiles_dir/linked/$1"
+  fi
+}
+
 function validate_targets {
   while read -r src dest; do
-    local dest_path="$dotfiles_dir/linked/$dest"
+    local dest_path="$(resolve_path "$dest")"
 
     if [[ ! -f "$dest_path" ]]; then
       show_error Skipping nonexistent file \
-        "$gray($dest)$reset"
+        "$gray($dest_path)$reset"
     fi
 
     echo "$src" "$dest"
@@ -37,7 +47,7 @@ function validate_targets {
 function create_link {
   local target_folder="$(dirname "$1")"
   local src="$(shorten_path "$1")"
-  local dest="$dotfiles_dir/linked/$2"
+  local dest="$(resolve_path "$2")"
 
   mkdir -p "$target_folder"
 
