@@ -1,7 +1,0 @@
-{
-  "~/.tmuxinator/edit.yml": "./.tmuxinator/edit.yml",
-  "~/.config/nvim/init.vim": "./init.vim",
-  "~/.gitconfig": "./.gitconfig",
-  "~/.tmux.conf": "./.tmux.conf",
-  "~/.zshrc": "./.zshrc"
-}
