@@ -9,7 +9,7 @@ function get_dotfiles_manifest {
   echo ~/.tmux.conf .tmux.conf
   echo ~/.zshrc .zshrc
 
-  local symlink_manifest=~/dotfiles-env/symlink-manifest.sh
+  local symlink_manifest=~/dotfiles-env/linked/manifest.sh
   if [[ -f "$symlink_manifest" ]]; then
     source "$symlink_manifest"
   fi
