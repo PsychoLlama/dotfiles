@@ -5,7 +5,7 @@ A collection of spaghetti code masquerading as a dotfiles framework.
   Don't actually use this. Feel free to browse and cannibalize the source, but please don't depend on the repo.
 
 ## What it does
-After installation (`./setup.sh`), there's a `dotfiles` command. It's the entrypoint to the framework.
+After installation (`./setup`), there's a `dotfiles` command. It's the entrypoint to the framework.
 
 ```
 Usage: dotfiles [command]
@@ -16,7 +16,7 @@ Usage: dotfiles [command]
     eject   - Gather historical files into a tarball
 ```
 
-Running `$ dotfiles update` pulls for changes, relinks all the config files (`./linked/manifest.json`), and ensures all the system dependencies have been installed (`zsh`, `ag`, `python3`, `neovim`... see: `./install.sh`).
+Running `$ dotfiles update` pulls for changes, relinks all the config files (`./linked/manifest.json`), and ensures all the system dependencies have been installed (`zsh`, `ag`, `python3`, `neovim`... see: `./install`).
 
 It also manages quite possibly the most complex vimrc known to mankind (`./editor`).
 

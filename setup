@@ -67,7 +67,7 @@ cargo build --color always
 popd > /dev/null
 
 # Make the `dotfiles` command.
-as_root ln -sf "$DOTFILES_DIR/dotfiles.sh" "/usr/local/bin/dotfiles"
+as_root ln -sf "$DOTFILES_DIR/dotfiles" "/usr/local/bin/dotfiles"
 
 # Some installs (like neovim) depend on these symlinks.
 dotfiles link > /dev/null

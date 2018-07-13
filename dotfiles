@@ -43,11 +43,6 @@ function print_help {
   echo ""
 }
 
-# Install all the dependencies.
-function install {
-  bash "$DOTFILES_DIR/install.sh"
-}
-
 # Figure out what command to run.
 case "$1" in
   "link")
@@ -59,13 +54,13 @@ case "$1" in
     update
     ;;
   "install")
-    install
+    "$DOTFILES_DIR/install"
     ;;
   "dir")
     echo "$DOTFILES_DIR"
     ;;
   "eject")
-    "$DOTFILES_DIR/eject.sh"
+    "$DOTFILES_DIR/eject"
     ;;
   *)
     if [[ ! -z "$1" && "$1" != "--help" ]]; then
