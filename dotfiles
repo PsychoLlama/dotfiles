@@ -9,7 +9,6 @@ function update {
 
   echo Updating dotfiles...
   git pull origin
-  cargo build --color always
 
   dotfiles install
   dotfiles link
