@@ -52,6 +52,8 @@ func! s:explore_current_dir() abort
   call search(l:filename)
 endfunc
 
+let g:mapleader = "\<space>"
+
 inoremap <silent><expr><TAB> <SID>tab_completion(0)
 inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
 nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
