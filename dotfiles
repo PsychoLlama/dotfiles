@@ -47,7 +47,7 @@ case "$1" in
   "link")
     # Call through to Rust. Eventually, this dotfiles
     # script will be replaced with a Rust implementation.
-    "$DOTFILES_DIR/make-links"
+    sudo "$DOTFILES_DIR/make-links"
     ;;
   "update")
     update
