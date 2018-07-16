@@ -22,6 +22,8 @@
   editor = nvim
 [push]
   default = current
+[rebase]
+  autoStash = true
 [merge]
   tool = vimdiff
 [mergetool "vimdiff"]
