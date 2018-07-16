@@ -34,6 +34,8 @@ set number
 set mouse=
 set list
 
+let g:mapleader = "\<space>"
+
 " Add persistent undo.
 let &undodir = expand('~/.vim/undodir')
 if !isdirectory(&undodir)
