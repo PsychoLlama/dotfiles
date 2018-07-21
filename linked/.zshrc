@@ -5,11 +5,11 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 export TERM=screen-256color
 export ZSH=~/.oh-my-zsh
 export EDITOR=nvim
-
 export N_PREFIX=~/.n
 export PATH="$N_PREFIX/bin:$PATH"
 export PATH=~/.cargo/bin:"$PATH"
 export MANPAGER='nvim -c "setfiletype man" -'
+export fpath=("$(dotfiles dir)/completions" $fpath)
 
 
 ### Aliases ###
@@ -248,3 +248,6 @@ source "$ARTIFACTS/llama-theme.sh"
 if [[ -e ~/dotfiles-env/.zshrc ]]; then
   source ~/dotfiles-env/.zshrc
 fi
+
+### Completions ###
+compdef t=tmux
