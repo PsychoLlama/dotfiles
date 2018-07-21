@@ -7,13 +7,14 @@ A collection of spaghetti code masquerading as a dotfiles framework.
 ## What it does
 After installation (`./setup`), there's a `dotfiles` command. It's the entrypoint to the framework.
 
-```
-Usage: dotfiles [command]
+```txt
+Usage: dotfiles <command>
+    update  - Update the dotfiles framework
     link    - Symlink everything in 'dotfiles/linked'
-    update  - Pull dotfile changes from git
     install - Install system-wide dependencies
     dir     - Print the dotfiles directory
     eject   - Gather historical files into a tarball
+    unpack  - Restore ejected files back to their origin
 ```
 
 Running `$ dotfiles update` pulls for changes, relinks all the config files (`./linked/manifest.json`), and ensures all the system dependencies have been installed (`zsh`, `ag`, `python3`, `neovim`... see: `./install`).
