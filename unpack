@@ -1,0 +1,41 @@
+#!/usr/bin/env zsh
+set -e
+
+if (( $# == 0 )); then
+  echo Requires a path to the parachute.
+  exit 1
+fi
+
+if [[ ! -d "$1" ]]; then
+  echo "That doesn't look like a directory."
+  exit 1
+fi
+
+function warn {
+  echo "WARN: $*"
+}
+
+parachute="$1"
+source "$(dotfiles dir)/get-manifest"
+
+for title in "${(k)MANIFEST[@]}"; do
+  dest="${MANIFEST[$title]}"
+  src="$parachute/$title"
+
+  # Skip items which aren't in the parachute.
+  if [[ ! -e "$src" ]]; then
+    warn "Parachute doesn't have '$title'"
+    continue
+  fi
+
+  # Let's hope this doesn't kill us all someday.
+  rm -rf "$dest"
+  mv "$src" "$dest"
+done
+
+# Only remove the parachute if all items have been unpacked.
+if rmdir "$parachute" &> /dev/null; then
+  echo Finished unpacking
+else
+  warn Not all items could be unpacked automatically.
+fi

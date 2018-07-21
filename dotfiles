@@ -38,6 +38,7 @@ function print_help {
   indent 2 "install - Install system-wide dependencies"
   indent 2 "dir     - Print the dotfiles directory"
   indent 2 "eject   - Gather historical files into a tarball"
+  indent 2 "unpack  - Restore ejected files back to their origin"
 
   echo ""
 }
@@ -60,6 +61,9 @@ case "$1" in
     ;;
   "eject")
     "$DOTFILES_DIR/eject"
+    ;;
+  "unpack")
+    "$DOTFILES_DIR/unpack" "${@:2}"
     ;;
   *)
     if [[ ! -z "$1" && "$1" != "--help" ]]; then
