@@ -13,12 +13,11 @@ call plug#begin('~/.vim/plugged')
 
 " Filetype plugins
 Plug 'davinche/godown-vim', { 'for': 'markdown' }
-Plug 'cespare/vim-toml', { 'for': 'toml' }
-Plug 'chrisbra/csv.vim', { 'for': 'csv' }
 Plug 'PsychoLlama/further.vim'
 Plug 'jparise/vim-graphql'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-markdown'
+Plug 'cespare/vim-toml'
 Plug 'othree/yajs.vim'
 Plug 'mxw/vim-jsx'
 
