@@ -6,6 +6,7 @@ set listchars=tab:··,trail:·
 set backupdir=~/.vim/backup
 set nrformats=octal,hex,bin
 set clipboard+=unnamedplus
+set fileformat=unix
 set backupcopy=yes
 set signcolumn=yes
 set numberwidth=2
