@@ -1,5 +1,4 @@
-" Echo the (S)yntax (N)ame under the cursor.
-command! SN echo synIDattr(synID(line('.'), col('.'), v:true), 'name')
+command! SN call stacktrace#Capture(function('editor#commands#SyntaxName'))
 
 command! -nargs=? Permissions call stacktrace#Capture(
       \   function('editor#commands#Permissions', [<f-args>])

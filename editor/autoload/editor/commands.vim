@@ -1,3 +1,17 @@
+" :SN -- Echo the (S)yntax (N)ame under the cursor.
+func! editor#commands#SyntaxName() abort
+  let l:syn_id = synID(line('.'), col('.'), v:true)
+  let l:syn_name = synIDattr(l:syn_id, 'name')
+
+  if empty(l:syn_name)
+    echo 'No syntax ID. Lame.'
+    return
+  endif
+
+  " Prints syntax metadata.
+  execute 'highlight ' . l:syn_name
+endfunc
+
 " Order authors by quantity of lines written.
 func! s:GetAuthorOwnership(authors, total)
   let l:result = []
