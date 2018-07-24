@@ -35,6 +35,7 @@ set number
 set mouse=
 set list
 
+nnoremap <space> <nop>
 let g:mapleader = "\<space>"
 
 " Add persistent undo.
