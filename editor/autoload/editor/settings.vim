@@ -23,8 +23,9 @@ set ignorecase
 set shiftround
 set grepprg=ag
 set expandtab
-set linebreak
 set incsearch
+set linebreak
+set smartcase
 set tabstop=2
 set autoread
 set undofile
