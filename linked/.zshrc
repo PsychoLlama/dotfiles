@@ -43,7 +43,12 @@ function mkcd {
 }
 
 function edit {
-  local session_name="$(basename "$PWD")"
+  local session_name="$1"
+
+  if [[ -z "$session_name" ]]; then
+    session_name="$(basename "$PWD")"
+  fi
+
   tmuxinator start edit -n "$session_name"
 }
 
@@ -117,6 +122,10 @@ function gag {
     --ignore flow-typed/ \
     --ignore static/ \
     --ignore build/
+}
+
+function gg {
+  gag "$@" --ignore __tests__ --ignore tests
 }
 
 function v {
