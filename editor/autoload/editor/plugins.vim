@@ -31,6 +31,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-markdown'
 Plug 'cespare/vim-toml'
 Plug 'othree/yajs.vim'
+Plug 'chr4/nginx.vim'
 Plug 'mxw/vim-jsx'
 
 " ALL HAIL TIM POPE
