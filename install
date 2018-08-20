@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 set -e
 
 ARTIFACTS_DIR="$(dotfiles dir)/artifacts"
@@ -31,6 +32,29 @@ function installed {
   which "$1" &> /dev/null
 
   return $?
+}
+
+function platform_name {
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    echo mac
+    return
+  fi
+
+  if installed apt-get; then
+    echo ubuntu
+    return
+  fi
+}
+
+function platform_version {
+  local platform="$(platform_name)"
+
+  if [[ "$platform" == mac ]]; then
+    uname -r
+  else
+    source /etc/os-release
+    echo "$VERSION_ID"
+  fi
 }
 
 INSTALL_CMD=""
@@ -475,30 +499,27 @@ ensure openssl
 ensure automake
 ensure_python3
 
-# PPAs.
-if installed apt-get; then
+# Ubuntu PPAs.
+if [[ "$(platform_name)" == ubuntu ]]; then
   ensure_apt_add_command
   UPDATE=
 
-  # Yarn.
   if ! installed yarn; then
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
     UPDATE=1
   fi
 
-  if ! installed ruby2.4; then
-
-    # Ruby PPA (ruby-full doesn't work pre-xenial).
+  # Ruby PPA (ruby-full doesn't work pre-xenial). No PPA is required
+  if ! installed ruby && ! installed ruby2.4; then
     sudo add-apt-repository -y ppa:brightbox/ruby-ng
     UPDATE=1
   fi
 
   if ! installed nvim; then
     neovim_ppa="ppa:neovim-ppa/stable"
-    source /etc/os-release
 
-    if [[ "${VERSION//.*/}" -lt "16" ]]; then
+    if [[ "$(platform_version)" -lt 16 ]]; then
       neovim_ppa="ppa:neovim-ppa/unstable"
     fi
 
