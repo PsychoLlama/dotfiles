@@ -57,6 +57,13 @@ function platform_version {
   fi
 }
 
+# Exit 0 if $1 is the smaller of two version numbers.
+function version_lt {
+  local smallest_version="$(sort -V <(echo -e "$1\n$2") | head -1)"
+
+  [[ "$smallest_version" == "$1" ]]
+}
+
 INSTALL_CMD=""
 
 if installed brew; then
@@ -519,7 +526,7 @@ if [[ "$(platform_name)" == ubuntu ]]; then
   if ! installed nvim; then
     neovim_ppa="ppa:neovim-ppa/stable"
 
-    if [[ "$(platform_version)" -lt 16 ]]; then
+    if version_lt "$(platform_version)" 16; then
       neovim_ppa="ppa:neovim-ppa/unstable"
     fi
 
