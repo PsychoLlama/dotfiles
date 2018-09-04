@@ -25,7 +25,6 @@ call plug#begin('~/.vim/plugged')
 
 " Filetype plugins
 Plug 'davinche/godown-vim', { 'for': 'markdown' }
-Plug 'PsychoLlama/further.vim'
 Plug 'jparise/vim-graphql'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-markdown'
@@ -48,10 +47,16 @@ Plug 'autozimu/LanguageClient-neovim', {
 " Enhancements ✨
 Plug 'jiangmiao/auto-pairs'
 Plug 'Shougo/deoplete.nvim'
-Plug 'PsychoLlama/z.vim'
 Plug 'reedes/vim-pencil'
 Plug 'mbbill/undotree'
 Plug 'w0rp/ale'
+
+" Navigation
+Plug 'PsychoLlama/further.vim'
+Plug 'PsychoLlama/z.vim'
+
+Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.fzf' }
+Plug 'junegunn/fzf.vim'
 
 " Style 🦄
 Plug 'vim-airline/vim-airline'
@@ -102,6 +107,7 @@ let g:ale_linters.python = ['pylint']
 let g:ale_linters.sh = ['shellcheck']
 let g:ale_linters.rust = ['rls']
 let g:ale_linters.vim = ['vint']
+let g:ale_linters.java = []
 let g:ale_pattern_options = {
       \   '.*/node_modules/.*': { 'ale_enabled': v:false },
       \ }

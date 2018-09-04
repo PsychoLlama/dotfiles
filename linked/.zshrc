@@ -259,3 +259,5 @@ fi
 
 ### Completions ###
 compdef t=tmux
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
