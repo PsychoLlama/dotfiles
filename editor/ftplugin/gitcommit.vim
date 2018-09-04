@@ -2,6 +2,7 @@
 PencilHard
 
 setlocal textwidth=72
+setlocal spell
 call append(1, '')
 
 " Present a git diff
