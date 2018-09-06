@@ -145,73 +145,15 @@ function vs {
   nvim -p $(gag "$@" -l)
 }
 
-function vp {
-  local file_name="${1/.js/}"
-  local test_file="__tests__/$file_name"
-
-  if [[ -f "$test_file.spec.js" ]]; then
-    test_file="$test_file.spec.js"
-  elif [[ -f "$test_file.test.js" ]]; then
-    test_file="__tests__/$file_name.test.js"
-  elif [[ -d "__tests__" ]]; then
-    test_file="__tests__/"
-  else
-    test_file="./"
-  fi
-
-  v "$file_name.js" "$test_file"
+function vh {
+  v "$(git diff --name-only)"
 }
 
-function _find_file_in_repo {
-  local result="$(git ls-files | grep -i $1)"
-
-  if [[ -n "$2" ]]; then
-    result="$(awk "!$2 { print }" <<< "$result")"
+function vf {
+  local file
+  if file="$(fzf)"; then
+    v "$file"
   fi
-
-  # Get the top-most result.
-  result="$(head -1 <<< "$result")"
-
-  if [[ -z "$result" ]]; then
-    return 1
-  fi
-
-  echo "$result"
-}
-
-function goto {
-  local result="$(_find_file_in_repo "$1")"
-
-  if [[ -z "$result" ]]; then
-    echo "Nothing matched."
-    return 1
-  fi
-
-  cd "$(dirname "$result")" || return 1
-}
-
-function gv {
-  local result="$(_find_file_in_repo "$1")"
-
-  if [[ -z "$result" ]]; then
-    echo "File not found, cap'n."
-    return 1
-  fi
-
-  cd "$(dirname "$result")"
-  nvim "$(basename "$result")"
-}
-
-function gvp {
-  local file="$(_find_file_in_repo "$1" "/test\\.js/")"
-
-  if [[ -z "$file" ]]; then
-    echo "Nope, nothing found."
-    return 1
-  fi
-
-  cd "$(dirname "$file")"
-  vp "$(basename "$file")"
 }
 
 function f {
