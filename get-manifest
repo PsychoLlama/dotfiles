@@ -8,7 +8,6 @@ typeset -A MANIFEST
 MANIFEST[vim-info]=~/.viminfo
 MANIFEST[vim-backup]=~/.vim/backup/
 MANIFEST[vim-undo-history]=~/.vim/undodir/
-MANIFEST[vim-metrics]=~/.vim/metrics.json
 MANIFEST[repl-history-node]=~/.node_repl_history
 MANIFEST[repl-history-python]=~/.python_history
 MANIFEST[zsh-history]=~/.zsh_history

@@ -89,12 +89,6 @@ func! editor#commands#Author(start, end, all_commits) abort
     echon ' (' . l:ownership . '%)'
     echohl Clear
   endfor
-
-  let l:start_char = a:start == 0 || a:start == 1 ? '^' : a:start
-  let l:end_char = a:end == line('$') ? '$' : a:end
-  let l:range = l:start_char . ',' . l:end_char
-
-  call editor#metrics#TrackEvent(':Author', { 'range': l:range })
 endfunc
 
 
@@ -109,8 +103,6 @@ func! editor#commands#Node() abort
   execute 'lcd ' . fnameescape(l:project)
   call termopen('node')
   normal! A
-
-  call editor#metrics#TrackEvent(':Node', {})
 endfunc
 
 
@@ -137,8 +129,6 @@ func! editor#commands#Revert() abort
   echohl String
   echo 'Changes reverted.'
   echohl None
-
-  call editor#metrics#TrackEvent(':Revert', {})
 endfunc
 
 
@@ -160,8 +150,6 @@ func! editor#commands#Readme(module) abort range
 
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
   setlocal listchars= nomodifiable nowriteany nobuflisted
-
-  call editor#metrics#TrackEvent(':Readme', { 'module': a:module })
 endfunc
 
 
@@ -195,8 +183,6 @@ func! editor#commands#Diff() abort
 
   setlocal buftype=nowrite bufhidden=delete signcolumn=no
   setlocal listchars= nomodifiable nowriteany nobuflisted nonumber
-
-  call editor#metrics#TrackEvent(':Diff', {})
 endfunc
 
 " :OpenTestFile
