@@ -64,8 +64,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'joshdick/onedark.vim'
 
 " Fun 🎮
+Plug 'PsychoLlama/conway.vim'
 Plug 'PsychoLlama/snake.vim'
-Plug 'PsychoLlama/vim-gol'
 
 " VimScript
 Plug 'junegunn/vader.vim'
