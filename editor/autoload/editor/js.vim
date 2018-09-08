@@ -39,6 +39,7 @@ func! editor#js#IsTestFile(...) abort
 endfunc
 
 func! s:FindTestDirectoriesAbove(file_path) abort
+  let l:test_dirname = '__tests__'
 
   " Find the containing directory.
   let l:containing_dir = a:file_path
@@ -46,9 +47,14 @@ func! s:FindTestDirectoriesAbove(file_path) abort
     let l:containing_dir = fnamemodify(l:containing_dir, ':h')
   endif
 
+  " Not every test directory is named the same. Provide an escape hatch.
+  if exists('*editor#env#ResolveTestDirectoryName')
+    let l:test_dirname = editor#env#ResolveTestDirectoryName(a:file_path)
+  endif
+
   " Find every test directory upwards of the given file.
   call execute('lcd ' . fnameescape(l:containing_dir))
-  let l:test_dirs = finddir('__tests__', ';', -1)
+  let l:test_dirs = finddir(l:test_dirname, ';', -1)
   call map(l:test_dirs, "fnamemodify(v:val, ':p')")
   silent lcd -
 
@@ -67,7 +73,7 @@ func! editor#js#LocateTestFile(...) abort
   for l:test_dir in l:test_dirs
 
     " Look at every test file...
-    for l:test_file in glob(l:test_dir . '*.js', 0, v:true)
+    for l:test_file in glob(l:test_dir . '**/*.js', 0, v:true)
       let l:no_suffix = fnamemodify(l:test_file, ':t')
       let l:no_suffix = substitute(l:no_suffix, '\v\.(test|spec)', '', '')
 
