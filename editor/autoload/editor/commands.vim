@@ -208,6 +208,8 @@ func! editor#commands#Permissions(...) abort
   endif
 endfunc
 
+
+" :Test
 func! editor#commands#Test() abort
   if &filetype !~# 'javascript'
     echo 'WHAT ARE YOU DOING!'
@@ -226,9 +228,16 @@ func! editor#commands#Test() abort
     endif
   endif
 
+  let l:test_cmd = 'tw'
+
+  " Allow external customization by overriding the bash command.
+  if exists('*editor#env#GetTestShellCommand')
+    let l:test_cmd = editor#env#GetTestShellCommand(l:test_file)
+  endif
+
   let l:pkg_root = editor#js#FindPackageRoot()
-  let l:test_cmd = 'cd ' . fnameescape(l:pkg_root) . '; '
-  let l:test_cmd .= 'tw ' . fnameescape(l:test_file)
+  let l:cmd = 'cd ' . fnameescape(l:pkg_root) . '; '
+  let l:cmd .= l:test_cmd . ' ' . fnameescape(l:test_file)
 
   let l:tmux_vars = tmux#GetVariables()
   if str2nr(l:tmux_vars.window_panes) < 2
@@ -236,12 +245,12 @@ func! editor#commands#Test() abort
           \   'horizontal': v:true,
           \   'percent': 45,
           \ })
-    call tmux#SendKeys(l:test_cmd, '^M')
+    call tmux#SendKeys(l:cmd, '^M')
   else
     let l:test_pane = l:tmux_vars.pane_at_right
     call tmux#SelectPane(1)
     call tmux#SendKeys('^C')
-    call tmux#SendKeys('^L', l:test_cmd, '^M')
+    call tmux#SendKeys('^L', l:cmd, '^M')
   endif
 
   call tmux#SelectPane(l:tmux_vars.pane_id)
