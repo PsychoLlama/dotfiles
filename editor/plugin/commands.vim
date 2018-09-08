@@ -12,10 +12,6 @@ command! -nargs=1 Readme call stacktrace#Capture(
       \   function('editor#commands#Readme', [<f-args>])
       \ )
 
-command! OpenTestFile call stacktrace#Capture(
-      \   function('editor#commands#OpenTestFile')
-      \ )
-
 command! Revert call stacktrace#Capture(
       \   function('editor#commands#Revert')
       \ )

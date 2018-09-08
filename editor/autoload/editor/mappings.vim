@@ -58,6 +58,11 @@ let s:test_file_map = {}
 
 " Open the test file if the source file is open (and vice versa).
 func! s:AlternateTestFile() abort
+  if &filetype !~# 'javascript'
+    echo &filetype "isn't supported."
+    return
+  endif
+
   let l:is_test_file = editor#js#IsTestFile()
   let l:current_file_path = expand('%:p')
 

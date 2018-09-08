@@ -185,18 +185,6 @@ func! editor#commands#Diff() abort
   setlocal listchars= nomodifiable nowriteany nobuflisted nonumber
 endfunc
 
-" :OpenTestFile
-func! editor#commands#OpenTestFile() abort
-  let l:test_file = editor#js#LocateTestFile()
-
-  if l:test_file is v:null
-    echo 'No test file.'
-    return
-  endif
-
-  execute 'split ' . fnameescape(l:test_file)
-endfunc
-
 
 " :Perm +x
 func! editor#commands#Permissions(...) abort
