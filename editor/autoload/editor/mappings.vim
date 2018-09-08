@@ -70,8 +70,15 @@ func! s:AlternateTestFile() abort
     call execute('edit ' . fnameescape(s:test_file_map[l:current_file_path]))
     return
   elseif l:is_test_file
-    echo 'So... this is awkward.'
-    echo "I don't know where the source file is."
+    let l:src_file = editor#js#LocateSourceFile()
+
+    if filereadable(l:src_file)
+      call execute('edit ' . fnameescape(l:src_file))
+    else
+      echo 'So... this is awkward.'
+      echo "I don't know where the source file is."
+    endif
+
     return
   endif
 
