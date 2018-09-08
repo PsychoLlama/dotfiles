@@ -23,3 +23,7 @@ command! Diff call stacktrace#Capture(
 command! Node call stacktrace#Capture(
       \   function('editor#commands#Node')
       \ )
+
+command! Test call stacktrace#Capture(
+      \   function('editor#commands#Test')
+      \ )

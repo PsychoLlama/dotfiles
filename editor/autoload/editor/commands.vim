@@ -207,3 +207,42 @@ func! editor#commands#Permissions(...) abort
     echoerr l:output
   endif
 endfunc
+
+func! editor#commands#Test() abort
+  if &filetype !~# 'javascript'
+    echo 'WHAT ARE YOU DOING!'
+    return
+  endif
+
+  let l:test_file = expand('%:p')
+  if !editor#js#IsTestFile()
+    let l:test_file = editor#js#LocateTestFile()
+    if l:test_file is# v:null
+      echohl Error
+      echon 'Error: '
+      echohl Clear
+      echon "Couldn't find the test file."
+      return
+    endif
+  endif
+
+  let l:pkg_root = editor#js#FindPackageRoot()
+  let l:test_cmd = 'cd ' . fnameescape(l:pkg_root) . '; '
+  let l:test_cmd .= 'tw ' . fnameescape(l:test_file)
+
+  let l:tmux_vars = tmux#GetVariables()
+  if str2nr(l:tmux_vars.window_panes) < 2
+    let l:test_pane = tmux#SplitWindow({
+          \   'horizontal': v:true,
+          \   'percent': 45,
+          \ })
+    call tmux#SendKeys(l:test_cmd, '^M')
+  else
+    let l:test_pane = l:tmux_vars.pane_at_right
+    call tmux#SelectPane(1)
+    call tmux#SendKeys('^C')
+    call tmux#SendKeys('^L', l:test_cmd, '^M')
+  endif
+
+  call tmux#SelectPane(l:tmux_vars.pane_id)
+endfunc
