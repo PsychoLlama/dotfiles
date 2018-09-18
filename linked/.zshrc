@@ -146,7 +146,19 @@ function vs {
 }
 
 function vh {
-  v "$(git diff --name-only)"
+  local repo_root="$(git rev-parse --show-toplevel)"
+  local filepaths=()
+
+  git diff --name-only | while read filepath; do
+    filepaths=($filepaths "$repo_root/$filepath")
+  done
+
+  if [[ "${#filepaths[@]}" == 0 ]]; then
+    echo 'No changes :/'
+    return 1
+  fi
+
+  v "${filepaths[@]}"
 }
 
 function vf {
