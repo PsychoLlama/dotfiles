@@ -146,6 +146,11 @@ function vs {
 }
 
 function vh {
+  if ! git rev-parse --is-inside-work-tree &> /dev/null; then
+    echo 'Not a repo, loser.'
+    return 1
+  fi
+
   local repo_root="$(git rev-parse --show-toplevel)"
   local filepaths=()
 
