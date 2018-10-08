@@ -154,7 +154,7 @@ function vh {
   local repo_root="$(git rev-parse --show-toplevel)"
   local filepaths=()
 
-  git diff --name-only | while read filepath; do
+  git diff HEAD --name-only | while read filepath; do
     filepaths=($filepaths "$repo_root/$filepath")
   done
 
