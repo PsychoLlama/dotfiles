@@ -97,6 +97,10 @@ func! editor#commands#Node() abort
   call assert#(executable('node'), 'No node executable.')
   let l:project = editor#js#FindPackageRoot()
 
+  if l:project is# v:null
+    let l:project = editor#util#ResolveDirectory()
+  endif
+
   new Node Repl
   wincmd J
   resize 10

@@ -49,3 +49,13 @@ func! editor#util#ExecInDir(dir, cmd) abort
 
   return systemlist(l:cmd)
 endfunc
+
+func! editor#util#ResolveDirectory(...) abort
+  let l:path = get(a:000, 0, expand('%:p'))
+
+  if isdirectory(l:path)
+    return l:path
+  endif
+
+  return fnamemodify(l:path, ':h')
+endfunc

@@ -14,7 +14,7 @@ export fpath=("$(dotfiles dir)/completions" $fpath)
 
 ### Aliases ###
 alias g='git'
-alias b='git branch --verbose'
+alias b='git --no-pager branch --verbose'
 alias :qa='tmux kill-session'
 alias empty='empty-trash'
 alias ch='git checkout'
