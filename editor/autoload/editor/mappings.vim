@@ -1,4 +1,4 @@
-func! s:is_typing_word() abort
+func! s:IsTypingWord() abort
   let l:col = col('.') - 1
 
   " Require at least 2 chars of context.
@@ -10,7 +10,7 @@ func! s:is_typing_word() abort
   return l:prev_chars =~? '\w\{2}'
 endfunc
 
-func! s:tab_completion(shifting) abort
+func! s:TabCompletion(shifting) abort
   if pumvisible()
     if a:shifting
       return "\<C-p>"
@@ -19,14 +19,14 @@ func! s:tab_completion(shifting) abort
     return "\<C-n>"
   endif
 
-  if s:is_typing_word()
+  if s:IsTypingWord()
     return "\<C-n>"
   endif
 
   return "\t"
 endfunc
 
-func! s:toggle_copy_mode() abort
+func! s:ToggleCopyMode() abort
   if &number
     setlocal nonumber signcolumn=no
   else
@@ -34,14 +34,14 @@ func! s:toggle_copy_mode() abort
   endif
 endfunc
 
-func! s:edit_vimrc() abort
+func! s:EditVimrc() abort
   let l:cmd = isdirectory(expand('%:p')) ? 'edit' : 'tabedit'
   let l:editor_path = dotfiles#Path('editor/autoload')
   execute l:cmd . ' ' . l:editor_path
 endfunc
 
 " :Rexplore only works if the file was opened via netrw.
-func! s:explore_current_dir() abort
+func! s:ExploreCurrentDir() abort
   if &filetype is# 'netrw'
     return
   endif
@@ -92,11 +92,11 @@ func! s:AlternateTestFile() abort
   call execute('edit ' . fnameescape(l:test_file))
 endfunc
 
-inoremap <silent><expr><TAB> <SID>tab_completion(0)
-inoremap <silent><expr><S-TAB> <SID>tab_completion(1)
-nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
-nnoremap <silent><leader>n :nohlsearch<cr>
-nnoremap <silent><leader>v :call <SID>edit_vimrc()<cr>
-nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
-nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
+inoremap <silent><expr><tab> <SID>TabCompletion(0)
+inoremap <silent><expr><s-tab> <SID>TabCompletion(1)
+nnoremap <silent><leader>t :call <SID>ToggleCopyMode()<cr>
+nnoremap <silent><leader>v :call <SID>EditVimrc()<cr>
+nnoremap <silent><leader>r :call <SID>ExploreCurrentDir()<cr>
+nnoremap <silent><leader>r :call <SID>ExploreCurrentDir()<cr>
 nnoremap <silent><leader>a :call <SID>AlternateTestFile()<cr>
+nnoremap <silent><esc> :nohlsearch<cr><esc>
