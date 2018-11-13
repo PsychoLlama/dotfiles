@@ -28,10 +28,11 @@ func! s:GetAuthorOwnership(authors, total)
 endfunc
 
 func! s:FindAuthorsForRange(start, end, all_commits) abort
+  let l:file = resolve(expand('%:p'))
   let l:line_blames = git#blame#({
         \   'include_all_commits': a:all_commits,
         \   'ranges': [[a:start, a:end]],
-        \   'file': expand('%:p'),
+        \   'file': l:file,
         \ })
 
   let l:authors = map(l:line_blames, { k, v -> v.author.name })
