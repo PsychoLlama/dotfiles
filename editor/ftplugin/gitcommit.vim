@@ -3,7 +3,10 @@ PencilHard
 
 setlocal textwidth=72
 setlocal spell
-call append(1, '')
+
+if strlen(getline(1)) is# 0
+  call append(1, '')
+endif
 
 " Present a git diff
 func! s:OpenDiffPane() abort
