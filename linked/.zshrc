@@ -94,7 +94,11 @@ function ta {
     return 1
   fi
 
-  tmux attach -t "$session"
+  if [[ -z "$TMUX" ]]; then
+    tmux attach -t "$session"
+  else
+    tmux switch-client -t "$session"
+  fi
 }
 
 # "test watch" with the given regex
