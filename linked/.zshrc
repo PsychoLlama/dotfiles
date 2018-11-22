@@ -41,6 +41,7 @@ function mkcd {
   cd "$1" || return 1
 }
 
+# Open a development environment in the current directory
 function edit {
   local session_name="$1"
 
@@ -51,6 +52,7 @@ function edit {
   tmuxinator start edit -n "$session_name"
 }
 
+# Faster `git status`
 function s {
   if ! git rev-parse --is-inside-work-tree &> /dev/null; then
     echo "Not a git repo."
@@ -60,6 +62,7 @@ function s {
   git status
 }
 
+# tmux shorthand
 function t {
   # Arguments? Treat `t` like an alias.
   if [[ $# != 0 ]]; then
@@ -84,6 +87,17 @@ function t {
   return $?
 }
 
+# tmux attach with fzf
+function ta {
+  local session="$(tmux list-sessions -F '#{session_name}' | fzf)"
+  if [[ -z "$session" ]]; then
+    return 1
+  fi
+
+  tmux attach -t "$session"
+}
+
+# "test watch" with the given regex
 function tw {
   local utils="$(dotfiles dir)"/utils
   read script runner <<< "$("$utils"/get-package-test-script.js)"
@@ -105,6 +119,7 @@ function tw {
   esac
 }
 
+# "test watch script" expects the name of the package.json script.
 function tws {
   yarn --silent run "$1" --watch --collectCoverage=false --testPathPattern "$2"
 }
@@ -127,6 +142,7 @@ function gg {
   gag "$@" --ignore __tests__ --ignore tests
 }
 
+# Like `nvim` but better
 function v {
   if [[ "$#" == "0" ]]; then
     nvim .
