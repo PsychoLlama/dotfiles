@@ -233,16 +233,15 @@ func! editor#commands#Test() abort
     endif
   endif
 
-  let l:test_cmd = 'tw'
+  let l:runner = editor#js#GetTestCommandForPath(l:test_file)
 
   " Allow external customization by overriding the bash command.
   if exists('*editor#env#GetTestShellCommand')
-    let l:test_cmd = editor#env#GetTestShellCommand(l:test_file)
+    " TODO: I broke this by porting `tw` to vimscript.
   endif
 
-  let l:pkg_root = editor#js#FindPackageRoot()
-  let l:cmd = 'cd ' . fnameescape(l:pkg_root) . '; '
-  let l:cmd .= l:test_cmd . ' ' . fnameescape(l:test_file)
+  let l:cmd = 'cd ' . fnameescape(l:runner.project) . '; '
+  let l:cmd .= l:runner.command
 
   let l:tmux_vars = tmux#GetVariables()
   if str2nr(l:tmux_vars.window_panes) < 2

@@ -196,3 +196,83 @@ func! editor#js#LocateSourceFile(...) abort
 
   return s:SearchForPlausibleImports(l:file_path, l:no_suffix)
 endfunc
+
+func! s:ReadPackages(package_list) abort
+  let l:packages = []
+
+  for l:package in a:package_list
+    let l:contents = join(readfile(l:package), "\n")
+    let l:json_contents = json_decode(l:contents)
+
+    call add(l:packages, [l:json_contents, l:package])
+  endfor
+
+  return l:packages
+endfunc
+
+" Infer the test framework from the package's test script.
+" Only supports Jest because Jest is Best.
+func! s:ExtractTestCommand(test_script) abort
+  let l:jest_scripts = ['react-scripts', 'freighter-scripts', 'jest']
+
+  for l:jest_script in l:jest_scripts
+    if stridx(a:test_script, l:jest_script) > -1
+      return 'jest'
+    endif
+  endfor
+
+  return a:test_script
+endfunc
+
+" Find the test script that controls the given project.
+" Searches upwards to support monorepos.
+func! editor#js#GetTestRunner(...) abort
+  let l:file_path = s:ResolvePath(a:000)
+  let l:package_paths = findfile('package.json', l:file_path . ';', -1)
+  let l:packages = s:ReadPackages(l:package_paths)
+
+  for [l:package, l:package_path] in l:packages
+    let l:scripts = get(l:package, 'scripts')
+    let l:main_test_script = get(l:scripts, 'test', v:null)
+    let l:test_script = get(l:scripts, 'test:unit', l:main_test_script)
+
+    if l:test_script is# v:null || type(l:test_script) !=# v:t_string
+      continue
+    endif
+
+    if l:test_script =~# 'no test specified'
+      continue
+    endif
+
+    let l:command = s:ExtractTestCommand(l:test_script)
+    let l:project_dir = fnamemodify(l:package_path, ':h')
+    return { 'command': l:command, 'project': l:project_dir }
+  endfor
+
+  " Nothing found.
+  return v:null
+endfunc
+
+func! editor#js#GetTestCommandForPath(...) abort
+  let l:path = s:ResolvePath(a:000)
+  let l:runner = editor#js#GetTestRunner(l:path)
+  let l:runner = deepcopy(l:runner)
+
+  if l:runner is# v:null
+    return v:null
+  endif
+
+  " Make the file path project relative.
+  let l:test_path = '.' . l:path[strlen(l:runner.project):]
+
+  if l:runner.command is# 'jest'
+    let l:runner.command = 'yarn -s run jest'
+    let l:runner.command .= ' --watch --collectCoverage=false '
+    let l:runner.command .= shellescape(l:test_path)
+  else
+    let l:runner.command = 'yarn -s run ' . l:runner.command
+    let l:runner.command .= ' --watch ' . shellescape(l:test_path)
+  endif
+
+  return l:runner
+endfunc
