@@ -264,6 +264,24 @@ function install_silver_searcher {
   install "$pkg_name"
 }
 
+function install_ripgrep {
+  if installed rg; then
+    return
+  fi
+
+  announce Installing ripgrep
+  cargo install ripgrep
+}
+
+function install_fd_find {
+  if installed fd; then
+    return
+  fi
+
+  announce Installing fd
+  cargo install fd-find
+}
+
 function install_llama_zsh_theme {
   local DEST="$ARTIFACTS_DIR/llama-theme.sh"
 
@@ -547,6 +565,8 @@ install_ruby
 install_tmux
 install_tmuxinator
 install_silver_searcher
+install_ripgrep
+install_fd_find
 install_llama_zsh_theme
 install_n
 install_z
