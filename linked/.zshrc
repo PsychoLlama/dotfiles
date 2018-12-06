@@ -2,6 +2,7 @@
 
 ### Variables ###
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+export FZF_DEFAULT_COMMAND='fd --hidden'
 export TERM=screen-256color
 export ZSH=~/.oh-my-zsh
 export EDITOR=nvim
