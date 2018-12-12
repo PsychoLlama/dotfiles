@@ -6,6 +6,7 @@ set listchars=tab:··,trail:·
 set backupdir=~/.vim/backup
 set nrformats=octal,hex,bin
 set clipboard+=unnamedplus
+set formatoptions=qca1orj
 set fileformat=unix
 set backupcopy=yes
 set signcolumn=yes
@@ -16,6 +17,7 @@ set updatetime=0
 set shiftwidth=2
 set shortmess+=I
 set laststatus=2
+set textwidth=78
 set pumheight=10
 set history=500
 set autoindent

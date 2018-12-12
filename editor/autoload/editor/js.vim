@@ -213,13 +213,17 @@ endfunc
 " Infer the test framework from the package's test script.
 " Only supports Jest because Jest is Best.
 func! s:ExtractTestCommand(test_script) abort
-  let l:jest_scripts = ['react-scripts', 'freighter-scripts', 'jest']
+  let l:jest_scripts = ['freighter-scripts', 'jest']
 
   for l:jest_script in l:jest_scripts
     if stridx(a:test_script, l:jest_script) > -1
       return 'jest'
     endif
   endfor
+
+  if stridx(a:test_script, 'react-scripts') > -1
+    return 'react-scripts test'
+  endif
 
   return a:test_script
 endfunc
@@ -265,8 +269,8 @@ func! editor#js#GetTestCommandForPath(...) abort
   " Make the file path project relative.
   let l:test_path = '.' . l:path[strlen(l:runner.project):]
 
-  if l:runner.command is# 'jest'
-    let l:runner.command = 'yarn -s run jest'
+  if l:runner.command =~# '\v(jest|react-scripts)'
+    let l:runner.command = 'yarn -s run ' . l:runner.command
     let l:runner.command .= ' --watch --collectCoverage=false '
     let l:runner.command .= shellescape(l:test_path)
   else
