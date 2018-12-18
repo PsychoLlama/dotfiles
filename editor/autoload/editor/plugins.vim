@@ -59,7 +59,6 @@ Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.fzf' }
 Plug 'junegunn/fzf.vim'
 
 " Style 🦄
-Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
 Plug 'joshdick/onedark.vim'
 
