@@ -7,6 +7,7 @@ function get_dotfiles_manifest {
   echo ~/.config/nvim/init.vim init.vim
   echo ~/.gitconfig .gitconfig
   echo ~/.tmux.conf .tmux.conf
+  echo ~/.ripgrep .ripgrep
   echo ~/.zshrc .zshrc
 
   local symlink_manifest=~/dotfiles-env/linked/manifest.sh

@@ -7,6 +7,7 @@ set backupdir=~/.vim/backup
 set nrformats=octal,hex,bin
 set clipboard+=unnamedplus
 set formatoptions=qca1orj
+set inccommand=nosplit
 set fileformat=unix
 set backupcopy=yes
 set signcolumn=yes
@@ -23,7 +24,7 @@ set history=500
 set autoindent
 set ignorecase
 set shiftround
-set grepprg=ag
+set grepprg=rg
 set expandtab
 set incsearch
 set linebreak

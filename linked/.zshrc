@@ -11,6 +11,7 @@ export PATH="$N_PREFIX/bin:$PATH"
 export PATH=~/.cargo/bin:"$PATH"
 export MANPAGER='nvim -c "setfiletype man" -'
 export fpath=("$(dotfiles dir)/completions" $fpath)
+export RIPGREP_CONFIG_PATH=~/.ripgrep
 
 
 ### Aliases ###
@@ -212,6 +213,16 @@ function f {
     -not -path '*/build/*' \
     -not -path '*/coverage/*' \
     -not -path '*/venv/*'
+}
+
+function cf {
+  local dir="$(fd --type d | fzf)"
+
+  if [[ -z "$dir" ]]; then
+    return 1
+  fi
+
+  cd "$dir"
 }
 
 # Export Lua module path variables.
