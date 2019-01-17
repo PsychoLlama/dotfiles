@@ -47,7 +47,6 @@ Plug 'autozimu/LanguageClient-neovim', {
 " Enhancements ✨
 Plug 'jiangmiao/auto-pairs'
 Plug 'Shougo/deoplete.nvim'
-Plug 'reedes/vim-pencil'
 Plug 'mbbill/undotree'
 Plug 'w0rp/ale'
 

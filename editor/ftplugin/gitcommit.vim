@@ -1,6 +1,4 @@
-" Enable hard-wrap autoformatting.
-PencilHard
-
+setlocal formatoptions=qca1orjt
 setlocal textwidth=72
 setlocal spell
 
