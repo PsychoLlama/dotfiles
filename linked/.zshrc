@@ -2,7 +2,7 @@
 
 ### Variables ###
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-export FZF_DEFAULT_COMMAND='fd --hidden'
+export SKIM_DEFAULT_COMMAND='fd --hidden'
 export TERM=screen-256color
 export ZSH=~/.oh-my-zsh
 export EDITOR=nvim
@@ -130,22 +130,8 @@ function tws {
   yarn --silent run "$1" --watch --collectCoverage=false --testPathPattern "$2"
 }
 
-function gag {
-  ag "$@" \
-    --ignore '*bundle.*' \
-    --ignore '*.js.map' \
-    --ignore yarn.lock \
-    --ignore schema.js \
-    --ignore node_modules/ \
-    --ignore dist/ \
-    --ignore coverage/ \
-    --ignore flow-typed/ \
-    --ignore static/ \
-    --ignore build/
-}
-
 function gg {
-  gag "$@" --ignore __tests__ --ignore tests
+  rg "$@" --ignore-file <(echo "__tests__\ntests")
 }
 
 # Like `nvim` but better
@@ -175,7 +161,7 @@ function vh {
   local repo_root="$(git rev-parse --show-toplevel)"
   local filepaths=()
 
-  git diff HEAD --name-only | while read filepath; do
+  git diff HEAD --name-only | while read -r filepath; do
     filepaths=($filepaths "$repo_root/$filepath")
   done
 
@@ -194,29 +180,8 @@ function vf {
   fi
 }
 
-function f {
-  if [[ -z "$1" ]]; then
-    echo "You looking for something?"
-    return 1
-  fi
-
-  local dir="$2"
-
-  if [[ -z "$dir" ]]; then
-    dir="."
-  fi
-
-  find "$dir" -iname "*$1*" \
-    -not -path '*/node_modules/*' \
-    -not -path '*/.git/*' \
-    -not -path '*/dist/*' \
-    -not -path '*/build/*' \
-    -not -path '*/coverage/*' \
-    -not -path '*/venv/*'
-}
-
 function cf {
-  local dir="$(fd --type d | fzf)"
+  local dir="$(fd --type d | sk)"
 
   if [[ -z "$dir" ]]; then
     return 1

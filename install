@@ -248,22 +248,6 @@ function install_tmuxinator {
   sudo gem install tmuxinator > /dev/null
 }
 
-function install_silver_searcher {
-  if installed ag; then
-    return
-  fi
-
-  announce Installing the silver searcher
-  local pkg_name="the_silver_searcher"
-
-  # Goes by a different name on aptitude.
-  if installed apt-get; then
-    pkg_name="silversearcher-ag"
-  fi
-
-  install "$pkg_name"
-}
-
 function install_ripgrep {
   if installed rg; then
     return
@@ -280,6 +264,24 @@ function install_fd_find {
 
   announce Installing fd
   cargo install fd-find
+}
+
+function install_bat {
+  if installed fd; then
+    return
+  fi
+
+  announce Installing bat
+  cargo install bat
+}
+
+function install_skim {
+  if installed sk; then
+    return
+  fi
+
+  announce Installing skim
+  cargo install skim
 }
 
 function install_llama_zsh_theme {
@@ -564,9 +566,10 @@ install_yarn
 install_ruby
 install_tmux
 install_tmuxinator
-install_silver_searcher
 install_ripgrep
 install_fd_find
+install_bat
+install_skim
 install_llama_zsh_theme
 install_n
 install_z
