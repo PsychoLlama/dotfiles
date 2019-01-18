@@ -149,7 +149,7 @@ function vs {
     return 1
   fi
 
-  nvim -p $(gag "$@" -l)
+  nvim -p $(gg "$@" -l)
 }
 
 function vh {

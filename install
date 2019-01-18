@@ -267,7 +267,7 @@ function install_fd_find {
 }
 
 function install_bat {
-  if installed fd; then
+  if installed bat; then
     return
   fi
 

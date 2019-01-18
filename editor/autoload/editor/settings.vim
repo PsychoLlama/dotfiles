@@ -11,6 +11,7 @@ set inccommand=nosplit
 set fileformat=unix
 set backupcopy=yes
 set signcolumn=yes
+set grepprg=rg\ -n
 set numberwidth=2
 set softtabstop=2
 set nofoldenable
@@ -24,7 +25,6 @@ set history=500
 set autoindent
 set ignorecase
 set shiftround
-set grepprg=rg
 set expandtab
 set incsearch
 set linebreak
