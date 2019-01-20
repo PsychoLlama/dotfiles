@@ -3,3 +3,4 @@ artifacts/
 
 /target/
 **/*.rs.bk
+command-cache

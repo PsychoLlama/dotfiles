@@ -176,6 +176,7 @@ function vh {
 function vf {
   local file
   if file="$(fzf)"; then
+    echo "$file"
     v "$file"
   fi
 }
