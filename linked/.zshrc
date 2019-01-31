@@ -131,7 +131,7 @@ function tws {
 }
 
 function gg {
-  rg "$@" --ignore-file <(echo "__tests__\ntests")
+  rg "$@" --ignore-file <(echo "__tests__\ntests\nflow-typed")
 }
 
 # Like `nvim` but better

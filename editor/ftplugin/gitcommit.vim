@@ -2,10 +2,6 @@ setlocal formatoptions=qca1orjt
 setlocal textwidth=72
 setlocal spell
 
-if strlen(getline(1)) is# 0
-  call append(1, '')
-endif
-
 " Present a git diff
 func! s:OpenDiffPane() abort
   let s:mount_point = winwidth('.') >= 72 * 2 ? 'L' : 'J'
