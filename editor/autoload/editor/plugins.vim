@@ -53,9 +53,8 @@ Plug 'w0rp/ale'
 " Navigation
 Plug 'PsychoLlama/further.vim'
 Plug 'PsychoLlama/z.vim'
-
-Plug 'junegunn/fzf', { 'do': './install --all', 'dir': '~/.fzf' }
-Plug 'junegunn/fzf.vim'
+Plug 'lotabout/skim.vim'
+Plug 'lotabout/skim'
 
 " Style 🦄
 Plug 'airblade/vim-gitgutter'

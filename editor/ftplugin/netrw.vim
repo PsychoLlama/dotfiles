@@ -1,2 +1,2 @@
 noremap <buffer>~ :Explore ~<cr>
-noremap <buffer>f :FZF! %:p<cr>
+noremap <buffer>f :Files! %:p<cr>
