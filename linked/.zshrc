@@ -2,7 +2,7 @@
 
 ### Variables ###
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-export SKIM_DEFAULT_COMMAND='fd --hidden'
+export SKIM_DEFAULT_COMMAND='fd'
 export TERM=screen-256color
 export ZSH=~/.oh-my-zsh
 export EDITOR=nvim
@@ -89,9 +89,9 @@ function t {
   return $?
 }
 
-# tmux attach with fzf
+# tmux attach with skim
 function ta {
-  local session="$(tmux list-sessions -F '#{session_name}' | fzf)"
+  local session="$(tmux list-sessions -F '#{session_name}' | sk)"
   if [[ -z "$session" ]]; then
     return 1
   fi
@@ -189,7 +189,7 @@ function vf {
     return $?
   fi
 
-  if file="$(fzf)"; then
+  if file="$(fd | sk)"; then
     echo "$file" | tee "$cache_file"
     nvim "$file"
   fi
@@ -229,5 +229,3 @@ fi
 
 ### Completions ###
 compdef t=tmux
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
