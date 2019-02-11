@@ -302,6 +302,28 @@ function install_llama_zsh_theme {
   echo "$theme" > "$DEST"
 }
 
+function install_zsh_syntax_highlighting {
+  local syntax_highlighting="$ARTIFACTS_DIR/zsh-syntax-highlighting"
+
+  if [[ -d "$syntax_highlighting" ]]; then
+    return
+  fi
+
+  announce Installing zsh syntax highlighting
+  git clone -q https://github.com/zsh-users/zsh-syntax-highlighting.git "$syntax_highlighting"
+}
+
+function install_zsh_completion_suggestions {
+  local completion_suggestions="$ARTIFACTS_DIR/zsh-autosuggestions"
+
+  if [[ -d "$completion_suggestions" ]]; then
+    return
+  fi
+
+  announce Installing zsh completion suggestions
+  git clone -q https://github.com/zsh-users/zsh-autosuggestions.git "$completion_suggestions"
+}
+
 # A node version manager, alternative to nvm.
 function install_n {
   if installed n; then
@@ -571,6 +593,8 @@ install_fd_find
 install_bat
 install_skim
 install_llama_zsh_theme
+install_zsh_syntax_highlighting
+install_zsh_completion_suggestions
 install_n
 install_z
 install_node

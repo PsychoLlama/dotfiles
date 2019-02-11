@@ -222,6 +222,12 @@ source "$ARTIFACTS/z/z.sh"
 # Use my custom shell prompt.
 source "$ARTIFACTS/llama-theme.sh"
 
+# Do fish style shell syntax highlighting.
+source "$ARTIFACTS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# Do fish style suggestions as you type.
+source "$ARTIFACTS/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
 # Check for computer-specific shell utils.
 if [[ -e ~/dotfiles-env/.zshrc ]]; then
   source ~/dotfiles-env/.zshrc
