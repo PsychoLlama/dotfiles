@@ -209,6 +209,7 @@ source "$(dotfiles dir)/artifacts/antigen/antigen.zsh"
 antigen use oh-my-zsh
 antigen bundle docker
 antigen bundle rupa/z
+antigen bundle pkulev/zsh-rustup-completion
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen theme PsychoLlama/llama.zsh-theme
