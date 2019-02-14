@@ -451,7 +451,6 @@ install_ripgrep
 install_fd_find
 install_bat
 install_skim
-install_zsh_syntax_highlighting
 install_n
 install_node
 install_vim_plug
