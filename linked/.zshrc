@@ -205,33 +205,20 @@ function cf {
   cd "$dir"
 }
 
-# Export Lua module path variables.
-if command -v luarocks > /dev/null; then
-  eval "$(luarocks path)"
-fi
-
-# Kickstart the oh-my-zsh framework.
-plugins=(docker)
-source "$ZSH/oh-my-zsh.sh"
-
-ARTIFACTS="$(dotfiles dir)/artifacts"
-
-# Adds `z` function (https://github.com/rupa/z).
-source "$ARTIFACTS/z/z.sh"
-
-# Use my custom shell prompt.
-source "$ARTIFACTS/llama-theme.sh"
-
-# Do fish style shell syntax highlighting.
-source "$ARTIFACTS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
-# Do fish style suggestions as you type.
-source "$ARTIFACTS/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "$(dotfiles dir)/artifacts/antigen/antigen.zsh"
+antigen use oh-my-zsh
+antigen bundle docker
+antigen bundle rupa/z
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen theme PsychoLlama/llama.zsh-theme
 
 # Check for computer-specific shell utils.
 if [[ -e ~/dotfiles-env/.zshrc ]]; then
   source ~/dotfiles-env/.zshrc
 fi
+
+antigen apply
 
 ### Completions ###
 compdef t=tmux

@@ -89,36 +89,6 @@ function ensure {
   install "$1"
 }
 
-function verify_hash {
-  local integrity="$(openssl sha1 <<< "$2")"
-
-  # Some systems print junk before the hash.
-  if ! installed brew; then
-    integrity="$(echo "$integrity" | awk '{print $2}')"
-  fi
-
-  if [[ "$integrity" != "$1" ]]; then
-    return 1
-  fi
-
-  return
-}
-
-# Install to a /tmp file and verify the integrity hash.
-function install_via_curl {
-  local install_script="$(curl -fsSL "$1")"
-
-  if ! verify_hash "$2" "$install_script"; then
-    echo "Hmmm, an install script looks sketchy. The integrity doesn't match."
-    echo "    URL: $1"
-    exit 1
-  fi
-
-  set +e
-  bash <<< "$install_script"
-  set -e
-}
-
 function ensure_python3 {
   if installed python3; then
     return
@@ -172,13 +142,14 @@ function install_zsh {
   chsh -s "$(which zsh)"
 }
 
-function install_oh_my_zsh {
-  if [[ -d ~/.oh-my-zsh || -n "$CI" ]]; then
+function install_antigen {
+  local install_dir="$ARTIFACTS_DIR/antigen"
+  if [[ -d "$install_dir" ]]; then
     return
   fi
 
-  announce Installing oh-my-zsh
-  install_via_curl https://cdn.rawgit.com/robbyrussell/oh-my-zsh/d848c94804918138375041a9f800f401bec12068/tools/install.sh f423ddfb1d0b6a849b229be5b07a032c10e13c6f &> /dev/null
+  announce Installing antigen
+  git clone -q --depth=1 https://github.com/zsh-users/antigen.git "$install_dir"
 }
 
 function install_yarn {
@@ -284,46 +255,6 @@ function install_skim {
   cargo install skim
 }
 
-function install_llama_zsh_theme {
-  local DEST="$ARTIFACTS_DIR/llama-theme.sh"
-
-  if [[ -f "$DEST" || -n "$CI" ]]; then
-    return
-  fi
-
-  announce Installing llama.zsh-theme
-  local theme="$(curl https://cdn.rawgit.com/PsychoLlama/llama.zsh-theme/53c3ba8079378bc02b159aa7c6275ade1fddaa58/llama.zsh-theme)"
-
-  if ! verify_hash "af891adfd8a9684e31ebadb7830a6a95bcceda9c" "$theme"; then
-    echo "llama zsh theme install failed. The hash doesn't match."
-    exit 1
-  fi
-
-  echo "$theme" > "$DEST"
-}
-
-function install_zsh_syntax_highlighting {
-  local syntax_highlighting="$ARTIFACTS_DIR/zsh-syntax-highlighting"
-
-  if [[ -d "$syntax_highlighting" ]]; then
-    return
-  fi
-
-  announce Installing zsh syntax highlighting
-  git clone -q https://github.com/zsh-users/zsh-syntax-highlighting.git "$syntax_highlighting"
-}
-
-function install_zsh_completion_suggestions {
-  local completion_suggestions="$ARTIFACTS_DIR/zsh-autosuggestions"
-
-  if [[ -d "$completion_suggestions" ]]; then
-    return
-  fi
-
-  announce Installing zsh completion suggestions
-  git clone -q https://github.com/zsh-users/zsh-autosuggestions.git "$completion_suggestions"
-}
-
 # A node version manager, alternative to nvm.
 function install_n {
   if installed n; then
@@ -340,17 +271,6 @@ function install_n {
   rm -rf ~/.n-bin
 }
 
-function install_z {
-  local DEST="$ARTIFACTS_DIR/z"
-
-  if [[ -e "$DEST" ]]; then
-    return
-  fi
-
-  git clone https://github.com/rupa/z.git "$DEST"
-  touch ~/.z
-}
-
 function install_node {
   if installed node; then
     return
@@ -358,67 +278,6 @@ function install_node {
 
   announce Installing node
   N_PREFIX=~/.n n latest
-}
-
-function install_lua {
-  if installed lua; then
-    return
-  fi
-
-  announce Installing lua
-
-  # Download lua (from https://www.lua.org/download.html).
-  local tar_file="lua-5.3.4.tar.gz"
-  curl -sSL https://www.lua.org/ftp/lua-5.3.4.tar.gz -o "$ARTIFACTS_DIR/$tar_file"
-
-  # Extract everything.
-  pushd "$ARTIFACTS_DIR" > /dev/null
-  tar -xzf "$tar_file"
-
-  local lua_dir="${tar_file/.tar.gz/}"
-  pushd "$lua_dir" > /dev/null
-
-  # Compile for the relevant platform.
-  local platform="linux"
-  if installed pbcopy; then
-    platform="macosx"
-  fi
-
-  if [[ "$platform" == "linux" ]]; then
-    sudo apt-get install -y libreadline-dev > /dev/null
-  fi
-
-  make "$platform" test &> /dev/null
-  sudo make install &> /dev/null
-
-  # Remove build artifacts.
-  popd > /dev/null
-  rm -rf "$lua_dir"
-  rm "$tar_file"
-
-  popd > /dev/null
-}
-
-function install_luarocks {
-  if installed luarocks; then
-    return
-  fi
-
-  announce Installing luarocks
-  local dest="$ARTIFACTS_DIR/luarocks"
-  git clone https://github.com/luarocks/luarocks "$dest" &> /dev/null
-
-  pushd "$dest" > /dev/null
-
-  # v2.4.4
-  git checkout --quiet e98b4094490ce5c45dc727cf95e19cae879cc2a4
-
-  ./configure > /dev/null
-  make build > /dev/null
-  sudo make install > /dev/null
-
-  popd > /dev/null
-  rm -rf "$dest"
 }
 
 function install_vim_plug {
@@ -583,7 +442,7 @@ fi
 
 install_make
 install_zsh
-install_oh_my_zsh
+install_antigen
 install_yarn
 install_ruby
 install_tmux
@@ -592,14 +451,9 @@ install_ripgrep
 install_fd_find
 install_bat
 install_skim
-install_llama_zsh_theme
 install_zsh_syntax_highlighting
-install_zsh_completion_suggestions
 install_n
-install_z
 install_node
-install_lua
-install_luarocks
 install_vim_plug
 install_neovim
 install_python_neovim_plugin
