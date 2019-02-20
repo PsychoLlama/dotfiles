@@ -190,7 +190,8 @@ function vf {
   fi
 
   if file="$(fd | sk)"; then
-    echo "$file" | tee "$cache_file"
+    echo "${PWD}/$file" > "$cache_file"
+    echo "$file"
     nvim "$file"
   fi
 }
