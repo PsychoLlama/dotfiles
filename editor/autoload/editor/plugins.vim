@@ -25,6 +25,7 @@ call plug#begin('~/.vim/plugged')
 
 " Filetype plugins
 Plug 'davinche/godown-vim', { 'for': 'markdown' }
+Plug 'PsychoLlama/debrief.vim'
 Plug 'jparise/vim-graphql'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-markdown'
