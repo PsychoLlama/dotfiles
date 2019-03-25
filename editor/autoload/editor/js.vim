@@ -236,7 +236,7 @@ func! editor#js#GetTestRunner(...) abort
   let l:packages = s:ReadPackages(l:package_paths)
 
   for [l:package, l:package_path] in l:packages
-    let l:scripts = get(l:package, 'scripts')
+    let l:scripts = get(l:package, 'scripts', {})
     let l:main_test_script = get(l:scripts, 'test', v:null)
     let l:test_script = get(l:scripts, 'test:unit', l:main_test_script)
 
