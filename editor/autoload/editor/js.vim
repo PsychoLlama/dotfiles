@@ -280,3 +280,15 @@ func! editor#js#GetTestCommandForPath(...) abort
 
   return l:runner
 endfunc
+
+func! editor#js#OpenPackageRoot() abort
+  let l:root = editor#js#FindPackageRoot()
+
+  if l:root is# v:null
+    echo "It doesn't look like you're in a package."
+    return
+  endif
+
+  execute 'edit ' . fnameescape(l:root)
+  lcd %:p
+endfunc
