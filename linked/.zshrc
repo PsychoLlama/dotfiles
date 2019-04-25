@@ -177,23 +177,26 @@ function vf {
   local cache_file="$(dotfiles dir)/command-cache/vf-last-result"
   local file
 
-  if [[ "$1" == "--last" ]]; then
-    file="$(cat "$cache_file")"
+  case "$1" in
+    '--last' | '-l')
+      file="$(cat "$cache_file")"
 
-    if [[ -z "$file" ]]; then
-      echo "There's no find history :/" >&2
-      return 1
-    fi
+      if [[ -z "$file" ]]; then
+        echo "There's no find history :/" >&2
+        return 1
+      fi
 
-    nvim "$file"
-    return $?
-  fi
-
-  if file="$(fd | sk)"; then
-    echo "${PWD}/$file" > "$cache_file"
-    echo "$file"
-    nvim "$file"
-  fi
+      nvim "$file"
+      return $?
+      ;;
+    *)
+      if file="$(fd | sk)"; then
+        echo "${PWD}/$file" > "$cache_file"
+        echo "$file"
+        nvim "$file"
+      fi
+      ;;
+  esac
 }
 
 function cf {
