@@ -126,7 +126,7 @@ let g:netrw_localrmdir = 'rm -r'
 let g:netrw_use_errorwindow = 0
 let g:netrw_banner = 0
 
-let g:zcd#path = dotfiles#Path('artifacts/z/z.sh')
+let g:zcd#path = expand('~/.antigen/bundles/rupa/z/z.sh')
 let g:further#prefer_modules = v:true
 
 " Use vim-jsx for .js extensions too.
