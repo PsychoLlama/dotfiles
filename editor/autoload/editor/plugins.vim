@@ -40,14 +40,10 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 
 " Language Server Protocol client.
-Plug 'autozimu/LanguageClient-neovim', {
-      \   'do': 'bash install.sh',
-      \   'branch': 'next',
-      \ }
+Plug 'neoclide/coc.nvim', { 'do': { -> coc#util#install() } }
 
 " Enhancements ✨
 Plug 'jiangmiao/auto-pairs'
-Plug 'Shougo/deoplete.nvim'
 Plug 'mbbill/undotree'
 Plug 'w0rp/ale'
 
@@ -131,9 +127,6 @@ let g:further#prefer_modules = v:true
 
 " Use vim-jsx for .js extensions too.
 let g:jsx_ext_required = 0
-
-" Injects a kernel rootkit which slowly destroys the computer.
-let g:deoplete#enable_at_startup = 1
 
 " Neovim's Buit-in system clipboard integration.
 let g:clipboard = !len($TMUX) ? v:null : {
