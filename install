@@ -256,28 +256,26 @@ function install_skim {
 }
 
 # A node version manager, alternative to nvm.
-function install_n {
-  if installed n; then
+function install_fnm {
+  if installed fnm; then
     return
   fi
 
-  announce Installing n
-  git clone https://github.com/tj/n.git ~/.n-bin &> /dev/null
-
-  pushd ~/.n-bin &> /dev/null
-  sudo make &> /dev/null
-  popd &> /dev/null
-
-  rm -rf ~/.n-bin
+  announce Installing fnm
+  curl -sSL https://raw.githubusercontent.com/Schniz/fnm/fa652764747ebeddc30382baf4a49a3ced93e5f5/.ci/install.sh | bash &> /dev/null
 }
 
 function install_node {
+  local node_version=8.11.1
+
   if installed node; then
     return
   fi
 
   announce Installing node
-  N_PREFIX=~/.n n latest
+  ~/.fnm/fnm install "$node_version"
+  ~/.fnm/fnm use "$node_version"
+  ~/.fnm/fnm alias "$node_version" default
 }
 
 function install_vim_plug {
@@ -451,7 +449,7 @@ install_ripgrep
 install_fd_find
 install_bat
 install_skim
-install_n
+install_fnm
 install_node
 install_vim_plug
 install_neovim

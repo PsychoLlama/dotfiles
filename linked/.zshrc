@@ -6,8 +6,6 @@ export SKIM_DEFAULT_COMMAND='fd'
 export TERM=screen-256color
 export ZSH=~/.oh-my-zsh
 export EDITOR=nvim
-export N_PREFIX=~/.n
-export PATH="$N_PREFIX/bin:$PATH"
 export PATH=~/.cargo/bin:"$PATH"
 export MANPAGER='nvim -c "setfiletype man" -'
 export fpath=("$(dotfiles dir)/completions" $fpath)
@@ -36,6 +34,12 @@ alias b6='git checkout "$(git branch-history 6 | tail -1)"'
 alias b7='git checkout "$(git branch-history 7 | tail -1)"'
 alias b8='git checkout "$(git branch-history 8 | tail -1)"'
 alias b9='git checkout "$(git branch-history 9 | tail -1)"'
+
+# Use fnm-managed node installation.
+if command -v fnm > /dev/null; then
+  export PATH=$HOME/.fnm:$PATH
+  eval "$(fnm env --multi)"
+fi
 
 ### Functions ###
 function mkcd {
