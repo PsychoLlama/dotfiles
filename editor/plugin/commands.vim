@@ -27,3 +27,7 @@ command! Node call stacktrace#Capture(
 command! Test call stacktrace#Capture(
       \   function('editor#commands#Test')
       \ )
+
+command! -nargs=* Search call stacktrace#Capture(
+      \   function('editor#commands#Search', [<f-args>])
+      \ )

@@ -259,3 +259,20 @@ func! editor#commands#Test() abort
 
   call tmux#SelectPane(l:tmux_vars.pane_id)
 endfunc
+
+func! editor#commands#Search(...) abort
+  let l:args = len(a:000) ? a:000 : [getreg('"')]
+  let l:search_term = join(l:args, ' ')
+  let l:project_root = editor#js#FindPackageRoot()
+
+  if l:project_root is# v:null
+    let l:project_root = expand('%:p')
+  endif
+
+  if !isdirectory(l:project_root)
+    let l:project_root = fnamemodify(l:project_root, ':h')
+  endif
+
+  execute 'silent lcd ' . fnameescape(l:project_root)
+  execute 'silent grep ' . l:search_term
+endfunc
