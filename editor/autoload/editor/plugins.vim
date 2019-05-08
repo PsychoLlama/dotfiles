@@ -36,6 +36,7 @@ Plug 'mxw/vim-jsx'
 
 " ALL HAIL TIM POPE
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 
