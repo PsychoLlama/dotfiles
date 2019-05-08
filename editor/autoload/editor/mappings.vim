@@ -92,8 +92,8 @@ func! s:AlternateTestFile() abort
   call execute('edit ' . fnameescape(l:test_file))
 endfunc
 
-inoremap <silent><expr><tab> <SID>TabCompletion(0)
-inoremap <silent><expr><s-tab> <SID>TabCompletion(1)
+inoremap <silent><expr><tab> <SID>TabCompletion(v:false)
+inoremap <silent><expr><s-tab> <SID>TabCompletion(v:true)
 nnoremap <silent><leader>t :call <SID>ToggleCopyMode()<cr>
 nnoremap <silent><leader>v :call <SID>EditVimrc()<cr>
 nnoremap <silent><leader>r :call <SID>ExploreCurrentDir()<cr>
