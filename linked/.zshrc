@@ -37,7 +37,7 @@ alias b8='git checkout "$(git branch-history 8 | tail -1)"'
 alias b9='git checkout "$(git branch-history 9 | tail -1)"'
 
 # Use fnm-managed node installation.
-if command -v fnm > /dev/null; then
+if [[ -d ~/.fnm ]]; then
   export PATH=$HOME/.fnm:$PATH
   eval "$(fnm env --multi)"
 fi
