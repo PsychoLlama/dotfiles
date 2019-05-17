@@ -7,6 +7,7 @@ export TERM=screen-256color
 export ZSH=~/.oh-my-zsh
 export EDITOR=nvim
 export PATH=~/.cargo/bin:"$PATH"
+export PAGER='bat --paging=always --tabs=2'
 export MANPAGER='nvim -c "setfiletype man" -'
 export fpath=("$(dotfiles dir)/completions" $fpath)
 export RIPGREP_CONFIG_PATH=~/.ripgrep
