@@ -262,20 +262,25 @@ function install_fnm {
   fi
 
   announce Installing fnm
-  curl -sSL https://raw.githubusercontent.com/Schniz/fnm/fa652764747ebeddc30382baf4a49a3ced93e5f5/.ci/install.sh | bash &> /dev/null
+  curl -sSL https://raw.githubusercontent.com/Schniz/fnm/fa652764747ebeddc30382baf4a49a3ced93e5f5/.ci/install.sh \
+    | SKIP_SHELL=true bash &> /dev/null
 }
 
 function install_node {
   local node_version=8.11.1
 
-  if installed node; then
+  if installed node && [[ "$(node --version)" == "$node_version" ]]; then
     return
   fi
 
   announce Installing node
-  ~/.fnm/fnm install "$node_version"
-  ~/.fnm/fnm use "$node_version"
-  ~/.fnm/fnm alias "$node_version" default
+  ~/.fnm/fnm install "$node_version" > /dev/null
+  ~/.fnm/fnm use "$node_version" > /dev/null
+  ~/.fnm/fnm alias "$node_version" default > /dev/null
+
+  # Make the node path available.
+  export PATH=$HOME/.fnm:$PATH
+  eval "$(fnm env --multi)"
 }
 
 function install_vim_plug {
