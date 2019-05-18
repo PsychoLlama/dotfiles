@@ -216,7 +216,7 @@ endfunc
 
 " :Test
 func! editor#commands#Test() abort
-  if &filetype !~# 'javascript'
+  if &filetype !~# '\v(javascript|typescript)'
     echo 'WHAT ARE YOU DOING!'
     return
   endif

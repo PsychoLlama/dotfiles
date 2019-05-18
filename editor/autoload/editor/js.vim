@@ -86,7 +86,7 @@ func! editor#js#LocateTestFile(...) abort
   for l:test_dir in l:test_dirs
 
     " Look at every test file...
-    for l:test_file in glob(l:test_dir . '**/*.js', 0, v:true)
+    for l:test_file in glob(l:test_dir . '**/*.{j,t}s{x,}', 0, v:true)
       let l:no_suffix = s:RemoveTestSuffix(l:test_file)
 
       " Check to see if the name matches our source file.
