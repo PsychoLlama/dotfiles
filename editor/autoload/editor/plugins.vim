@@ -25,6 +25,7 @@ call plug#begin('~/.vim/plugged')
 
 " Filetype plugins
 Plug 'davinche/godown-vim', { 'for': 'markdown' }
+Plug 'leafgarland/typescript-vim'
 Plug 'PsychoLlama/debrief.vim'
 Plug 'jparise/vim-graphql'
 Plug 'rust-lang/rust.vim'
@@ -41,7 +42,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 
 " Language Server Protocol client.
-Plug 'neoclide/coc.nvim', { 'do': { -> coc#util#install() } }
+Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
 
 " Enhancements ✨
 Plug 'jiangmiao/auto-pairs'
@@ -110,6 +111,7 @@ let g:ale_pattern_options = {
 " Autoformatters.
 let g:ale_fixers = {}
 let g:ale_fixers.javascript = ['prettier']
+let g:ale_fixers.typescript = g:ale_fixers.javascript
 let g:ale_fixers.rust = ['rustfmt']
 
 augroup adjust_ale_preview_pane
