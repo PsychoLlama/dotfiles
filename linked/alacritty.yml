@@ -139,8 +139,8 @@ colors:
     foreground: '0xabb2bf'
 
   cursor:
-    background: '0xabb2bf'
-    foreground: '0x282c34'
+    cursor: '0xabb2bf'
+    text: '0x282c34'
 
   normal:
     black:   '0x282c34'
@@ -222,7 +222,7 @@ mouse:
   triple_click: { threshold: 300 }
 
   # If this is `true`, the cursor is temporarily hidden when typing.
-  hide_when_typing: false
+  hide_when_typing: true
 
   url:
     # URL launcher
