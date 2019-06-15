@@ -237,6 +237,15 @@ function install_fd_find {
   cargo install fd-find
 }
 
+function install_viu {
+  if installed viu; then
+    return
+  fi
+
+  announce Installing viu
+  cargo install viu
+}
+
 function install_bat {
   if installed bat; then
     return
@@ -452,6 +461,7 @@ install_tmux
 install_tmuxinator
 install_ripgrep
 install_fd_find
+install_viu
 install_bat
 install_skim
 install_fnm
