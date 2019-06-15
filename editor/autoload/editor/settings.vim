@@ -12,6 +12,7 @@ set fileformat=unix
 set backupcopy=yes
 set signcolumn=yes
 set grepprg=rg\ -n
+set termguicolors
 set numberwidth=2
 set softtabstop=2
 set nofoldenable

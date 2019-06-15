@@ -3,7 +3,6 @@
 ### Variables ###
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export SKIM_DEFAULT_COMMAND='fd'
-export TERM=screen-256color
 export ZSH=~/.oh-my-zsh
 export EDITOR=nvim
 export PATH=~/.cargo/bin:"$PATH"
