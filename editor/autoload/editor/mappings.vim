@@ -103,3 +103,4 @@ nnoremap <silent><esc> :nohlsearch<cr><esc>
 nnoremap <leader>st :call editor#sf#javascript#UnitTest()<cr>
 nnoremap <leader>sd :call editor#sf#javascript#TestGroup()<cr>
 nnoremap <leader>sc <esc>:call editor#sf#javascript#LogStatement()<cr>f'
+nnoremap <leader>f <esc>:Files!<cr>
