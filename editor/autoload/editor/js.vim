@@ -292,3 +292,20 @@ func! editor#js#OpenPackageRoot() abort
   execute 'edit ' . fnameescape(l:root)
   lcd %:p
 endfunc
+
+func! editor#js#GetPackageJson(...) abort
+  let l:path = s:ResolvePath(a:000)
+  let l:root = editor#js#FindPackageRoot(l:path)
+  let l:pkg_json_path = l:root . '/package.json'
+
+  if !filereadable(l:pkg_json_path)
+    echohl Error
+    echon 'Error:'
+    echohl Clear
+    echon " Can't find the package.json file."
+    return
+  endif
+
+  let l:contents = join(readfile(l:pkg_json_path), ' ')
+  return json_decode(l:contents)
+endfunc
