@@ -39,6 +39,8 @@ Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 
 " Language Server Protocol client.
