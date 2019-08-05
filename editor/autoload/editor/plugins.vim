@@ -48,6 +48,7 @@ Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
 
 " Enhancements ✨
 Plug 'jiangmiao/auto-pairs'
+Plug 'machakann/vim-swap'
 Plug 'mbbill/undotree'
 Plug 'w0rp/ale'
 
