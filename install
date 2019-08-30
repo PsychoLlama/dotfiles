@@ -264,6 +264,15 @@ function install_skim {
   cargo install skim
 }
 
+function install_pastel {
+  if installed pastel; then
+    return
+  fi
+
+  announce Installing pastel
+  cargo install pastel
+}
+
 # A node version manager, alternative to nvm.
 function install_fnm {
   if installed fnm; then
@@ -464,6 +473,7 @@ install_fd_find
 install_viu
 install_bat
 install_skim
+install_pastel
 install_fnm
 install_node
 install_vim_plug
