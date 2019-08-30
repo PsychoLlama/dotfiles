@@ -46,6 +46,7 @@ Plug 'tpope/vim-repeat'
 Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
 
 " Enhancements ✨
+Plug 'AndrewRadev/splitjoin.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'machakann/vim-swap'
 Plug 'mbbill/undotree'
