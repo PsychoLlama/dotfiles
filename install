@@ -99,9 +99,7 @@ function install_packages {
     packages+=("$pkg")
   done < <(get_pkg_list)
 
-  if (( "${#packages}" > 0 )); then
-    # Resolve Travis ruby dependency conflict.
-    nix-env --set-flag priority 4 ruby
+  if (( ${#packages} > 0 )); then
     nix-env --install $packages
   fi
 }
@@ -132,7 +130,7 @@ function install_cargo_packages {
     packages+=("$pkg")
   done < <(get_cargo_pkg_list)
 
-  if (( "${#packages}" > 0 )); then
+  if (( ${#packages} > 0 )); then
     cargo install $packages
   fi
 }
