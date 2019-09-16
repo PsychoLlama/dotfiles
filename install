@@ -8,60 +8,9 @@ if [[ ! -e "$ARTIFACTS_DIR" ]]; then
   mkdir "$ARTIFACTS_DIR"
 fi
 
-function announce {
-  if [[ -z "$VERBOSE" ]]; then
-    return
-  fi
-
-  local msg="$*"
-  local border=""
-
-  for _ in $(seq ${#msg}); do
-    border="$border#"
-  done
-
-  echo
-  echo "$border"
-  echo "$@"
-  echo "$border"
-  echo
-}
-
 # Whether a command exists.
 function installed {
-  which "$1" &> /dev/null
-
-  return $?
-}
-
-function platform_name {
-  if [[ "$(uname -s)" == "Darwin" ]]; then
-    echo mac
-    return
-  fi
-
-  if installed apt-get; then
-    echo ubuntu
-    return
-  fi
-}
-
-function platform_version {
-  local platform="$(platform_name)"
-
-  if [[ "$platform" == mac ]]; then
-    uname -r
-  else
-    source /etc/os-release
-    echo "$VERSION_ID"
-  fi
-}
-
-# Exit 0 if $1 is the smaller of two version numbers.
-function version_lt {
-  local smallest_version="$(sort -V <(echo -e "$1\n$2") | head -1)"
-
-  [[ "$smallest_version" == "$1" ]]
+  command -v "$1" > /dev/null
 }
 
 INSTALL_CMD=""
@@ -85,7 +34,6 @@ function ensure {
     return
   fi
 
-  announce Installing "$1"
   install "$1"
 }
 
@@ -105,15 +53,6 @@ function ensure_python3 {
     brew upgrade "$pkg"
     brew link --overwrite "$pkg"
   }
-}
-
-function ensure_apt_add_command {
-  if installed add-apt-repository; then
-    return
-  fi
-
-  install software-properties-common
-  install python-software-properties
 }
 
 function get_pkg_list {
@@ -147,7 +86,6 @@ function install_nix {
     return
   fi
 
-  announce Installing nix
   curl https://nixos.org/nix/install | sh
 
   # Activate!
@@ -161,23 +99,11 @@ function install_packages {
     packages+=("$pkg")
   done < <(get_pkg_list)
 
-  if (( "${#packages}" == 0 )); then
-    return
+  if (( "${#packages}" > 0 )); then
+    # Resolve Travis ruby dependency conflict.
+    nix-env --set-flag priority 4 ruby
+    nix-env --install $packages
   fi
-
-  # Resolve Travis ruby dependency conflict.
-  nix-env --set-flag priority 4 ruby
-  nix-env --install $packages
-}
-
-function use_zsh {
-  # Don't attempt to change shell on Travis CI.
-  # The build will hang forever.
-  if [[ "$SHELL" == "$(which zsh)" || -n "$CI" ]]; then
-    return
-  fi
-
-  chsh -s "$(which zsh)"
 }
 
 function get_cargo_pkg_list {
@@ -206,11 +132,9 @@ function install_cargo_packages {
     packages+=("$pkg")
   done < <(get_cargo_pkg_list)
 
-  if (( "${#packages}" == 0 )); then
-    return
+  if (( "${#packages}" > 0 )); then
+    cargo install $packages
   fi
-
-  cargo install $packages
 }
 
 # A node version manager, alternative to nvm.
@@ -219,7 +143,6 @@ function install_fnm {
     return
   fi
 
-  announce Installing fnm
   curl -sSL https://raw.githubusercontent.com/Schniz/fnm/fa652764747ebeddc30382baf4a49a3ced93e5f5/.ci/install.sh \
     | SKIP_SHELL=true bash &> /dev/null
 }
@@ -231,7 +154,6 @@ function install_node {
     return
   fi
 
-  announce Installing node
   ~/.fnm/fnm install "$node_version" > /dev/null
   ~/.fnm/fnm use "$node_version" > /dev/null
   ~/.fnm/fnm alias "$node_version" default > /dev/null
@@ -248,7 +170,6 @@ function install_vim_plug {
     return
   fi
 
-  announce Installing vim-plug
   curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 }
@@ -260,12 +181,9 @@ function install_viml {
 }
 
 function install_python_neovim_plugin {
-  if python3 -c 'import neovim' &> /dev/null; then
-    return
+  if ! python3 -c 'import neovim' &> /dev/null; then
+    sudo -H pip3 'install' neovim > /dev/null
   fi
-
-  announce Installing python neovim plugin
-  sudo -H pip3 'install' neovim > /dev/null
 }
 
 function install_neovim_plugins {
@@ -280,49 +198,38 @@ function install_neovim_plugins {
   fi
 
   echo "$plugins_sha" > "$hash_file"
-  announce Installing neovim plugins
 
-  # Source the vimrc in non-interactive mode.
-  nvim\
-    -u /dev/null\
-    -c "silent so ~/.config/nvim/init.vim"\
-    -c "PlugInstall"\
-    -c "UpdateRemotePlugins"\
-    -c "qa"
+  nvim \
+    -u /dev/null \
+    -c 'silent so ~/.config/nvim/init.vim' \
+    -c 'PlugInstall' \
+    -c 'UpdateRemotePlugins' \
+    -c 'qa'
 
   # Don't ask on startup.
   mkdir -p ~/.vim/plugged/vim-notes/misc/notes/user/
 }
 
-function install_pylint {
-  if installed pylint; then
-    return
-  fi
-
-  announce Installing pylint
-  if installed brew; then
-    pip3 install pylint
-  else
-    install pylint
-  fi
-}
-
 function install_rustfmt {
-  local list="$(rustup component list)"
-  local pkg="$(grep rustfmt-preview <<< "$list")"
-
-  if installed rustfmt; then
-    return
+  if ! installed rustfmt; then
+    rustup component add rustfmt-preview
   fi
-
-  rustup component add rustfmt-preview
 }
 
 function install_shellcheck {
   if ! installed shellcheck; then
-    announce Installing shellcheck
     install shellcheck &> /dev/null
   fi
+}
+
+function use_zsh {
+  # Don't attempt to change shell on Travis CI.
+  # The build will hang forever.
+  if [[ "$SHELL" == "$(which zsh)" || -n "$CI" ]]; then
+    return
+  fi
+
+  chsh -s "$(which zsh)"
 }
 
 ensure curl
@@ -338,7 +245,7 @@ install_vim_plug
 install_python_neovim_plugin
 install_neovim_plugins
 install_viml
-install_pylint
 install_rustfmt
 install_shellcheck
+
 use_zsh
