@@ -116,107 +116,65 @@ function ensure_apt_add_command {
   install python-software-properties
 }
 
-function install_make {
-  if installed make; then
-    return
+function get_pkg_list {
+  local -a pkgs=()
+
+  function add_pkg_if_missing {
+    if ! installed "$1"; then
+      pkgs=("${pkgs[@]}" "${2-$1}")
+    fi
+  }
+
+  add_pkg_if_missing rustup
+  add_pkg_if_missing zsh
+  add_pkg_if_missing nvim neovim
+  add_pkg_if_missing ruby
+  add_pkg_if_missing travis
+  add_pkg_if_missing tmux
+  add_pkg_if_missing tmuxinator
+  add_pkg_if_missing vint vim-vint
+  add_pkg_if_missing yarn
+
+  if ! nix-env -q antigen &> /dev/null; then
+    pkgs=("${pkgs[@]}" antigen)
   fi
 
-  announce Installing make
-  install build-essential
+  echo "${pkgs[@]}"
 }
 
-function install_zsh {
-  if installed zsh; then
+function install_nix {
+  if installed nix; then
     return
   fi
 
-  announce Installing zsh
-  install zsh
+  announce Installing nix
+  curl https://nixos.org/nix/install | sh
+}
 
+function install_packages {
+  local -a packages
+
+  while IFS='' read -r pkg; do
+    packages+=("$pkg")
+  done < <(get_pkg_list)
+
+  if (( "${#packages}" == 0 )); then
+    return
+  fi
+
+  # Resolve Travis ruby dependency conflict.
+  nix-env --set-flag priority 4 ruby
+  nix-env --install $packages
+}
+
+function use_zsh {
   # Don't attempt to change shell on Travis CI.
   # The build will hang forever.
-  if [[ -n "$CI" ]]; then
+  if [[ "$SHELL" == "$(which zsh)" || -n "$CI" ]]; then
     return
   fi
 
   chsh -s "$(which zsh)"
-}
-
-function install_antigen {
-  local install_dir="$ARTIFACTS_DIR/antigen"
-  if [[ -d "$install_dir" ]]; then
-    return
-  fi
-
-  announce Installing antigen
-  git clone -q --depth=1 https://github.com/zsh-users/antigen.git "$install_dir"
-}
-
-function install_yarn {
-  if installed yarn; then
-    return
-  fi
-
-  announce Installing yarn
-  local pkg="yarn"
-
-  # Don't install node too.
-  if installed brew; then
-    pkg="yarn --ignore-dependencies"
-  fi
-
-  install "$pkg"
-}
-
-function install_ruby {
-  local pkg="ruby"
-  if installed apt-get; then
-    pkg="ruby2.4"
-  fi
-
-  if installed "$pkg"; then
-    return
-  fi
-
-  announce Installing ruby
-
-  install "$pkg"
-}
-
-function install_tmux {
-  if installed tmux; then
-    return
-  fi
-
-  announce Installing tmux
-
-  local DEST="$ARTIFACTS_DIR/tmux"
-  git clone https://github.com/tmux/tmux.git "$DEST"
-  pushd "$DEST" > /dev/null
-
-  git checkout --quiet 2.8
-  sh autogen.sh &> /dev/null
-
-  # Assumes the only possible failure is missing packages.
-  ./configure > /dev/null || {
-    sudo apt-get install -y libevent-dev libncurses5-dev
-    ./configure
-  }
-
-  make &> /dev/null
-  sudo make install &> /dev/null
-
-  rm -rf "$DEST"
-  popd > /dev/null
-}
-
-function install_tmuxinator {
-  if installed tmuxinator; then
-    return
-  fi
-
-  announce Installing tmuxinator
-  sudo gem install tmuxinator > /dev/null
 }
 
 function install_ripgrep {
@@ -313,27 +271,6 @@ function install_vim_plug {
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 }
 
-function install_neovim {
-  if installed nvim; then
-    return
-  fi
-
-  announce Installing neovim
-  local pkg="neovim"
-  if installed apt-get; then
-    sudo apt-get update
-
-    install python-dev
-    install python-pip
-    install python3-dev
-    install python3-pip
-  fi
-
-  install "$pkg"
-  mkdir -p ~/.vim/backup
-  sudo chmod 777 ~/.vim/backup
-}
-
 # This is deceptive. The viml interpreter is
 # part of my dotfiles framework.
 function install_viml {
@@ -346,7 +283,7 @@ function install_python_neovim_plugin {
   fi
 
   announce Installing python neovim plugin
-  sudo -H pip3 install neovim > /dev/null
+  sudo -H pip3 'install' neovim > /dev/null
 }
 
 function install_neovim_plugins {
@@ -373,22 +310,6 @@ function install_neovim_plugins {
 
   # Don't ask on startup.
   mkdir -p ~/.vim/plugged/vim-notes/misc/notes/user/
-}
-
-function install_vint {
-  if installed vint; then
-    return
-  fi
-
-  # Pre-xenial distros ship with a horribly dated setuptools version.
-  local setuptools_version="$(python3 -m easy_install --version | awk '{print $2}')"
-
-  if [[ "${setuptools_version//.*/}" -lt "30" ]]; then
-    sudo -H pip3 install -U setuptools
-  fi
-
-  announce Installing vint
-  sudo -H pip3 install vim-vint > /dev/null
 }
 
 function install_pylint {
@@ -425,49 +346,10 @@ function install_shellcheck {
 
 ensure curl
 ensure openssl
-ensure automake
 ensure_python3
 
-# Ubuntu PPAs.
-if [[ "$(platform_name)" == ubuntu ]]; then
-  ensure_apt_add_command
-  UPDATE=
-
-  if ! installed yarn; then
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-    UPDATE=1
-  fi
-
-  # Ruby PPA (ruby-full doesn't work pre-xenial). No PPA is required
-  if ! installed ruby && ! installed ruby2.4; then
-    sudo add-apt-repository -y ppa:brightbox/ruby-ng
-    UPDATE=1
-  fi
-
-  if ! installed nvim; then
-    neovim_ppa="ppa:neovim-ppa/stable"
-
-    if version_lt "$(platform_version)" 16; then
-      neovim_ppa="ppa:neovim-ppa/unstable"
-    fi
-
-    sudo add-apt-repository -y "$neovim_ppa"
-    UPDATE=1
-  fi
-
-  if [[ -n "$UPDATE" ]]; then
-    sudo apt-get update
-  fi
-fi
-
-install_make
-install_zsh
-install_antigen
-install_yarn
-install_ruby
-install_tmux
-install_tmuxinator
+install_nix
+install_packages
 install_ripgrep
 install_fd_find
 install_viu
@@ -477,11 +359,10 @@ install_pastel
 install_fnm
 install_node
 install_vim_plug
-install_neovim
 install_python_neovim_plugin
 install_neovim_plugins
 install_viml
-install_vint
 install_pylint
 install_rustfmt
 install_shellcheck
+use_zsh
