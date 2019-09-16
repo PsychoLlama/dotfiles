@@ -13,9 +13,7 @@ func! s:LoadExternalPlugins() abort
 endfunc
 
 " Set python executable paths. Used for remote neovim plugins.
-if executable('python3')
-  let g:python3_host_prog = exepath('python3')
-endif
+let g:python3_host_prog = exepath('nvim-python3')
 
 if executable('python2')
   let g:python2_host_prog = exepath('python2')
