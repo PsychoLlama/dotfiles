@@ -14,7 +14,6 @@
   pl = pull --prune origin
   amend = commit --amend
   ls = ls-files
-  mr = !"$(dotfiles dir)/utils/get-MR-name.sh"
   branch-history = !"$(dotfiles dir)/utils/show-git-branch-history"
 [user]
   email = JesseTheGibson@gmail.com
