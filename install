@@ -37,24 +37,6 @@ function ensure {
   install "$1"
 }
 
-function ensure_python3 {
-  if installed python3; then
-    return
-  fi
-
-  local pkg="python3"
-  install "$pkg" || {
-    if ! installed brew; then
-      return $?
-    fi
-
-    # On Travis CI mac seems to come pre-installed with an
-    # old version of python. Force python3.
-    brew upgrade "$pkg"
-    brew link --overwrite "$pkg"
-  }
-}
-
 function get_pkg_list {
   local -a pkgs=()
 
@@ -227,7 +209,6 @@ function use_zsh {
 
 ensure curl
 ensure openssl
-ensure_python3
 
 install_nix
 install_packages
