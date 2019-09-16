@@ -2,8 +2,8 @@ language: c
 sudo: required
 
 script:
-  - ./setup
-  - ./editor/test.sh
+- ./setup
+
 os:
 - linux
 - osx

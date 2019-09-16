@@ -67,9 +67,6 @@ Plug 'joshdick/onedark.vim'
 Plug 'PsychoLlama/conway.vim'
 Plug 'PsychoLlama/snake.vim'
 
-" VimScript
-Plug 'junegunn/vader.vim'
-
 call s:LoadExternalPlugins()
 call plug#end()
 
