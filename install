@@ -177,58 +177,37 @@ function use_zsh {
   chsh -s "$(which zsh)"
 }
 
-function install_ripgrep {
-  if installed rg; then
-    return
-  fi
+function get_cargo_pkg_list {
+  local -a pkgs=()
 
-  announce Installing ripgrep
-  cargo install ripgrep
+  function add_pkg_if_missing {
+    if ! installed "$1"; then
+      pkgs=("${pkgs[@]}" "${2-$1}")
+    fi
+  }
+
+  add_pkg_if_missing rg ripgrep
+  add_pkg_if_missing fd fd-find
+  add_pkg_if_missing viu
+  add_pkg_if_missing bat
+  add_pkg_if_missing sk skim
+  add_pkg_if_missing pastel
+
+  echo "${pkgs[@]}"
 }
 
-function install_fd_find {
-  if installed fd; then
+function install_cargo_packages {
+  local -a packages
+
+  while IFS='' read -r pkg; do
+    packages+=("$pkg")
+  done < <(get_cargo_pkg_list)
+
+  if (( "${#packages}" == 0 )); then
     return
   fi
 
-  announce Installing fd
-  cargo install fd-find
-}
-
-function install_viu {
-  if installed viu; then
-    return
-  fi
-
-  announce Installing viu
-  cargo install viu
-}
-
-function install_bat {
-  if installed bat; then
-    return
-  fi
-
-  announce Installing bat
-  cargo install bat
-}
-
-function install_skim {
-  if installed sk; then
-    return
-  fi
-
-  announce Installing skim
-  cargo install skim
-}
-
-function install_pastel {
-  if installed pastel; then
-    return
-  fi
-
-  announce Installing pastel
-  cargo install pastel
+  cargo install $packages
 }
 
 # A node version manager, alternative to nvm.
@@ -329,11 +308,10 @@ function install_rustfmt {
   local list="$(rustup component list)"
   local pkg="$(grep rustfmt-preview <<< "$list")"
 
-  if [[ "$pkg" =~ installed ]]; then
+  if installed rustfmt; then
     return
   fi
 
-  announce Installing rustfmt
   rustup component add rustfmt-preview
 }
 
@@ -350,12 +328,7 @@ ensure_python3
 
 install_nix
 install_packages
-install_ripgrep
-install_fd_find
-install_viu
-install_bat
-install_skim
-install_pastel
+install_cargo_packages
 install_fnm
 install_node
 install_vim_plug
