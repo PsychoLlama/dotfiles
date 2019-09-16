@@ -123,6 +123,13 @@ function get_cargo_pkg_list {
   echo "${pkgs[@]}"
 }
 
+function install_rust_toolchain {
+  if [[ "$(rustup toolchain list)" == "no installed toolchains" ]]; then
+    rustup toolchain install nightly
+    export PATH="$HOME/.cargo/bin:$PATH"
+  fi
+}
+
 function install_cargo_packages {
   local -a packages
 
@@ -224,6 +231,7 @@ ensure_python3
 
 install_nix
 install_packages
+install_rust_toolchain
 install_cargo_packages
 install_rustfmt
 install_fnm
