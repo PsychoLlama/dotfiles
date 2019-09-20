@@ -55,6 +55,7 @@ function get_pkg_list {
   add_pkg_if_missing tmuxinator
   add_pkg_if_missing vint vim-vint
   add_pkg_if_missing yarn
+  add_pkg_if_missing unzip
 
   if ! nix-env -q antigen &> /dev/null; then
     pkgs=("${pkgs[@]}" antigen)
