@@ -215,7 +215,7 @@ function cf {
 }
 
 source ~/.nix-profile/etc/profile.d/nix.sh
-source "$(dotfiles dir)/artifacts/antigen/antigen.zsh"
+source ~/.nix-profile/share/antigen/antigen.zsh
 antigen use oh-my-zsh
 antigen bundle docker
 antigen bundle rupa/z
