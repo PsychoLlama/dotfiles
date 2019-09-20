@@ -309,3 +309,7 @@ func! editor#js#GetPackageJson(...) abort
   let l:contents = join(readfile(l:pkg_json_path), ' ')
   return json_decode(l:contents)
 endfunc
+
+func! editor#js#IsJavaScript() abort
+  return &filetype =~# '\v\C(javascript|typescript)'
+endfunc
