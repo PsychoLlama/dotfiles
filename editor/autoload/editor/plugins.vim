@@ -129,6 +129,9 @@ let g:further#prefer_modules = v:true
 " Use vim-jsx for .js extensions too.
 let g:jsx_ext_required = 0
 
+" Always add trailing commas when expanding objects.
+let g:splitjoin_trailing_comma = v:true
+
 " Neovim's Buit-in system clipboard integration.
 let g:clipboard = !len($TMUX) ? v:null : {
       \   'name': 'tmux',
