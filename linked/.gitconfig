@@ -2,16 +2,16 @@
   a = add -A
   d = diff
   l = log -1000 --format='%Cgreen%h%Creset: %an (%C(yellow)%ar%Creset)%n%s%n%n%b'
-  f = fetch --prune
+  f = fetch
   cat = cat-file -p
   r = reset
   rr = reset --hard HEAD
   rrr = reset --hard HEAD^
   p = push --set-upstream origin
-  pf = push --set-upstream origin --force-with-lease
+  pf = push --force-with-lease
   s = stash
   ss = stash save --include-untracked
-  pl = pull --prune origin
+  pl = pull origin
   amend = commit --amend
   ls = ls-files
   branch-history = !"$(dotfiles dir)/utils/show-git-branch-history"
@@ -28,3 +28,5 @@
   tool = vimdiff
 [mergetool "vimdiff"]
   cmd = nvim -d "$MERGED" "$LOCAL" "$BASE" "$REMOTE" -c 'wincmd J'
+[fetch]
+  prune = true
