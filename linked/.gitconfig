@@ -20,6 +20,7 @@
   name = Jesse Gibson
 [core]
   editor = nvim
+  pager = "delta --dark --theme='OneHalfDark'"
 [push]
   default = current
 [rebase]
