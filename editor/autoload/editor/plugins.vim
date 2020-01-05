@@ -42,7 +42,7 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 
 " Language Server Protocol client.
-Plug 'neoclide/coc.nvim', { 'tag': '*', 'do': './install.sh' }
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " Enhancements ✨
 Plug 'AndrewRadev/splitjoin.vim'
