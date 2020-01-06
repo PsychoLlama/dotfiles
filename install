@@ -200,14 +200,15 @@ function install_shellcheck {
   fi
 }
 
-function use_zsh {
+function use_fish {
   # Don't attempt to change shell on Travis CI.
   # The build will hang forever.
-  if [[ "$SHELL" == "$(which zsh)" || -n "$CI" ]]; then
+  if [[ "$SHELL" == "$(which fish)" || -n "$CI" ]]; then
     return
   fi
 
-  chsh -s "$(which zsh)"
+  fish --command 'set --universal fish_greeting'
+  chsh -s "$(which fish)"
 }
 
 ensure curl
@@ -224,4 +225,4 @@ install_vim_plug
 install_neovim_plugins
 install_shellcheck
 
-use_zsh
+use_fish
