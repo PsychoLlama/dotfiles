@@ -47,6 +47,7 @@ function get_pkg_list {
   }
 
   add_pkg_if_missing rustup
+  add_pkg_if_missing fish
   add_pkg_if_missing zsh
   add_pkg_if_missing nvim neovim
   add_pkg_if_missing ruby
