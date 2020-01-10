@@ -13,7 +13,6 @@
   ss = stash save --include-untracked
   pl = pull origin
   amend = commit --amend
-  ls = ls-files
   branch-history = !"$(dotfiles dir)/utils/show-git-branch-history"
 [user]
   email = JesseTheGibson@gmail.com
