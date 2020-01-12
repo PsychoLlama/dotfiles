@@ -17,4 +17,6 @@ endif
 
 " My vimrc has grown beyond the grasp of a single file.
 " Files are managed similarly to a vim plugin, organized into modules.
-runtime! autoload/editor/{settings,plugins,mappings}.vim
+runtime! autoload/editor/settings.vim
+runtime! autoload/editor/plugins.vim
+runtime! autoload/editor/mappings.vim
