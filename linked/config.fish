@@ -20,13 +20,14 @@ end
 
 alias g git
 alias b 'git --no-pager branch --verbose'
-alias :qa 'tmux kill-session 2> /dev/null || exit'
+alias :qa 'tmux kill-session 2> /dev/null; or exit'
 alias ch 'git checkout'
 alias D 'cd ~/Desktop'
 alias c 'git commit'
 alias H 'git diff HEAD'
 alias HH 'git diff HEAD~1'
 alias HHH 'git diff HEAD~2'
+alias l 'ls -lAh'
 
 # Git branch "dirstack"
 for num in (seq 1 9)
