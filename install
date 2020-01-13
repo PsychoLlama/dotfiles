@@ -25,7 +25,7 @@ fi
 
 # Best-effort install.
 function install {
-  $INSTALL_CMD $1 1> /dev/null
+  $INSTALL_CMD "${1[@]}" 1> /dev/null
 }
 
 # Install the thing if it doesn't exist.
@@ -84,12 +84,12 @@ function install_packages {
   done < <(get_pkg_list)
 
   if (( ${#packages} > 0 )); then
-    nix-env --install $packages
+    nix-env --install "${packages[@]}"
   fi
 }
 
 function get_cargo_pkg_list {
-  local -a pkgs=()
+  local -a pkgs
 
   function add_pkg_if_missing {
     if ! installed "$1"; then
@@ -123,7 +123,7 @@ function install_cargo_packages {
   done < <(get_cargo_pkg_list)
 
   if (( ${#packages} > 0 )); then
-    cargo install $packages
+    cargo install "${packages[@]}"
   fi
 }
 
@@ -203,12 +203,12 @@ function install_shellcheck {
 function use_fish {
   # Don't attempt to change shell on Travis CI.
   # The build will hang forever.
-  if [[ "$SHELL" == "$(which fish)" || -n "$CI" ]]; then
+  if [[ "$SHELL" == "$(command -v fish)" || -n "$CI" ]]; then
     return
   fi
 
   fish --command 'set --universal fish_greeting'
-  chsh -s "$(which fish)"
+  chsh -s "$(command -v fish)"
 }
 
 ensure curl
