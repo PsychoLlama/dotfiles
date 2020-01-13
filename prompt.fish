@@ -1,13 +1,13 @@
 # Adapted from my old llama.zsh-theme prompt.
 function fish_prompt
-  set -l last_exit_code $status
+  set -l last_exit_code "$status"
   set -l is_git_repo (
     git rev-parse --is-inside-work-tree 2> /dev/null
     or echo 'false'
   )
 
   function _directory_name
-    basename $PWD
+    basename "$PWD"
   end
 
   # Tries to find a human-readable branch name like "dev" or "master".
@@ -15,16 +15,40 @@ function fish_prompt
   function _current_git_branch
     set -l branch (git rev-parse --abbrev-ref HEAD)
 
-    if test $branch = 'HEAD'
+    if test "$branch" = 'HEAD'
       git rev-parse HEAD | cut -c 1-7
     else
-      echo -n $branch
+      echo -n "$branch"
     end
+  end
+
+  # Show a colored summary of the git status in a '+' symbol.
+  function _git_status -S
+    if test "$is_git_repo" = 'false'
+      return
+    end
+
+    set -l staged_changes (git diff --name-only --cached)
+    set -l unstaged_changes (git ls-files --others --modified --exclude-standard)
+
+    if test -z "$staged_changes" -a -z "$unstaged_changes"
+      return
+    end
+
+    if test -n "$unstaged_changes" -a -n "$staged_changes"
+      set_color yellow
+    else if test -n "$unstaged_changes"
+      set_color red
+    else if test -n "$staged_changes"
+      set_color green
+    end
+
+    echo -n '+'
   end
 
   # The prompt icon is red for non-zero output.
   function _exit_status -S
-    if test $last_exit_code = 0
+    if test "$last_exit_code" = 0
       set_color green
     else
       set_color red
@@ -34,7 +58,6 @@ function fish_prompt
     echo -n '❯'
   end
 
-  ### Formatting ###
   function _fmt_current_directory
     set_color blue
     echo -n (_directory_name)
@@ -42,9 +65,10 @@ function fish_prompt
 
   # Prints "[branch_name]" or nothing.
   function _fmt_git_branch -S
-    if test $is_git_repo = 'true'
+    if test "$is_git_repo" = 'true'
       set_color yellow
       echo -n '['
+      echo -n (_git_status)
       set_color cyan
       echo -n (_current_git_branch)
       set_color yellow
