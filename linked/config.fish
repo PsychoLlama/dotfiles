@@ -9,6 +9,7 @@ set -x MANPAGER 'nvim -c "setfiletype man" -'
 set -x RIPGREP_CONFIG_PATH ~/.ripgrep
 set -x BAT_STYLE changes
 set -x NIX_IGNORE_SYMLINK_STORE 1 # Catalina ruins everything.
+set -x --prepend PATH ~/.nix-profile/bin
 
 if test -d ~/.fnm
   set -gx --prepend PATH ~/.fnm
@@ -180,8 +181,6 @@ function vf
     return 1
   end
 end
-
-bash ~/.nix-profile/etc/profile.d/nix.sh
 
 # Check for computer-specific shell utils.
 if test -e ~/dotfiles-env/config.fish
