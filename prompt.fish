@@ -13,7 +13,11 @@ function fish_prompt
   )
 
   function _directory_name
-    basename "$PWD"
+    if test "$PWD" = "$HOME"
+      echo '~'
+    else
+      basename "$PWD"
+    end
   end
 
   #############
