@@ -71,7 +71,7 @@ function fish_prompt
     set_color yellow
     echo -n '('
     set_color cyan
-    echo -n (python --version | sed -e 's/Python //' -e 's/\\.[0-9]*$//')
+    echo -n (python --version 2>&1 | sed -e 's/Python //' -e 's/\\.[0-9]*$//')
     set_color yellow
     echo -n ')'
   end
