@@ -6,9 +6,19 @@ function fish_prompt
     or echo 'false'
   )
 
+  set -l show_python_info (
+    test -n "$VIRTUAL_ENV_DISABLE_PROMPT" -a -n "$VIRTUAL_ENV"
+    and echo 'true'
+    or echo 'false'
+  )
+
   function _directory_name
     basename "$PWD"
   end
+
+  #############
+  #    Git    #
+  #############
 
   # Tries to find a human-readable branch name like "dev" or "master".
   # Falls back to a 7-character hash.
@@ -46,6 +56,26 @@ function fish_prompt
     echo -n '+'
   end
 
+  ##############
+  #    Venv    #
+  ##############
+  function _fmt_python_version -S
+    if test "$show_python_info" = 'false'
+      return 1
+    end
+
+    set_color yellow
+    echo -n '('
+    set_color cyan
+    echo -n (python --version | sed -e 's/Python //' -e 's/\\.[0-9]*$//')
+    set_color yellow
+    echo -n ')'
+  end
+
+  ##############
+  #    Misc    #
+  ##############
+
   # The prompt icon is red for non-zero output.
   function _exit_status -S
     if test "$last_exit_code" = 0
@@ -71,10 +101,11 @@ function fish_prompt
       echo -n (_git_status)
       set_color cyan
       echo -n (_current_git_branch)
+      echo -n (_fmt_python_version)
       set_color yellow
       echo -n ']'
     else
-      echo ' '
+      echo -n (_fmt_python_version; or echo -n ' ')
     end
   end
 
