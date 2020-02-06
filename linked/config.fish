@@ -29,6 +29,9 @@ alias HH 'git diff HEAD~1'
 alias HHH 'git diff HEAD~2'
 alias l 'ls -lAh'
 
+alias ... 'cd ../../'
+alias .... 'cd ../../../'
+
 # Git branch "dirstack"
 for num in (seq 1 9)
   alias b{$num} "git checkout (git branch-history $num | tail -1)"
