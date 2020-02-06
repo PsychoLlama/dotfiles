@@ -97,7 +97,7 @@ inoremap <silent><expr><s-tab> <SID>TabCompletion(v:true)
 nnoremap <silent><leader>t :call <SID>ToggleCopyMode()<cr>
 nnoremap <silent><leader>v :call <SID>EditVimrc()<cr>
 nnoremap <silent><leader>r :call <SID>ExploreCurrentDir()<cr>
-nnoremap <silent><leader>a :call <SID>AlternateTestFile()<cr>
+nnoremap <silent><leader>a :call alternaut#Toggle()<cr>
 nnoremap <silent><leader>p <esc>:call editor#OpenRoot()<cr>
 nnoremap <silent><esc> :nohlsearch<cr><esc>
 nnoremap <leader>st :call editor#sf#javascript#UnitTest()<cr>

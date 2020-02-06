@@ -53,6 +53,7 @@ Plug 'mbbill/undotree'
 Plug 'w0rp/ale'
 
 " Navigation
+Plug 'PsychoLlama/alternaut.vim'
 Plug 'PsychoLlama/further.vim'
 Plug 'PsychoLlama/z.vim'
 Plug 'lotabout/skim.vim'
@@ -126,6 +127,14 @@ let g:netrw_banner = 0
 
 let g:zcd#path = expand('~/.antigen/bundles/rupa/z/z.sh')
 let g:further#prefer_modules = v:true
+
+let s:js_testing_conventions = {
+      \   'file_naming_conventions': ['{name}.test.{ext}'],
+      \   'directory_naming_conventions': ['__tests__'],
+      \   'file_extensions': ['js']
+      \ }
+
+call alternaut#RegisterLanguage('javascript.jsx', s:js_testing_conventions)
 
 " Use vim-jsx for .js extensions too.
 let g:jsx_ext_required = 0

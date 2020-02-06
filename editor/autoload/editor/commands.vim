@@ -221,19 +221,19 @@ func! editor#commands#Test() abort
     return
   endif
 
-  let l:test_file = expand('%:p')
-  if !editor#js#IsTestFile()
-    let l:test_file = editor#js#LocateTestFile()
-    if l:test_file is# v:null
+  let l:file_path = expand('%:p')
+  if !alternaut#IsTestFile(l:file_path)
+    let l:file_path = alternaut#LocateTestFile(l:file_path)
+    if l:file_path is# v:null
       echohl Error
-      echon 'Error: '
+      echon 'Error:'
       echohl Clear
-      echon "Couldn't find the test file."
+      echon " Couldn't find the test file."
       return
     endif
   endif
 
-  let l:runner = editor#js#GetTestCommandForPath(l:test_file)
+  let l:runner = editor#js#GetTestCommandForPath(l:file_path)
 
   " Allow external customization by overriding the bash command.
   if exists('*editor#env#GetTestShellCommand')
