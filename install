@@ -138,7 +138,7 @@ function install_fnm {
 }
 
 function install_node {
-  local node_version=8.11.1
+  local node_version=10.15.3
 
   if installed node && [[ "$(node --version)" == "$node_version" ]]; then
     return
