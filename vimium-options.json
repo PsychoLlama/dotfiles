@@ -1,5 +1,5 @@
 {
-  "settingsVersion": "1.63.3",
+  "settingsVersion": "1.65.1",
   "exclusionRules": [],
   "filterLinkHints": true,
   "waitForEnterForFilteredHints": true,
@@ -16,6 +16,6 @@
   "smoothScroll": true,
   "grabBackFocus": true,
   "searchEngines": "",
-  "searchUrl": "https://www.google.com/search?q=",
+  "searchUrl": "https://duckduckgo.com/?q=",
   "userDefinedLinkHintCss": "div > .vimiumHintMarker {\n  background: none;\n  border: none;\n  background-color: rgba(0, 0, 0, 0.75);\n  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);\n  padding: 2px 6px;\n}\n\ndiv > .vimiumHintMarker span {\n  /* linkhint text */\n  font-size: 12px;\n  color: #ddd;\n  text-shadow: none;\n}\n\ndiv > .vimiumActiveHintMarker span {\n  color: hsl(0, 85%, 65%) !important;\n}"
 }
