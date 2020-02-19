@@ -57,6 +57,7 @@ function get_pkg_list {
   add_pkg_if_missing vint vim-vint
   add_pkg_if_missing yarn
   add_pkg_if_missing unzip
+  add_pkg_if_missing lua lua-5.3.5
 
   if ! nix-env -q antigen &> /dev/null; then
     pkgs=("${pkgs[@]}" antigen)
@@ -188,6 +189,16 @@ function install_neovim_plugins {
   mkdir -p ~/.vim/plugged/vim-notes/misc/notes/user/
 }
 
+function install_z_lua {
+  local target="$ARTIFACTS_DIR/z.lua"
+
+  if [[ -d "$target" ]]; then
+    return
+  fi
+
+  git clone --depth=1 --branch=1.8.4 https://github.com/skywind3000/z.lua "$target" &> /dev/null
+}
+
 function install_rustfmt {
   if ! installed rustfmt; then
     rustup component add rustfmt-preview
@@ -218,11 +229,12 @@ install_nix
 install_packages
 install_rust_toolchain
 install_cargo_packages
-install_rustfmt
 install_fnm
 install_node
 install_vim_plug
 install_neovim_plugins
+install_z_lua
+install_rustfmt
 install_shellcheck
 
 use_fish

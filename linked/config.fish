@@ -188,6 +188,7 @@ end
 
 # TODO: move this into its own repro.
 source (dotfiles dir)/prompt.fish
+source (dotfiles dir)/artifacts/z.lua/init.fish
 
 # Check for computer-specific shell utils.
 if test -e ~/dotfiles-env/config.fish
