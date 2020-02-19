@@ -131,10 +131,17 @@ let g:further#prefer_modules = v:true
 let s:js_testing_conventions = {
       \   'file_naming_conventions': ['{name}.test.{ext}'],
       \   'directory_naming_conventions': ['__tests__'],
-      \   'file_extensions': ['js']
+      \   'file_extensions': ['js'],
+      \ }
+
+let s:ts_testing_conventions = {
+      \   'file_naming_conventions': ['{name}.test.{ext}'],
+      \   'directory_naming_conventions': ['__tests__'],
+      \   'file_extensions': ['ts', 'js'],
       \ }
 
 call alternaut#RegisterLanguage('javascript.jsx', s:js_testing_conventions)
+call alternaut#RegisterLanguage('typescript', s:ts_testing_conventions)
 
 " Use vim-jsx for .js extensions too.
 let g:jsx_ext_required = 0
