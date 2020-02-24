@@ -32,6 +32,7 @@ Plug 'tpope/vim-markdown'
 Plug 'cespare/vim-toml'
 Plug 'othree/yajs.vim'
 Plug 'chr4/nginx.vim'
+Plug 'LnL7/vim-nix'
 Plug 'dag/vim-fish'
 Plug 'mxw/vim-jsx'
 
