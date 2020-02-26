@@ -105,6 +105,7 @@ function get_cargo_pkg_list {
   add_pkg_if_missing sk skim
   add_pkg_if_missing pastel
   add_pkg_if_missing delta git-delta
+  add_pkg_if_missing hexyl
 
   echo "${pkgs[@]}"
 }
