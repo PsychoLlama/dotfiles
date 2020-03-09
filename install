@@ -57,6 +57,7 @@ function get_pkg_list {
   add_pkg_if_missing vint vim-vint
   add_pkg_if_missing yarn
   add_pkg_if_missing unzip
+  add_pkg_if_missing glow
   add_pkg_if_missing lua lua-5.3.5
 
   if ! nix-env -q antigen &> /dev/null; then
