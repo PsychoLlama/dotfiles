@@ -47,7 +47,6 @@ function get_pkg_list {
   }
 
   add_pkg_if_missing rustup
-  add_pkg_if_missing fish
   add_pkg_if_missing zsh
   add_pkg_if_missing nvim neovim
   add_pkg_if_missing ruby
@@ -204,15 +203,16 @@ function install_shellcheck {
   fi
 }
 
-function use_fish {
+function use_zsh {
+  local zsh_path="$(command -v zsh)"
+
   # Don't attempt to change shell on Travis CI.
   # The build will hang forever.
-  if [[ "$SHELL" == "$(command -v fish)" || -n "$CI" ]]; then
+  if [[ "$SHELL" == "$zsh_path" || -n "$CI" ]]; then
     return
   fi
 
-  fish --command 'set --universal fish_greeting'
-  chsh -s "$(command -v fish)"
+  chsh -s "$(command -v zsh)"
 }
 
 ensure curl
@@ -229,4 +229,4 @@ install_neovim_plugins
 install_rustfmt
 install_shellcheck
 
-use_fish
+use_zsh
