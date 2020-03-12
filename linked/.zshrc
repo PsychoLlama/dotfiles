@@ -40,9 +40,12 @@ alias b9='git checkout "$(git branch-history 9 | tail -1)"'
 
 # Use fnm-managed node installation.
 if [[ -d ~/.fnm ]]; then
-  export PATH=$HOME/.fnm:$PATH
+  export PATH="$HOME/.fnm:$PATH"
   eval "$(fnm env --multi)"
 fi
+
+# Initialize zoxide (`z` command)
+eval "$(zoxide init zsh)"
 
 ### Functions ###
 function mkcd {
@@ -220,7 +223,6 @@ source ~/.nix-profile/etc/profile.d/nix.sh
 source ~/.nix-profile/share/antigen/antigen.zsh
 antigen use oh-my-zsh
 antigen bundle docker
-antigen bundle rupa/z
 antigen bundle pkulev/zsh-rustup-completion
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-syntax-highlighting
