@@ -11,7 +11,7 @@ MANIFEST[vim-undo-history]=~/.vim/undodir/
 MANIFEST[repl-history-node]=~/.node_repl_history
 MANIFEST[repl-history-python]=~/.python_history
 MANIFEST[zsh-history]=~/.zsh_history
-MANIFEST[z-weights]=~/.z
+MANIFEST[zoxide-weights]=~/.zo
 
 env_manifest=~/dotfiles-env/eject-manifest.sh
 if [[ -f "$env_manifest" ]]; then
