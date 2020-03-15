@@ -22,7 +22,7 @@ Usage: dotfiles <command>
 
 Running `$ dotfiles update` pulls for changes, relinks all the config files
 (`./linked/manifest.sh`), and ensures all the system dependencies have been
-installed (`zsh`, `ag`, `python3`, `neovim`... see: `./install`).
+installed (`zsh`, `ripgrep`, `tmux`, `neovim`... see: `./install`).
 
 It also manages quite possibly the most complex vimrc known to mankind
 (`./editor`).
@@ -41,9 +41,9 @@ separate repos.
 Probably last thing to cover, since I do so much work in a VM, when it comes
 time to switch environments I need to evacuate my ephemeral files. This
 includes repl history, vim's persistent undo files, and directory history
-(managed by [`z`](https://github.com/rupa/z)). I've automated this process
-with `$ dotfiles eject`. It gathers up all those files and stuffs 'em into
-a tarball. It's quite lovely.
+(managed by [`zoxide`](https://github.com/ajeetdsouza/zoxide)). I've automated
+this process with `$ dotfiles eject`. It gathers up all those files and stuffs
+'em into a tarball. It's quite lovely.
 
 ## Making it yours
 Nooooo, don't do that. This project is a giant dumpster of hacks. It does some
