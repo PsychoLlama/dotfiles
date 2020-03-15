@@ -37,35 +37,6 @@ function ensure {
   install "$1"
 }
 
-function get_pkg_list {
-  local -a pkgs=()
-
-  function add_pkg_if_missing {
-    if ! installed "$1"; then
-      pkgs=("${pkgs[@]}" "${2-$1}")
-    fi
-  }
-
-  add_pkg_if_missing rustup
-  add_pkg_if_missing zsh
-  add_pkg_if_missing nvim neovim
-  add_pkg_if_missing ruby
-  add_pkg_if_missing travis
-  add_pkg_if_missing tmux
-  add_pkg_if_missing tmuxinator
-  add_pkg_if_missing vint vim-vint
-  add_pkg_if_missing yarn
-  add_pkg_if_missing unzip
-  add_pkg_if_missing glow
-  add_pkg_if_missing lua lua-5.3.5
-
-  if ! nix-env -q antigen &> /dev/null; then
-    pkgs=("${pkgs[@]}" antigen)
-  fi
-
-  echo "${pkgs[@]}"
-}
-
 function install_nix {
   if installed nix; then
     return
@@ -78,15 +49,7 @@ function install_nix {
 }
 
 function install_packages {
-  local -a packages
-
-  while IFS='' read -r pkg; do
-    packages+=("$pkg")
-  done < <(get_pkg_list)
-
-  if (( ${#packages} > 0 )); then
-    nix-env --install "${packages[@]}"
-  fi
+  nix-env --file "$(dotfiles dir)/default.nix" --quiet --install --keep-going
 }
 
 function get_cargo_pkg_list {
@@ -197,12 +160,6 @@ function install_rustfmt {
   fi
 }
 
-function install_shellcheck {
-  if ! installed shellcheck; then
-    install shellcheck &> /dev/null
-  fi
-}
-
 function use_zsh {
   local zsh_path="$(command -v zsh)"
 
@@ -227,6 +184,5 @@ install_node
 install_vim_plug
 install_neovim_plugins
 install_rustfmt
-install_shellcheck
 
 use_zsh
