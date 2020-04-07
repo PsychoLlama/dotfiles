@@ -52,36 +52,10 @@ function install_packages {
   nix-env --file "$(dotfiles dir)/default.nix" --quiet --install --keep-going
 }
 
-function get_cargo_pkg_list {
-  local -a pkgs
-
-  function add_pkg_if_missing {
-    if ! installed "$1"; then
-      pkgs=("${pkgs[@]}" "${2-$1}")
-    fi
-  }
-
-  add_pkg_if_missing delta git-delta
-
-  echo "${pkgs[@]}"
-}
-
 function install_rust_toolchain {
   if [[ "$(rustup toolchain list)" == "no installed toolchains" ]]; then
     rustup toolchain install nightly
     export PATH="$HOME/.cargo/bin:$PATH"
-  fi
-}
-
-function install_cargo_packages {
-  local -a packages
-
-  while IFS='' read -r pkg; do
-    packages+=("$pkg")
-  done < <(get_cargo_pkg_list)
-
-  if (( ${#packages} > 0 )); then
-    cargo install "${packages[@]}"
   fi
 }
 
@@ -170,7 +144,6 @@ ensure openssl
 install_nix
 install_packages
 install_rust_toolchain
-install_cargo_packages
 install_fnm
 install_node
 install_vim_plug
