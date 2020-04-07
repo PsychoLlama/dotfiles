@@ -52,13 +52,6 @@ function install_packages {
   nix-env --file "$(dotfiles dir)/default.nix" --quiet --install --keep-going
 }
 
-function install_rust_toolchain {
-  if [[ "$(rustup toolchain list)" == "no installed toolchains" ]]; then
-    rustup toolchain install nightly
-    export PATH="$HOME/.cargo/bin:$PATH"
-  fi
-}
-
 # A node version manager, alternative to nvm.
 function install_fnm {
   if installed fnm; then
@@ -143,7 +136,6 @@ ensure openssl
 
 install_nix
 install_packages
-install_rust_toolchain
 install_fnm
 install_node
 install_vim_plug
