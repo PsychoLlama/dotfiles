@@ -38,15 +38,6 @@ alias b7='git checkout "$(git branch-history 7 | tail -1)"'
 alias b8='git checkout "$(git branch-history 8 | tail -1)"'
 alias b9='git checkout "$(git branch-history 9 | tail -1)"'
 
-# Use fnm-managed node installation.
-if [[ -d ~/.fnm ]]; then
-  export PATH="$HOME/.fnm:$PATH"
-  eval "$(fnm env --multi)"
-fi
-
-# Initialize zoxide (`z` command)
-eval "$(zoxide init zsh)"
-
 ### Functions ###
 function mkcd {
   mkdir -p "$1"
@@ -221,12 +212,22 @@ function cf {
 
 source ~/.nix-profile/etc/profile.d/nix.sh
 source ~/.nix-profile/share/antigen/antigen.zsh
+
 antigen use oh-my-zsh
 antigen bundle docker
 antigen bundle pkulev/zsh-rustup-completion
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen theme PsychoLlama/llama.zsh-theme
+
+# Use fnm-managed node installation.
+if [[ -d ~/.fnm ]]; then
+  export PATH="$HOME/.fnm:$PATH"
+  eval "$(fnm env --multi)"
+fi
+
+# Initialize zoxide (`z` command)
+eval "$(zoxide init zsh)"
 
 # Check for computer-specific shell utils.
 if [[ -e ~/dotfiles-env/.zshrc ]]; then
