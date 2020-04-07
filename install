@@ -61,14 +61,7 @@ function get_cargo_pkg_list {
     fi
   }
 
-  add_pkg_if_missing rg ripgrep
-  add_pkg_if_missing fd fd-find
-  add_pkg_if_missing viu
-  add_pkg_if_missing bat
-  add_pkg_if_missing sk skim
-  add_pkg_if_missing pastel
   add_pkg_if_missing delta git-delta
-  add_pkg_if_missing hexyl
   add_pkg_if_missing zoxide
 
   echo "${pkgs[@]}"
