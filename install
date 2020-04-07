@@ -52,16 +52,6 @@ function install_packages {
   nix-env --file "$(dotfiles dir)/default.nix" --quiet --install --keep-going
 }
 
-# A node version manager, alternative to nvm.
-function install_fnm {
-  if installed fnm; then
-    return
-  fi
-
-  curl -sSL https://raw.githubusercontent.com/Schniz/fnm/fa652764747ebeddc30382baf4a49a3ced93e5f5/.ci/install.sh \
-    | SKIP_SHELL=true bash &> /dev/null
-}
-
 function install_node {
   local node_version=10.15.3
 
@@ -136,7 +126,6 @@ ensure openssl
 
 install_nix
 install_packages
-install_fnm
 install_node
 install_vim_plug
 install_neovim_plugins
