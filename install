@@ -62,7 +62,6 @@ function get_cargo_pkg_list {
   }
 
   add_pkg_if_missing delta git-delta
-  add_pkg_if_missing zoxide
 
   echo "${pkgs[@]}"
 }
