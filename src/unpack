@@ -16,7 +16,7 @@ function warn {
 }
 
 parachute="$1"
-source "$(dotfiles dir)/get-manifest"
+source "$(dotfiles dir)/src/get-manifest"
 
 for title in "${(k)MANIFEST[@]}"; do
   dest="${MANIFEST[$title]}"

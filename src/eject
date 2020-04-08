@@ -7,7 +7,7 @@ function warn {
   echo -e "WARN: $*" >&2
 }
 
-source "$(dotfiles dir)/get-manifest"
+source "$(dotfiles dir)/src/get-manifest"
 
 # Timestamp as <date>--<time>
 # Example: 2018-05-18--16-05

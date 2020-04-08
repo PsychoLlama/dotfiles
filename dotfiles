@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
-DOTFILES_DIR=$(dirname "$(readlink "$0")")
+dotfiles_dir="$(dirname "$(readlink "$0")")"
+dotfiles_src_dir="$dotfiles_dir/src"
 
 # Update the dotfiles repo.
 function update {
-  pushd "$DOTFILES_DIR" &> /dev/null
+  pushd "$dotfiles_dir" &> /dev/null
 
   echo Updating dotfiles...
   git pull origin
@@ -48,22 +49,22 @@ case "$1" in
   "link")
     # Call through to Rust. Eventually, this dotfiles
     # script will be replaced with a Rust implementation.
-    sudo "$DOTFILES_DIR/make-links"
+    sudo "$dotfiles_src_dir/make-links"
     ;;
   "update")
     update
     ;;
   "install")
-    "$DOTFILES_DIR/install"
+    "$dotfiles_src_dir/install"
     ;;
   "dir")
-    echo "$DOTFILES_DIR"
+    echo "$dotfiles_dir"
     ;;
   "eject")
-    "$DOTFILES_DIR/eject"
+    "$dotfiles_src_dir/eject"
     ;;
   "unpack")
-    "$DOTFILES_DIR/unpack" "${@:2}"
+    "$dotfiles_src_dir/unpack" "${@:2}"
     ;;
   *)
     if [[ ! -z "$1" && "$1" != "--help" ]]; then
