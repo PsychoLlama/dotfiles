@@ -42,14 +42,14 @@ function install_nix {
     return
   fi
 
-  curl https://nixos.org/nix/install | sh
+  curl --location --proto '=https' --tlsv1.2 https://nixos.org/nix/install | sh
 
   # Activate!
   source ~/.nix-profile/etc/profile.d/nix.sh
 }
 
 function install_packages {
-  nix-env --file "$(dotfiles dir)/default.nix" --quiet --install --keep-going
+  nix-env --file "$(dotfiles dir)/default.nix" --install --keep-going
 }
 
 function install_node {
@@ -98,9 +98,6 @@ function install_neovim_plugins {
     -c 'PlugInstall' \
     -c 'UpdateRemotePlugins' \
     -c 'qa'
-
-  # Don't ask on startup.
-  mkdir -p ~/.vim/plugged/vim-notes/misc/notes/user/
 }
 
 function install_rustfmt {
