@@ -6,15 +6,14 @@ dotfiles_src_dir="$dotfiles_dir/src"
 
 # Update the dotfiles repo.
 function update {
-  pushd "$dotfiles_dir" &> /dev/null
+  (
+    cd "$dotfiles_dir"
+    echo Updating dotfiles...
+    git pull origin
 
-  echo Updating dotfiles...
-  git pull origin
-
-  dotfiles install
-  dotfiles link
-
-  popd &> /dev/null
+    dotfiles install
+    dotfiles link
+  )
 }
 
 # Show the usage screen.
@@ -67,7 +66,7 @@ case "$1" in
     "$dotfiles_src_dir/unpack" "${@:2}"
     ;;
   *)
-    if [[ ! -z "$1" && "$1" != "--help" ]]; then
+    if [[ -n "$1" && "$1" != "--help" ]]; then
       echo "Invalid command '$*'. Showing help instead."
       print_help
 
