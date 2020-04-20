@@ -59,9 +59,9 @@ function install_node {
     return
   fi
 
-  ~/.fnm/fnm install "$node_version" > /dev/null
-  ~/.fnm/fnm use "$node_version" > /dev/null
-  ~/.fnm/fnm alias "$node_version" default > /dev/null
+  fnm install "$node_version" > /dev/null
+  fnm use "$node_version" > /dev/null
+  fnm alias "$node_version" default > /dev/null
 
   # Make the node path available.
   export PATH=$HOME/.fnm:$PATH
