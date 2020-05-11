@@ -213,7 +213,7 @@ endfunc
 " Infer the test framework from the package's test script.
 " Only supports Jest because Jest is Best.
 func! s:ExtractTestCommand(test_script) abort
-  let l:jest_scripts = ['freighter-scripts', 'jest']
+  let l:jest_scripts = ['freighter-scripts']
 
   for l:jest_script in l:jest_scripts
     if stridx(a:test_script, l:jest_script) > -1
