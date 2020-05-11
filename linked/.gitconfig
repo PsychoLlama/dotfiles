@@ -1,6 +1,7 @@
 [alias]
   a = add -A
   d = diff
+  b = branch
   l = log -1000 --format='%Cgreen%h%Creset: %an (%C(yellow)%ar%Creset)%n%s%n%n%b'
   f = fetch
   cat = cat-file -p
