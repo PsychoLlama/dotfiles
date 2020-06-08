@@ -5,10 +5,19 @@ for buildInput in $buildInputs; do
   fi
 done
 
+function phase_unpack {
+  unzip "$src"
+}
+
 function phase_install {
   local target="$out/bin/fnm"
 
   mkdir -p "$(dirname "$target")"
-  cp "$src/fnm" "$target"
+  cp "$zipDirectoryName/fnm" "$target"
   chmod u+x "$target"
+}
+
+function build_fnm {
+  phase_unpack
+  phase_install
 }

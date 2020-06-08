@@ -2,28 +2,28 @@ with builtins; let
   nixpkgs = import <nixpkgs> {};
   os = substring (stringLength currentSystem - 6) (-1) currentSystem;
   release =
-    if os == "darwin"
-    then {
-      filename = "fnm-macos";
-      hash = "1bd5xb352q66kcci1yld7qb504f6c2dqja6dllwmxlscbmb864r9";
+    if os == "darwin" then {
+      zipfile = "fnm-macos";
+      hash = "1wzsa7hx6da2wfdw4fnqnbi14khjylyhdaz9j05l8pp77cmvwhj3";
     } else {
-      filename = "fnm-linux";
-      hash = "14f8i1qqnk6fk48wqhv4f7lpnfz53jcpc72ka0l7f3iig3biss83";
+      zipfile = "fnm-linux";
+      hash = "16x091g0bh3dspxy9x8ypbx4zx79jw9ks9z8a6bj78y0v395ycb1";
     };
 in
 
 derivation rec {
   name = "fnm";
   system = builtins.currentSystem;
-  version = "1.20.0";
+  version = "1.21.0";
 
   builder = "${nixpkgs.bash}/bin/bash";
   args = [ ./builder.bash ];
   setup = ./setup.bash;
-  buildInputs = [ nixpkgs.coreutils ];
+  buildInputs = [ nixpkgs.coreutils nixpkgs.unzip ];
+  zipDirectoryName = release.zipfile;
 
-  src = fetchTarball {
-    url = "https://github.com/Schniz/fnm/releases/download/v${version}/${release.filename}.zip";
+  src = builtins.fetchurl {
+    url = "https://github.com/Schniz/fnm/releases/download/v${version}/${release.zipfile}.zip";
     sha256 = release.hash;
   };
 }
