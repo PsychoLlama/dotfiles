@@ -19,56 +19,7 @@ if executable('python2')
   let g:python2_host_prog = exepath('python2')
 endif
 
-call plug#begin('~/.vim/plugged')
-
-" Filetype plugins
-Plug 'davinche/godown-vim', { 'for': 'markdown' }
-Plug 'leafgarland/typescript-vim'
-Plug 'PsychoLlama/navitron.vim'
-Plug 'PsychoLlama/debrief.vim'
-Plug 'jparise/vim-graphql'
-Plug 'rust-lang/rust.vim'
-Plug 'tpope/vim-markdown'
-Plug 'cespare/vim-toml'
-Plug 'othree/yajs.vim'
-Plug 'chr4/nginx.vim'
-Plug 'LnL7/vim-nix'
-Plug 'mxw/vim-jsx'
-
-" ALL HAIL TIM POPE
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-repeat'
-
-" Language Server Protocol client.
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-
-" Enhancements ✨
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'jiangmiao/auto-pairs'
-Plug 'machakann/vim-swap'
-Plug 'mbbill/undotree'
-Plug 'w0rp/ale'
-
-" Navigation
-Plug 'PsychoLlama/alternaut.vim'
-Plug 'PsychoLlama/further.vim'
-Plug 'PsychoLlama/z.vim'
-Plug 'lotabout/skim.vim'
-Plug 'lotabout/skim'
-
-" Style 🦄
-Plug 'airblade/vim-gitgutter'
-Plug 'joshdick/onedark.vim'
-
-" Fun 🎮
-Plug 'PsychoLlama/conway.vim'
-Plug 'PsychoLlama/snake.vim'
-
-call s:LoadExternalPlugins()
-call plug#end()
+call editor#nixplug#load(dotfiles#Path('pkgs/vim-manifest/default.nix'))
 
 " Color scheme
 let g:onedark_termcolors=16
@@ -81,11 +32,6 @@ highlight ALEWarningSign ctermfg=gray
 set cursorline
 highlight clear CursorLine
 highlight CursorLineNr ctermfg=blue
-
-" Rust config.
-let g:LanguageClient_serverCommands = {
-      \   'rust': ['rustup', 'run', 'nightly', 'rls'],
-      \ }
 
 " Linting.
 nnoremap <silent><leader>a :ALEDetail<cr>
