@@ -92,9 +92,17 @@ let s:py_testing_conventiions = {
       \   'file_extensions': ['py'],
       \ }
 
+let s:vim_testing_conventions = {
+      \   'file_naming_conventions': ['{name}.{ext}'],
+      \   'directory_naming_conventions': ['tests'],
+      \   'file_extensions': ['vim', 'vader'],
+      \ }
+
 call alternaut#RegisterLanguage('javascript.jsx', s:js_testing_conventions)
 call alternaut#RegisterLanguage('typescript', s:ts_testing_conventions)
 call alternaut#RegisterLanguage('python', s:py_testing_conventiions)
+call alternaut#RegisterLanguage('vim', s:vim_testing_conventions)
+call alternaut#RegisterLanguage('vader', s:vim_testing_conventions)
 
 " Use vim-jsx for .js extensions too.
 let g:jsx_ext_required = 0
