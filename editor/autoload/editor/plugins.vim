@@ -71,7 +71,6 @@ let g:netrw_localrmdir = 'rm -r'
 let g:netrw_use_errorwindow = 0
 let g:netrw_banner = 0
 
-let g:zcd#path = exepath('zoxide')
 let g:further#prefer_modules = v:true
 
 let s:js_testing_conventions = {

@@ -4,7 +4,6 @@ manifest [
   # Filetype plugins
   ["davinche/godown-vim" { for = "markdown"; }]
   "leafgarland/typescript-vim"
-  "PsychoLlama/navitron.vim"
   "PsychoLlama/debrief.vim"
   "jparise/vim-graphql"
   "rust-lang/rust.vim"
@@ -35,8 +34,9 @@ manifest [
 
   # Navigation
   "PsychoLlama/alternaut.vim"
+  "PsychoLlama/navitron.vim"
+  "PsychoLlama/teleport.vim"
   "PsychoLlama/further.vim"
-  "PsychoLlama/z.vim"
   "lotabout/skim.vim"
   "lotabout/skim"
 
