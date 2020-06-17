@@ -71,7 +71,8 @@ let g:netrw_localrmdir = 'rm -r'
 let g:netrw_use_errorwindow = 0
 let g:netrw_banner = 0
 
-let g:further#prefer_modules = v:true
+let further#prefer_modules = v:true
+let teleport#update_cwd = v:true
 
 let s:js_testing_conventions = {
       \   'file_naming_conventions': ['{name}.test.{ext}'],
