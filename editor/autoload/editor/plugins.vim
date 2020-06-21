@@ -83,10 +83,10 @@ let s:js_testing_conventions = {
 let s:ts_testing_conventions = {
       \   'file_naming_conventions': ['{name}.test.{ext}'],
       \   'directory_naming_conventions': ['__tests__'],
-      \   'file_extensions': ['ts', 'js'],
+      \   'file_extensions': ['ts', 'tsx', 'js'],
       \ }
 
-let s:py_testing_conventiions = {
+let s:py_testing_conventions = {
       \   'file_naming_conventions': ['test_{name}.{ext}', '{name}.{ext}'],
       \   'directory_naming_conventions': ['tests'],
       \   'file_extensions': ['py'],
@@ -100,7 +100,8 @@ let s:vim_testing_conventions = {
 
 call alternaut#RegisterLanguage('javascript.jsx', s:js_testing_conventions)
 call alternaut#RegisterLanguage('typescript', s:ts_testing_conventions)
-call alternaut#RegisterLanguage('python', s:py_testing_conventiions)
+call alternaut#RegisterLanguage('typescript.tsx', s:ts_testing_conventions)
+call alternaut#RegisterLanguage('python', s:py_testing_conventions)
 call alternaut#RegisterLanguage('vim', s:vim_testing_conventions)
 call alternaut#RegisterLanguage('vader', s:vim_testing_conventions)
 
