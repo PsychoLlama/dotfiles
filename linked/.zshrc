@@ -18,7 +18,7 @@ export _ZO_MAXAGE=10000000 # Don't drop entries from the zoxide cache.
 
 ### Aliases ###
 alias g='git'
-alias b='git --no-pager branch --verbose'
+alias b='git branch'
 alias :qa='tmux kill-session 2> /dev/null || exit'
 alias empty='empty-trash'
 alias ch='git checkout'
