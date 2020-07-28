@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 
-# Print a fancy date, like "6:38pm Tuesday"
+# Print a fancy date, like "18:38 Tuesday"
 function tmux_get_time_status {
-  local hours="$(date +%I | sed 's/^0//')"
-  local minutes="$(date +%M)"
+  local time="$(date +%R)"
   local day="$(date +%A)"
 
-  # Mac's `date` doesn't support %P (lowercased am/pm).
-  local ampm="$(date +%p | tr "[:upper:]" "[:lower:]")"
-
-  echo "$hours:$minutes$ampm $day"
+  echo "$time $day"
 }
 
 tmux_get_time_status
