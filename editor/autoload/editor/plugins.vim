@@ -74,36 +74,33 @@ let g:netrw_banner = 0
 let further#prefer_modules = v:true
 let teleport#update_cwd = v:true
 
-let s:js_testing_conventions = {
+let alternaut#conventions = {}
+let alternaut#conventions['javascript.jsx'] = {
       \   'file_naming_conventions': ['{name}.test.{ext}'],
       \   'directory_naming_conventions': ['__tests__'],
       \   'file_extensions': ['js'],
       \ }
 
-let s:ts_testing_conventions = {
+let alternaut#conventions['typescript'] = {
       \   'file_naming_conventions': ['{name}.test.{ext}'],
       \   'directory_naming_conventions': ['__tests__'],
       \   'file_extensions': ['ts', 'tsx', 'js'],
       \ }
 
-let s:py_testing_conventions = {
+let alternaut#conventions['python'] = {
       \   'file_naming_conventions': ['test_{name}.{ext}', '{name}.{ext}'],
       \   'directory_naming_conventions': ['tests'],
       \   'file_extensions': ['py'],
       \ }
 
-let s:vim_testing_conventions = {
+let alternaut#conventions['vim'] = {
       \   'file_naming_conventions': ['{name}.{ext}'],
       \   'directory_naming_conventions': ['tests'],
       \   'file_extensions': ['vim', 'vader'],
       \ }
 
-call alternaut#RegisterLanguage('javascript.jsx', s:js_testing_conventions)
-call alternaut#RegisterLanguage('typescript', s:ts_testing_conventions)
-call alternaut#RegisterLanguage('typescript.tsx', s:ts_testing_conventions)
-call alternaut#RegisterLanguage('python', s:py_testing_conventions)
-call alternaut#RegisterLanguage('vim', s:vim_testing_conventions)
-call alternaut#RegisterLanguage('vader', s:vim_testing_conventions)
+let alternaut#conventions['typescript.tsx'] = alternaut#conventions['typescript']
+let alternaut#conventions['vader'] = alternaut#conventions['vim']
 
 " Use vim-jsx for .js extensions too.
 let g:jsx_ext_required = 0
