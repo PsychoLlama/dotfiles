@@ -92,12 +92,12 @@ func! s:AlternateTestFile() abort
   call execute('edit ' . fnameescape(l:test_file))
 endfunc
 
+nmap <leader>a <Plug>(alternaut-toggle)
 inoremap <silent><expr><tab> <SID>TabCompletion(v:false)
 inoremap <silent><expr><s-tab> <SID>TabCompletion(v:true)
 nnoremap <silent><leader>t :call <SID>ToggleCopyMode()<cr>
 nnoremap <silent><leader>v :call <SID>EditVimrc()<cr>
 nnoremap <silent><leader>r :call <SID>ExploreCurrentDir()<cr>
-nnoremap <silent><leader>a :call alternaut#Toggle()<cr>
 nnoremap <silent><leader>p <esc>:call editor#OpenRoot()<cr>
 nnoremap <silent><leader>; <esc>:call editor#commands#Test()<cr>
 nnoremap <silent><esc> :nohlsearch<cr><esc>
