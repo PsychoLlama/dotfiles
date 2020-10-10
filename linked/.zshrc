@@ -224,7 +224,7 @@ antigen theme PsychoLlama/llama.zsh-theme
 # Use fnm-managed node installation.
 if [[ -d ~/.fnm ]]; then
   export PATH="$HOME/.fnm:$PATH"
-  eval "$(fnm env --multi)"
+  eval "$(fnm env)"
 fi
 
 # Initialize zoxide (`z` command)
