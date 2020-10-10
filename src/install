@@ -53,7 +53,7 @@ function install_packages {
 }
 
 function install_node {
-  local node_version=10.15.3
+  local node_version=v14.13.1
 
   if installed node && [[ "$(node --version)" == "$node_version" ]]; then
     return
