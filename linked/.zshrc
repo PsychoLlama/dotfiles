@@ -13,7 +13,6 @@ export fpath=("$(dotfiles dir)/completions" $fpath)
 export RIPGREP_CONFIG_PATH=~/.ripgrep
 export BAT_STYLE=changes
 export NIX_IGNORE_SYMLINK_STORE=1 # Catalina ruins everything.
-export _ZO_MAXAGE=10000000 # Don't drop entries from the zoxide cache.
 
 
 ### Aliases ###
@@ -228,7 +227,7 @@ if [[ -d ~/.fnm ]]; then
 fi
 
 # Initialize zoxide (`z` command)
-eval "$(zoxide init zsh --no-aliases)"
+eval "$(zoxide init zsh)"
 
 # Check for computer-specific shell utils.
 if [[ -e ~/dotfiles-env/.zshrc ]]; then
