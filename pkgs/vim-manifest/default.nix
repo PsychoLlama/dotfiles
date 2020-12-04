@@ -5,6 +5,7 @@ manifest [
   ["davinche/godown-vim" { for = "markdown"; }]
   "leafgarland/typescript-vim"
   "PsychoLlama/debrief.vim"
+  "hashivim/vim-terraform"
   "jparise/vim-graphql"
   "rust-lang/rust.vim"
   "tpope/vim-markdown"
