@@ -335,6 +335,9 @@ live_config_reload: true
 #   - ~AppKeypad
 #   - AppKeypad
 key_bindings:
+  # Remove ability to close by keyboard. Require explicit termination.
+  - { key: W,        mods: Command, command: { program: 'echo' }         }
+  - { key: Q,        mods: Command, command: { program: 'echo' }         }
   - { key: V,        mods: Control|Shift,    action: Paste               }
   - { key: C,        mods: Control|Shift,    action: Copy                }
   - { key: Paste,                   action: Paste                        }
