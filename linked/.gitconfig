@@ -23,6 +23,8 @@
   pager = "delta --dark --theme='OneHalfDark'"
 [push]
   default = current
+[pull]
+	rebase = true
 [rebase]
   autoStash = true
 [merge]
