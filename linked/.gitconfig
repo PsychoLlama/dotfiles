@@ -24,7 +24,7 @@
 [push]
   default = current
 [pull]
-	rebase = true
+  rebase = true
 [rebase]
   autoStash = true
 [merge]
