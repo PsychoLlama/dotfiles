@@ -18,6 +18,8 @@
 [user]
   email = JesseTheGibson@gmail.com
   name = Jesse Gibson
+[init]
+  defaultBranch = main
 [core]
   editor = nvim
   pager = "delta --dark --theme='OneHalfDark'"
