@@ -11,6 +11,7 @@ export MANPAGER='nvim -c "setfiletype man" -'
 export fpath=("$(dotfiles dir)/completions" $fpath)
 export RIPGREP_CONFIG_PATH=~/.ripgrep
 export BAT_STYLE=changes
+export BAT_THEME=TwoDark
 export NIX_IGNORE_SYMLINK_STORE=1 # Catalina ruins everything.
 
 
