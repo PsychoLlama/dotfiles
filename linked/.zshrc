@@ -109,33 +109,6 @@ function ta {
   fi
 }
 
-# "test watch" with the given regex
-function tw {
-  local utils="$(dotfiles dir)"/utils
-  read script runner <<< "$("$utils"/get-package-test-script.js)"
-
-  if [[ -z "$script" ]]; then
-    return 1
-  fi
-
-  case "$runner" in
-    "jest" | "react-scripts")
-      yarn --silent run "$script" --watch --collectCoverage=false --testPathPattern "$1"
-      ;;
-    "mocha")
-      yarn --silent run "$script" --watch --reporter min "$1"
-      ;;
-    *)
-      yarn --silent run "$script" --watch
-      ;;
-  esac
-}
-
-# "test watch script" expects the name of the package.json script.
-function tws {
-  yarn --silent run "$1" --watch --collectCoverage=false --testPathPattern "$2"
-}
-
 function gg {
   rg "$@" --ignore-file <(echo "__tests__\ntests\nflow-typed")
 }
