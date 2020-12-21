@@ -39,6 +39,11 @@ alias b8='git checkout "$(git branch-history 8 | tail -1)"'
 alias b9='git checkout "$(git branch-history 9 | tail -1)"'
 
 ### Functions ###
+function cat {
+  echo 'Surely you mean bat.' >&2
+  return 2
+}
+
 function mkcd {
   mkdir -p "$1"
   cd "$1" || return 1
