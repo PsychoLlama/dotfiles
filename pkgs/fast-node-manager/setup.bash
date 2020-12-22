@@ -13,7 +13,7 @@ function phase_install {
   local target="$out/bin/fnm"
 
   mkdir -p "$(dirname "$target")"
-  cp "$zipDirectoryName/fnm" "$target"
+  mv fnm "$target"
   chmod u+x "$target"
 }
 

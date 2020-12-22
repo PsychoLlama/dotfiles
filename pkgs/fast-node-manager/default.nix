@@ -4,23 +4,22 @@ with builtins; let
   release =
     if os == "darwin" then {
       zipfile = "fnm-macos";
-      hash = "1wzsa7hx6da2wfdw4fnqnbi14khjylyhdaz9j05l8pp77cmvwhj3";
+      hash = "0k0fwhsna6fgri1hiznw6bhii56g48bp7x19z1wskr9iknnha2sb";
     } else {
       zipfile = "fnm-linux";
-      hash = "16x091g0bh3dspxy9x8ypbx4zx79jw9ks9z8a6bj78y0v395ycb1";
+      hash = "0j9anh3jcng1xc4zdmy9j07cdssl0bwi9nsz489qdzyd11y12i97";
     };
 in
 
 derivation rec {
   name = "fnm";
   system = builtins.currentSystem;
-  version = "1.21.0";
+  version = "1.22.8";
 
   builder = "${nixpkgs.bash}/bin/bash";
   args = [ ./builder.bash ];
   setup = ./setup.bash;
   buildInputs = [ nixpkgs.coreutils nixpkgs.unzip ];
-  zipDirectoryName = release.zipfile;
 
   src = builtins.fetchurl {
     url = "https://github.com/Schniz/fnm/releases/download/v${version}/${release.zipfile}.zip";
