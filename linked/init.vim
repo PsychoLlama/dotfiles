@@ -1,4 +1,4 @@
-func! s:AddPluginPath(plugin) abort
+func! s:add_plugin_path(plugin) abort
   execute 'set runtimepath+=' . fnameescape(a:plugin)
 endfunc
 
@@ -7,12 +7,12 @@ let s:filename = resolve(expand('<sfile>'))
 let s:dotfiles_dir = fnamemodify(s:filename, ':h:h')
 let s:editor_dir = s:dotfiles_dir . '/editor'
 
-call s:AddPluginPath(s:editor_dir)
+call s:add_plugin_path(s:editor_dir)
 
 " Check for environment-specific vim settings.
 let s:editor_env_preset = dotfiles#env#Path('editor')
 if isdirectory(s:editor_env_preset)
-  call s:AddPluginPath(s:editor_env_preset)
+  call s:add_plugin_path(s:editor_env_preset)
 endif
 
 " My vimrc has grown beyond the grasp of a single file.

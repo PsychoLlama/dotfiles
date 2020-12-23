@@ -4,7 +4,7 @@
 " https://git-scm.com/docs/git-blame#_the_porcelain_format
 
 " Get the blame string output.
-func! s:GetBlameOutput(config)
+func! s:get_blame_output(config)
   let l:cmd = 'git blame --line-porcelain '
 
   " Support for range restrictions (better performance).
@@ -26,11 +26,11 @@ func! s:GetBlameOutput(config)
 endfunc
 
 " Remove the line header.
-func! s:StripHeader(header, line)
+func! s:strip_header(header, line)
   return a:line[strlen(a:header) + 1:]
 endfunc
 
-func! s:GetLineHeader(line)
+func! s:get_line_header(line)
   let l:delimiter_index = stridx(a:line, ' ')
   return a:line[0:l:delimiter_index - 1]
 endfunc
@@ -60,13 +60,13 @@ let s:BLAME_TEMPLATE = {
 
 " The git sha marks the start of blame dictionaries.
 " It will always be 40 characters.
-func! s:IsHash(header)
+func! s:is_hash(header)
   return len(a:header) is 40
 endfunc
 
 " Parse the sha & line numbers.
 " <sha> <prev_lnum> <cur_lnum> ?<group_lnums>
-func! s:AddShaDetails(line, blame)
+func! s:add_sha_details(line, blame)
   let l:parts = split(a:line, ' ')
 
   let a:blame.sha = l:parts[0]
@@ -75,7 +75,7 @@ func! s:AddShaDetails(line, blame)
 endfunc
 
 " Parse and inject the line contents.
-func! s:AddLineContents(line, blame)
+func! s:add_line_details(line, blame)
   let l:contents = substitute(a:line, '\v^\t', '', '')
   let a:blame.line.contents = l:contents
 endfunc
@@ -88,7 +88,7 @@ let s:AUTHOR_NAME_MAP = {
       \ }
 
 " Add author/committer metadata.
-func! s:AddAuthorDetails(header, line, author, my_name)
+func! s:add_author_details(header, line, author, my_name)
   let l:header_key = substitute(a:header, '\v^(author|committer)', '', '')
   let l:key = s:AUTHOR_NAME_MAP[l:header_key]
   let l:content = a:line[strlen(a:header) + 1:]
@@ -112,8 +112,8 @@ endfunc
 
 " Contains information about the file prior to the commit.
 " 'previous <sha> <filename>'
-func! s:AddPrevShaDetails(header, line, blame)
-  let l:value = s:StripHeader(a:header, a:line)
+func! s:add_prev_sha_details(header, line, blame)
+  let l:value = s:strip_header(a:header, a:line)
   let l:delimiter_index = stridx(l:value, ' ')
 
   let a:blame.prev_filename = l:value[(l:delimiter_index + 1):]
@@ -121,11 +121,11 @@ func! s:AddPrevShaDetails(header, line, blame)
 endfunc
 
 " `summary` is the git commit title.
-func! s:AddSummaryDetails(header, line, blame)
-  let a:blame.summary = s:StripHeader(a:header, a:line)
+func! s:add_summary_details(header, line, blame)
+  let a:blame.summary = s:strip_header(a:header, a:line)
 endfunc
 
-func! s:GetUserName(file)
+func! s:get_user_name(file)
   " Get the current user's name.
   let l:containing_folder = fnamemodify(a:file, ':h')
   let l:cmd = 'git config user.name'
@@ -139,27 +139,27 @@ func! s:GetUserName(file)
 endfunc
 
 " string[] -> Blame[]
-func! s:ParseBlameOutput(output, config)
-  let l:my_name = s:GetUserName(a:config.file)
+func! s:parse_blame_output(output, config)
+  let l:my_name = s:get_user_name(a:config.file)
   let l:line_blames = []
 
   for l:line in a:output
-    let l:header = s:GetLineHeader(l:line)
+    let l:header = s:get_line_header(l:line)
 
-    if s:IsHash(l:header)
+    if s:is_hash(l:header)
       let l:blame = deepcopy(s:BLAME_TEMPLATE)
-      call s:AddShaDetails(l:line, l:blame)
+      call s:add_sha_details(l:line, l:blame)
       call add(l:line_blames, l:blame)
     elseif l:line =~# '\v^\t'
-      call s:AddLineContents(l:line, l:blame)
+      call s:add_line_details(l:line, l:blame)
     elseif l:header =~# 'author'
-      call s:AddAuthorDetails(l:header, l:line, l:blame.author, l:my_name)
+      call s:add_author_details(l:header, l:line, l:blame.author, l:my_name)
     elseif l:header =~# 'committer'
-      call s:AddAuthorDetails(l:header, l:line, l:blame.committer, l:my_name)
+      call s:add_author_details(l:header, l:line, l:blame.committer, l:my_name)
     elseif l:header is# 'previous'
-      call s:AddPrevShaDetails(l:header, l:line, l:blame)
+      call s:add_prev_sha_details(l:header, l:line, l:blame)
     elseif l:header is# 'summary'
-      call s:AddSummaryDetails(l:header, l:line, l:blame)
+      call s:add_summary_details(l:header, l:line, l:blame)
     endif
   endfor
 
@@ -168,7 +168,7 @@ endfunc
 
 " Turn the list of ignored commits to { [hash] => true }
 " All commits are abbreviated to 7 characters.
-func! s:GetIgnoredCommitMap() abort
+func! s:get_ignored_commit_map() abort
   let l:ignored = get(g:, 'git#blame#ignored_commits', [])
   call assert#type(l:ignored, 'list', 'ignored_commits should be a list.')
 
@@ -184,7 +184,7 @@ func! s:GetIgnoredCommitMap() abort
 endfunc
 
 " Replace blames when they exist in the prior set.
-func! s:ReplaceIgnoredCommits(results, prior) abort
+func! s:replace_ignored_commits(results, prior) abort
   let l:results = []
 
   for l:blame in a:results
@@ -199,7 +199,7 @@ func! s:ReplaceIgnoredCommits(results, prior) abort
 endfunc
 
 " Resolve and index prior commits
-func! s:ResolvePriorCommits(results, deeper_queries) abort
+func! s:resolve_prior_commits(results, deeper_queries) abort
   let l:results = copy(a:results)
   let l:deeper_commits = {}
 
@@ -213,13 +213,13 @@ func! s:ResolvePriorCommits(results, deeper_queries) abort
     endfor
   endfor
 
-  return s:ReplaceIgnoredCommits(a:results, l:deeper_commits)
+  return s:replace_ignored_commits(a:results, l:deeper_commits)
 endfunc
 
 " Check metadata for blacklisted commits.
-func! s:DigDeeper(result) abort
+func! s:dig_deeper(result) abort
   let l:repo_root = git#repo#FindRoot(a:result.input.file)
-  let l:ignored = s:GetIgnoredCommitMap()
+  let l:ignored = s:get_ignored_commit_map()
   let l:lookups = {} " { [hash]: <blame_config> }
 
   for l:blame in a:result.output
@@ -247,7 +247,7 @@ func! s:DigDeeper(result) abort
     return a:result.output
   endif
 
-  return s:ResolvePriorCommits(a:result.output, l:lookups)
+  return s:resolve_prior_commits(a:result.output, l:lookups)
 endfunc
 
 " Get a list of metadata for each line.
@@ -258,12 +258,12 @@ func! git#blame#(blame)
 
   call assert#(l:is_tracked, "Can't git-blame an untracked file.")
 
-  let l:output = s:GetBlameOutput(a:blame)
-  let l:ownerships = s:ParseBlameOutput(l:output, a:blame)
+  let l:output = s:get_blame_output(a:blame)
+  let l:ownerships = s:parse_blame_output(l:output, a:blame)
 
   if get(a:blame, 'include_all_commits')
     return l:ownerships
   endif
 
-  return s:DigDeeper({ 'output': l:ownerships, 'input': a:blame })
+  return s:dig_deeper({ 'output': l:ownerships, 'input': a:blame })
 endfunc

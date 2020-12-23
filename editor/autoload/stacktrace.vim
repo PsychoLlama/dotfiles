@@ -1,19 +1,19 @@
 " The last point on the stack trace is strangely formatted.
 " Turns 'stacktrace#Create, line 2' into 'stacktrace#Create[2]'
-func! s:NormalizeLastStackTrace(frame) abort
+func! s:normalize_last_stack_trace(frame) abort
   let l:funcname = substitute(a:frame, '\v,.*', '', '')
   let l:line_number = substitute(a:frame, '\v^.*, \D*', '', '')
   return l:funcname . '[' . l:line_number . ']'
 endfunc
 
 " Make the function name prettier.
-func! s:NormalizeFuncRef(details) abort
+func! s:normalize_funcref(details) abort
   " Anonymous object method.
   if a:details.ref =~# '\v^\d+$'
     return '<anonymous>' . a:details.ref
   endif
 
-  " <SNR>123_Bacon => s:Bacon
+  " <SNR>123_bacon => s:bacon
   if a:details.script_scoped
     return substitute(a:details.ref, '\v^\d+_', 's:', '')
   endif
@@ -23,7 +23,7 @@ func! s:NormalizeFuncRef(details) abort
 endfunc
 
 " 'example#fn[12]' => { 'ref': 'example#fn', 'line': 12 }
-func! s:ParseFrame(frame) abort
+func! s:parse_frame(frame) abort
   let l:matches = matchlist(a:frame, '\v^(.*)\[(\d+)\]')
 
   let l:result = {}
@@ -38,14 +38,14 @@ func! s:ParseFrame(frame) abort
     let l:result.ref = substitute(l:result.ref, '^<SNR>', '', '')
   endif
 
-  let l:result.name = s:NormalizeFuncRef(l:result)
+  let l:result.name = s:normalize_funcref(l:result)
 
   return l:result
 endfunc
 
 " Given some function details, expand its definition.
 " Uses :function {name}
-func! s:ExpandFunctionDefinition(func) abort
+func! s:expand_function_definition(func) abort
   let l:description = ''
   let l:expr = '{' . string(a:func.ref) . '}'
   if a:func.script_scoped
@@ -64,7 +64,7 @@ endfunc
 
 " Parse out the source of a function definition.
 " Most of this is trimming out line numbers.
-func! s:ParseFunctionLines(lines) abort
+func! s:parse_function_lines(lines) abort
   let l:source = range(len(a:lines))
   let l:default_offset = 3
   let l:index = 1
@@ -97,7 +97,7 @@ func! s:ParseFunctionLines(lines) abort
 endfunc
 
 " Extract lines & file definition from function {...} output
-func! s:ParseFunctionDefinition(def) abort
+func! s:parse_function_definition(def) abort
   let l:output_lines = split(a:def, "\n")
 
   " The file name output is human optimized, not parser optimized.
@@ -108,29 +108,29 @@ func! s:ParseFunctionDefinition(def) abort
   let l:filename = substitute(l:file_output, l:prefix_regex, '', '')
 
   let l:function_output = l:output_lines[0:0] + l:output_lines[2:]
-  let l:function_source = s:ParseFunctionLines(l:function_output)
+  let l:function_source = s:parse_function_lines(l:function_output)
 
   return { 'source': l:function_source, 'file': expand(l:filename) }
 endfunc
 
 " Expands a function[line] expression with useful
 " stack trace details.
-func! s:ExpandFunction(frame) abort
-  let l:func = s:ParseFrame(a:frame)
-  let l:definition = s:ExpandFunctionDefinition(l:func)
-  let l:func_details = s:ParseFunctionDefinition(l:definition)
+func! s:expand_function(frame) abort
+  let l:func = s:parse_frame(a:frame)
+  let l:definition = s:expand_function_definition(l:func)
+  let l:func_details = s:parse_function_definition(l:definition)
 
   return extend(copy(l:func), l:func_details, 'error')
 endfunc
 
 " Pull more information about a v:throwpoint.
-func! s:ExpandStackTrace(stacktrace) abort
+func! s:expand_stack_trace(stacktrace) abort
   let l:result = range(len(a:stacktrace))
   let l:index = 0
 
   while l:index < len(a:stacktrace)
     let l:frame = a:stacktrace[l:index]
-    let l:expansion = s:ExpandFunction(l:frame)
+    let l:expansion = s:expand_function(l:frame)
     let l:result[l:index] = l:expansion
     let l:index += 1
   endwhile
@@ -140,7 +140,7 @@ endfunc
 
 " If thrown outside a function, the stacktrace is structured differently.
 " /Users/overlord/dotfiles/editor/autoload/stacktrace.vim, line 179
-func! s:GenerateFileStacktrace(throwpoint) abort
+func! s:generate_file_stacktrace(throwpoint) abort
   let l:matches = matchlist(a:throwpoint, '\v(.*), line (\d+)')
   let l:result = {}
   let l:result.file = l:matches[1]
@@ -157,14 +157,14 @@ endfunc
 func! stacktrace#Parse(throwpoint) abort
   " Thrown outside a function.
   if a:throwpoint =~# '\v^/'
-    return s:GenerateFileStacktrace(a:throwpoint)
+    return s:generate_file_stacktrace(a:throwpoint)
   endif
 
   let l:stack = substitute(a:throwpoint, '\v^function ', '', '')
   let l:functions = split(l:stack, '\V..')
 
-  let l:functions[-1] = s:NormalizeLastStackTrace(l:functions[-1])
-  return s:ExpandStackTrace(l:functions)
+  let l:functions[-1] = s:normalize_last_stack_trace(l:functions[-1])
+  return s:expand_stack_trace(l:functions)
 endfunc
 
 " Get a new stacktrace.

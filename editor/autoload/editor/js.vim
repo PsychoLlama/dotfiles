@@ -1,12 +1,12 @@
 " Resolve a given path or the current file.
-func! s:ResolvePath(args) abort
+func! s:resolve_path(args) abort
   let l:path = get(a:args, 0, expand('%'))
   return fnamemodify(l:path, ':p')
 endfunc
 
 " Locate the directory defining package.json.
 func! editor#js#FindPackageRoot(...) abort
-  let l:containing_dir = s:ResolvePath(a:000)
+  let l:containing_dir = s:resolve_path(a:000)
 
   " Make sure it's a directory.
   if !isdirectory(l:containing_dir)
@@ -28,7 +28,7 @@ endfunc
 
 " Detect if the given file is a JavaScript test file.
 func! editor#js#IsTestFile(...) abort
-  let l:file_path = s:ResolvePath(a:000)
+  let l:file_path = s:resolve_path(a:000)
   let l:filename = fnamemodify(l:file_path, ':t')
 
   " Does the filename match something like
@@ -44,7 +44,7 @@ func! editor#js#IsTestFile(...) abort
   return v:false
 endfunc
 
-func! s:FindTestDirectoriesAbove(file_path) abort
+func! s:find_test_directories_above(file_path) abort
   let l:test_dirname = '__tests__'
 
   " Find the containing directory.
@@ -67,7 +67,7 @@ func! s:FindTestDirectoriesAbove(file_path) abort
   return l:test_dirs
 endfunc
 
-func! s:RemoveTestSuffix(filename) abort
+func! s:remove_test_suffix(filename) abort
   let l:no_suffix = fnamemodify(a:filename, ':t')
   let l:no_suffix = substitute(l:no_suffix, '\v\.(test|spec)', '', '')
 
@@ -78,16 +78,16 @@ endfunc
 " directory above this one for a file name that matches.
 func! editor#js#LocateTestFile(...) abort
   " Absolute path to the source file.
-  let l:file_path = s:ResolvePath(a:000)
+  let l:file_path = s:resolve_path(a:000)
   let l:filename = fnamemodify(l:file_path, ':t')
-  let l:test_dirs = s:FindTestDirectoriesAbove(l:file_path)
+  let l:test_dirs = s:find_test_directories_above(l:file_path)
 
   " Search every test directory upwards...
   for l:test_dir in l:test_dirs
 
     " Look at every test file...
     for l:test_file in glob(l:test_dir . '**/*.{j,t}s{x,}', 0, v:true)
-      let l:no_suffix = s:RemoveTestSuffix(l:test_file)
+      let l:no_suffix = s:remove_test_suffix(l:test_file)
 
       " Check to see if the name matches our source file.
       if l:no_suffix is? l:filename
@@ -99,7 +99,7 @@ func! editor#js#LocateTestFile(...) abort
   return v:null
 endfunc
 
-func! s:Submatch(string, regex) abort
+func! s:submatch(string, regex) abort
   let l:results = matchlist(a:string, a:regex)
 
   " Fail gracefully in case of some really weird syntax.
@@ -110,7 +110,7 @@ func! s:Submatch(string, regex) abort
   return l:results[1]
 endfunc
 
-func! s:ExtractImportPath(line) abort
+func! s:extract_import_path(line) abort
   let l:regex = {
         \   'import': '\vimport\s*["|'']',
         \   'from': '\vfrom\s*["|'']',
@@ -120,7 +120,7 @@ func! s:ExtractImportPath(line) abort
   " import { ... } from 'path'
   if a:line =~# l:regex.from
     let l:expr = l:regex.from . '(.*)["|'']'
-    let l:path = s:Submatch(a:line, l:expr)
+    let l:path = s:submatch(a:line, l:expr)
 
     return l:path
   endif
@@ -128,7 +128,7 @@ func! s:ExtractImportPath(line) abort
   " import 'path'
   if a:line =~# l:regex.import
     let l:expr = l:regex.import . '(.*)["|'']'
-    let l:path = s:Submatch(a:line, l:expr)
+    let l:path = s:submatch(a:line, l:expr)
 
     return l:path
   endif
@@ -137,7 +137,7 @@ func! s:ExtractImportPath(line) abort
   if a:line =~# l:regex.require
     let l:str = '["|''|`]'
     let l:expr = l:regex.require . '\s*' . l:str . '(.*)' . l:str
-    let l:path = s:Submatch(a:line, l:expr)
+    let l:path = s:submatch(a:line, l:expr)
 
     return l:path
   endif
@@ -145,7 +145,7 @@ func! s:ExtractImportPath(line) abort
   return v:null
 endfunc
 
-func! s:IsRelativeImport(path) abort
+func! s:is_relative_import(path) abort
   return a:path[0] is# '.'
 endfunc
 
@@ -153,11 +153,11 @@ endfunc
 " Probably a hack, but more reliable and performant than
 " depth-scanning tons of files looking for a source file with
 " the same name.
-func! s:SearchForPlausibleImports(file_path, no_suffix) abort
+func! s:search_for_plausible_imports(file_path, no_suffix) abort
   let l:imports = getline('^', '$')
-  call map(l:imports, 's:ExtractImportPath(v:val)')
+  call map(l:imports, 's:extract_import_path(v:val)')
   call filter(l:imports, 'v:val isnot# v:null')
-  call filter(l:imports, 's:IsRelativeImport(v:val)')
+  call filter(l:imports, 's:is_relative_import(v:val)')
   let l:no_suffix = fnamemodify(a:no_suffix, ':r')
 
   for l:relative_import in l:imports
@@ -185,8 +185,8 @@ endfunc
 " See if it's in the grandparent directory. If not, scan
 " the test file's imports.
 func! editor#js#LocateSourceFile(...) abort
-  let l:file_path = s:ResolvePath(a:000)
-  let l:no_suffix = s:RemoveTestSuffix(l:file_path)
+  let l:file_path = s:resolve_path(a:000)
+  let l:no_suffix = s:remove_test_suffix(l:file_path)
   let l:grandparent_dir = fnamemodify(l:file_path, ':h:h')
   let l:src_file = glob(l:grandparent_dir . '/' . l:no_suffix)
 
@@ -194,10 +194,10 @@ func! editor#js#LocateSourceFile(...) abort
     return l:src_file
   endif
 
-  return s:SearchForPlausibleImports(l:file_path, l:no_suffix)
+  return s:search_for_plausible_imports(l:file_path, l:no_suffix)
 endfunc
 
-func! s:ReadPackages(package_list) abort
+func! s:read_packages(package_list) abort
   let l:packages = []
 
   for l:package in a:package_list
@@ -212,7 +212,7 @@ endfunc
 
 " Infer the test framework from the package's test script.
 " Only supports Jest because Jest is Best.
-func! s:ExtractTestCommand(test_script) abort
+func! s:extract_test_command(test_script) abort
   let l:jest_scripts = ['freighter-scripts']
 
   for l:jest_script in l:jest_scripts
@@ -231,9 +231,9 @@ endfunc
 " Find the test script that controls the given project.
 " Searches upwards to support monorepos.
 func! editor#js#GetTestRunner(...) abort
-  let l:file_path = s:ResolvePath(a:000)
+  let l:file_path = s:resolve_path(a:000)
   let l:package_paths = findfile('package.json', l:file_path . ';', -1)
-  let l:packages = s:ReadPackages(l:package_paths)
+  let l:packages = s:read_packages(l:package_paths)
 
   for [l:package, l:package_path] in l:packages
     let l:scripts = get(l:package, 'scripts', {})
@@ -248,7 +248,7 @@ func! editor#js#GetTestRunner(...) abort
       continue
     endif
 
-    let l:command = s:ExtractTestCommand(l:test_script)
+    let l:command = s:extract_test_command(l:test_script)
     let l:project_dir = fnamemodify(l:package_path, ':h')
     return { 'command': l:command, 'project': l:project_dir }
   endfor
@@ -258,7 +258,7 @@ func! editor#js#GetTestRunner(...) abort
 endfunc
 
 func! editor#js#GetTestCommandForPath(...) abort
-  let l:path = s:ResolvePath(a:000)
+  let l:path = s:resolve_path(a:000)
   let l:runner = editor#js#GetTestRunner(l:path)
   let l:runner = deepcopy(l:runner)
 
@@ -294,7 +294,7 @@ func! editor#js#OpenPackageRoot() abort
 endfunc
 
 func! editor#js#GetPackageJson(...) abort
-  let l:path = s:ResolvePath(a:000)
+  let l:path = s:resolve_path(a:000)
   let l:root = editor#js#FindPackageRoot(l:path)
   let l:pkg_json_path = l:root . '/package.json'
 

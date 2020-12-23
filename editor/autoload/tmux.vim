@@ -130,7 +130,7 @@ let s:separator = '<!out:sep@>'
 " Maximum arg size to tmux display is 2065 characters.
 " Anything past it and the output will be empty.
 " Call tmux until all variables have printed.
-func! s:GetPrintableRange(variables, start_index) abort
+func! s:get_printable_range(variables, start_index) abort
   let l:index = a:start_index
 
   let l:cmd = 'tmux display -p "'
@@ -151,13 +151,13 @@ func! s:GetPrintableRange(variables, start_index) abort
   return { 'index': l:index, 'command': l:cmd }
 endfunc
 
-func! s:GetVarPrintCommands(variables) abort
+func! s:get_var_print_commands(variables) abort
   let l:commands = []
   let l:prefix = 'tmux display -p "'
   let l:index = 0
 
   while l:index < len(a:variables)
-    let l:result = s:GetPrintableRange(a:variables, l:index)
+    let l:result = s:get_printable_range(a:variables, l:index)
     let l:index = l:result.index
     call add(l:commands, l:result.command)
   endwhile
@@ -165,8 +165,8 @@ func! s:GetVarPrintCommands(variables) abort
   return l:commands
 endfunc
 
-func! s:GetVariables(variables) abort
-  let l:cmds = s:GetVarPrintCommands(a:variables)
+func! s:get_variables(variables) abort
+  let l:cmds = s:get_var_print_commands(a:variables)
   let l:result = []
 
   for l:cmd in l:cmds
@@ -179,7 +179,7 @@ endfunc
 
 func! tmux#GetVariables() abort
   let l:result = {}
-  let l:variables = s:GetVariables(s:variables)
+  let l:variables = s:get_variables(s:variables)
   let l:index = 0
 
   while l:index < len(l:variables)

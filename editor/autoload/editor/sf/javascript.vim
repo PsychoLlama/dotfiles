@@ -1,4 +1,4 @@
-func! s:Scaffold(content, ...) abort
+func! s:scaffold(content, ...) abort
   let l:indent_level = get(a:000, 0, indent('.'))
   let l:indent_str = join(map(range(l:indent_level), "' '"), '')
   call filter(a:content, 'type(v:val) ==# v:t_string')
@@ -6,7 +6,7 @@ func! s:Scaffold(content, ...) abort
 endfunc
 
 func! editor#sf#javascript#UnitTest() abort
-  let l:content = s:Scaffold([
+  let l:content = s:scaffold([
         \   getline('.') !~# 'describe' && '',
         \   "it('', () => {",
         \   '',
@@ -19,7 +19,7 @@ func! editor#sf#javascript#UnitTest() abort
 endfunc
 
 func! editor#sf#javascript#TestGroup() abort
-  let l:content = s:Scaffold([
+  let l:content = s:scaffold([
         \   '',
         \   "describe('', () => {",
         \   '',
@@ -32,7 +32,7 @@ func! editor#sf#javascript#TestGroup() abort
 endfunc
 
 func! editor#sf#javascript#LogStatement() abort
-  let l:content = s:Scaffold([
+  let l:content = s:scaffold([
         \   "console.log('');",
         \ ])
 

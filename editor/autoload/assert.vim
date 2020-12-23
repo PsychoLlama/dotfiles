@@ -3,7 +3,7 @@
 " - v:null
 " - ''
 " - 0
-func! s:CoerceToNumber(value) abort
+func! s:coerce_to_number(value) abort
   let l:type = type(a:value)
 
   if l:type == v:t_func || l:type == v:t_list || l:type == v:t_dict
@@ -17,13 +17,13 @@ func! s:CoerceToNumber(value) abort
   return a:value
 endfunc
 
-func! s:CoerceToBool(value) abort
-  return s:CoerceToNumber(a:value) != 0 ? v:true : v:false
+func! s:coerce_to_bool(value) abort
+  return s:coerce_to_number(a:value) != 0 ? v:true : v:false
 endfunc
 
 " Throw an error if the value is falsy.
 func! assert#(value, message) abort
-  if !s:CoerceToBool(a:value)
+  if !s:coerce_to_bool(a:value)
     throw a:message
   endif
 endfunc

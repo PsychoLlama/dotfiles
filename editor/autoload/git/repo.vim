@@ -1,5 +1,5 @@
 " Looks for directory/.git
-func! s:HasGitFolder(dir)
+func! s:has_git_folder(dir)
   let l:repo_folder = a:dir . '/.git'
 
   return isdirectory(l:repo_folder)
@@ -16,8 +16,8 @@ func! git#repo#FindRoot(...) abort
     let l:directory = fnamemodify(l:directory, ':h')
   endif
 
-  let l:HasGitFolder = funcref('s:HasGitFolder')
-  return editor#util#SearchDirUpwards(l:directory, l:HasGitFolder)
+  let l:has_git_folder = funcref('s:has_git_folder')
+  return editor#util#SearchDirUpwards(l:directory, l:has_git_folder)
 endfunc
 
 " Is this directory or one of its parents a git repo?

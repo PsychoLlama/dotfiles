@@ -1,17 +1,5 @@
 scriptencoding utf-8
 
-" Check the dotfiles preset for more vim plugins.
-func! s:LoadExternalPlugins() abort
-  let l:file_path = dotfiles#env#Path('editor/autoload/editor/env.vim')
-  if filereadable(l:file_path)
-    execute 'source ' . l:file_path
-  endif
-
-  if exists('*editor#env#Plugins')
-    call editor#env#Plugins()
-  endif
-endfunc
-
 " Set python executable paths. Used for remote neovim plugins.
 let g:python3_host_prog = exepath('nvim-python3')
 

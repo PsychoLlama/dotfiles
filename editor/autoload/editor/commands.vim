@@ -13,7 +13,7 @@ func! editor#commands#SyntaxName() abort
 endfunc
 
 " Order authors by quantity of lines written.
-func! s:GetAuthorOwnership(authors, total)
+func! s:get_author_ownership(authors, total)
   let l:result = []
 
   for l:author in keys(a:authors)
@@ -27,7 +27,7 @@ func! s:GetAuthorOwnership(authors, total)
   return l:result
 endfunc
 
-func! s:FindAuthorsForRange(start, end, all_commits) abort
+func! s:find_authors_for_range(start, end, all_commits) abort
   let l:file = resolve(expand('%:p'))
   let l:line_blames = git#blame#({
         \   'include_all_commits': a:all_commits,
@@ -42,10 +42,10 @@ func! s:FindAuthorsForRange(start, end, all_commits) abort
     let l:uniq_authors[l:author] = get(l:uniq_authors, l:author, 0) + 1
   endfor
 
-  return s:GetAuthorOwnership(l:uniq_authors, a:end - a:start + 1.0)
+  return s:get_author_ownership(l:uniq_authors, a:end - a:start + 1.0)
 endfunc
 
-func! s:PrintLineDetails(line, all_commits) abort
+func! s:print_line_details(line, all_commits) abort
   let [l:details] = git#blame#({
         \   'include_all_commits': a:all_commits,
         \   'ranges': [[a:line, a:line]],
@@ -80,10 +80,10 @@ func! editor#commands#Author(start, end, all_commits) abort
 
   " If there's only one selected line, show more details.
   if a:start == a:end
-    return s:PrintLineDetails(a:start, a:all_commits)
+    return s:print_line_details(a:start, a:all_commits)
   endif
 
-  for [l:author, l:ownership] in s:FindAuthorsForRange(a:start, a:end, a:all_commits)
+  for [l:author, l:ownership] in s:find_authors_for_range(a:start, a:end, a:all_commits)
     echohl Clear
     echo l:author
     echohl Comment
