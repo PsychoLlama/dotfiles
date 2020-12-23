@@ -1,5 +1,5 @@
 " The last point on the stack trace is strangely formatted.
-" Turns 'stacktrace#Create, line 2' into 'stacktrace#Create[2]'
+" Turns 'stacktrace#create, line 2' into 'stacktrace#create[2]'
 func! s:normalize_last_stack_trace(frame) abort
   let l:funcname = substitute(a:frame, '\v,.*', '', '')
   let l:line_number = substitute(a:frame, '\v^.*, \D*', '', '')
@@ -153,8 +153,8 @@ func! s:generate_file_stacktrace(throwpoint) abort
 endfunc
 
 " Example stack trace:
-" function 148[6]..149[1]..<SNR>130_Script[6]..stacktrace#Create, line 2
-func! stacktrace#Parse(throwpoint) abort
+" function 148[6]..149[1]..<SNR>130_script[6]..stacktrace#create, line 2
+func! stacktrace#parse(throwpoint) abort
   " Thrown outside a function.
   if a:throwpoint =~# '\v^/'
     return s:generate_file_stacktrace(a:throwpoint)
@@ -168,16 +168,16 @@ func! stacktrace#Parse(throwpoint) abort
 endfunc
 
 " Get a new stacktrace.
-func! stacktrace#Create(message) abort
+func! stacktrace#create(message) abort
   try
     throw a:message
   catch
-    return stacktrace#Parse(v:throwpoint)
+    return stacktrace#parse(v:throwpoint)
   endtry
 endfunc
 
 " Pretty-print a parsed stack trace.
-func! stacktrace#Print(stack, exception) abort
+func! stacktrace#print(stack, exception) abort
   echohl Error
   echon 'Error:'
   echohl Clear
@@ -207,16 +207,16 @@ endfunc
 
 " Returned if the function threw. Errors are not re-emitted.
 " Use this return value to determine if the wrapped function threw.
-" `l:retval isnot# g:stacktrace#Exception`
-let g:stacktrace#Exception = { '__stacktrace#Exception': v:true }
+" `l:retval isnot# g:stacktrace#exception`
+let g:stacktrace#exception = { '__stacktrace#exception': v:true }
 
 " Captures thrown exceptions, analyzing & printing them.
-func! stacktrace#Capture(CaptureTarget) abort
+func! stacktrace#capture(capture_target) abort
   try
-    return a:CaptureTarget()
+    return a:capture_target()
   catch
-    let l:trace = stacktrace#Parse(v:throwpoint)
-    call stacktrace#Print(l:trace, v:exception)
-    return g:stacktrace#Exception
+    let l:trace = stacktrace#parse(v:throwpoint)
+    call stacktrace#print(l:trace, v:exception)
+    return g:stacktrace#exception
   endtry
 endfunc

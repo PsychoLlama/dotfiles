@@ -7,7 +7,7 @@ if executable('python2')
   let g:python2_host_prog = exepath('python2')
 endif
 
-call editor#nixplug#load(dotfiles#Path('pkgs/vim-manifest/default.nix'))
+call editor#nixplug#load(dotfiles#path('pkgs/vim-manifest/default.nix'))
 
 " Color scheme
 let g:onedark_termcolors=16

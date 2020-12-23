@@ -36,7 +36,7 @@ endfunc
 
 func! s:edit_vimrc() abort
   let l:cmd = isdirectory(expand('%:p')) ? 'edit' : 'tabedit'
-  let l:editor_path = dotfiles#Path('editor/autoload')
+  let l:editor_path = dotfiles#path('editor/autoload')
   execute l:cmd . ' ' . l:editor_path
 endfunc
 
@@ -58,8 +58,8 @@ inoremap <silent><expr><s-tab> <SID>tab_completion(v:true)
 nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
 nnoremap <silent><leader>v :call <SID>edit_vimrc()<cr>
 nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
-nnoremap <silent><leader>p <esc>:call editor#OpenRoot()<cr>
-nnoremap <silent><leader>; <esc>:call editor#commands#Test()<cr>
+nnoremap <silent><leader>p <esc>:call editor#open_project_root()<cr>
+nnoremap <silent><leader>; <esc>:call editor#commands#test()<cr>
 nnoremap <silent><esc> :nohlsearch<cr><esc>
-nnoremap <leader>sc <esc>:call editor#sf#javascript#LogStatement()<cr>f'
+nnoremap <leader>sc <esc>:call editor#sf#javascript#log_statement()<cr>f'
 nnoremap <leader>f <esc>:Files!<cr>

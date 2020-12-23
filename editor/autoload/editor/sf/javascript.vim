@@ -5,7 +5,7 @@ func! s:scaffold(content, ...) abort
   return map(a:content, 'strlen(v:val) ? l:indent_str . v:val : ""')
 endfunc
 
-func! editor#sf#javascript#UnitTest() abort
+func! editor#sf#javascript#unit_test() abort
   let l:content = s:scaffold([
         \   getline('.') !~# 'describe' && '',
         \   "it('', () => {",
@@ -18,7 +18,7 @@ func! editor#sf#javascript#UnitTest() abort
   normal! f'
 endfunc
 
-func! editor#sf#javascript#TestGroup() abort
+func! editor#sf#javascript#test_group() abort
   let l:content = s:scaffold([
         \   '',
         \   "describe('', () => {",
@@ -31,7 +31,7 @@ func! editor#sf#javascript#TestGroup() abort
   normal! f'
 endfunc
 
-func! editor#sf#javascript#LogStatement() abort
+func! editor#sf#javascript#log_statement() abort
   let l:content = s:scaffold([
         \   "console.log('');",
         \ ])

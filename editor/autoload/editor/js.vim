@@ -5,7 +5,7 @@ func! s:resolve_path(args) abort
 endfunc
 
 " Locate the directory defining package.json.
-func! editor#js#FindPackageRoot(...) abort
+func! editor#js#find_package_root(...) abort
   let l:containing_dir = s:resolve_path(a:000)
 
   " Make sure it's a directory.
@@ -27,7 +27,7 @@ func! editor#js#FindPackageRoot(...) abort
 endfunc
 
 " Detect if the given file is a JavaScript test file.
-func! editor#js#IsTestFile(...) abort
+func! editor#js#is_test_file(...) abort
   let l:file_path = s:resolve_path(a:000)
   let l:filename = fnamemodify(l:file_path, ':t')
 
@@ -76,7 +76,7 @@ endfunc
 
 " Given a path to the source file, search every test
 " directory above this one for a file name that matches.
-func! editor#js#LocateTestFile(...) abort
+func! editor#js#locate_test_file(...) abort
   " Absolute path to the source file.
   let l:file_path = s:resolve_path(a:000)
   let l:filename = fnamemodify(l:file_path, ':t')
@@ -184,7 +184,7 @@ endfunc
 
 " See if it's in the grandparent directory. If not, scan
 " the test file's imports.
-func! editor#js#LocateSourceFile(...) abort
+func! editor#js#locate_source_file(...) abort
   let l:file_path = s:resolve_path(a:000)
   let l:no_suffix = s:remove_test_suffix(l:file_path)
   let l:grandparent_dir = fnamemodify(l:file_path, ':h:h')
@@ -230,7 +230,7 @@ endfunc
 
 " Find the test script that controls the given project.
 " Searches upwards to support monorepos.
-func! editor#js#GetTestRunner(...) abort
+func! s:get_test_runner(...) abort
   let l:file_path = s:resolve_path(a:000)
   let l:package_paths = findfile('package.json', l:file_path . ';', -1)
   let l:packages = s:read_packages(l:package_paths)
@@ -257,9 +257,9 @@ func! editor#js#GetTestRunner(...) abort
   return v:null
 endfunc
 
-func! editor#js#GetTestCommandForPath(...) abort
+func! editor#js#get_test_command_for_path(...) abort
   let l:path = s:resolve_path(a:000)
-  let l:runner = editor#js#GetTestRunner(l:path)
+  let l:runner = s:get_test_runner(l:path)
   let l:runner = deepcopy(l:runner)
 
   if l:runner is# v:null
@@ -281,8 +281,8 @@ func! editor#js#GetTestCommandForPath(...) abort
   return l:runner
 endfunc
 
-func! editor#js#OpenPackageRoot() abort
-  let l:root = editor#js#FindPackageRoot()
+func! editor#js#open_package_root() abort
+  let l:root = editor#js#find_package_root()
 
   if l:root is# v:null
     echo "It doesn't look like you're in a package."
@@ -293,9 +293,9 @@ func! editor#js#OpenPackageRoot() abort
   lcd %:p
 endfunc
 
-func! editor#js#GetPackageJson(...) abort
+func! editor#js#get_package_json(...) abort
   let l:path = s:resolve_path(a:000)
-  let l:root = editor#js#FindPackageRoot(l:path)
+  let l:root = editor#js#find_package_root(l:path)
   let l:pkg_json_path = l:root . '/package.json'
 
   if !filereadable(l:pkg_json_path)
@@ -310,6 +310,6 @@ func! editor#js#GetPackageJson(...) abort
   return json_decode(l:contents)
 endfunc
 
-func! editor#js#IsJavaScript() abort
+func! editor#js#is_javascript() abort
   return &filetype =~# '\v\C(javascript|typescript)'
 endfunc

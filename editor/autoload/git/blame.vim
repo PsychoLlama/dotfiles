@@ -22,7 +22,7 @@ func! s:get_blame_output(config)
 
   let l:cmd .= '-- ' . fnameescape(a:config.file)
 
-  return editor#util#ExecInDir(a:config.file, l:cmd)
+  return editor#util#exec_in_dir(a:config.file, l:cmd)
 endfunc
 
 " Remove the line header.
@@ -129,7 +129,7 @@ func! s:get_user_name(file)
   " Get the current user's name.
   let l:containing_folder = fnamemodify(a:file, ':h')
   let l:cmd = 'git config user.name'
-  let l:my_name = editor#util#ExecInDir(l:containing_folder, l:cmd)
+  let l:my_name = editor#util#exec_in_dir(l:containing_folder, l:cmd)
 
   if !len(l:my_name)
     return '<current user>'
@@ -218,7 +218,7 @@ endfunc
 
 " Check metadata for blacklisted commits.
 func! s:dig_deeper(result) abort
-  let l:repo_root = git#repo#FindRoot(a:result.input.file)
+  let l:repo_root = git#repo#find_root(a:result.input.file)
   let l:ignored = s:get_ignored_commit_map()
   let l:lookups = {} " { [hash]: <blame_config> }
 
@@ -254,7 +254,7 @@ endfunc
 func! git#blame#(blame)
   let l:revision = get(a:blame, 'revision', v:null)
   let l:track_config = { 'revision': l:revision }
-  let l:is_tracked = git#repo#IsFileTracked(a:blame.file, l:track_config)
+  let l:is_tracked = git#repo#is_file_tracked(a:blame.file, l:track_config)
 
   call assert#(l:is_tracked, "Can't git-blame an untracked file.")
 

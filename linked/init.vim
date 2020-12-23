@@ -10,7 +10,7 @@ let s:editor_dir = s:dotfiles_dir . '/editor'
 call s:add_plugin_path(s:editor_dir)
 
 " Check for environment-specific vim settings.
-let s:editor_env_preset = dotfiles#env#Path('editor')
+let s:editor_env_preset = dotfiles#env#path('editor')
 if isdirectory(s:editor_env_preset)
   call s:add_plugin_path(s:editor_env_preset)
 endif

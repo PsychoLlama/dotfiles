@@ -1,5 +1,5 @@
 " :SN -- Echo the (S)yntax (N)ame under the cursor.
-func! editor#commands#SyntaxName() abort
+func! editor#commands#syntax_name() abort
   let l:syn_id = synID(line('.'), col('.'), v:true)
   let l:syn_name = synIDattr(l:syn_id, 'name')
 
@@ -67,7 +67,7 @@ endfunc
 
 
 " :<range>Author[!]
-func! editor#commands#Author(start, end, all_commits) abort
+func! editor#commands#author(start, end, all_commits) abort
   if &modified
     echo 'Save your changes first.'
     return
@@ -94,12 +94,12 @@ endfunc
 
 
 " :Node repl
-func! editor#commands#Node() abort
+func! editor#commands#node() abort
   call assert#(executable('node'), 'No node executable.')
-  let l:project = editor#js#FindPackageRoot()
+  let l:project = editor#js#find_package_root()
 
   if l:project is# v:null
-    let l:project = editor#util#ResolveDirectory()
+    let l:project = editor#util#resolve_directory()
   endif
 
   new Node Repl
@@ -112,7 +112,7 @@ endfunc
 
 
 " :Perm +x
-func! editor#commands#Permissions(...) abort
+func! editor#commands#permissions(...) abort
   let l:file_path = expand('%:p')
   let l:file = fnameescape(l:file_path)
 
@@ -134,8 +134,8 @@ func! editor#commands#Permissions(...) abort
 endfunc
 
 
-" :Test
-func! editor#commands#Test() abort
+" nmap <leader>;
+func! editor#commands#test() abort
   if &filetype !~# '\v(javascript|typescript)'
     echo 'WHAT ARE YOU DOING!'
     return
@@ -153,7 +153,7 @@ func! editor#commands#Test() abort
     endif
   endif
 
-  let l:runner = editor#js#GetTestCommandForPath(l:file_path)
+  let l:runner = editor#js#get_test_command_for_path(l:file_path)
 
   " Allow external customization by overriding the bash command.
   if exists('*editor#env#GetTestShellCommand')
@@ -163,27 +163,27 @@ func! editor#commands#Test() abort
   let l:cmd = 'cd ' . fnameescape(l:runner.project) . '; '
   let l:cmd .= l:runner.command
 
-  let l:tmux_vars = tmux#GetVariables()
+  let l:tmux_vars = tmux#get_variables()
   if str2nr(l:tmux_vars.window_panes) < 2
-    let l:test_pane = tmux#SplitWindow({
+    let l:test_pane = tmux#split_window({
           \   'horizontal': v:true,
           \   'percent': 45,
           \ })
-    call tmux#SendKeys(l:cmd, '^M')
+    call tmux#send_keys(l:cmd, '^M')
   else
     let l:test_pane = l:tmux_vars.pane_at_right
-    call tmux#SelectPane(1)
-    call tmux#SendKeys('^C')
-    call tmux#SendKeys('^L', l:cmd, '^M')
+    call tmux#select_pane(1)
+    call tmux#send_keys('^C')
+    call tmux#send_keys('^L', l:cmd, '^M')
   endif
 
-  call tmux#SelectPane(l:tmux_vars.pane_id)
+  call tmux#select_pane(l:tmux_vars.pane_id)
 endfunc
 
-func! editor#commands#Search(...) abort
+func! editor#commands#search(...) abort
   let l:args = len(a:000) ? a:000 : [getreg('"')]
   let l:search_term = join(l:args, ' ')
-  let l:project_root = editor#js#FindPackageRoot()
+  let l:project_root = editor#js#find_package_root()
 
   if l:project_root is# v:null
     let l:project_root = expand('%:p')
