@@ -3,21 +3,6 @@ func! editor#util#chomp(string) abort
   return substitute(a:string, '\n$', '', '')
 endfunc
 
-" Replace buffer contents with a list of lines.
-func! editor#util#set_pane_contents(lines) abort
-  % delete
-
-  let l:index = 0
-  while l:index < len(a:lines)
-    let l:line = a:lines[l:index]
-
-    " Lines start at 1.
-    call setline(l:index + 1, l:line)
-
-    let l:index += 1
-  endwhile
-endfunc
-
 " Search every parent directory until a predicate is satisfied.
 func! editor#util#search_dir_upwards(dir, cb) abort
   if a:cb(a:dir)

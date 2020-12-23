@@ -154,12 +154,6 @@ func! editor#commands#test() abort
   endif
 
   let l:runner = editor#js#get_test_command_for_path(l:file_path)
-
-  " Allow external customization by overriding the bash command.
-  if exists('*editor#env#GetTestShellCommand')
-    " TODO: I broke this by porting `tw` to vimscript.
-  endif
-
   let l:cmd = 'cd ' . fnameescape(l:runner.project) . '; '
   let l:cmd .= l:runner.command
 
@@ -178,21 +172,4 @@ func! editor#commands#test() abort
   endif
 
   call tmux#select_pane(l:tmux_vars.pane_id)
-endfunc
-
-func! editor#commands#search(...) abort
-  let l:args = len(a:000) ? a:000 : [getreg('"')]
-  let l:search_term = join(l:args, ' ')
-  let l:project_root = editor#js#find_package_root()
-
-  if l:project_root is# v:null
-    let l:project_root = expand('%:p')
-  endif
-
-  if !isdirectory(l:project_root)
-    let l:project_root = fnamemodify(l:project_root, ':h')
-  endif
-
-  execute 'silent lcd ' . fnameescape(l:project_root)
-  execute 'silent grep ' . l:search_term
 endfunc

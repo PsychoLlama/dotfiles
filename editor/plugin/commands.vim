@@ -11,7 +11,3 @@ command! -range -bang Author call stacktrace#capture(
 command! Node call stacktrace#capture(
       \   function('editor#commands#node')
       \ )
-
-command! -nargs=* Search call stacktrace#capture(
-      \   function('editor#commands#search', [<f-args>])
-      \ )
