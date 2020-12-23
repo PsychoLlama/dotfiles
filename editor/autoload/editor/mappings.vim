@@ -10,7 +10,7 @@ func! s:is_typing_word() abort
   return l:prev_chars =~? '\w\{2}'
 endfunc
 
-func! s:tab_completion(shifting) abort
+func! editor#mappings#tab_completion(shifting) abort
   if pumvisible()
     if a:shifting
       return "\<C-p>"
@@ -26,7 +26,7 @@ func! s:tab_completion(shifting) abort
   return "\t"
 endfunc
 
-func! s:toggle_copy_mode() abort
+func! editor#mappings#toggle_copy_mode() abort
   if &number
     setlocal nonumber signcolumn=no
   else
@@ -34,14 +34,8 @@ func! s:toggle_copy_mode() abort
   endif
 endfunc
 
-func! s:edit_vimrc() abort
-  let l:cmd = isdirectory(expand('%:p')) ? 'edit' : 'tabedit'
-  let l:editor_path = dotfiles#path('editor/autoload')
-  execute l:cmd . ' ' . l:editor_path
-endfunc
-
 " :Rexplore only works if the file was opened via netrw.
-func! s:explore_current_dir() abort
+func! editor#mappings#explore_current_dir() abort
   if &filetype is# 'netrw'
     return
   endif
@@ -52,14 +46,47 @@ func! s:explore_current_dir() abort
   call search('\V\^' . l:filename . '\$')
 endfunc
 
-nmap <leader>a <Plug>(alternaut-toggle)
-inoremap <silent><expr><tab> <SID>tab_completion(v:false)
-inoremap <silent><expr><s-tab> <SID>tab_completion(v:true)
-nnoremap <silent><leader>t :call <SID>toggle_copy_mode()<cr>
-nnoremap <silent><leader>v :call <SID>edit_vimrc()<cr>
-nnoremap <silent><leader>r :call <SID>explore_current_dir()<cr>
-nnoremap <silent><leader>p <esc>:call editor#open_project_root()<cr>
-nnoremap <silent><leader>; <esc>:call editor#commands#test()<cr>
-nnoremap <silent><esc> :nohlsearch<cr><esc>
-nnoremap <leader>sc <esc>:call editor#sf#javascript#log_statement()<cr>f'
-nnoremap <leader>f <esc>:Files!<cr>
+func! editor#mappings#edit_vimrc() abort
+  let l:cmd = isdirectory(expand('%:p')) ? 'edit' : 'tabedit'
+  let l:editor_path = dotfiles#path('editor/autoload')
+  execute l:cmd . ' ' . l:editor_path
+endfunc
+
+func! editor#mappings#test() abort
+  if &filetype !~# '\v(javascript|typescript)'
+    echo 'WHAT ARE YOU DOING!'
+    return
+  endif
+
+  let l:file_path = expand('%:p')
+  if !alternaut#IsTestFile(l:file_path)
+    let l:file_path = alternaut#LocateTestFile(l:file_path)
+    if l:file_path is# v:null
+      echohl Error
+      echon 'Error:'
+      echohl Clear
+      echon " Couldn't find the test file."
+      return
+    endif
+  endif
+
+  let l:runner = editor#js#get_test_command_for_path(l:file_path)
+  let l:cmd = 'cd ' . fnameescape(l:runner.project) . '; '
+  let l:cmd .= l:runner.command
+
+  let l:tmux_vars = tmux#get_variables()
+  if str2nr(l:tmux_vars.window_panes) < 2
+    let l:test_pane = tmux#split_window({
+          \   'horizontal': v:true,
+          \   'percent': 45,
+          \ })
+    call tmux#send_keys(l:cmd, '^M')
+  else
+    let l:test_pane = l:tmux_vars.pane_at_right
+    call tmux#select_pane(1)
+    call tmux#send_keys('^C')
+    call tmux#send_keys('^L', l:cmd, '^M')
+  endif
+
+  call tmux#select_pane(l:tmux_vars.pane_id)
+endfunc

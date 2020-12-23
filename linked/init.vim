@@ -46,6 +46,26 @@ nmap <space> <nop>
 let mapleader = "\<space>"
 
 
+" Quick navigation
+nnoremap <silent><leader>v :call editor#mappings#edit_vimrc()<cr>
+nnoremap <silent><leader>r :call editor#mappings#explore_current_dir()<cr>
+nnoremap <silent><leader>p :call editor#open_project_root()<cr>
+nmap <leader>a <Plug>(alternaut-toggle)
+nnoremap <leader>f :Files!<cr>
+
+" Poor man's templating function.
+nnoremap <leader>sc <esc>:call editor#sf#javascript#log_statement()<cr>f'
+
+" Support <tab> completion
+inoremap <silent><expr><tab> editor#mappings#tab_completion(v:false)
+inoremap <silent><expr><s-tab> editor#mappings#tab_completion(v:true)
+
+" Misc
+nnoremap <silent><esc> :nohlsearch<cr><esc>
+nnoremap <silent><leader>; :call editor#mappings#test()<cr>
+nnoremap <silent><leader>t :call editor#mappings#toggle_copy_mode()<cr>
+
+
 " Automatically maximize documentation pages.
 augroup help_pages
   autocmd!
@@ -74,4 +94,3 @@ endif
 " My vimrc has grown beyond the grasp of a single file.
 " Files are managed similarly to a vim plugin, organized into modules.
 runtime! autoload/editor/plugins.vim
-runtime! autoload/editor/mappings.vim
