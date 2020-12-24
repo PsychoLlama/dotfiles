@@ -68,17 +68,6 @@ function install_node {
   eval "$(fnm env --multi)"
 }
 
-function install_vim_plug {
-  local target=~/.local/share/nvim/site/autoload/plug.vim
-
-  if [[ -f "$target" ]]; then
-    return
-  fi
-
-  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-}
-
 function install_neovim_plugins {
   local hash_file="$ARTIFACTS_DIR/plugins-hash.txt"
   local plugins_location="$(dotfiles dir)/editor/autoload/editor/plugins.vim"
@@ -124,7 +113,6 @@ ensure openssl
 install_nix
 install_packages
 install_node
-install_vim_plug
 install_neovim_plugins
 install_rustfmt
 
