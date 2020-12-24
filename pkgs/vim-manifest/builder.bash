@@ -1,1 +1,0 @@
-echo "$manifest" > "$out"
