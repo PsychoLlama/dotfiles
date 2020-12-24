@@ -4,7 +4,7 @@
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export SKIM_DEFAULT_COMMAND='fd'
 export COLORTERM=truecolor
-export ZSH=~/.oh-my-zsh
+export ZSH=~/.nix-profile/share/oh-my-zsh
 export EDITOR=nvim
 export PATH=~/.cargo/bin:"$PATH"
 export MANPAGER='nvim -c "setfiletype man" -'
@@ -189,14 +189,13 @@ function cf {
 }
 
 source ~/.nix-profile/etc/profile.d/nix.sh
-source ~/.nix-profile/share/antigen/antigen.zsh
 
-antigen use oh-my-zsh
-antigen bundle docker
-antigen bundle pkulev/zsh-rustup-completion
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen theme PsychoLlama/llama.zsh-theme
+plugins=(docker)
+source ~/.nix-profile/share/oh-my-zsh/oh-my-zsh.sh
+source ~/.nix-profile/share/zsh-rustup-completion/rustup.plugin.zsh
+source ~/.nix-profile/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.nix-profile/share/llama.zsh-theme/llama.zsh-theme
 
 # Use fnm-managed node installation.
 if [[ -d ~/.fnm ]]; then
@@ -211,8 +210,6 @@ eval "$(zoxide init zsh)"
 if [[ -e ~/dotfiles-env/.zshrc ]]; then
   source ~/dotfiles-env/.zshrc
 fi
-
-antigen apply
 
 ### Completions ###
 compdef t=tmux
