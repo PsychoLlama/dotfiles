@@ -47,13 +47,6 @@ nmap <space> <nop>
 let mapleader = "\<space>"
 
 
-" Automatically maximize documentation pages.
-augroup help_pages
-  autocmd!
-  autocmd FileType help,man wincmd _
-augroup END
-
-
 " Quick navigation
 nnoremap <silent><leader>v :call editor#mappings#edit_vimrc()<cr>
 nnoremap <silent><leader>r :call editor#mappings#explore_current_dir()<cr>
@@ -147,36 +140,25 @@ let further#prefer_modules = v:true
 let teleport#update_cwd = v:true
 let g:jsx_ext_required = 0
 let g:splitjoin_trailing_comma = v:true
+let g:loaded_netrwPlugin = v:true
 
 
-" TODO: Make editor/ a real plugin system.
-" TODO: Kill the nixplug hack with fiery vengeance.
+augroup settings
+  autocmd!
 
-" Register the dotfiles framework.
-func! s:add_plugin_path(plugin) abort
-  execute 'set runtimepath+=' . fnameescape(a:plugin)
+  " Wait for plugins to initalize before setting the color scheme.
+  autocmd VimEnter * call s:init()
+
+  " Automatically maximize documentation pages.
+  autocmd FileType help,man wincmd _
+augroup END
+
+func! s:init() abort
+  colorscheme onedark
+
+  highlight clear ALEWarningSign
+  highlight ALEWarningSign ctermfg=gray
+
+  highlight clear CursorLine
+  highlight CursorLineNr ctermfg=blue
 endfunc
-
-" Resolve path to the editor/ directory.
-let s:filename = resolve(expand('<sfile>'))
-let s:dotfiles_dir = fnamemodify(s:filename, ':h:h')
-let s:editor_dir = s:dotfiles_dir . '/editor'
-
-call s:add_plugin_path(s:editor_dir)
-
-" Check for environment-specific vim settings.
-let s:editor_env_preset = dotfiles#env#path('editor')
-if isdirectory(s:editor_env_preset)
-  call s:add_plugin_path(s:editor_env_preset)
-endif
-
-call editor#nixplug#load(dotfiles#path('pkgs/vim-manifest/default.nix'))
-
-" Color scheme
-colorscheme onedark
-
-highlight clear ALEWarningSign
-highlight ALEWarningSign ctermfg=gray
-
-highlight clear CursorLine
-highlight CursorLineNr ctermfg=blue
