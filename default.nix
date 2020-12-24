@@ -13,7 +13,7 @@ with (import <nixpkgs> {});
     configure = {
       customRC = builtins.readFile ./linked/init.vim;
       packages.dotfiles.start =
-        (callPackage ./pkgs/vim-plugins/vim-plugins.nix {})
+        (callPackage ./pkgs/vim-plugins {})
         ++ (with vimPlugins; [coc-nvim])
         ++ [(callPackage ./editor {})];
     };
