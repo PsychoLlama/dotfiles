@@ -6,7 +6,6 @@ export ZSH=~/.nix-profile/share/oh-my-zsh
 export EDITOR=nvim
 export PATH=~/.cargo/bin:"$PATH"
 export MANPAGER='nvim -c "setfiletype man" -'
-export fpath=("$(dotfiles dir)/completions" $fpath)
 export RIPGREP_CONFIG_PATH=~/.ripgrep
 export BAT_STYLE=changes
 export BAT_THEME=TwoDark
