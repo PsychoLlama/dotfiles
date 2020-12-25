@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 ### Variables ###
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export SKIM_DEFAULT_COMMAND='fd'

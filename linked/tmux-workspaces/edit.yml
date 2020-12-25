@@ -1,5 +1,3 @@
-# ~/.tmuxinator/edit.yml
-
 root: <%= @args[0] %>
 
 windows:
