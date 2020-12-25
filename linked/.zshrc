@@ -153,12 +153,12 @@ function vh {
 }
 
 function vf {
-  local cache_file="$(dotfiles dir)/command-cache/vf-last-result"
+  local cache_file=/tmp/vf-last-result
   local file
 
   case "$1" in
     '--last' | '-l')
-      file="$(cat "$cache_file")"
+      file="$(command cat "$cache_file")"
 
       if [[ -z "$file" ]]; then
         echo "There's no find history :/" >&2
