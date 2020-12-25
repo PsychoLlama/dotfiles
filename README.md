@@ -13,7 +13,7 @@ entrypoint to the framework.
 ```txt
 Usage: dotfiles <command>
     update  - Update the dotfiles framework
-    link    - Symlink everything in 'dotfiles/linked'
+    link    - Symlink everything in 'dotfiles/config'
     install - Install system-wide dependencies
     dir     - Print the dotfiles directory
     eject   - Gather historical files into a tarball
@@ -21,7 +21,7 @@ Usage: dotfiles <command>
 ```
 
 Running `$ dotfiles update` pulls for changes, relinks all the config files
-([`./linked/manifest.sh`](https://github.com/PsychoLlama/dotfiles/blob/master/linked/manifest.sh)),
+([`./config/manifest.sh`](https://github.com/PsychoLlama/dotfiles/blob/master/config/manifest.sh)),
 and ensures all the system dependencies have been installed (`zsh`, `ripgrep`,
 `tmux`, `neovim`... see:
 [`./default.nix`](https://github.com/PsychoLlama/dotfiles/blob/master/default.nix)).
@@ -31,7 +31,7 @@ It also manages quite possibly the most complex vimrc known to mankind
 It's basically a vim plugin at this point.
 
 Random bash utils are strewn about the repo, but most of it's kept in
-[`./linked/.zshrc`](https://github.com/PsychoLlama/dotfiles/blob/master/linked/.zshrc).
+[`./config/init.zsh`](https://github.com/PsychoLlama/dotfiles/blob/master/config/init.zsh).
 
 #### dotfiles-env
 Not everything can be published to GitHub, such as work-related utilities and

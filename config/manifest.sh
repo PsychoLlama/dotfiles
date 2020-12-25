@@ -12,7 +12,7 @@ function get_dotfiles_manifest {
   echo ~/.ripgrep ripgrep.rc
   echo ~/.zshrc init.zsh
 
-  local symlink_manifest=~/dotfiles-env/linked/manifest.sh
+  local symlink_manifest=~/dotfiles-env/config/manifest.sh
   if [[ -f "$symlink_manifest" ]]; then
     source "$symlink_manifest"
   fi

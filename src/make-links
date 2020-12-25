@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# Symlink stuff from the linked/ directory
+# Symlink stuff from the config/ directory
 # Constraints:
 # - Bash v3 compatible (no hashmaps)
 # - No ./install specific tooling (this runs before ./install)
@@ -27,7 +27,7 @@ function resolve_path {
   if [[ "${dest:0:1}" == '/' ]]; then
     echo "$1"
   else
-    echo "$dotfiles_dir/linked/$1"
+    echo "$dotfiles_dir/config/$1"
   fi
 }
 
@@ -67,8 +67,8 @@ function process_manifest_output {
   done
 }
 
-# shellcheck source=linked/manifest.sh
-source "$dotfiles_dir/linked/manifest.sh"
+# shellcheck source=config/manifest.sh
+source "$dotfiles_dir/config/manifest.sh"
 
 get_dotfiles_manifest \
   | validate_targets \

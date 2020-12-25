@@ -34,7 +34,7 @@ function print_help {
 
   indent 1 "Usage: dotfiles <command>"
   indent 2 "update  - Update the dotfiles framework"
-  indent 2 "link    - Symlink everything in 'dotfiles/linked'"
+  indent 2 "link    - Symlink everything in 'dotfiles/config'"
   indent 2 "install - Install system-wide dependencies"
   indent 2 "dir     - Print the dotfiles directory"
   indent 2 "eject   - Gather historical files into a tarball"

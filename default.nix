@@ -8,7 +8,7 @@ callPackage ./pkgs/zsh-plugins {} // {
   fnm = import ./pkgs/fast-node-manager/default.nix;
   neovim = neovim.override {
     configure = {
-      customRC = builtins.readFile ./linked/init.vim;
+      customRC = builtins.readFile ./config/init.vim;
       packages.dotfiles.start =
         (callPackage ./pkgs/vim-plugins {})
         ++ (with vimPlugins; [coc-nvim])
