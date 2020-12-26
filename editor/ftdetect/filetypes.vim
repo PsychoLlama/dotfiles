@@ -1,3 +1,4 @@
+" vint: -ProhibitAutocmdWithNoGroup
 autocmd BufNewFile,BufRead .eslintrc,.babelrc setfiletype json
 autocmd BufNewFile,BufRead *.flow setfiletype javascript.jsx
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx

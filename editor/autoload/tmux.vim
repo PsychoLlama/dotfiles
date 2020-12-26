@@ -192,7 +192,7 @@ func! tmux#get_variables() abort
   return l:result
 endfunc
 
-func! tmux#split_window(...)
+func! tmux#split_window(...) abort
   let l:config = get(a:000, 0, {})
   let l:horizontal = get(l:config, 'horizontal', v:false)
   let l:percent = get(l:config, 'percent', 0)

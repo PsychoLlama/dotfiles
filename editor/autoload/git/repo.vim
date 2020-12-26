@@ -1,5 +1,5 @@
 " Looks for directory/.git
-func! s:has_git_folder(dir)
+func! s:has_git_folder(dir) abort
   let l:repo_folder = a:dir . '/.git'
 
   return isdirectory(l:repo_folder)

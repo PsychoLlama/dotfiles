@@ -13,7 +13,7 @@ func! editor#commands#syntax_name() abort
 endfunc
 
 " Order authors by quantity of lines written.
-func! s:get_author_ownership(authors, total)
+func! s:get_author_ownership(authors, total) abort
   let l:result = []
 
   for l:author in keys(a:authors)

@@ -4,7 +4,7 @@
 " https://git-scm.com/docs/git-blame#_the_porcelain_format
 
 " Get the blame string output.
-func! s:get_blame_output(config)
+func! s:get_blame_output(config) abort
   let l:cmd = 'git blame --line-porcelain '
 
   " Support for range restrictions (better performance).
@@ -26,11 +26,11 @@ func! s:get_blame_output(config)
 endfunc
 
 " Remove the line header.
-func! s:strip_header(header, line)
+func! s:strip_header(header, line) abort
   return a:line[strlen(a:header) + 1:]
 endfunc
 
-func! s:get_line_header(line)
+func! s:get_line_header(line) abort
   let l:delimiter_index = stridx(a:line, ' ')
   return a:line[0:l:delimiter_index - 1]
 endfunc
@@ -60,13 +60,13 @@ let s:BLAME_TEMPLATE = {
 
 " The git sha marks the start of blame dictionaries.
 " It will always be 40 characters.
-func! s:is_hash(header)
+func! s:is_hash(header) abort
   return len(a:header) is 40
 endfunc
 
 " Parse the sha & line numbers.
 " <sha> <prev_lnum> <cur_lnum> ?<group_lnums>
-func! s:add_sha_details(line, blame)
+func! s:add_sha_details(line, blame) abort
   let l:parts = split(a:line, ' ')
 
   let a:blame.sha = l:parts[0]
@@ -75,7 +75,7 @@ func! s:add_sha_details(line, blame)
 endfunc
 
 " Parse and inject the line contents.
-func! s:add_line_details(line, blame)
+func! s:add_line_details(line, blame) abort
   let l:contents = substitute(a:line, '\v^\t', '', '')
   let a:blame.line.contents = l:contents
 endfunc
@@ -88,7 +88,7 @@ let s:AUTHOR_NAME_MAP = {
       \ }
 
 " Add author/committer metadata.
-func! s:add_author_details(header, line, author, my_name)
+func! s:add_author_details(header, line, author, my_name) abort
   let l:header_key = substitute(a:header, '\v^(author|committer)', '', '')
   let l:key = s:AUTHOR_NAME_MAP[l:header_key]
   let l:content = a:line[strlen(a:header) + 1:]
@@ -112,7 +112,7 @@ endfunc
 
 " Contains information about the file prior to the commit.
 " 'previous <sha> <filename>'
-func! s:add_prev_sha_details(header, line, blame)
+func! s:add_prev_sha_details(header, line, blame) abort
   let l:value = s:strip_header(a:header, a:line)
   let l:delimiter_index = stridx(l:value, ' ')
 
@@ -121,11 +121,11 @@ func! s:add_prev_sha_details(header, line, blame)
 endfunc
 
 " `summary` is the git commit title.
-func! s:add_summary_details(header, line, blame)
+func! s:add_summary_details(header, line, blame) abort
   let a:blame.summary = s:strip_header(a:header, a:line)
 endfunc
 
-func! s:get_user_name(file)
+func! s:get_user_name(file) abort
   " Get the current user's name.
   let l:containing_folder = fnamemodify(a:file, ':h')
   let l:cmd = 'git config user.name'
@@ -139,7 +139,7 @@ func! s:get_user_name(file)
 endfunc
 
 " string[] -> Blame[]
-func! s:parse_blame_output(output, config)
+func! s:parse_blame_output(output, config) abort
   let l:my_name = s:get_user_name(a:config.file)
   let l:line_blames = []
 
@@ -251,7 +251,7 @@ func! s:dig_deeper(result) abort
 endfunc
 
 " Get a list of metadata for each line.
-func! git#blame#(blame)
+func! git#blame#(blame) abort
   let l:revision = get(a:blame, 'revision', v:null)
   let l:track_config = { 'revision': l:revision }
   let l:is_tracked = git#repo#is_file_tracked(a:blame.file, l:track_config)
