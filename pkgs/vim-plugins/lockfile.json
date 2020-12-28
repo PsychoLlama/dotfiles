@@ -130,6 +130,14 @@
       "homepage": "https://github.com/mbbill/undotree"
     },
     {
+      "owner": "junegunn",
+      "repo": "vader.vim",
+      "version": "2020-02-13",
+      "rev": "6fff477431ac3191c69a3a5e5f187925466e275a",
+      "hash": "179dbbqdyl6qf6jdb6kdazn3idz17m1h2n88rlggb1wnly74vjin",
+      "homepage": "https://github.com/junegunn/vader.vim"
+    },
+    {
       "owner": "tpope",
       "repo": "vim-commentary",
       "version": "2019-11-17",

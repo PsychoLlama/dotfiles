@@ -6,6 +6,7 @@ module.exports = [
   'hashivim/vim-terraform',
   'jparise/vim-graphql',
   'rust-lang/rust.vim',
+  'junegunn/vader.vim',
   'tpope/vim-markdown',
   'cespare/vim-toml',
   'othree/yajs.vim',
