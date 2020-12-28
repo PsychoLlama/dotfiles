@@ -38,8 +38,4 @@ module.exports = [
   // Style 🦄
   'airblade/vim-gitgutter',
   'joshdick/onedark.vim',
-
-  // Fun 🎮
-  'PsychoLlama/conway.vim',
-  'PsychoLlama/snake.vim',
 ];

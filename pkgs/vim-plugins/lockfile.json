@@ -27,14 +27,6 @@
     },
     {
       "owner": "PsychoLlama",
-      "repo": "conway.vim",
-      "version": "2018-08-21",
-      "rev": "122e61ea8f0b43a87d4a9a91b9f3a2eb1e975fba",
-      "hash": "0bmijadi4nzkh175iqyb1qiq411jmyg8r7whgv763lwgzq4csvk7",
-      "homepage": "https://github.com/PsychoLlama/conway.vim"
-    },
-    {
-      "owner": "PsychoLlama",
       "repo": "debrief.vim",
       "version": "2019-02-28",
       "rev": "3dcb8eb75e8e70a7eb8f0b36f7d96eecbef7562f",
@@ -104,14 +96,6 @@
       "rev": "83faea7f2581005d4adc9256ec76e0fe3f8a15e6",
       "hash": "0wppb2wgpk085cwh9kmqzv6f30j2hb3brqx2ik371gkrcfbpf4ly",
       "homepage": "https://github.com/lotabout/skim.vim"
-    },
-    {
-      "owner": "PsychoLlama",
-      "repo": "snake.vim",
-      "version": "2018-08-21",
-      "rev": "b459c0515d37b514ac87dce163925983526312ee",
-      "hash": "0mjgy2i8wihad1m5hhkibxjhm586wvl8yqr4dihpiz6sdpad0pmx",
-      "homepage": "https://github.com/PsychoLlama/snake.vim"
     },
     {
       "owner": "AndrewRadev",
