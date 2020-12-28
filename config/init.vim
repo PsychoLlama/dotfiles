@@ -26,7 +26,6 @@ set list listchars:tab:)\ ,trail:.
 set nofoldenable
 set updatetime:0 " TODO: Decouple from :GitGutter
 set linebreak
-set laststatus:1
 set cursorline
 
 " Storage settings
@@ -39,7 +38,6 @@ set history:1000
 set clipboard:unnamedplus
 set grepprg:rg\ -n
 set mouse:vin
-set mousemodel:extend
 
 
 " Use <space> as the leader key.
