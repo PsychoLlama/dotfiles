@@ -59,8 +59,8 @@ func! editor#mappings#test() abort
   endif
 
   let l:file_path = expand('%:p')
-  if !alternaut#IsTestFile(l:file_path)
-    let l:file_path = alternaut#LocateTestFile(l:file_path)
+  if !alternaut#is_test_file(l:file_path)
+    let l:file_path = alternaut#locate_test_file(l:file_path)
     if l:file_path is# v:null
       echohl Error
       echon 'Error:'

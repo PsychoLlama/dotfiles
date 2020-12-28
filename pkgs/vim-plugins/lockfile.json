@@ -4,17 +4,17 @@
     {
       "owner": "w0rp",
       "repo": "ale",
-      "version": "2020-12-16",
-      "rev": "f996ede5999c99b1b3e3cecc02dbd06cb286d3ff",
-      "hash": "1ff8scsaa7vc8m86gv2bggpalj108y65ymc0afnki1c2fj4nifbp",
+      "version": "2020-12-28",
+      "rev": "7fca451cf9a3068efe5e93fcc4b5494d939245fb",
+      "hash": "1g87lrf5g4alnax982nxfc5aa39mzsmh6zwrzcxhs0zpinm52vlc",
       "homepage": "https://github.com/w0rp/ale"
     },
     {
       "owner": "PsychoLlama",
       "repo": "alternaut.vim",
-      "version": "2020-09-22",
-      "rev": "1ad6c63ca596684ab1c4d716586c676eadeb534d",
-      "hash": "1vg35syflkfqar87jxk8d69s9gv916fysl46gcad95jhcfwcdq94",
+      "version": "2020-12-28",
+      "rev": "d70b83ff4bcdd1f6f8d95eed12656764e0ef6ff1",
+      "hash": "06blwja2l5w6881kkh3y1zhr05bkjzhnx5fz73a06sr7zhba8l2s",
       "homepage": "https://github.com/PsychoLlama/alternaut.vim"
     },
     {
