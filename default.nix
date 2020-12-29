@@ -9,10 +9,11 @@ callPackage ./pkgs/zsh-plugins {} // {
   neovim = neovim.override {
     configure = {
       customRC = builtins.readFile ./config/init.vim;
-      packages.dotfiles.start =
+      packages.plugins.start =
         (callPackage ./pkgs/vim-plugins {})
-        ++ (with vimPlugins; [coc-nvim])
-        ++ [(callPackage ./editor {})];
+        ++ [vimPlugins.coc-nvim];
+
+      packages.nursery.start = callPackage ./editor {};
     };
   };
 }
