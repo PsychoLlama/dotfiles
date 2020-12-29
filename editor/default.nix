@@ -9,7 +9,7 @@ let
     in map intoPlugin pluginNames;
 
   wrapPlugin = { name, path }: pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "plugin-nursery-${name}";
+    pname = "plugin-nursery-${builtins.replaceStrings ["."] ["-"] name}";
     version = "latest";
     src = path;
   };
