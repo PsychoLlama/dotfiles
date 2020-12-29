@@ -1,18 +1,18 @@
 " Editing settings
-set backspace:indent,eol,start
-set formatoptions:qc1orj
-set fileformat:unix
-set fileformats:unix,dos,mac
-set textwidth:78
-set expandtab tabstop:2
-set shiftwidth:0
+set backspace=indent,eol,start
+set formatoptions=qc1orj
+set fileformat=unix
+set fileformats=unix,dos,mac
+set textwidth=78
+set expandtab tabstop=2
+set shiftwidth=0
 set shiftround
 
 " Interaction settings
-set wildmenu wildmode:longest,list,full
-set inccommand:nosplit
+set wildmenu wildmode=longest,list,full
+set inccommand=nosplit
 set nowrapscan
-set pumheight:10
+set pumheight=10
 set autoread
 
 " Display settings
@@ -20,24 +20,24 @@ set incsearch
 set showcmd
 set termguicolors
 set shortmess+=I
-set signcolumn:yes
-set number numberwidth:3
-set list listchars:tab:)\ ,trail:.
+set signcolumn=yes
+set number numberwidth=3
+set list listchars=tab:)\ ,trail:.
 set nofoldenable
-set updatetime:0 " TODO: Decouple from :GitGutter
+set updatetime=0 " TODO: Decouple from :GitGutter
 set linebreak
 set cursorline
 
 " Storage settings
-set backupcopy:yes
-set backup backupdir:/tmp
-set undofile undodir:~/.vim/undo
-set history:1000
+set backupcopy=yes
+set backup backupdir=/tmp
+set undofile undodir=~/.vim/undo
+set history=1000
 
 " Integrations
-set clipboard:unnamedplus
-set grepprg:rg\ -n
-set mouse:vin
+set clipboard=unnamedplus
+set grepprg=rg\ -n
+set mouse=vin
 
 
 " Use <space> as the leader key.
