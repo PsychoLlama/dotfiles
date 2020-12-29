@@ -169,7 +169,7 @@ endfunc
 " Turn the list of ignored commits to { [hash] => true }
 " All commits are abbreviated to 7 characters.
 func! s:get_ignored_commit_map() abort
-  let l:ignored = get(g:, 'git#blame#ignored_commits', [])
+  let l:ignored = get(g:, 'accuse#ignored_commits', [])
   call assert#type(l:ignored, 'list', 'ignored_commits should be a list.')
 
   let l:map = {}
@@ -205,7 +205,7 @@ func! s:resolve_prior_commits(results, deeper_queries) abort
 
   " Query and index: { [revision] => { [line] => blame } }
   for l:query in values(a:deeper_queries)
-    let l:result = git#blame#(l:query)
+    let l:result = accuse#(l:query)
     let l:deeper_commits[l:query.revision] = {}
 
     for l:blame in l:result
@@ -251,7 +251,7 @@ func! s:dig_deeper(result) abort
 endfunc
 
 " Get a list of metadata for each line.
-func! git#blame#(blame) abort
+func! accuse#(blame) abort
   let l:revision = get(a:blame, 'revision', v:null)
   let l:track_config = { 'revision': l:revision }
   let l:is_tracked = git#repo#is_file_tracked(a:blame.file, l:track_config)
