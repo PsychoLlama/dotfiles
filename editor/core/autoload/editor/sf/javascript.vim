@@ -5,32 +5,7 @@ func! s:scaffold(content, ...) abort
   return map(a:content, 'strlen(v:val) ? l:indent_str . v:val : ""')
 endfunc
 
-func! editor#sf#javascript#unit_test() abort
-  let l:content = s:scaffold([
-        \   getline('.') !~# 'describe' && '',
-        \   "it('', () => {",
-        \   '',
-        \   '});',
-        \ ])
-
-  call append(line('.'), l:content)
-  call cursor(line('.') + 2, 1)
-  normal! f'
-endfunc
-
-func! editor#sf#javascript#test_group() abort
-  let l:content = s:scaffold([
-        \   '',
-        \   "describe('', () => {",
-        \   '',
-        \   '});',
-        \ ])
-
-  call append(line('.'), l:content)
-  call cursor(line('.') + 2, 1)
-  normal! f'
-endfunc
-
+" TODO: Replace this trash with a real snippet engine.
 func! editor#sf#javascript#log_statement() abort
   let l:content = s:scaffold([
         \   "console.log('');",
