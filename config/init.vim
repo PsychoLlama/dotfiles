@@ -62,7 +62,7 @@ inoremap <silent><expr><s-tab> editor#mappings#tab_completion(v:true)
 " Misc
 nnoremap <silent><esc> :nohlsearch<cr><esc>
 nnoremap <silent><leader>; :call editor#mappings#test()<cr>
-nnoremap <silent><leader>t :call editor#mappings#toggle_copy_mode()<cr>
+nmap <leader>t <Plug>(clippy-toggle-clipboard-mode)
 
 
 " ALE engine

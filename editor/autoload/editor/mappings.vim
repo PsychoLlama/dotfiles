@@ -26,14 +26,6 @@ func! editor#mappings#tab_completion(shifting) abort
   return "\t"
 endfunc
 
-func! editor#mappings#toggle_copy_mode() abort
-  if &number
-    setlocal nonumber signcolumn=no
-  else
-    setlocal number signcolumn=yes
-  endif
-endfunc
-
 " :Rexplore only works if the file was opened via netrw.
 func! editor#mappings#explore_current_dir() abort
   if &filetype is# 'netrw'

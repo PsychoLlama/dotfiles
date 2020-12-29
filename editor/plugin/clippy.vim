@@ -13,3 +13,5 @@ let g:clipboard = {
 \     '*': s:paste,
 \   },
 \ }
+
+nnoremap <silent> <Plug>(clippy-toggle-clipboard-mode) :call clippy#backend#toggle_clipboard_mode()<cr>
