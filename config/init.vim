@@ -119,16 +119,6 @@ let alternaut#conventions['vim'] = {
 let alternaut#conventions['typescript.tsx'] = alternaut#conventions['typescript']
 let alternaut#conventions['vader'] = alternaut#conventions['vim']
 
-" Neovim's built-in system clipboard integration.
-if !empty($TMUX)
-  let s:tmux_copy = 'tmux load-buffer -'
-  let s:tmux_paste = 'tmux save-buffer -'
-
-  let g:clipboard = { 'name': 'tmux', 'cache_enabled': v:true }
-  let g:clipboard.copy = { '+': s:tmux_copy, '*': s:tmux_copy }
-  let g:clipboard.paste = { '+': s:tmux_paste, '*': s:tmux_paste }
-endif
-
 " Supports neovim's python remote plugin integration
 let g:python3_host_prog = exepath('nvim-python3')
 let g:python2_host_prog = exepath('nvim-python')
