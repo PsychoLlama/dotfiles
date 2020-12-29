@@ -42,6 +42,7 @@ set mouse:vin
 
 " Use <space> as the leader key.
 nmap <space> <nop>
+vmap <space> <nop>
 let mapleader = "\<space>"
 
 
