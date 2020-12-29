@@ -15,7 +15,7 @@ endfunc
 
 func! s:find_authors_for_range(start, end, all_commits) abort
   let l:file = resolve(expand('%:p'))
-  let l:line_blames = accuse#({
+  let l:line_blames = git#blame#({
         \   'include_all_commits': a:all_commits,
         \   'ranges': [[a:start, a:end]],
         \   'file': l:file,
@@ -32,7 +32,7 @@ func! s:find_authors_for_range(start, end, all_commits) abort
 endfunc
 
 func! s:print_line_details(line, all_commits) abort
-  let [l:details] = accuse#({
+  let [l:details] = git#blame#({
         \   'include_all_commits': a:all_commits,
         \   'ranges': [[a:line, a:line]],
         \   'file': expand('%:p'),
@@ -53,7 +53,7 @@ endfunc
 
 
 " :<range>Author[!]
-func! accuse#command#(start, end, all_commits) abort
+func! git#commands#author(start, end, all_commits) abort
   if &modified
     echo 'Save your changes first.'
     return

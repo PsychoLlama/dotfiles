@@ -9,7 +9,7 @@ For any code that makes heavy use of script-scoped functions, lambdas, and funcr
 **Before**
 
 ```
-Error detected while processing function editor#commands#author[13]..<SNR>201_print_line_details[1]..accuse#[8]..<SNR>200_parse_blame_output[1]..<SNR>200_ge
+Error detected while processing function editor#commands#author[13]..<SNR>201_print_line_details[1]..git#blame#[8]..<SNR>200_parse_blame_output[1]..<SNR>200_ge
 t_user_name:
 line    2:
 E117: Unknown function: famemodify
@@ -29,12 +29,12 @@ core/autoload/git/blame.vim line 128 in s:get_user_name (line 2)
 core/autoload/git/blame.vim line 142 in s:parse_blame_output (line 1)
   let l:my_name = s:get_user_name(a:config.file)
 
-core/autoload/git/blame.vim line 254 in accuse# (line 8)
+core/autoload/git/blame.vim line 254 in git#blame# (line 8)
   let l:ownerships = s:parse_blame_output(l:output, a:blame)
 
 /nix/store/l893d3yjg0bvzbimv0g00mrk3x5iqpx6-vimplugin-plugin-nursery-core-latest/share/vim-plugins/plugin-nursery-core-latest/autoload/editor/commands.vim line
  48 in s:print_line_details (line 1)
-  let [l:details] = accuse#({   'include_all_commits': a:all_commits,   'ranges': [[a:line, a:line]],   'file': expand('%:p'), })
+  let [l:details] = git#blame#({   'include_all_commits': a:all_commits,   'ranges': [[a:line, a:line]],   'file': expand('%:p'), })
 
 /nix/store/l893d3yjg0bvzbimv0g00mrk3x5iqpx6-vimplugin-plugin-nursery-core-latest/share/vim-plugins/plugin-nursery-core-latest/autoload/editor/commands.vim line
  70 in editor#commands#author (line 13)
