@@ -21,17 +21,17 @@ Usage: dotfiles <command>
 ```
 
 Running `$ dotfiles update` pulls for changes, relinks all the config files
-([`./config/manifest.sh`](https://github.com/PsychoLlama/dotfiles/blob/master/config/manifest.sh)),
+([`./config/manifest.sh`](https://github.com/PsychoLlama/dotfiles/blob/main/config/manifest.sh)),
 and ensures all the system dependencies have been installed (`zsh`, `ripgrep`,
 `tmux`, `neovim`... see:
-[`./default.nix`](https://github.com/PsychoLlama/dotfiles/blob/master/default.nix)).
+[`./default.nix`](https://github.com/PsychoLlama/dotfiles/blob/main/default.nix)).
 
 It also manages quite possibly the most complex vimrc known to mankind
-([`./editor`](https://github.com/PsychoLlama/dotfiles/tree/master/editor)).
+([`./editor`](https://github.com/PsychoLlama/dotfiles/tree/main/editor)).
 It's basically a vim plugin at this point.
 
 Random bash utils are strewn about the repo, but most of it's kept in
-[`./config/init.zsh`](https://github.com/PsychoLlama/dotfiles/blob/master/config/init.zsh).
+[`./config/init.zsh`](https://github.com/PsychoLlama/dotfiles/blob/main/config/init.zsh).
 
 #### dotfiles-env
 Not everything can be published to GitHub, such as work-related utilities and
