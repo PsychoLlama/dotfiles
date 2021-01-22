@@ -1,9 +1,9 @@
 module.exports = [
   // Filetype plugins
-  'davinche/godown-vim',
   'leafgarland/typescript-vim',
   'PsychoLlama/debrief.vim',
   'hashivim/vim-terraform',
+  'davinche/godown-vim',
   'jparise/vim-graphql',
   'rust-lang/rust.vim',
   'junegunn/vader.vim',

@@ -4,9 +4,9 @@
     {
       "owner": "w0rp",
       "repo": "ale",
-      "version": "2020-12-28",
-      "rev": "7fca451cf9a3068efe5e93fcc4b5494d939245fb",
-      "hash": "1g87lrf5g4alnax982nxfc5aa39mzsmh6zwrzcxhs0zpinm52vlc",
+      "version": "2021-01-23",
+      "rev": "33f2f8ddcd9d934c6eef0dc3bf6c434d00aaa734",
+      "hash": "0h7nbkplmm220r1w3jbwra4yabv028lb3bf8i4d749lwzps67j14",
       "homepage": "https://github.com/w0rp/ale"
     },
     {
@@ -52,9 +52,9 @@
     {
       "owner": "PsychoLlama",
       "repo": "navitron.vim",
-      "version": "2020-02-01",
-      "rev": "8c2701a5afe7d50eef210a662e0db53ee775699b",
-      "hash": "17622iz2xp7xzm9pb2qvrqill77wfgf2894988mqv85fq1mj65sj",
+      "version": "2020-12-29",
+      "rev": "4f7b319f425a4959f2b8bfe1f2cb08beb6937362",
+      "hash": "0jamlfh8dmm074893yqbmpw3gaik2y7882gdkgv04ji85cakgz07",
       "homepage": "https://github.com/PsychoLlama/navitron.vim"
     },
     {
@@ -84,9 +84,9 @@
     {
       "owner": "lotabout",
       "repo": "skim",
-      "version": "2020-12-10",
-      "rev": "be2329f22b044142d9db8a38478add73635e1605",
-      "hash": "1592jqacmgla8pi0fjhyc7kyh3s2p6l3ywpzqxdbmbhrzg52vkc8",
+      "version": "2021-01-04",
+      "rev": "354c0159c5dfe0476e8bd95555a5dd0885fbc640",
+      "hash": "1ivybfixipk74lsyvcp8h5xk0qxkszkg70w0y72j7fa6ijiqb8i2",
       "homepage": "https://github.com/lotabout/skim"
     },
     {
