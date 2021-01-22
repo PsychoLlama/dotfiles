@@ -1,5 +1,6 @@
 module.exports = [
   // Filetype plugins
+  'sevko/vim-nand2tetris-syntax',
   'leafgarland/typescript-vim',
   'PsychoLlama/debrief.vim',
   'hashivim/vim-terraform',

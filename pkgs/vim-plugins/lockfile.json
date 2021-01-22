@@ -194,6 +194,14 @@
       "homepage": "https://github.com/tpope/vim-markdown"
     },
     {
+      "owner": "sevko",
+      "repo": "vim-nand2tetris-syntax",
+      "version": "2017-10-26",
+      "rev": "f5d43604fc5f36a533bbf9e0cede09701f6b6c5a",
+      "hash": "12v5qv4q0nmj53naqgskap158jhiqwlyd3s4jnxf3138smfvxrln",
+      "homepage": "https://github.com/sevko/vim-nand2tetris-syntax"
+    },
+    {
       "owner": "LnL7",
       "repo": "vim-nix",
       "version": "2020-11-16",
