@@ -4,7 +4,7 @@ callPackage ./pkgs/zsh-plugins {} // {
   inherit (gitAndTools) delta;
   inherit rustup cargo-edit shellcheck zsh tmux tmuxinator vim-vint yarn;
   inherit unzip glow ripgrep fd viu bat skim pastel hexyl zoxide procs;
-  inherit dogdns jq miniserve pv zathura;
+  inherit dogdns jq miniserve pv zathura ipfs;
 
   fnm = import ./pkgs/fast-node-manager/default.nix;
   neovim = neovim.override {
