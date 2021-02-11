@@ -57,6 +57,20 @@ function edit {
   tmuxinator start edit -n "$session_name"
 }
 
+# Poke around another project without the commitment.
+function inspect {
+  local remote="$1"
+  local target="$(mktemp -d)"
+
+  if [[ "${1:0:4}" != http ]] && [[ "${1:0:3}" != git ]]; then
+    remote="https://github.com/$remote"
+  fi
+
+  git clone --quiet --depth=1 "$remote" "$target"
+  nvim "$target"
+  rm -rf "$target"
+}
+
 # Faster `git status`
 function s {
   if ! git rev-parse --is-inside-work-tree &> /dev/null; then
