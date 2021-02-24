@@ -4,9 +4,9 @@
     {
       "owner": "w0rp",
       "repo": "ale",
-      "version": "2021-01-23",
-      "rev": "33f2f8ddcd9d934c6eef0dc3bf6c434d00aaa734",
-      "hash": "0h7nbkplmm220r1w3jbwra4yabv028lb3bf8i4d749lwzps67j14",
+      "version": "2021-02-23",
+      "rev": "76965615558e9398ef4cc79991632a7b68a6c7bc",
+      "hash": "0lswb94kq571kp2vcnwggdg8fzjys9n5bdfpi5zd1019jrmzn66l",
       "homepage": "https://github.com/w0rp/ale"
     },
     {
@@ -76,17 +76,17 @@
     {
       "owner": "rust-lang",
       "repo": "rust.vim",
-      "version": "2020-09-18",
-      "rev": "96e79e397126be1a64fb53d8e3656842fe1a4532",
-      "hash": "0siml7vqiq5nvymyw8az48rv5dsf9dad8y8hy22j57lknd67b8h3",
+      "version": "2021-02-16",
+      "rev": "87c745d8d506fc1eecc1d81df15d5bde1658a2fc",
+      "hash": "0v0ip731lclh9aqrmlqwnnz4skgawaq3invghh1c7lh0zdq22lzb",
       "homepage": "https://github.com/rust-lang/rust.vim"
     },
     {
       "owner": "lotabout",
       "repo": "skim",
-      "version": "2021-01-04",
-      "rev": "354c0159c5dfe0476e8bd95555a5dd0885fbc640",
-      "hash": "1ivybfixipk74lsyvcp8h5xk0qxkszkg70w0y72j7fa6ijiqb8i2",
+      "version": "2021-02-17",
+      "rev": "6df015987934bd63121be53d8659da0f44237dac",
+      "hash": "1zrjqy4vkdn9lbahl6x7p3k7cjj3xhfl5nw30p2d61lhkck1h6ya",
       "homepage": "https://github.com/lotabout/skim"
     },
     {
@@ -100,9 +100,9 @@
     {
       "owner": "AndrewRadev",
       "repo": "splitjoin.vim",
-      "version": "2020-12-15",
-      "rev": "91ba14b41f6e767414d7bf2a8e82947c6bfdb978",
-      "hash": "0q01xfnjqk3vnmknb01zlkzn1jj03lqsygk863vwrdazq86g5aci",
+      "version": "2021-02-22",
+      "rev": "df823938421e66adbd6c570bacdc3ce85d6c776c",
+      "hash": "02hcdsdvbdybcpamj304jld4sh3mxp3j78idzv7ybkizvp8wjlpd",
       "homepage": "https://github.com/AndrewRadev/splitjoin.vim"
     },
     {
@@ -156,25 +156,25 @@
     {
       "owner": "tpope",
       "repo": "vim-fugitive",
-      "version": "2020-12-17",
-      "rev": "bebe504e38d0a20c30d6dd666c4c793b3cc66104",
-      "hash": "0r92l3liifpv8r4hnva6i5k01d2jpzmz0p5pgsdvayl4wr5xy6x4",
+      "version": "2021-02-21",
+      "rev": "6c4c7c9aebc4c65c13f94597e4c9352dbba21fa5",
+      "hash": "1lyp3y0r50s8y3dwbqf2aqbdjjmxbm10f1xak4z636n6h9r2jlhv",
       "homepage": "https://github.com/tpope/vim-fugitive"
     },
     {
       "owner": "airblade",
       "repo": "vim-gitgutter",
-      "version": "2020-12-11",
-      "rev": "512e2999ed7ff367580e0d6bc4d2daa81663221f",
-      "hash": "0229x71prknra1k2val78qpddy6w7wmla2j6cjk8fjvp1h2jvwxz",
+      "version": "2021-02-22",
+      "rev": "1283ec1670d1f4fce37213c5d66924088b2e730c",
+      "hash": "1h5jh38ihbyy95cm57ppb6m871010pk521ygss2drcriwnx4agd2",
       "homepage": "https://github.com/airblade/vim-gitgutter"
     },
     {
       "owner": "jparise",
       "repo": "vim-graphql",
-      "version": "2020-12-20",
-      "rev": "c5169b2705f23cc4926606a7786d8e8fae138d5c",
-      "hash": "0xwgcxcvpcib58szgxlavy6gdysdn04s8z3bccsrr4cnyl2rjp34",
+      "version": "2021-02-03",
+      "rev": "553d125f7b0e56743e80e2439f5cd7f27771a8e3",
+      "hash": "17dvw10h0rhlqfjzpb9d8fkvzwx2xpsgkcmr83lqww481qc3bd59",
       "homepage": "https://github.com/jparise/vim-graphql"
     },
     {
@@ -188,9 +188,9 @@
     {
       "owner": "tpope",
       "repo": "vim-markdown",
-      "version": "2020-09-08",
-      "rev": "276524ed9c8aec415d3c6dbeec7c05fbd31c95ce",
-      "hash": "1qa4qg6i6z2ymclaj6yqm12xd36w0drj97i25ksp8iwvzds9q7hm",
+      "version": "2021-02-15",
+      "rev": "baf2592d33d6d73bf2bcb7cf3251586eed5148f9",
+      "hash": "1c2dm609v14mc9p670h2jbsa898lycx7z0svymlfiif5abm3qdpx",
       "homepage": "https://github.com/tpope/vim-markdown"
     },
     {
@@ -212,9 +212,9 @@
     {
       "owner": "tpope",
       "repo": "vim-repeat",
-      "version": "2019-11-12",
-      "rev": "c947ad2b6a16983724a0153bdf7f66d7a80a32ca",
-      "hash": "00hhbqcx21j0738ad5xh92lsykpa0qxhdy1s7wnwc8d3jndmyjwb",
+      "version": "2021-01-24",
+      "rev": "24afe922e6a05891756ecf331f39a1f6743d3d5a",
+      "hash": "0y18cy5wvkb4pv5qjsfndrpcvz0dg9v0r6ia8k9isp4agdmxkdzj",
       "homepage": "https://github.com/tpope/vim-repeat"
     },
     {
