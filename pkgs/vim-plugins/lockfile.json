@@ -4,9 +4,9 @@
     {
       "owner": "w0rp",
       "repo": "ale",
-      "version": "2021-02-23",
-      "rev": "76965615558e9398ef4cc79991632a7b68a6c7bc",
-      "hash": "0lswb94kq571kp2vcnwggdg8fzjys9n5bdfpi5zd1019jrmzn66l",
+      "version": "2021-03-21",
+      "rev": "f7852dbd0a063d6d82ee17a5057fea53cb79b21d",
+      "hash": "000lwfv7kybmdszz2rs2gj58ah9fkhr7n4r9yihpg0vrxwjqc7in",
       "homepage": "https://github.com/w0rp/ale"
     },
     {
@@ -60,17 +60,17 @@
     {
       "owner": "chr4",
       "repo": "nginx.vim",
-      "version": "2020-07-11",
-      "rev": "f21506f8cd9ae8a21bb82fcb67830e5e29d186c5",
-      "hash": "02bsjg7imfdcim6i80b80yda1b7dc4wsrq1fhpyy9y151cskbzh9",
+      "version": "2021-02-25",
+      "rev": "7b8e3ef48d8e60fe64bb1a85be52e66dd412c84d",
+      "hash": "00n3kx4gczryx968n0l7hqdxg6i4vfi3n3m4bdl5d3rwpbwdy6zy",
       "homepage": "https://github.com/chr4/nginx.vim"
     },
     {
       "owner": "joshdick",
       "repo": "onedark.vim",
-      "version": "2020-12-13",
-      "rev": "94ff495eac89cea2532d8e0022f67c79a24d9649",
-      "hash": "0x4wdmk28r85g14xv1acc0fimh4bsvm30mrgsws7dm8lqx3ws8g3",
+      "version": "2021-02-25",
+      "rev": "b70ed293f3c3adaea23f9fcd84ef942015664756",
+      "hash": "0wz4kmbgc9rlvbxj8s8xg1sx53w0v94r6qicq3ggs9raca51ywfg",
       "homepage": "https://github.com/joshdick/onedark.vim"
     },
     {
@@ -100,9 +100,9 @@
     {
       "owner": "AndrewRadev",
       "repo": "splitjoin.vim",
-      "version": "2021-02-22",
-      "rev": "df823938421e66adbd6c570bacdc3ce85d6c776c",
-      "hash": "02hcdsdvbdybcpamj304jld4sh3mxp3j78idzv7ybkizvp8wjlpd",
+      "version": "2021-03-02",
+      "rev": "f0d785f7607be60c282b5f5a5d32a2e51560c07c",
+      "hash": "1gbnhl1w0krlf2ppiz4h4fvnrjf8i0552nckhd67gfba2nqha0z4",
       "homepage": "https://github.com/AndrewRadev/splitjoin.vim"
     },
     {
@@ -124,9 +124,9 @@
     {
       "owner": "mbbill",
       "repo": "undotree",
-      "version": "2020-11-10",
-      "rev": "9ceb50062135dd30de3da000d5fd46125f51887d",
-      "hash": "1vwjggf3csbysavk3yyfzjklyq8xwfvk17rprmj660h2whgjjzvg",
+      "version": "2021-03-18",
+      "rev": "da7aeb3dc307a2995b6b761fe94cad61da9845e0",
+      "hash": "1mg9r7kc4jpbmh8b0wcax82a80r0qjl2yq61cc55x7i91wssrj60",
       "homepage": "https://github.com/mbbill/undotree"
     },
     {
@@ -148,33 +148,33 @@
     {
       "owner": "tpope",
       "repo": "vim-endwise",
-      "version": "2020-04-19",
-      "rev": "97180a73ad26e1dcc1eebe8de201f7189eb08344",
-      "hash": "1f9nwp9qiip4alkpacwaq2nzsrx80a4cdwyrvajs6lrk48dv4hbw",
+      "version": "2021-03-06",
+      "rev": "4289889a2622f9bc7c594a6dd79763781f63dfb5",
+      "hash": "0sixr3rpcgqbaiyk7w6ghcrvllh35cb3gq9isdlwkww3dz4jyyxc",
       "homepage": "https://github.com/tpope/vim-endwise"
     },
     {
       "owner": "tpope",
       "repo": "vim-fugitive",
-      "version": "2021-02-21",
-      "rev": "6c4c7c9aebc4c65c13f94597e4c9352dbba21fa5",
-      "hash": "1lyp3y0r50s8y3dwbqf2aqbdjjmxbm10f1xak4z636n6h9r2jlhv",
+      "version": "2021-03-20",
+      "rev": "ddea2ecb0ff221f1f4cdba4d3b5ff121c3ff0338",
+      "hash": "0g7waqjacr50g9fxvxpcsmjak95k6c8av83spcd9sqzgpp8dl8rn",
       "homepage": "https://github.com/tpope/vim-fugitive"
     },
     {
       "owner": "airblade",
       "repo": "vim-gitgutter",
-      "version": "2021-02-22",
-      "rev": "1283ec1670d1f4fce37213c5d66924088b2e730c",
-      "hash": "1h5jh38ihbyy95cm57ppb6m871010pk521ygss2drcriwnx4agd2",
+      "version": "2021-03-19",
+      "rev": "24cc47789557827209add5881c226243711475ce",
+      "hash": "0fk8691wkhb7mb5ssmydipb61kh3hjnl31ngqbrbifzsqlkvibid",
       "homepage": "https://github.com/airblade/vim-gitgutter"
     },
     {
       "owner": "jparise",
       "repo": "vim-graphql",
-      "version": "2021-02-03",
-      "rev": "553d125f7b0e56743e80e2439f5cd7f27771a8e3",
-      "hash": "17dvw10h0rhlqfjzpb9d8fkvzwx2xpsgkcmr83lqww481qc3bd59",
+      "version": "2021-03-19",
+      "rev": "de5753e3fbd89f2939a43cfc2c6a2313ff129a21",
+      "hash": "0yx366jlz8vmfwp9vv33xdhq2j1y3m84zgmz97286bj6q52gg7lm",
       "homepage": "https://github.com/jparise/vim-graphql"
     },
     {
@@ -188,9 +188,9 @@
     {
       "owner": "tpope",
       "repo": "vim-markdown",
-      "version": "2021-02-15",
-      "rev": "baf2592d33d6d73bf2bcb7cf3251586eed5148f9",
-      "hash": "1c2dm609v14mc9p670h2jbsa898lycx7z0svymlfiif5abm3qdpx",
+      "version": "2021-03-11",
+      "rev": "855b8915e0857f90cee180e1753ce1910d71c5b1",
+      "hash": "1l0hvqxazjw5l0l9cr9lzzav3vkr2z57nj8g639a2r15qvzwb3hl",
       "homepage": "https://github.com/tpope/vim-markdown"
     },
     {
@@ -228,17 +228,17 @@
     {
       "owner": "machakann",
       "repo": "vim-swap",
-      "version": "2020-11-16",
-      "rev": "699b7492c965a3dd96128d16b6b68a15091a931a",
-      "hash": "0vw4d1375xhp1fbv88fp96ry0hzyqkbfn4dccrlfl4sanvkh0r6y",
+      "version": "2021-03-19",
+      "rev": "f363ea636f4e18b4a3382ff352d3cf2e2ac5840e",
+      "hash": "1pa5crmamama4v3yzcjfbizvpx03wb67zbjx1mn5rz6dcar903f6",
       "homepage": "https://github.com/machakann/vim-swap"
     },
     {
       "owner": "hashivim",
       "repo": "vim-terraform",
-      "version": "2020-12-10",
-      "rev": "aa7877acb5dd81bed70c1188667b76cfde5b67bf",
-      "hash": "0ibks0ykybiardppad9psjh2qmh29s9mbjf2d4jg8hbx59kvj32g",
+      "version": "2021-03-07",
+      "rev": "e62cac4d3186209a510f51becd768ee414b2be76",
+      "hash": "1c93kvlrgzp5fw5rgv053sin0f2f2chydxbvrkprpz71qmxqmq05",
       "homepage": "https://github.com/hashivim/vim-terraform"
     },
     {
