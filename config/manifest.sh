@@ -6,7 +6,6 @@ function get_dotfiles_manifest {
   echo ~/.tmuxinator/edit.yml tmux-workspaces/edit.yml
   echo ~/.config/alacritty.yml alacritty.yml
   echo ~/.hushlogin empty-file.txt
-  echo ~/.procs.toml procs.toml
   echo ~/.gitconfig git.ini
   echo ~/.tmux.conf tmux.conf
   echo ~/.ripgrep ripgrep.rc
