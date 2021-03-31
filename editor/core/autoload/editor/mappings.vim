@@ -40,7 +40,7 @@ endfunc
 
 func! editor#mappings#edit_vimrc() abort
   let l:cmd = isdirectory(expand('%:p')) ? 'edit' : 'tabedit'
-  let l:editor_path = dotfiles#path('editor/autoload')
+  let l:editor_path = dotfiles#path('config/init.vim')
   execute l:cmd . ' ' . l:editor_path
 endfunc
 
