@@ -13,33 +13,13 @@ function installed {
   command -v "$1" > /dev/null
 }
 
-INSTALL_CMD=""
-
-if installed brew; then
-  INSTALL_CMD="brew install"
-elif installed apt-get; then
-  INSTALL_CMD="sudo apt-get install -y"
-else
-  echo "Unsupported platform. Sorry, loser."
-fi
-
-# Best-effort install.
-function install {
-  $INSTALL_CMD "${1[@]}" 1> /dev/null
-}
-
-# Install the thing if it doesn't exist.
-function ensure {
-  if installed "$1"; then
-    return
-  fi
-
-  install "$1"
-}
-
 function install_nix {
   if installed nix; then
     return
+  fi
+
+  if ! installed curl; then
+    echo "Installing nix requires curl. Aborting."
   fi
 
   curl --location --proto '=https' --tlsv1.2 https://nixos.org/nix/install | sh
@@ -68,27 +48,6 @@ function install_node {
   eval "$(fnm env --multi)"
 }
 
-function install_neovim_plugins {
-  local hash_file="$ARTIFACTS_DIR/plugins-hash.txt"
-  local plugins_location="$(dotfiles dir)/editor/autoload/editor/plugins.vim"
-  local plugins_sha="$(openssl sha256 "$plugins_location" | awk '{print $2}')"
-  local last_sha="$(cat "$hash_file" 2> /dev/null || echo "no prior hash")"
-
-  # Only re-install plugins when the plugins.vim file changes.
-  if [[ "$last_sha" == "$plugins_sha" ]]; then
-    return
-  fi
-
-  echo "$plugins_sha" > "$hash_file"
-
-  nvim \
-    -u /dev/null \
-    -c 'silent so ~/.config/nvim/init.vim' \
-    -c 'PlugInstall' \
-    -c 'UpdateRemotePlugins' \
-    -c 'qa'
-}
-
 function install_rustfmt {
   if ! installed rustfmt; then
     rustup component add rustfmt-preview
@@ -107,13 +66,9 @@ function use_zsh {
   chsh -s "$(command -v zsh)"
 }
 
-ensure curl
-ensure openssl
-
 install_nix
 install_packages
 install_node
-install_neovim_plugins
 install_rustfmt
 
 use_zsh
