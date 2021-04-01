@@ -4,17 +4,17 @@
     {
       "owner": "w0rp",
       "repo": "ale",
-      "version": "2021-03-21",
-      "rev": "f7852dbd0a063d6d82ee17a5057fea53cb79b21d",
-      "hash": "000lwfv7kybmdszz2rs2gj58ah9fkhr7n4r9yihpg0vrxwjqc7in",
+      "version": "2021-03-30",
+      "rev": "06f57ca9733aab6e6b67015917fdfd4bf1c70c48",
+      "hash": "108qmc3vci7g4ypzyv7pjz68ycficr2ibpjsb3ll2vz9j6fvj39z",
       "homepage": "https://github.com/w0rp/ale"
     },
     {
       "owner": "PsychoLlama",
       "repo": "alternaut.vim",
-      "version": "2020-12-28",
-      "rev": "d70b83ff4bcdd1f6f8d95eed12656764e0ef6ff1",
-      "hash": "06blwja2l5w6881kkh3y1zhr05bkjzhnx5fz73a06sr7zhba8l2s",
+      "version": "2021-04-01",
+      "rev": "5cd92a74a78b1cfc111c8ef6de31e827ead81879",
+      "hash": "186mn7f4bhfiglp4mqrdxcpxcpz8qlg80fw52f18y3jkxb3nlg8f",
       "homepage": "https://github.com/PsychoLlama/alternaut.vim"
     },
     {
@@ -140,9 +140,9 @@
     {
       "owner": "tpope",
       "repo": "vim-commentary",
-      "version": "2019-11-17",
-      "rev": "f8238d70f873969fb41bf6a6b07ca63a4c0b82b1",
-      "hash": "09d81q9na7pvvrmxxqy09ffdzsx5v5dikinb704c9wm4ys2bidr9",
+      "version": "2021-03-22",
+      "rev": "349340debb34f6302931f0eb7139b2c11dfdf427",
+      "hash": "01lpfcn2hmvxddcf97f4qx5vksxj1hwrxb0c8ri59z9lb9z2hgjd",
       "homepage": "https://github.com/tpope/vim-commentary"
     },
     {
@@ -156,9 +156,9 @@
     {
       "owner": "tpope",
       "repo": "vim-fugitive",
-      "version": "2021-03-20",
-      "rev": "ddea2ecb0ff221f1f4cdba4d3b5ff121c3ff0338",
-      "hash": "0g7waqjacr50g9fxvxpcsmjak95k6c8av83spcd9sqzgpp8dl8rn",
+      "version": "2021-03-31",
+      "rev": "88f50bba604f353c21dea554bf9932ad5c76265e",
+      "hash": "14cpljm321p3vvrznzxmkihbf65fq46vw53vfhx236izq1kj13va",
       "homepage": "https://github.com/tpope/vim-fugitive"
     },
     {
