@@ -26,12 +26,12 @@ and ensures all the system dependencies have been installed (`zsh`, `ripgrep`,
 `tmux`, `neovim`... see:
 [`./default.nix`](https://github.com/PsychoLlama/dotfiles/blob/main/default.nix)).
 
-It also manages quite possibly the most complex vimrc known to mankind
-([`./editor`](https://github.com/PsychoLlama/dotfiles/tree/main/editor)).
-It's basically a vim plugin at this point.
-
 Random bash utils are strewn about the repo, but most of it's kept in
 [`./config/init.zsh`](https://github.com/PsychoLlama/dotfiles/blob/main/config/init.zsh).
+
+The editor config moved to its own repo. If you want to see the most overkill
+vim plugin manager in existence, check out
+[vim-plugin-nursery](https://github.com/PsychoLlama/vim-plugin-nursery/).
 
 #### dotfiles-env
 Not everything can be published to GitHub, such as work-related utilities and
