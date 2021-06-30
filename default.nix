@@ -97,28 +97,7 @@ in {
     escapeTime = 0;
     historyLimit = 10000;
     customPaneNavigationAndResize = true;
-
-    extraConfig = ''
-      # Enable 256-bit color.
-      set -g default-terminal "tmux-256color"
-      set -ga terminal-overrides ",*256col*:Tc"
-
-      # Add vim-like keybindings to visual mode.
-      bind-key -T copy-mode-vi v send-keys -X begin-selection
-      bind-key -T copy-mode-vi y send-keys -X copy-selection
-      bind-key P paste-buffer
-
-      # Set a cool color scheme.
-      set -g status-bg black
-      set -g status-fg cyan
-      set -g pane-border-style "fg=cyan"
-      set -g pane-active-border-style "fg=yellow"
-
-      # Default new panes/windows to the current directory.
-      bind-key c new-window -c '#{pane_current_path}'
-      bind-key '"' split-window -vc '#{pane_current_path}'
-      bind-key % split-window -hc '#{pane_current_path}'
-    '';
+    extraConfig = builtins.readFile ./config/tmux.conf;
   };
 
   # Set up the global environment.
