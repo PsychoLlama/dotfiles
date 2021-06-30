@@ -1,6 +1,0 @@
-root: <%= @args[0] %>
-
-windows:
-- Code:
-- Build:
-- Commit:
