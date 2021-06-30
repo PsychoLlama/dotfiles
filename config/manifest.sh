@@ -2,10 +2,10 @@
 # shellcheck disable=SC1090
 set -e
 
+# TODO: Turn these into Nix generated files.
 function get_dotfiles_manifest {
   echo ~/.tmuxinator/edit.yml tmux-workspaces/edit.yml
   echo ~/.config/alacritty.yml alacritty.yml
-  echo ~/.hushlogin empty-file.txt
   echo ~/.gitconfig git.ini
   echo ~/.tmux.conf tmux.conf
   echo ~/.ripgrep ripgrep.rc
