@@ -139,7 +139,7 @@ in {
 
     # Editor
     (unstable.neovim.override {
-      configure.customRC = builtins.readFile /home/overlord/.config/nvim/init.vim;
+      configure.customRC = builtins.readFile ./config/init.vim;
 
       configure.packages.plugins.start = with import <vim-plugins> { pkgs = unstable; }; [
         vim-plug
