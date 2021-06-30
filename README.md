@@ -8,7 +8,7 @@ Uh, don't. This isn't generic or stable enough to be useful for other people yet
 
 This is managed as a custom nix channel:
 
-```
+```sh
 nix-channel --add https://github.com/PsychoLlama/dotfiles/archive/main.tar.gz dotfiles
 nix-channel --update dotfiles
 ```
@@ -16,8 +16,10 @@ nix-channel --update dotfiles
 Then include it in your `configuration.nix` as an import:
 
 ```nix
-imports = [
-  # ... other modules come first
-  <dotfiles>
-];
+{
+  imports = [
+    # ... other modules come first
+    <dotfiles>
+  ];
+}
 ```
