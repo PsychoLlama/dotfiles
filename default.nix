@@ -185,4 +185,89 @@ in {
       ];
     })
   ];
+
+  # Create a personal user profile.
+  users.users.overlord = {
+    isNormalUser = true;
+    description = "Jesse Gibson";
+    extraGroups = ["wheel" "docker"];
+    shell = pkgs.zsh;
+
+    packages = with unstable; [
+      # Graphical Apps
+      element-desktop
+      torbrowser
+      firefox
+      zathura
+
+      # Terminal Apps
+      termshark
+      ncspot
+      aerc
+      w3m
+
+      # Rust Development
+      rustup
+      rustc
+      cargo
+      cargo-edit
+      clippy
+      rls
+      gcc
+      openssl.dev
+      pkg-config
+
+      # JS Development
+      nodejs
+      yarn
+
+      # Infrastructure
+      terraform_0_15
+      ipmitool
+      ansible
+      kubectl
+
+      # Tools
+      gitAndTools.delta
+      shellcheck
+      miniserve
+      playerctl
+      binutils
+      starship
+      vim-vint
+      ripgrep
+      bottom
+      dogdns
+      zoxide
+      pastel
+      hexyl
+      scrot
+      tokei
+      xclip
+      acpi
+      glow
+      ipfs
+      nmap
+      rage
+      skim
+      exa
+      bat
+      git
+      viu
+      fd
+      jq
+      pv
+      xh
+
+      # Chat client
+      (weechat.override {
+        configure = { ... }: {
+          scripts = with weechatScripts; [
+            weechat-matrix
+            wee-slack
+          ];
+        };
+      })
+    ];
+  };
 }
