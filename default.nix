@@ -117,8 +117,11 @@ in {
     };
 
     systemPackages = with unstable; [
-      alacritty
       rofi
+
+      (callPackage ./pkgs/alacritty.nix {
+        configFile = ./config/alacritty.yml;
+      })
 
       # Editor. Installed globally to play nicely with sudo.
       (unstable.neovim.override {
