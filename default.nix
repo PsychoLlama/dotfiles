@@ -101,69 +101,73 @@ in {
   };
 
   # Set up the global environment.
-  environment.variables = {
-    EDITOR = "nvim";
-    MANPAGER = "nvim -c 'setfiletype man' -";
-    SKIM_DEFAULT_COMMAND = "fd";
-    BAT_THEME = "TwoDark";
-    BAT_STYLE = "changes";
+  environment = {
+    etc.gitconfig.source = ./config/git.ini;
 
-    # Provides dependencies for common Rust libraries.
-    PKG_CONFIG_PATH = "${unstable.openssl.dev}/lib/pkgconfig";
+    variables = {
+      EDITOR = "nvim";
+      MANPAGER = "nvim -c 'setfiletype man' -";
+      SKIM_DEFAULT_COMMAND = "fd";
+      BAT_THEME = "TwoDark";
+      BAT_STYLE = "changes";
+
+      # Provides dependencies for common Rust libraries.
+      PKG_CONFIG_PATH = "${unstable.openssl.dev}/lib/pkgconfig";
+    };
+
+    systemPackages = with unstable; [
+      alacritty
+      rofi
+
+      # Editor. Installed globally to play nicely with sudo.
+      (unstable.neovim.override {
+        configure.customRC = builtins.readFile ./config/init.vim;
+
+        configure.packages.plugins.start = with import <vim-plugins> { pkgs = unstable; }; [
+          vim-plug
+          ale
+          auto-pairs
+          onedark-vim
+          rust-vim
+          skim
+          skim-vim
+          vader-vim
+          splitjoin-vim
+          typescript-vim
+          undotree
+          vim-commentary
+          vim-endwise
+          vim-fugitive
+          vim-gitgutter
+          vim-graphql
+          vim-markdown
+          vim-nix
+          vim-repeat
+          vim-surround
+          vim-swap
+          vim-terraform
+          vim-toml
+          coc-nvim
+
+          # 3rd party
+          alternaut-vim
+          teleport-vim
+          navitron-vim
+          further-vim
+          vim-nand2tetris-syntax
+          yajs-vim
+          nginx-vim
+          godown-vim
+
+          # Nursery
+          clippy-nvim
+          git-vim
+          misc-vim
+          stacktrace-vim
+        ];
+      })
+    ];
   };
-
-  environment.systemPackages = with unstable; [
-    alacritty
-    rofi
-
-    # Editor
-    (unstable.neovim.override {
-      configure.customRC = builtins.readFile ./config/init.vim;
-
-      configure.packages.plugins.start = with import <vim-plugins> { pkgs = unstable; }; [
-        vim-plug
-        ale
-        auto-pairs
-        onedark-vim
-        rust-vim
-        skim
-        skim-vim
-        vader-vim
-        splitjoin-vim
-        typescript-vim
-        undotree
-        vim-commentary
-        vim-endwise
-        vim-fugitive
-        vim-gitgutter
-        vim-graphql
-        vim-markdown
-        vim-nix
-        vim-repeat
-        vim-surround
-        vim-swap
-        vim-terraform
-        vim-toml
-        coc-nvim
-
-        # 3rd party
-        alternaut-vim
-        teleport-vim
-        navitron-vim
-        further-vim
-        vim-nand2tetris-syntax
-        yajs-vim
-        nginx-vim
-        godown-vim
-
-        # Nursery
-        clippy-nvim
-        git-vim
-        misc-vim
-        stacktrace-vim
-      ];
-    })
-  ];
 
   # Create a personal user profile.
   users.users.overlord = {
