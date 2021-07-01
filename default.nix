@@ -102,6 +102,7 @@ in {
 
   # Set up the global environment.
   environment = {
+    etc."zshrc.local".source = ./config/init.zsh;
     etc.gitconfig.source = ./config/git.ini;
 
     variables = {
