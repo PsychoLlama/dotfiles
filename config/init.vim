@@ -37,7 +37,6 @@ set history=1000
 " Integrations
 set clipboard=unnamedplus
 set grepprg=rg\ -n
-set mouse=vin
 
 
 " Use <space> as the leader key.
