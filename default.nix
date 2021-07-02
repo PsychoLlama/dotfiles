@@ -135,12 +135,16 @@ in {
       };
 
       systemPackages = with unstable; [
+        (callPackage ./pkgs/alacritty.nix {
+          configFile = ./config/alacritty.yml;
+        })
+
         (callPackage ./pkgs/rofi.nix {
           configDir = ./config/rofi;
         })
 
-        (callPackage ./pkgs/alacritty.nix {
-          configFile = ./config/alacritty.yml;
+        (callPackage ./pkgs/w3m.nix {
+          keymap = ./config/w3m.keymap;
         })
 
         # Editor. Installed globally to play nicely with sudo.
@@ -221,7 +225,6 @@ in {
         aerc
         ncspot
         termshark
-        w3m
 
         # Rust Development
         cargo
