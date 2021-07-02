@@ -13,7 +13,7 @@ nix-channel --add https://github.com/PsychoLlama/dotfiles/archive/main.tar.gz do
 nix-channel --update dotfiles
 ```
 
-Then include it in your `configuration.nix` as an import:
+Then include it in your `configuration.nix` as an import and set the options for your user account:
 
 ```nix
 {
@@ -21,5 +21,10 @@ Then include it in your `configuration.nix` as an import:
     # ... other modules come first
     <dotfiles>
   ];
+
+  dotfiles.user = {
+    account = "lasershark";
+    fullName = "Shark Laserman";
+  };
 }
 ```
