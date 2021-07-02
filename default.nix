@@ -173,11 +173,22 @@ in {
     ];
   };
 
+  security.sudo.extraRules = [
+    {
+      groups = ["pantheon"];
+      commands = [
+        { command = "ALL"; options = ["NOPASSWD"]; }
+      ];
+    }
+  ];
+
+  users.groups.pantheon = {};
+
   # Create a personal user profile.
   users.users.overlord = {
     isNormalUser = true;
     description = "Jesse Gibson";
-    extraGroups = ["wheel" "docker"];
+    extraGroups = ["wheel" "docker" "pantheon"];
     shell = pkgs.zsh;
 
     packages = with unstable; [
