@@ -128,17 +128,17 @@ in {
         configure.customRC = builtins.readFile ./config/init.vim;
 
         configure.packages.plugins.start = with import <vim-plugins> { pkgs = unstable; }; [
-          vim-plug
           ale
           auto-pairs
+          coc-nvim
           onedark-vim
           rust-vim
           skim
           skim-vim
-          vader-vim
           splitjoin-vim
           typescript-vim
           undotree
+          vader-vim
           vim-commentary
           vim-endwise
           vim-fugitive
@@ -146,22 +146,22 @@ in {
           vim-graphql
           vim-markdown
           vim-nix
+          vim-plug
           vim-repeat
           vim-surround
           vim-swap
           vim-terraform
           vim-toml
-          coc-nvim
 
           # 3rd party
           alternaut-vim
-          teleport-vim
-          navitron-vim
           further-vim
+          godown-vim
+          navitron-vim
+          nginx-vim
+          teleport-vim
           vim-nand2tetris-syntax
           yajs-vim
-          nginx-vim
-          godown-vim
 
           # Nursery
           clippy-nvim
@@ -194,75 +194,75 @@ in {
     packages = with unstable; [
       # Graphical Apps
       element-desktop
-      torbrowser
       firefox
+      torbrowser
       zathura
 
       # Terminal Apps
-      termshark
-      ncspot
       aerc
+      ncspot
+      termshark
       w3m
 
       # Rust Development
-      rustup
-      rustc
       cargo
       cargo-edit
       clippy
-      rls
       gcc
       openssl.dev
       pkg-config
+      rls
+      rustc
+      rustup
 
       # JS Development
       nodejs
       yarn
 
       # Infrastructure
-      terraform_0_15
-      ipmitool
       ansible
+      ipmitool
       kubectl
+      terraform_0_15
 
       # Tools
-      gitAndTools.delta
-      shellcheck
-      miniserve
-      playerctl
+      acpi
+      bat
       binutils
-      starship
-      vim-vint
-      ripgrep
       bottom
       dogdns
-      zoxide
-      pastel
-      hexyl
-      scrot
-      tokei
-      xclip
-      acpi
-      glow
-      ipfs
-      nmap
-      rage
-      skim
       exa
-      bat
-      git
-      viu
       fd
+      git
+      gitAndTools.delta
+      glow
+      hexyl
+      ipfs
       jq
+      miniserve
+      nmap
+      pastel
+      playerctl
       pv
+      rage
+      ripgrep
+      scrot
+      shellcheck
+      skim
+      starship
+      tokei
+      vim-vint
+      viu
+      xclip
       xh
+      zoxide
 
       # Chat client
       (weechat.override {
         configure = { ... }: {
           scripts = with weechatScripts; [
-            weechat-matrix
             wee-slack
+            weechat-matrix
           ];
         };
       })
