@@ -61,8 +61,11 @@ in {
       # Configure the touchpad.
       libinput = {
         enable = true;
-        naturalScrolling = true;
-        tapping = false; # Disable tap to click.
+
+        touchpad = {
+          naturalScrolling = true;
+          tapping = false; # Disable tap to click.
+        };
       };
 
       # Swap out the login screen program.
