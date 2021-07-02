@@ -111,6 +111,7 @@ in {
       SKIM_DEFAULT_COMMAND = "fd";
       BAT_THEME = "TwoDark";
       BAT_STYLE = "changes";
+      STARSHIP_CONFIG = "${./config/starship.toml}";
 
       # Provides dependencies for common Rust libraries.
       PKG_CONFIG_PATH = "${unstable.openssl.dev}/lib/pkgconfig";
