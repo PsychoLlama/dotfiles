@@ -48,9 +48,8 @@ in {
       tapping = false; # Disable tap to click.
     };
 
-    displayManager.lightdm = {
-      greeters.enso.enable = true;
-    };
+    # Swap out the login screen program.
+    displayManager.lightdm.greeters.enso.enable = true;
 
     # Use XMonad to manage the graphical environment.
     windowManager.xmonad = {
@@ -173,6 +172,7 @@ in {
     ];
   };
 
+  users.groups.pantheon = {};
   security.sudo.extraRules = [
     {
       groups = ["pantheon"];
@@ -181,8 +181,6 @@ in {
       ];
     }
   ];
-
-  users.groups.pantheon = {};
 
   # Create a personal user profile.
   users.users.overlord = {
