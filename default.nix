@@ -117,7 +117,9 @@ in {
     };
 
     systemPackages = with unstable; [
-      rofi
+      (callPackage ./pkgs/rofi.nix {
+        configDir = ./config/rofi;
+      })
 
       (callPackage ./pkgs/alacritty.nix {
         configFile = ./config/alacritty.yml;
