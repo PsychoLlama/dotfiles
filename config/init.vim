@@ -119,10 +119,6 @@ let alternaut#conventions['vim'] = {
 let alternaut#conventions['typescript.tsx'] = alternaut#conventions['typescript']
 let alternaut#conventions['vader'] = alternaut#conventions['vim']
 
-" Supports neovim's python remote plugin integration
-let g:python3_host_prog = exepath('nvim-python3')
-let g:python2_host_prog = exepath('nvim-python')
-
 " Misc
 let further#prefer_modules = v:true
 let teleport#update_cwd = v:true
