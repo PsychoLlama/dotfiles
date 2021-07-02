@@ -24,7 +24,12 @@ let
 
     cat > $out/bin/alacritty << EOF
     #!$builder
-    exec "$alacritty/bin/alacritty" --config-file "$out/etc/alacritty.yml" "\$@"
+    case "\$*" in
+      *'--config-file'*)
+        exec "$alacritty/bin/alacritty" "\$@";;
+      *)
+        exec "$alacritty/bin/alacritty" --config-file "$out/etc/alacritty.yml" "\$@";;
+    esac
     EOF
 
     chmod +x $out/bin/alacritty
