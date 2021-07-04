@@ -37,7 +37,7 @@ vim.o.backupcopy = 'yes'
 vim.o.backup = true
 vim.o.backupdir = '/tmp'
 vim.o.undofile = true
-vim.o.undodir = '~/.vim/undo'
+vim.o.undodir = os.getenv('HOME') .. '/.vim/undo'
 vim.o.history = 1000
 
 -- Integrations
