@@ -21,6 +21,16 @@ in {
   };
 
   config = {
+    nixpkgs.overlays = [
+      (self: super: {
+        slock = super.slock.overrideAttrs(old: {
+          patches = (old.patches or []) ++ [
+            ./config/slock-theme.patch
+          ];
+        });
+      })
+    ];
+
     # Install docker and run it automatically as a daemon.
     virtualisation.docker = {
       enable = true;
