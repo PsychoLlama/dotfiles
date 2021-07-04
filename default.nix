@@ -1,7 +1,10 @@
 { config, lib, pkgs, ... }:
 
 # TODO: Replace `<unstable>` channel with a locked fetch or a flake.
-let unstable = import <unstable> {};
+let overlays = import ./overlays.nix;
+unstable = import <unstable> {
+  inherit overlays;
+};
 
 in {
   options.dotfiles = with lib; {
@@ -21,15 +24,7 @@ in {
   };
 
   config = {
-    nixpkgs.overlays = [
-      (self: super: {
-        slock = super.slock.overrideAttrs(old: {
-          patches = (old.patches or []) ++ [
-            ./config/slock-theme.patch
-          ];
-        });
-      })
-    ];
+    nixpkgs.overlays = overlays;
 
     # Install docker and run it automatically as a daemon.
     virtualisation.docker = {
