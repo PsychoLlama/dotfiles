@@ -152,7 +152,9 @@ in {
 
         # Editor. Installed globally to play nicely with sudo.
         (unstable.neovim.override {
-          configure.customRC = builtins.readFile ./config/init.vim;
+          configure.customRC = ''
+            luafile ${./config/neovim.lua}
+          '';
 
           configure.packages.plugins.start = with import <vim-plugins> { pkgs = unstable; }; [
             ale
