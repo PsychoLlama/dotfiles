@@ -30,16 +30,14 @@ Alternatively, use the exported nixos module to build your own machine:
 
 ```nix
 {
-  inputs.dotfiles.url = "github:PsychoLlama/dotfiles";
-  outputs = { self, dotfiles }: {
-    nixosConfiguration = { config, pkgs, ... }: {
-      imports = [dotfiles.nixosModule];
+  inputs.dotfiles.url = "github:PsychoLlama/dotfiles/main";
 
-      # Configure the user profile.
-      dotfiles.user = {
-        account = "lasershark";
-        fullName = "Laser Sharkman";
-      };
+  outputs = { self, dotfiles }: {
+    nixosConfiguration = nixosSystem {
+      modules = [
+        dotfiles.nixosModule
+        ./path/to/machine.nix
+      ];
     };
   };
 }
