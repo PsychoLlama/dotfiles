@@ -1,6 +1,6 @@
 # Dotfiles
 
-A [NixOS](https://nixos.org/) module that recreates my development machine.
+A [NixOS](https://nixos.org/) flake that recreate my development machines.
 
 ---
 
@@ -16,27 +16,31 @@ A [NixOS](https://nixos.org/) module that recreates my development machine.
 
 ## Usage
 
-Uh, don't. This isn't generic or stable enough to be useful for other people yet. I'd recommend forking instead.
+> :warning: Unstable :warning:  
+> This project isn't polished or stable enough for other people yet. Use at your own risk.
 
-This is managed as a custom nix channel:
+This is managed as a nix flake. It exports the dotfiles framework and concrete definitions for each of my development machines:
 
 ```sh
-nix-channel --add https://github.com/PsychoLlama/dotfiles/archive/main.tar.gz dotfiles
-nix-channel --update dotfiles
+# Attempts to build the machine matching your hostname
+nixos-rebuild switch --flake github:PsychoLlama/dotfiles
 ```
 
-Then include it in your `configuration.nix` as an import and set the options for your user account:
+Alternatively, use the exported nixos module to build your own machine:
 
 ```nix
 {
-  imports = [
-    # ... other modules come first
-    <dotfiles>
-  ];
+  inputs.dotfiles.url = "github:PsychoLlama/dotfiles";
+  outputs = { self, dotfiles }: {
+    nixosConfiguration = { config, pkgs, ... }: {
+      imports = [dotfiles.nixosModule];
 
-  dotfiles.user = {
-    account = "lasershark";
-    fullName = "Shark Laserman";
+      # Configure the user profile.
+      dotfiles.user = {
+        account = "lasershark";
+        fullName = "Laser Sharkman";
+      };
+    };
   };
 }
 ```
