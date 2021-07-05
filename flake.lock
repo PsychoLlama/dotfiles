@@ -120,21 +120,35 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1625456534,
-        "narHash": "sha256-pLYHe09eSjPuZPgvodGPivbcMT5QS+sYQnCglmXp8yI=",
+        "lastModified": 1625176478,
+        "narHash": "sha256-s1RTYNKw7ySyqrZjns9Cq+Nnjpp75ePgL06pgcbIpoA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "860f9f218b1cbdd719225441cd368027a3c340d6",
+        "rev": "21b696caf392ad6fa513caf3327d0aa0430ffb72",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
+        "id": "nixpkgs",
+        "ref": "nixos-21.05",
+        "type": "indirect"
       }
     },
     "nixpkgs-unstable": {
+      "locked": {
+        "lastModified": 1625403235,
+        "narHash": "sha256-LMitU5qG4zYAO3+5fJbdjmyn9snflCcq+P9eSghbcBI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f930ea227cecaed1f1bdb047fef54fe4f0721c8c",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixpkgs-unstable",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1625456534,
         "narHash": "sha256-pLYHe09eSjPuZPgvodGPivbcMT5QS+sYQnCglmXp8yI=",
@@ -152,6 +166,7 @@
     },
     "root": {
       "inputs": {
+        "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "vim-plugin-nursery": "vim-plugin-nursery"
       }
@@ -228,7 +243,7 @@
         "misc-vim": "misc-vim",
         "navitron-vim": "navitron-vim",
         "nginx-vim": "nginx-vim",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "stacktrace-vim": "stacktrace-vim",
         "teleport-vim": "teleport-vim",
         "vim-jsx": "vim-jsx",

@@ -1,16 +1,6 @@
-{ config, lib, pkgs, inputs, system, ... }:
+{ config, lib, pkgs, unstable, inputs, ... }:
 
-let
-  overlays = [
-    inputs.vim-plugin-nursery.overlay
-    (import ./pkgs)
-  ];
-
-  unstable = import inputs.nixpkgs-unstable {
-    inherit overlays system;
-  };
-
-in {
+{
   options.dotfiles = with lib; {
     user.account = mkOption {
       type = types.str;
@@ -28,8 +18,6 @@ in {
   };
 
   config = {
-    nixpkgs.overlays = overlays;
-
     # Show the dotfiles revision in `nixos-version`.
     system.configurationRevision = inputs.self.rev or null;
 

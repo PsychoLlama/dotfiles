@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
   ];
 
+  # This can be removed once nix flakes ship standard.
   nix = {
     package = pkgs.nixUnstable;
     extraOptions = ''
