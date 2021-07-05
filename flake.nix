@@ -4,6 +4,7 @@
   inputs.nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable";
   inputs.nixpkgs.url = "nixpkgs/nixos-21.05";
 
+  inputs.hardware.url = "github:nixos/nixos-hardware/master";
   inputs.vim-plugin-nursery.url = "github:PsychoLlama/vim-plugin-nursery/main";
   inputs.vim-plugin-nursery.inputs.nixpkgs.follows = "nixpkgs";
 
