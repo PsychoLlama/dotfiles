@@ -17,5 +17,10 @@
     nixosConfigurations = {
       ava = lib.defineHost "x86_64-linux" ./hosts/ava;
     };
+
+    defaultTemplate = {
+      description = "Creates a host built on the dotfiles framework";
+      path = ./template;
+    };
   };
 }

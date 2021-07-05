@@ -19,26 +19,9 @@ A [NixOS](https://nixos.org/) flake that recreate my development machines.
 > :warning: Unstable :warning:  
 > This project isn't polished or stable enough for other people yet. Use at your own risk.
 
-This is managed as a nix flake. It exports the dotfiles framework and concrete definitions for each of my development machines:
+The dotfiles framework is a NixOS module and [each machine](https://github.com/PsychoLlama/dotfiles/tree/main/hosts) is based off of it. You can use it as a flake. There's a template for convenience:
 
 ```sh
-# Attempts to build the machine matching your hostname
-nixos-rebuild switch --flake github:PsychoLlama/dotfiles
-```
-
-Alternatively, use the exported nixos module to build your own machine:
-
-```nix
-{
-  inputs.dotfiles.url = "github:PsychoLlama/dotfiles/main";
-
-  outputs = { self, dotfiles }: {
-    nixosConfiguration = nixosSystem {
-      modules = [
-        dotfiles.nixosModule
-        ./path/to/machine.nix
-      ];
-    };
-  };
-}
+mkdir new-host && cd new-host
+nix flake init --template github:PsychoLlama/dotfiles
 ```
