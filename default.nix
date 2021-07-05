@@ -1,8 +1,9 @@
 { config, lib, pkgs, inputs, ... }:
 
 let
-  overlays = (import ./overlays.nix) ++ [
+  overlays = [
     inputs.vim-plugin-nursery.overlay
+    (import ./pkgs)
   ];
 
   unstable = import inputs.nixpkgs-unstable {

@@ -9,6 +9,7 @@
 
   in {
     nixosModule = lib.defineModule ./default.nix;
+    overlay = import ./pkgs;
 
     nixosConfigurations = {
       ava = lib.defineHost ./hosts/ava;
