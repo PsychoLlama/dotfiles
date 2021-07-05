@@ -1,9 +1,11 @@
 {
   description = "NixOS modules supporting my development environment";
 
-  inputs.vim-plugin-nursery.url = "github:PsychoLlama/vim-plugin-nursery/main";
   inputs.nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable";
   inputs.nixpkgs.url = "nixpkgs/nixos-21.05";
+
+  inputs.vim-plugin-nursery.url = "github:PsychoLlama/vim-plugin-nursery/main";
+  inputs.vim-plugin-nursery.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = inputs:
   let lib = import ./lib.nix inputs;

@@ -148,22 +148,6 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1625456534,
-        "narHash": "sha256-pLYHe09eSjPuZPgvodGPivbcMT5QS+sYQnCglmXp8yI=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "860f9f218b1cbdd719225441cd368027a3c340d6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
@@ -243,7 +227,9 @@
         "misc-vim": "misc-vim",
         "navitron-vim": "navitron-vim",
         "nginx-vim": "nginx-vim",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
         "stacktrace-vim": "stacktrace-vim",
         "teleport-vim": "teleport-vim",
         "vim-jsx": "vim-jsx",
