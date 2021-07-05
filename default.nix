@@ -1,8 +1,13 @@
-{ config, lib, pkgs, nixpkgs-unstable, vim-plugin-nursery, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
-  overlays = (import ./overlays.nix) ++ [vim-plugin-nursery.overlay];
-  unstable = import nixpkgs-unstable { inherit overlays; };
+  overlays = (import ./overlays.nix) ++ [
+    inputs.vim-plugin-nursery.overlay
+  ];
+
+  unstable = import inputs.nixpkgs-unstable {
+    inherit overlays;
+  };
 
 in {
   options.dotfiles = with lib; {
