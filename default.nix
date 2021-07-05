@@ -1,10 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nixpkgs-unstable, vim-plugin-nursery, ... }:
 
-# TODO: Replace `<unstable>` channel with a locked fetch or a flake.
-let overlays = import ./overlays.nix;
-unstable = import <unstable> {
-  inherit overlays;
-};
+let
+  overlays = (import ./overlays.nix) ++ [vim-plugin-nursery.overlay];
+  unstable = import nixpkgs-unstable { inherit overlays; };
 
 in {
   options.dotfiles = with lib; {
@@ -161,7 +159,7 @@ in {
             luafile ${./config/neovim.lua}
           '';
 
-          configure.packages.plugins.start = with import <vim-plugins> { pkgs = unstable; }; [
+          configure.packages.plugins.start = with unstable.vimPlugins; [
             ale
             auto-pairs
             coc-nvim
@@ -194,7 +192,7 @@ in {
             navitron-vim
             nginx-vim
             teleport-vim
-            vim-nand2tetris-syntax
+            vim-nand2tetris
             yajs-vim
 
             # Nursery
