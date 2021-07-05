@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, system, ... }:
 
 let
   overlays = [
@@ -7,7 +7,7 @@ let
   ];
 
   unstable = import inputs.nixpkgs-unstable {
-    inherit overlays;
+    inherit overlays system;
   };
 
 in {

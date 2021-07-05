@@ -8,7 +8,7 @@
   let lib = import ./lib.nix inputs;
 
   in {
-    nixosModule = lib.defineModule ./default.nix;
+    nixosModule = import ./default.nix;
     overlay = import ./pkgs;
 
     nixosConfigurations = {
