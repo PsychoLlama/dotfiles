@@ -1,5 +1,5 @@
 {
-  pkgs ? import <unstable> {},
+  pkgs ? import <nixpkgs> {},
   configDir ? null,
 }:
 

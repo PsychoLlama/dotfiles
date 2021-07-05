@@ -1,5 +1,5 @@
 {
-  pkgs ? import <unstable> {},
+  pkgs ? import <nixpkgs> {},
   keymap ? pkgs.writeText "empty-file" "",
 }:
 
