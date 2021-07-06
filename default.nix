@@ -247,7 +247,7 @@
         ansible
         ipmitool
         kubectl
-        terraform_0_15
+        terraform_1_0_0
 
         # Tools
         acpi
