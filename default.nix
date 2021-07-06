@@ -18,9 +18,6 @@
   };
 
   config = {
-    # Show the dotfiles revision in `nixos-version`.
-    system.configurationRevision = inputs.self.rev or null;
-
     # Install docker and run it automatically as a daemon.
     virtualisation.docker = {
       enable = true;

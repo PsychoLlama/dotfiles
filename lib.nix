@@ -33,7 +33,12 @@ in {
         ({ lib, ... }: {
           # Hostnames are set by the directory's name.
           networking.hostName = lib.mkDefault (baseNameOf path);
+
+          # Add custom packages.
           nixpkgs.overlays = overlays;
+
+          # Show the dotfiles revision in `nixos-version`.
+          system.configurationRevision = inputs.self.rev or null;
         })
 
         # Load the dotfiles framework.
