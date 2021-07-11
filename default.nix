@@ -18,50 +18,20 @@
   };
 
   config = {
-    # Install docker and run it automatically as a daemon.
-    virtualisation.docker = {
-      enable = true;
-      package = unstable.docker;
-      autoPrune.enable = true;
-    };
-
-    # Internationalisation properties.
-    i18n.defaultLocale = "en_US.UTF-8";
-    time.timeZone = "America/Los_Angeles";
-
-    # Set system fonts.
-    fonts = {
-      enableDefaultFonts = true;
-      fonts = [unstable.fira-code];
-    };
-
-    console = {
-      font = "Fira Code";
-      keyMap = "us";
-    };
-
-    # Misc hardware and drivers.
-    services.printing.enable = true;
-    sound.enable = true;
-    hardware = {
-      pulseaudio.enable = true;
-      bluetooth.enable = true;
-    };
-
     # Enable the X11 windowing system.
     services.xserver = {
       enable = true;
 
-      xkbOptions = "caps:escape";
-      autoRepeatDelay = 250;
+      # Seems a more reasonable default.
+      autoRepeatDelay = lib.mkDefault 250;
 
-      # Configure the touchpad.
       libinput = {
         enable = true;
 
+        # Configure the touchpad.
         touchpad = {
-          naturalScrolling = true;
-          tapping = false; # Disable tap to click.
+          naturalScrolling = lib.mkDefault true;
+          tapping = lib.mkDefault false; # Disable soft tap to click.
         };
       };
 

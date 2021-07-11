@@ -44,6 +44,9 @@ in {
         # Load the dotfiles framework.
         ./default.nix
 
+        # Enable and configure features from dotfiles.
+        ./hosts/common.nix
+
         # Do machine-specific configuration.
         path
       ];
