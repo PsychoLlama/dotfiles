@@ -21,14 +21,13 @@
 
   # Network configuration.
   networking = {
-    wireless.enable = true;
-    hostName = "ava";
-
-    wireless.interfaces = ["wlp0s20f3"];
-
-    # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-    useDHCP = false;
     interfaces.wlp0s20f3.useDHCP = true;
+    useDHCP = false; # Deprecated option - explicitly opt out.
+
+    wireless = {
+      enable = true;
+      interfaces = ["wlp0s20f3"];
+    };
   };
 
   # TODO: Manage background images more intelligently.
