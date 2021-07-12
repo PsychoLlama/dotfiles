@@ -1,4 +1,4 @@
-{ pkgs, unstable, ... }:
+{ pkgs, unstable, inputs, ... }:
 
 {
   # This can be removed once nix flakes ship standard.
@@ -7,6 +7,10 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+
+    # Add a pinned `unstable` flake to the registry. Prevents Nix from
+    # downloading the nixpkgs repo with every new commit.
+    registry.unstable.flake = inputs.nixpkgs-unstable;
   };
 
   # Install docker and run it automatically as a daemon.
