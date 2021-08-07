@@ -87,7 +87,9 @@ vim.g.ale_linters = {
 vim.g.ale_fixers = {
   javascript = { 'prettier' },
   typescript = { 'prettier' },
+  terraform = { 'terraform' },
   rust = { 'rustfmt' },
+  nix = { 'nixfmt' }
 }
 
 vim.g.ale_pattern_options = {

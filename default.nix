@@ -235,6 +235,7 @@
         ipfs
         jq
         miniserve
+        nixfmt
         nmap
         pastel
         playerctl
