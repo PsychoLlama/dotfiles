@@ -225,6 +225,7 @@
         binutils
         bottom
         dogdns
+        du-dust
         exa
         fd
         git
