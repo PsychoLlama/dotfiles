@@ -1,19 +1,16 @@
-{
-  pkgs ? import <nixpkgs> {},
-  keymap ? pkgs.writeText "empty-file" "",
-}:
+{ pkgs ? import <nixpkgs> { }, keymap ? pkgs.writeText "empty-file" "", }:
 
 let
   w3mWrapper = derivation {
     name = "w3m-wrapper";
     system = pkgs.w3m.system;
     builder = "${pkgs.bash}/bin/bash";
-    args = [builderScript];
+    args = [ builderScript ];
 
     coreutils = pkgs.coreutils;
     w3m = pkgs.w3m;
     configFile = pkgs.writeText "w3m-config" ''
-    keymap_file ${keymap}
+      keymap_file ${keymap}
     '';
   };
 
@@ -35,8 +32,5 @@ in pkgs.buildEnv {
   name = "w3m-preconfigured";
   ignoreCollisions = true;
 
-  paths = [
-    w3mWrapper
-    pkgs.w3m
-  ];
+  paths = [ w3mWrapper pkgs.w3m ];
 }

@@ -7,14 +7,9 @@
       personal-computer = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
-        specialArgs = {
-          inherit self;
-        };
+        specialArgs = { inherit self; };
 
-        modules = [
-          dotfiles.nixosModule
-          ./configuration.nix
-        ];
+        modules = [ dotfiles.nixosModule ./configuration.nix ];
       };
     };
   };

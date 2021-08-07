@@ -1,9 +1,7 @@
 { ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   boot = {
     # Use the systemd-boot EFI boot loader.
@@ -18,7 +16,7 @@
 
     wireless = {
       enable = true;
-      interfaces = ["wlp0s20f3"];
+      interfaces = [ "wlp0s20f3" ];
     };
   };
 

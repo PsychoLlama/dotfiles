@@ -23,7 +23,7 @@
   # Set system fonts.
   fonts = {
     enableDefaultFonts = true;
-    fonts = [unstable.fira-code];
+    fonts = [ unstable.fira-code ];
   };
 
   console = {

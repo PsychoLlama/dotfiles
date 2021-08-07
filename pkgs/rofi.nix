@@ -1,14 +1,11 @@
-{
-  pkgs ? import <nixpkgs> {},
-  configDir ? null,
-}:
+{ pkgs ? import <nixpkgs> { }, configDir ? null, }:
 
 let
   rofiWrapper = derivation {
     name = "rofi-wrapper";
     system = pkgs.rofi.system;
     builder = "${pkgs.bash}/bin/bash";
-    args = [builderScript];
+    args = [ builderScript ];
 
     coreutils = pkgs.coreutils;
     rofi = pkgs.rofi;

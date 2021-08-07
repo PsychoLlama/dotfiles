@@ -109,13 +109,9 @@
           configFile = ./config/alacritty.yml;
         })
 
-        (callPackage ./pkgs/rofi.nix {
-          configDir = ./config/rofi;
-        })
+        (callPackage ./pkgs/rofi.nix { configDir = ./config/rofi; })
 
-        (callPackage ./pkgs/w3m.nix {
-          keymap = ./config/w3m.keymap;
-        })
+        (callPackage ./pkgs/w3m.nix { keymap = ./config/w3m.keymap; })
 
         # Editor. Installed globally to play nicely with sudo.
         (unstable.neovim.override {
@@ -169,21 +165,20 @@
       ];
     };
 
-    users.groups.pantheon = {};
-    security.sudo.extraRules = [
-      {
-        groups = ["pantheon"];
-        commands = [
-          { command = "ALL"; options = ["NOPASSWD"]; }
-        ];
-      }
-    ];
+    users.groups.pantheon = { };
+    security.sudo.extraRules = [{
+      groups = [ "pantheon" ];
+      commands = [{
+        command = "ALL";
+        options = [ "NOPASSWD" ];
+      }];
+    }];
 
     # Create a personal user profile.
     users.users.${config.dotfiles.user.account} = {
       isNormalUser = true;
       description = config.dotfiles.user.fullName;
-      extraGroups = ["wheel" "docker" "pantheon"];
+      extraGroups = [ "wheel" "docker" "pantheon" ];
       shell = pkgs.zsh;
 
       packages = with unstable; [
@@ -256,10 +251,7 @@
         # Chat client
         (weechat.override {
           configure = { ... }: {
-            scripts = with weechatScripts; [
-              wee-slack
-              weechat-matrix
-            ];
+            scripts = with weechatScripts; [ wee-slack weechat-matrix ];
           };
         })
       ];

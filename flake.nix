@@ -9,19 +9,19 @@
   inputs.vim-plugin-nursery.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = inputs:
-  let lib = import ./lib.nix inputs;
+    let lib = import ./lib.nix inputs;
 
-  in {
-    nixosModule = import ./default.nix;
-    overlay = import ./pkgs;
+    in {
+      nixosModule = import ./default.nix;
+      overlay = import ./pkgs;
 
-    nixosConfigurations = {
-      ava = lib.defineHost "x86_64-linux" ./hosts/ava;
+      nixosConfigurations = {
+        ava = lib.defineHost "x86_64-linux" ./hosts/ava;
+      };
+
+      defaultTemplate = {
+        description = "Creates a host built on the dotfiles framework";
+        path = ./template;
+      };
     };
-
-    defaultTemplate = {
-      description = "Creates a host built on the dotfiles framework";
-      path = ./template;
-    };
-  };
 }

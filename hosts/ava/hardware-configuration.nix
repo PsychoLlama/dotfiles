@@ -6,13 +6,12 @@
     inputs.hardware.nixosModules.lenovo-thinkpad-p1-gen3
   ];
 
-  boot.initrd.availableKernelModules = [
-    "xhci_pci" "nvme" "usb_storage" "sd_mod" "sdhci_pci"
-  ];
+  boot.initrd.availableKernelModules =
+    [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "sdhci_pci" ];
 
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-intel"];
-  boot.extraModulePackages = [];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
@@ -24,9 +23,7 @@
     fsType = "vfat";
   };
 
-  swapDevices = [
-    { device = "/dev/disk/by-label/swap"; }
-  ];
+  swapDevices = [{ device = "/dev/disk/by-label/swap"; }];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }
