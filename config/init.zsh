@@ -123,6 +123,11 @@ function vs {
   nvim -p "${files[@]}"
 }
 
+# Show information about a nix package.
+function gist {
+  nix eval --impure --json --expr "(import <pkgs> {}).$1.meta" | jq -r '.description, .homepage'
+}
+
 # Encrypt stdin using public keys from GitHub.
 function encrypt {
   if [[ -z "$1" ]]; then
