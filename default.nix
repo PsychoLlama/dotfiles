@@ -244,6 +244,7 @@
         tokei
         vim-vint
         viu
+        whois
         xclip
         xh
         zoxide
