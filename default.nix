@@ -7,6 +7,7 @@
     ./modules/dev-shell.nix
     ./modules/networking.nix
     ./modules/desktop.nix
+    ./modules/passwordless-sudo.nix
   ];
 
   options.dotfiles = with lib; {
@@ -40,20 +41,11 @@
       };
     };
 
-    users.groups.pantheon = { };
-    security.sudo.extraRules = [{
-      groups = [ "pantheon" ];
-      commands = [{
-        command = "ALL";
-        options = [ "NOPASSWD" ];
-      }];
-    }];
-
     # Create a personal user profile.
     users.users.${config.dotfiles.user.account} = {
       isNormalUser = true;
       description = config.dotfiles.user.fullName;
-      extraGroups = [ "wheel" "docker" "pantheon" ];
+      extraGroups = [ "wheel" "docker" ];
 
       packages = with unstable; [
         # Graphical Apps
