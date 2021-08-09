@@ -1,7 +1,7 @@
 { config, lib, pkgs, unstable, inputs, ... }:
 
 {
-  imports = [ ./modules/editor.nix ];
+  imports = [ ./modules/editor.nix ./modules/chat-client.nix ];
 
   options.dotfiles = with lib; {
     user.account = mkOption {
@@ -198,13 +198,6 @@
         xclip
         xh
         zoxide
-
-        # Chat client
-        (weechat.override {
-          configure = { ... }: {
-            scripts = with weechatScripts; [ wee-slack weechat-matrix ];
-          };
-        })
       ];
     };
   };
