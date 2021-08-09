@@ -1,6 +1,8 @@
 { config, lib, pkgs, unstable, inputs, ... }:
 
 {
+  imports = [ ./modules/editor.nix ];
+
   options.dotfiles = with lib; {
     user.account = mkOption {
       type = types.str;
@@ -93,8 +95,6 @@
       etc.gitconfig.source = ./config/git.ini;
 
       variables = {
-        EDITOR = "nvim";
-        MANPAGER = "nvim -c 'setfiletype man' -";
         SKIM_DEFAULT_COMMAND = "fd";
         BAT_THEME = "TwoDark";
         BAT_STYLE = "changes";
@@ -112,56 +112,6 @@
         (callPackage ./pkgs/rofi.nix { configDir = ./config/rofi; })
 
         (callPackage ./pkgs/w3m.nix { keymap = ./config/w3m.keymap; })
-
-        # Editor. Installed globally to play nicely with sudo.
-        (unstable.neovim.override {
-          configure.customRC = ''
-            luafile ${./config/neovim.lua}
-          '';
-
-          configure.packages.plugins.start = with unstable.vimPlugins; [
-            ale
-            auto-pairs
-            coc-nvim
-            onedark-vim
-            rust-vim
-            skim
-            skim-vim
-            splitjoin-vim
-            typescript-vim
-            undotree
-            vader-vim
-            vim-commentary
-            vim-endwise
-            vim-fugitive
-            vim-gitgutter
-            vim-graphql
-            vim-markdown
-            vim-nix
-            vim-plug
-            vim-repeat
-            vim-surround
-            vim-swap
-            vim-terraform
-            vim-toml
-
-            # 3rd party
-            alternaut-vim
-            further-vim
-            godown-vim
-            navitron-vim
-            nginx-vim
-            teleport-vim
-            vim-nand2tetris
-            yajs-vim
-
-            # Nursery
-            clippy-nvim
-            git-vim
-            misc-vim
-            stacktrace-vim
-          ];
-        })
       ];
     };
 
