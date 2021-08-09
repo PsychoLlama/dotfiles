@@ -8,6 +8,7 @@
     ./modules/networking.nix
     ./modules/desktop.nix
     ./modules/passwordless-sudo.nix
+    ./modules/apps.nix
   ];
 
   options.dotfiles = with lib; {
@@ -48,11 +49,6 @@
       extraGroups = [ "wheel" "docker" ];
 
       packages = with unstable; [
-        # Graphical Apps
-        firefox
-        torbrowser
-        zathura
-
         # Rust Development
         cargo
         cargo-edit
