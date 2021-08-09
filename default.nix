@@ -11,6 +11,7 @@
     ./modules/apps.nix
     ./modules/files.nix
     ./modules/rust-development.nix
+    ./modules/js-development.nix
     ./modules/infrastructure.nix
   ];
 
@@ -41,11 +42,6 @@
       extraGroups = [ "wheel" "docker" ];
 
       packages = with unstable; [
-        # JS Development
-        nodejs
-        pastel
-        yarn
-
         # Misc Language Tools
         nixfmt
         shellcheck
