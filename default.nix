@@ -137,10 +137,6 @@
         torbrowser
         zathura
 
-        # Terminal Apps
-        ncspot
-        termshark
-
         # Rust Development
         cargo
         cargo-edit
@@ -157,45 +153,54 @@
         yarn
 
         # Infrastructure
-        ansible
         ipmitool
         kubectl
         terraform_1_0_0
 
-        # Tools
-        acpi
+        # Misc Language Tools
+        nixfmt
+        shellcheck
+        tokei
+        vim-vint
+
+        # Networking
+        dogdns
+        nmap
+        termshark
+        whois
+        xh
+
+        # File Management and Navigation
         bat
         binutils
-        bottom
-        dogdns
         du-dust
         exa
         fd
-        git
-        gitAndTools.delta
         glow
         hexyl
         ipfs
         jq
-        miniserve
-        nixfmt
-        nmap
-        pastel
-        playerctl
         pv
-        rage
         ripgrep
-        scrot
-        shellcheck
         skim
-        starship
-        tokei
-        vim-vint
         viu
-        whois
-        xclip
-        xh
         zoxide
+
+        # System
+        acpi
+        bottom
+        ncspot
+        playerctl
+        rage
+        scrot
+        starship
+        xclip
+
+        # Tools
+        git
+        gitAndTools.delta
+        miniserve
+        pastel
       ];
     };
   };
