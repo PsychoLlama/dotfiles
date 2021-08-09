@@ -1,8 +1,12 @@
 { config, lib, pkgs, unstable, inputs, ... }:
 
 {
-  imports =
-    [ ./modules/editor.nix ./modules/chat-client.nix ./modules/dev-shell.nix ];
+  imports = [
+    ./modules/editor.nix
+    ./modules/chat-client.nix
+    ./modules/dev-shell.nix
+    ./modules/networking.nix
+  ];
 
   options.dotfiles = with lib; {
     user.account = mkOption {
@@ -50,7 +54,6 @@
     };
 
     # System programs.
-    programs.wireshark.enable = true;
     programs.slock.enable = true; # Screen locking utility.
 
     # Set up the global environment.
@@ -118,13 +121,6 @@
         shellcheck
         tokei
         vim-vint
-
-        # Networking
-        dogdns
-        nmap
-        termshark
-        whois
-        xh
 
         # File Management and Navigation
         bat
