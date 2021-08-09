@@ -138,7 +138,6 @@
         zathura
 
         # Terminal Apps
-        aerc
         ncspot
         termshark
 
