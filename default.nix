@@ -6,6 +6,7 @@
     ./modules/chat-client.nix
     ./modules/dev-shell.nix
     ./modules/networking.nix
+    ./modules/desktop.nix
   ];
 
   options.dotfiles = with lib; {
@@ -25,37 +26,6 @@
   };
 
   config = {
-    # Enable the X11 windowing system.
-    services.xserver = {
-      enable = true;
-
-      # Seems a more reasonable default.
-      autoRepeatDelay = lib.mkDefault 250;
-
-      libinput = {
-        enable = true;
-
-        # Configure the touchpad.
-        touchpad = {
-          naturalScrolling = lib.mkDefault true;
-          tapping = lib.mkDefault false; # Disable soft tap to click.
-        };
-      };
-
-      # Swap out the login screen program.
-      displayManager.lightdm.greeters.enso.enable = true;
-
-      # Use XMonad to manage the graphical environment.
-      windowManager.xmonad = {
-        enable = true;
-        enableContribAndExtras = true;
-        config = ./config/xmonad.hs;
-      };
-    };
-
-    # System programs.
-    programs.slock.enable = true; # Screen locking utility.
-
     # Set up the global environment.
     environment = {
       etc.gitconfig.source = ./config/git.ini;
@@ -68,11 +38,6 @@
         # Provides dependencies for common Rust libraries.
         PKG_CONFIG_PATH = "${unstable.openssl.dev}/lib/pkgconfig";
       };
-
-      systemPackages = with unstable; [
-        (callPackage ./pkgs/rofi.nix { configDir = ./config/rofi; })
-        (callPackage ./pkgs/w3m.nix { keymap = ./config/w3m.keymap; })
-      ];
     };
 
     users.groups.pantheon = { };
@@ -152,6 +117,8 @@
         gitAndTools.delta
         miniserve
         pastel
+
+        (callPackage ./pkgs/w3m.nix { keymap = ./config/w3m.keymap; })
       ];
     };
   };
