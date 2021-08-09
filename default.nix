@@ -133,7 +133,6 @@
 
       packages = with unstable; [
         # Graphical Apps
-        element-desktop
         firefox
         torbrowser
         zathura
