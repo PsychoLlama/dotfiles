@@ -39,6 +39,7 @@ in {
         fd
         glow
         hexyl
+        ipfs
         jq
         pv
         ripgrep

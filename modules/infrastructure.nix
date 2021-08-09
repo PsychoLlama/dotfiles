@@ -1,6 +1,8 @@
 { config, unstable, lib, ... }:
 
-let cfg = config.dotfiles.toolkit.infrastructure;
+let
+  df = config.dotfiles;
+  cfg = df.toolkit.infrastructure;
 
 in {
   options.dotfiles.toolkit.infrastructure = with lib; {
@@ -26,5 +28,7 @@ in {
       package = cfg.docker.package;
       autoPrune.enable = true;
     };
+
+    users.users.${df.user.account}.extraGroups = mkIf cfg.enable [ "docker" ];
   };
 }

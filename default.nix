@@ -39,7 +39,7 @@
     users.users.${config.dotfiles.user.account} = {
       isNormalUser = true;
       description = config.dotfiles.user.fullName;
-      extraGroups = [ "wheel" "docker" ];
+      extraGroups = [ "wheel" ];
 
       packages = with unstable; [
         # Misc Language Tools
@@ -59,10 +59,7 @@
         # Tools
         git
         gitAndTools.delta
-        ipfs
         miniserve
-
-        (callPackage ./pkgs/w3m.nix { keymap = ./config/w3m.keymap; })
       ];
     };
   };
