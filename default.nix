@@ -10,6 +10,7 @@
     ./modules/passwordless-sudo.nix
     ./modules/apps.nix
     ./modules/files.nix
+    ./modules/rust-development.nix
   ];
 
   options.dotfiles = with lib; {
@@ -30,14 +31,7 @@
 
   config = {
     # Set up the global environment.
-    environment = {
-      etc.gitconfig.source = ./config/git.ini;
-
-      variables = {
-        # Provides dependencies for common Rust libraries.
-        PKG_CONFIG_PATH = "${unstable.openssl.dev}/lib/pkgconfig";
-      };
-    };
+    environment = { etc.gitconfig.source = ./config/git.ini; };
 
     # Create a personal user profile.
     users.users.${config.dotfiles.user.account} = {
@@ -46,17 +40,6 @@
       extraGroups = [ "wheel" "docker" ];
 
       packages = with unstable; [
-        # Rust Development
-        cargo
-        cargo-edit
-        clippy
-        gcc
-        openssl.dev
-        pkg-config
-        rls
-        rustc
-        rustup
-
         # JS Development
         nodejs
         yarn
