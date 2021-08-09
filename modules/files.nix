@@ -43,6 +43,7 @@ in {
         pv
         ripgrep
         skim
+        tokei
         viu
         zoxide
       ];

@@ -31,6 +31,9 @@ in {
       # Seems a more reasonable default.
       autoRepeatDelay = mkDefault 250;
 
+      # Honestly, who uses caps lock?
+      xkbOptions = mkDefault "caps:escape";
+
       libinput = {
         enable = mkDefault true;
 
@@ -59,5 +62,10 @@ in {
     environment.systemPackages = mkIf cfg.enable [
       (unstable.callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
     ];
+
+    # If they're enabling a desktop, these seem like reasonable defaults.
+    services.printing.enable = mkIf cfg.enable (mkDefault true);
+    sound.enable = mkIf cfg.enable (mkDefault true);
+    hardware.pulseaudio.enable = mkIf cfg.enable (mkDefault true);
   };
 }

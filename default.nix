@@ -11,6 +11,7 @@
     ./modules/apps.nix
     ./modules/files.nix
     ./modules/rust-development.nix
+    ./modules/infrastructure.nix
   ];
 
   options.dotfiles = with lib; {
@@ -42,17 +43,12 @@
       packages = with unstable; [
         # JS Development
         nodejs
+        pastel
         yarn
-
-        # Infrastructure
-        ipmitool
-        kubectl
-        terraform_1_0_0
 
         # Misc Language Tools
         nixfmt
         shellcheck
-        tokei
         vim-vint
 
         # System
@@ -69,7 +65,6 @@
         gitAndTools.delta
         ipfs
         miniserve
-        pastel
 
         (callPackage ./pkgs/w3m.nix { keymap = ./config/w3m.keymap; })
       ];
