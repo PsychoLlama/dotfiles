@@ -1,7 +1,8 @@
 { config, lib, pkgs, unstable, inputs, ... }:
 
 {
-  imports = [ ./modules/editor.nix ./modules/chat-client.nix ];
+  imports =
+    [ ./modules/editor.nix ./modules/chat-client.nix ./modules/dev-shell.nix ];
 
   options.dotfiles = with lib; {
     user.account = mkOption {
@@ -52,65 +53,21 @@
     programs.wireshark.enable = true;
     programs.slock.enable = true; # Screen locking utility.
 
-    programs.zsh = {
-      enable = true;
-      syntaxHighlighting.enable = true;
-      autosuggestions.enable = true;
-      histSize = 10000;
-
-      shellAliases = {
-        cat = "bat";
-        ls = "exa";
-        l = "exa -la";
-
-        t = "tmux";
-        ":qa" = "tmux kill-session 2> /dev/null || exit";
-
-        g = "git";
-        c = "git commit";
-        b = "git branch";
-        ch = "git checkout";
-        h = "git diff HEAD";
-        hh = "git diff HEAD~1";
-        hhh = "git diff HEAD~2";
-
-        ".." = "cd ..";
-        "..." = "cd ../..";
-        "...." = "cd ../../..";
-      };
-    };
-
-    programs.tmux = {
-      enable = true;
-      keyMode = "vi";
-      escapeTime = 0;
-      historyLimit = 10000;
-      customPaneNavigationAndResize = true;
-      extraConfig = builtins.readFile ./config/tmux.conf;
-    };
-
     # Set up the global environment.
     environment = {
-      etc."zshrc.local".source = ./config/init.zsh;
       etc.gitconfig.source = ./config/git.ini;
 
       variables = {
         SKIM_DEFAULT_COMMAND = "fd";
         BAT_THEME = "TwoDark";
         BAT_STYLE = "changes";
-        STARSHIP_CONFIG = "${./config/starship.toml}";
 
         # Provides dependencies for common Rust libraries.
         PKG_CONFIG_PATH = "${unstable.openssl.dev}/lib/pkgconfig";
       };
 
       systemPackages = with unstable; [
-        (callPackage ./pkgs/alacritty.nix {
-          configFile = ./config/alacritty.yml;
-        })
-
         (callPackage ./pkgs/rofi.nix { configDir = ./config/rofi; })
-
         (callPackage ./pkgs/w3m.nix { keymap = ./config/w3m.keymap; })
       ];
     };
@@ -129,7 +86,6 @@
       isNormalUser = true;
       description = config.dotfiles.user.fullName;
       extraGroups = [ "wheel" "docker" "pantheon" ];
-      shell = pkgs.zsh;
 
       packages = with unstable; [
         # Graphical Apps
@@ -193,7 +149,6 @@
         playerctl
         rage
         scrot
-        starship
         xclip
 
         # Tools

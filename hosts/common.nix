@@ -21,15 +21,8 @@
   time.timeZone = "America/Los_Angeles";
 
   # Set system fonts.
-  fonts = {
-    enableDefaultFonts = true;
-    fonts = [ unstable.fira-code ];
-  };
-
-  console = {
-    font = "Fira Code";
-    keyMap = "us";
-  };
+  fonts.enableDefaultFonts = true;
+  console.keyMap = "us";
 
   # Misc hardware and drivers.
   services.printing.enable = true;
