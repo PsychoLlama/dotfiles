@@ -9,6 +9,7 @@
     ./modules/desktop.nix
     ./modules/passwordless-sudo.nix
     ./modules/apps.nix
+    ./modules/files.nix
   ];
 
   options.dotfiles = with lib; {
@@ -33,10 +34,6 @@
       etc.gitconfig.source = ./config/git.ini;
 
       variables = {
-        SKIM_DEFAULT_COMMAND = "fd";
-        BAT_THEME = "TwoDark";
-        BAT_STYLE = "changes";
-
         # Provides dependencies for common Rust libraries.
         PKG_CONFIG_PATH = "${unstable.openssl.dev}/lib/pkgconfig";
       };
@@ -75,22 +72,6 @@
         tokei
         vim-vint
 
-        # File Management and Navigation
-        bat
-        binutils
-        du-dust
-        exa
-        fd
-        glow
-        hexyl
-        ipfs
-        jq
-        pv
-        ripgrep
-        skim
-        viu
-        zoxide
-
         # System
         acpi
         bottom
@@ -103,6 +84,7 @@
         # Tools
         git
         gitAndTools.delta
+        ipfs
         miniserve
         pastel
 

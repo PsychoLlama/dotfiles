@@ -77,12 +77,6 @@ in {
 
       # TODO: Move these aliases to their respective modules.
       shellAliases = {
-        cat = "bat";
-        ls = "exa";
-        l = "exa -la";
-
-        t = mkIf cfg.tmux.aliases.enable "tmux";
-
         g = "git";
         c = "git commit";
         b = "git branch";
@@ -96,6 +90,9 @@ in {
         "...." = "cd ../../..";
       };
     };
+
+    environment.shellAliases =
+      mkIf (cfg.enable && cfg.tmux.aliases.enable) { t = "tmux"; };
 
     users.users.${df.user.account}.shell = mkIf cfg.enable pkgs.zsh;
 
