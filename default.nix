@@ -14,6 +14,7 @@
     ./modules/js-development.nix
     ./modules/infrastructure.nix
     ./modules/system.nix
+    ./modules/development.nix
   ];
 
   options.dotfiles = with lib; {
@@ -33,26 +34,17 @@
   };
 
   config = {
-    # Set up the global environment.
-    environment = { etc.gitconfig.source = ./config/git.ini; };
-
     # Create a personal user profile.
     users.users.${config.dotfiles.user.account} = {
       isNormalUser = true;
       description = config.dotfiles.user.fullName;
       extraGroups = [ "wheel" ];
 
-      packages = with unstable; [
-        # Misc Language Tools
-        nixfmt
-        shellcheck
-        vim-vint
-
-        # Tools
-        git
-        gitAndTools.delta
-        miniserve
-      ];
+      packages = with unstable;
+        [
+          # Misc Language Tools
+          vim-vint
+        ];
     };
   };
 }
