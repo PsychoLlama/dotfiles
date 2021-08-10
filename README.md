@@ -25,3 +25,29 @@ The dotfiles framework is a NixOS module and [each machine](https://github.com/P
 mkdir new-host && cd new-host
 nix flake init --template github:PsychoLlama/dotfiles
 ```
+
+You can enable everything, or pick out the pieces you like by enabling them piecemeal:
+
+```nix
+{
+  # Enable everything...
+  dotfiles.kitchen-sink.enable = true;
+
+  # OR choose your own adventure.
+  dotfiles.editor = {
+    enable = true;
+    config = ./path/to/config.vim;
+    linter.enable = true;
+  };
+
+  dotfiles.chat-client = {
+    enable = true;
+    matrix.enable = true;
+    slack.enable = true;
+  };
+
+  dotfiles.toolkit.rust-development.enable = true;
+
+  # ... and many other options. Check out `modules/` for more.
+}
+```
