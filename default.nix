@@ -4,19 +4,19 @@ let cfg = config.dotfiles;
 
 in {
   imports = [
-    ./modules/editor.nix
-    ./modules/chat-client.nix
-    ./modules/dev-shell.nix
-    ./modules/networking.nix
-    ./modules/desktop.nix
-    ./modules/passwordless-sudo.nix
     ./modules/apps.nix
-    ./modules/files.nix
-    ./modules/rust-development.nix
-    ./modules/js-development.nix
-    ./modules/infrastructure.nix
-    ./modules/system.nix
-    ./modules/development.nix
+    ./modules/chat-client.nix
+    ./modules/desktop.nix
+    ./modules/dev-shell.nix
+    ./modules/editor.nix
+    ./modules/passwordless-sudo.nix
+    ./modules/toolkits/development.nix
+    ./modules/toolkits/files.nix
+    ./modules/toolkits/infrastructure.nix
+    ./modules/toolkits/js-development.nix
+    ./modules/toolkits/networking.nix
+    ./modules/toolkits/rust-development.nix
+    ./modules/toolkits/system.nix
   ];
 
   options.dotfiles = with lib; {

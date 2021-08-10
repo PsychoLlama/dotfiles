@@ -12,7 +12,7 @@ in {
   };
 
   config = with lib; {
-    environment.etc.gitconfig.source = mkIf cfg.enable ../config/git.ini;
+    environment.etc.gitconfig.source = mkIf cfg.enable ../../config/git.ini;
 
     environment.systemPackages = with unstable;
       mkIf cfg.enable [ git gitAndTools.delta miniserve nixfmt shellcheck ];
