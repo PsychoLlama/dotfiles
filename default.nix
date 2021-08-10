@@ -13,6 +13,7 @@
     ./modules/rust-development.nix
     ./modules/js-development.nix
     ./modules/infrastructure.nix
+    ./modules/system.nix
   ];
 
   options.dotfiles = with lib; {
@@ -46,15 +47,6 @@
         nixfmt
         shellcheck
         vim-vint
-
-        # System
-        acpi
-        bottom
-        ncspot
-        playerctl
-        rage
-        scrot
-        xclip
 
         # Tools
         git
