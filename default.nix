@@ -1,6 +1,8 @@
-{ config, lib, pkgs, unstable, inputs, ... }:
+{ config, lib, ... }:
 
-{
+let cfg = config.dotfiles;
+
+in {
   imports = [
     ./modules/editor.nix
     ./modules/chat-client.nix
@@ -18,33 +20,37 @@
   ];
 
   options.dotfiles = with lib; {
-    user.account = mkOption {
-      type = types.str;
-      example = "ealderson";
-      description = "Your username";
-    };
+    user = {
+      manage = mkOption {
+        type = types.bool;
+        description = "Whether to manage the user account";
+        default = true;
+      };
 
-    user.fullName = mkOption {
-      type = types.str;
-      example = "Elliot Alderson";
-      description = ''
-        Short description of the user account, usually your full name.
-      '';
+      account = mkOption {
+        type = types.str;
+        example = "ealderson";
+        description = "Your username";
+      };
+
+      fullName = mkOption {
+        type = types.str;
+        example = "Elliot Alderson";
+        description = ''
+          Short description of the user account, usually your full name.
+        '';
+      };
     };
   };
 
-  config = {
-    # Create a personal user profile.
-    users.users.${config.dotfiles.user.account} = {
-      isNormalUser = true;
-      description = config.dotfiles.user.fullName;
-      extraGroups = [ "wheel" ];
-
-      packages = with unstable;
-        [
-          # Misc Language Tools
-          vim-vint
-        ];
+  config = with lib; {
+    # Create a personal user profile. Other modules depend on this.
+    users.users = mkIf cfg.user.manage {
+      ${cfg.user.account} = {
+        isNormalUser = true;
+        description = cfg.user.fullName;
+        extraGroups = [ "wheel" ];
+      };
     };
   };
 }

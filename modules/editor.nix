@@ -1,6 +1,6 @@
 { config, unstable, lib, ... }:
 
-let cfg = config.dotfiles;
+let cfg = config.dotfiles.editor;
 
 in {
   options = with lib; {
@@ -16,15 +16,21 @@ in {
         description = "A vimrc file. Can be VimL or Lua.";
         default = ../config/neovim.lua;
       };
+
+      linter.enable = mkOption {
+        type = types.bool;
+        description = "Enable a VimL linter";
+        default = true;
+      };
     };
   };
 
   config = with lib; {
     # Installed globally to play nicely with sudo.
-    environment.systemPackages = mkIf cfg.editor.enable [
+    environment.systemPackages = mkIf cfg.enable ([
       (unstable.neovim.override {
         configure.customRC = ''
-          source ${cfg.editor.config}
+          source ${cfg.config}
         '';
 
         configure.packages.plugins.start = with unstable.vimPlugins; [
@@ -70,9 +76,9 @@ in {
           stacktrace-vim
         ];
       })
-    ];
+    ] ++ (if cfg.linter.enable then [ unstable.vim-vint ] else [ ]));
 
-    environment.variables = mkIf cfg.editor.enable {
+    environment.variables = mkIf cfg.enable {
       MANPAGER = "nvim -c 'setfiletype man' -";
       EDITOR = "nvim";
     };
