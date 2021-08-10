@@ -10,7 +10,7 @@ in {
       enable = mkOption {
         type = types.bool;
         description = "Enable Firefox";
-        default = true;
+        default = df.kitchen-sink.enable;
       };
 
       package = mkOption {
@@ -24,7 +24,7 @@ in {
       enable = mkOption {
         type = types.bool;
         description = "Enable the Tor browser";
-        default = true;
+        default = df.kitchen-sink.enable;
       };
 
       package = mkOption {
@@ -38,7 +38,7 @@ in {
       enable = mkOption {
         type = types.bool;
         description = "Enable the Zathura PDF viewer";
-        default = true;
+        default = df.kitchen-sink.enable;
       };
 
       package = mkOption {

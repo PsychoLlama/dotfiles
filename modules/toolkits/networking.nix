@@ -1,13 +1,15 @@
 { config, unstable, lib, ... }:
 
-let cfg = config.dotfiles.toolkit.networking;
+let
+  df = config.dotfiles;
+  cfg = df.toolkit.networking;
 
 in {
   options.dotfiles.toolkit.networking = with lib; {
     enable = mkOption {
       type = types.bool;
       description = "Enable networking tool bundle";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
 
     w3m.keymap = mkOption {

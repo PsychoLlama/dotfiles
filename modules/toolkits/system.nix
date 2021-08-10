@@ -1,13 +1,15 @@
 { config, unstable, lib, ... }:
 
-let cfg = config.dotfiles.toolkit.system;
+let
+  df = config.dotfiles;
+  cfg = df.toolkit.system;
 
 in {
   options.dotfiles.toolkit.system = with lib; {
     enable = mkOption {
       type = types.bool;
       description = "Whether to enable the system toolkit";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
   };
 

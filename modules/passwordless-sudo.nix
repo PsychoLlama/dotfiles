@@ -9,7 +9,7 @@ in {
     enable = mkOption {
       type = types.bool;
       description = "Enable passwordless sudo";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
 
     group.name = mkOption {

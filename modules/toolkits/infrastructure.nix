@@ -9,7 +9,7 @@ in {
     enable = mkOption {
       type = types.bool;
       description = "Enable the infrastructure development toolkit";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
 
     docker.package = mkOption {

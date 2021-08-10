@@ -13,7 +13,7 @@ in {
     enable = mkOption {
       type = types.bool;
       description = "Enable a fancy development shell";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
 
     zsh.rc = mkOption {
@@ -43,7 +43,7 @@ in {
     tmux.aliases.enable = mkOption {
       type = types.bool;
       description = "Define some aliases for tmux";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
   };
 

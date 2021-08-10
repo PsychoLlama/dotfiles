@@ -1,19 +1,21 @@
 { config, unstable, lib, ... }:
 
-let cfg = config.dotfiles.toolkit.files;
+let
+  df = config.dotfiles;
+  cfg = df.toolkit.files;
 
 in {
   options.dotfiles.toolkit.files = with lib; {
     enable = mkOption {
       type = types.bool;
       description = "Enable file navigation/inspection toolkit";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
 
     replace = mkOption {
       type = types.bool;
       description = "Replaces cat & ls with fancier alternatives";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
   };
 

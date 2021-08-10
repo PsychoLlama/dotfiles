@@ -1,13 +1,15 @@
 { config, unstable, lib, ... }:
 
-let cfg = config.dotfiles.toolkit.js-development;
+let
+  df = config.dotfiles;
+  cfg = df.toolkit.js-development;
 
 in {
   options.dotfiles.toolkit.js-development = with lib; {
     enable = mkOption {
       type = types.bool;
       description = "Enable toolkit for JavaScript development";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
   };
 

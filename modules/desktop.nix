@@ -1,13 +1,15 @@
 { config, unstable, lib, ... }:
 
-let cfg = config.dotfiles.desktop;
+let
+  df = config.dotfiles;
+  cfg = config.dotfiles.desktop;
 
 in {
   options.dotfiles.desktop = with lib; {
     enable = mkOption {
       type = types.bool;
       description = "Enable a desktop environment";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
 
     xmonad.config = mkOption {

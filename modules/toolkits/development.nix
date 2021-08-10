@@ -1,19 +1,21 @@
 { config, unstable, lib, ... }:
 
-let cfg = config.dotfiles.toolkit.development;
+let
+  df = config.dotfiles;
+  cfg = df.toolkit.development;
 
 in {
   options.dotfiles.toolkit.development = with lib; {
     enable = mkOption {
       type = types.bool;
       description = "Enable the development toolkit";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
 
     aliases.enable = mkOption {
       type = types.bool;
       description = "Enable short git aliases";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
   };
 

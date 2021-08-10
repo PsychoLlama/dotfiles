@@ -10,19 +10,19 @@ in {
       enable = mkOption {
         type = types.bool;
         description = "Enable the weechat client";
-        default = true;
+        default = df.kitchen-sink.enable;
       };
 
       matrix.enable = mkOption {
         type = types.bool;
         description = "Enable the matrix-weechat integration";
-        default = true;
+        default = df.kitchen-sink.enable;
       };
 
       slack.enable = mkOption {
         type = types.bool;
         description = "Enable the slack-weechat integration";
-        default = true;
+        default = df.kitchen-sink.enable;
       };
     };
   };

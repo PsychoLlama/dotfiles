@@ -1,6 +1,8 @@
 { config, unstable, lib, ... }:
 
-let cfg = config.dotfiles.editor;
+let
+  df = config.dotfiles;
+  cfg = df.editor;
 
 in {
   options = with lib; {
@@ -8,7 +10,7 @@ in {
       enable = mkOption {
         type = types.bool;
         description = "Enable a heavily configured neovim editor";
-        default = true;
+        default = df.kitchen-sink.enable;
       };
 
       config = mkOption {
@@ -20,7 +22,7 @@ in {
       linter.enable = mkOption {
         type = types.bool;
         description = "Enable a VimL linter";
-        default = true;
+        default = df.kitchen-sink.enable;
       };
     };
   };

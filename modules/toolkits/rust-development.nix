@@ -1,13 +1,15 @@
 { config, unstable, lib, ... }:
 
-let cfg = config.dotfiles.toolkit.rust-development;
+let
+  df = config.dotfiles;
+  cfg = df.toolkit.rust-development;
 
 in {
   options.dotfiles.toolkit.rust-development = with lib; {
     enable = mkOption {
       type = types.bool;
       description = "Enable the Rust development toolkit";
-      default = true;
+      default = df.kitchen-sink.enable;
     };
   };
 

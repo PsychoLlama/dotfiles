@@ -20,11 +20,17 @@ in {
   ];
 
   options.dotfiles = with lib; {
+    kitchen-sink.enable = mkOption {
+      type = types.bool;
+      description = "Enable everything";
+      default = false;
+    };
+
     user = {
       manage = mkOption {
         type = types.bool;
         description = "Whether to manage the user account";
-        default = true;
+        default = config.dotfiles.kitchen-sink.enable;
       };
 
       account = mkOption {

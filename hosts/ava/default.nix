@@ -23,9 +23,13 @@
   # TODO: Manage background images more intelligently.
   # services.xserver.displayManager.lightdm.background = /home/overlord/background-image;
 
-  dotfiles.user = {
-    account = "overlord";
-    fullName = "Jesse Gibson";
+  dotfiles = {
+    kitchen-sink.enable = true;
+
+    user = {
+      account = "overlord";
+      fullName = "Jesse Gibson";
+    };
   };
 
   services.syncthing = {
