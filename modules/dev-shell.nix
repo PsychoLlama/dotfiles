@@ -74,21 +74,6 @@ in {
       syntaxHighlighting.enable = mkDefault true;
       autosuggestions.enable = mkDefault true;
       histSize = mkDefault 10000;
-
-      # TODO: Move these aliases to their respective modules.
-      shellAliases = {
-        g = "git";
-        c = "git commit";
-        b = "git branch";
-        ch = "git checkout";
-        h = "git diff HEAD";
-        hh = "git diff HEAD~1";
-        hhh = "git diff HEAD~2";
-
-        ".." = "cd ..";
-        "..." = "cd ../..";
-        "...." = "cd ../../..";
-      };
     };
 
     environment.shellAliases =
