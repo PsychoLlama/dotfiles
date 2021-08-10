@@ -50,7 +50,7 @@ in {
   };
 
   config = with lib; {
-    users.users.${df.user.account}.packages =
+    environment.systemPackages =
       (if cfg.firefox.enable then [ cfg.firefox.package ] else [ ])
       ++ (if cfg.torbrowser.enable then [ cfg.torbrowser.package ] else [ ])
       ++ (if cfg.zathura.enable then [ cfg.zathura.package ] else [ ]);

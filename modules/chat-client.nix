@@ -28,7 +28,7 @@ in {
   };
 
   config = with lib; {
-    users.users.${df.user.account}.packages = mkIf cfg.enable [
+    environment.systemPackages = mkIf cfg.enable [
       (unstable.weechat.override {
         configure = { ... }: {
           scripts = with unstable.weechatScripts;
