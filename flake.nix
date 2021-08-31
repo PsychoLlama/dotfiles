@@ -1,8 +1,8 @@
 {
   description = "NixOS modules supporting my development environment";
 
-  inputs.nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable";
-  inputs.nixpkgs.url = "nixpkgs/nixos-21.05";
+  inputs.nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
 
   inputs.hardware.url = "github:nixos/nixos-hardware/master";
   inputs.vim-plugin-nursery.url = "github:PsychoLlama/vim-plugin-nursery/main";

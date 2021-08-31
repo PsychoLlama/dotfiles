@@ -72,7 +72,6 @@ in {
           yajs-vim
 
           # Nursery. Depends on the nursery's Nix overlay.
-          clippy-nvim
           git-vim
           misc-vim
           stacktrace-vim

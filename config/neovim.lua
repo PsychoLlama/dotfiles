@@ -64,7 +64,6 @@ vim.api.nvim_set_keymap('i', '<s-tab>', 'editor#mappings#tab_completion(v:true)'
 -- Misc
 vim.api.nvim_set_keymap('n', '<esc>', ':nohlsearch<cr><esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>;', ':call editor#mappings#test()<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>t', '<Plug>(clippy-toggle-clipboard-mode)', {})
 
 
 -- ALE engine

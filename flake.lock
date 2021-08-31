@@ -17,18 +17,6 @@
         "type": "github"
       }
     },
-    "clippy-nvim": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-yjMizAaA8qZwlci0iU3V3U7SkwIpnqfRhguDhSDvQ4w=",
-        "path": "plugins/clippy.nvim",
-        "type": "path"
-      },
-      "original": {
-        "path": "plugins/clippy.nvim",
-        "type": "path"
-      }
-    },
     "further-vim": {
       "flake": false,
       "locked": {
@@ -76,11 +64,11 @@
     },
     "hardware": {
       "locked": {
-        "lastModified": 1625333638,
-        "narHash": "sha256-M6J9RN60XJyv6nUfDFCwnz5aVjhe8+GJnV8Q9VpdQQQ=",
+        "lastModified": 1629975021,
+        "narHash": "sha256-+z4pK5yvoIKAIPGnyxt7I7Y9yX72HFP2krppGENpn6I=",
         "owner": "nixos",
         "repo": "nixos-hardware",
-        "rev": "41775780a0b6b32b3d32dcc32bb9bc6df809062d",
+        "rev": "342048461da7fc743e588ee744080c045613a226",
         "type": "github"
       },
       "original": {
@@ -136,32 +124,34 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1625176478,
-        "narHash": "sha256-s1RTYNKw7ySyqrZjns9Cq+Nnjpp75ePgL06pgcbIpoA=",
+        "lastModified": 1630076329,
+        "narHash": "sha256-mkxPL5pXZv8cfHgjSW0oWfZRGSSlGwXy/7KR+2Mgf3M=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "21b696caf392ad6fa513caf3327d0aa0430ffb72",
+        "rev": "74d017edb6717ad76d38edc02ad3210d4ad66b96",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
+        "owner": "NixOS",
         "ref": "nixos-21.05",
-        "type": "indirect"
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1625403235,
-        "narHash": "sha256-LMitU5qG4zYAO3+5fJbdjmyn9snflCcq+P9eSghbcBI=",
+        "lastModified": 1630140382,
+        "narHash": "sha256-ntXepAHFlAEtaYIU5EzckRUODeeMgpu1u2Yug+4LFNc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f930ea227cecaed1f1bdb047fef54fe4f0721c8c",
+        "rev": "08ef0f28e3a41424b92ba1d203de64257a9fca6a",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
+        "owner": "NixOS",
         "ref": "nixpkgs-unstable",
-        "type": "indirect"
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
@@ -237,7 +227,6 @@
     "vim-plugin-nursery": {
       "inputs": {
         "alternaut-vim": "alternaut-vim",
-        "clippy-nvim": "clippy-nvim",
         "further-vim": "further-vim",
         "git-vim": "git-vim",
         "godown-vim": "godown-vim",
@@ -254,11 +243,11 @@
         "yajs-vim": "yajs-vim"
       },
       "locked": {
-        "lastModified": 1625461114,
-        "narHash": "sha256-Z5IilK4MMG/XHLNkg7J1TbwdcGpgovZaHmm39I2iIJ8=",
+        "lastModified": 1630374831,
+        "narHash": "sha256-zXGNrHSnkxj3M0uNozuwMLqaxfkTideh4RLnhN7RWHk=",
         "owner": "PsychoLlama",
         "repo": "vim-plugin-nursery",
-        "rev": "c51347276a2adc80845993bd9ded5b3692c5a127",
+        "rev": "0f024d9eb9a03640077d5e6c82be0489b4733755",
         "type": "github"
       },
       "original": {
