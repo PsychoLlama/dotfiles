@@ -23,7 +23,14 @@ in {
     environment.etc.gitconfig.source = mkIf cfg.enable ../../config/git.ini;
 
     environment.systemPackages = with unstable;
-      mkIf cfg.enable [ git gitAndTools.delta miniserve nixfmt shellcheck ];
+      mkIf cfg.enable [
+        git
+        gitAndTools.delta
+        miniserve
+        nixfmt
+        shellcheck
+        sshfs
+      ];
 
     environment.shellAliases = mkIf (cfg.enable && cfg.aliases.enable) {
       g = "git";
