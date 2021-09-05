@@ -15,6 +15,6 @@ in {
 
   config = with lib; {
     environment.systemPackages = with unstable;
-      mkIf cfg.enable [ nodejs pastel yarn ];
+      mkIf cfg.enable [ nodejs-16_x pastel yarn ];
   };
 }
