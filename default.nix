@@ -10,6 +10,7 @@ in {
     ./modules/dev-shell.nix
     ./modules/editor.nix
     ./modules/passwordless-sudo.nix
+    ./modules/wireless.nix
     ./modules/toolkits/development.nix
     ./modules/toolkits/files.nix
     ./modules/toolkits/infrastructure.nix

@@ -13,11 +13,6 @@
   networking = {
     interfaces.wlp0s20f3.useDHCP = true;
     useDHCP = false; # Deprecated option - explicitly opt out.
-
-    wireless = {
-      enable = true;
-      interfaces = [ "wlp0s20f3" ];
-    };
   };
 
   # TODO: Manage background images more intelligently.
