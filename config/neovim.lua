@@ -87,6 +87,7 @@ vim.g.ale_fixers = {
   javascript = { 'prettier' },
   typescript = { 'prettier' },
   terraform = { 'terraform' },
+  tex = { 'latexindent' },
   rust = { 'rustfmt' },
   nix = { 'nixfmt' }
 }
