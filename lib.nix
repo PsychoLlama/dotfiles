@@ -18,30 +18,34 @@ in {
       use = createPackageLoader system;
       unstable = use inputs.nixpkgs-unstable;
       pkgs = use inputs.nixpkgs;
+      systems = { "x86_64-darwin" = inputs.darwin.lib.darwinSystem; };
+      mkSystem = systems.${system} or inputs.nixpkgs.lib.nixosSystem;
 
-    in inputs.nixpkgs.lib.nixosSystem rec {
+    in mkSystem rec {
       inherit system;
 
       # Add stable and unstable package channels.
       specialArgs = { inherit system inputs unstable; };
 
       modules = [
-        ({ lib, ... }: {
+        ({ lib, pkgs, ... }: {
           # Hostnames are set by the directory's name.
           networking.hostName = lib.mkDefault (baseNameOf path);
 
           # Add custom packages.
           nixpkgs.overlays = overlays;
 
-          # Show the dotfiles revision in `nixos-version`.
-          system.configurationRevision = inputs.self.rev or null;
+          # This can be removed once nix flakes ship standard.
+          nix = {
+            package = pkgs.nixUnstable;
+            extraOptions = ''
+              experimental-features = nix-command flakes
+            '';
+          };
         })
 
         # Load the dotfiles framework.
         ./default.nix
-
-        # Enable and configure features from dotfiles.
-        ./hosts/common.nix
 
         # Do machine-specific configuration.
         path

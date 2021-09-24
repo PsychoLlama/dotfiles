@@ -1,7 +1,7 @@
 { unstable, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ ./hardware-configuration.nix ../common/linux.nix ];
 
   boot = {
     # Use the systemd-boot EFI boot loader.
