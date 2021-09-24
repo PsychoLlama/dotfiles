@@ -19,17 +19,16 @@ in {
     };
   };
 
-  config = with lib; {
-    users.groups.${cfg.group.name} = mkIf cfg.enable { };
-    users.users.${df.user.account}.extraGroups =
-      mkIf cfg.enable [ cfg.group.name ];
+  config = with lib;
+    mkIf cfg.enable {
+      users.groups.${cfg.group.name}.members = [ df.user.account ];
 
-    security.sudo.extraRules = mkIf cfg.enable [{
-      groups = [ cfg.group.name ];
-      commands = [{
-        command = "ALL";
-        options = [ "NOPASSWD" ];
+      security.sudo.extraRules = [{
+        groups = [ cfg.group.name ];
+        commands = [{
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }];
       }];
-    }];
-  };
+    };
 }

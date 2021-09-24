@@ -47,41 +47,44 @@ in {
     };
   };
 
-  config = with lib; {
-    environment.etc."zshrc.local".source = mkIf cfg.enable cfg.zsh.rc;
+  config = with lib;
+    mkMerge [
+      (mkIf cfg.enable {
+        environment.etc."zshrc.local".source = cfg.zsh.rc;
 
-    environment.variables.STARSHIP_CONFIG =
-      mkIf cfg.enable "${cfg.starship.config}";
+        environment.variables.STARSHIP_CONFIG = "${cfg.starship.config}";
 
-    environment.systemPackages = mkIf cfg.enable [
-      (unstable.callPackage ../pkgs/alacritty.nix {
-        configFile = cfg.alacritty.config;
+        environment.systemPackages = [
+          (unstable.callPackage ../pkgs/alacritty.nix {
+            configFile = cfg.alacritty.config;
+          })
+          unstable.starship
+        ];
+
+        programs.tmux = {
+          enable = true;
+          keyMode = mkDefault "vi";
+          escapeTime = mkDefault 0;
+          historyLimit = mkDefault 10000;
+          customPaneNavigationAndResize = mkDefault true;
+          extraConfig = builtins.readFile cfg.tmux.config;
+        };
+
+        programs.zsh = {
+          enable = true;
+          syntaxHighlighting.enable = mkDefault true;
+          autosuggestions.enable = mkDefault true;
+          histSize = mkDefault 10000;
+        };
+
+        users.users.${df.user.account}.shell = pkgs.zsh;
+
+        fonts.fonts = [ unstable.fira-code ];
+        console.font = "Fira Code";
       })
-      unstable.starship
+
+      (mkIf (cfg.enable && cfg.tmux.aliases.enable) {
+        environment.shellAliases = { t = "tmux"; };
+      })
     ];
-
-    programs.tmux = mkIf cfg.enable {
-      enable = true;
-      keyMode = mkDefault "vi";
-      escapeTime = mkDefault 0;
-      historyLimit = mkDefault 10000;
-      customPaneNavigationAndResize = mkDefault true;
-      extraConfig = builtins.readFile cfg.tmux.config;
-    };
-
-    programs.zsh = mkIf cfg.enable {
-      enable = true;
-      syntaxHighlighting.enable = mkDefault true;
-      autosuggestions.enable = mkDefault true;
-      histSize = mkDefault 10000;
-    };
-
-    environment.shellAliases =
-      mkIf (cfg.enable && cfg.tmux.aliases.enable) { t = "tmux"; };
-
-    users.users.${df.user.account}.shell = mkIf cfg.enable pkgs.zsh;
-
-    fonts.fonts = mkIf cfg.enable [ unstable.fira-code ];
-    console.font = mkIf cfg.enable "Fira Code";
-  };
 }

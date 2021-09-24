@@ -25,49 +25,50 @@ in {
     };
   };
 
-  config = with lib; {
-    # Enable the X11 windowing system.
-    services.xserver = mkIf cfg.enable {
-      enable = true;
+  config = with lib;
+    mkIf cfg.enable {
+      # Enable the X11 windowing system.
+      services.xserver = {
+        enable = true;
 
-      # Seems a more reasonable default.
-      autoRepeatDelay = mkDefault 250;
+        # Seems a more reasonable default.
+        autoRepeatDelay = mkDefault 250;
 
-      # Honestly, who uses caps lock?
-      xkbOptions = mkDefault "caps:escape";
+        # Honestly, who uses caps lock?
+        xkbOptions = mkDefault "caps:escape";
 
-      libinput = {
-        enable = mkDefault true;
+        libinput = {
+          enable = mkDefault true;
 
-        # Configure the touchpad.
-        touchpad = {
-          naturalScrolling = mkDefault true;
-          tapping = mkDefault false; # Disable soft tap to click.
+          # Configure the touchpad.
+          touchpad = {
+            naturalScrolling = mkDefault true;
+            tapping = mkDefault false; # Disable soft tap to click.
+          };
+        };
+
+        # Swap out the login screen program.
+        displayManager.lightdm.greeters.enso.enable = mkDefault true;
+
+        # Use XMonad to manage the graphical environment.
+        windowManager.xmonad = {
+          enable = true;
+          enableContribAndExtras = mkDefault true;
+          config = cfg.xmonad.config;
         };
       };
 
-      # Swap out the login screen program.
-      displayManager.lightdm.greeters.enso.enable = mkDefault true;
+      # Screen locking utility.
+      programs.slock.enable = true;
 
-      # Use XMonad to manage the graphical environment.
-      windowManager.xmonad = {
-        enable = true;
-        enableContribAndExtras = mkDefault true;
-        config = cfg.xmonad.config;
-      };
+      # App launcher.
+      environment.systemPackages = [
+        (unstable.callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
+      ];
+
+      # If they're enabling a desktop, these seem like reasonable defaults.
+      services.printing.enable = mkDefault true;
+      sound.enable = mkDefault true;
+      hardware.pulseaudio.enable = mkDefault true;
     };
-
-    # Screen locking utility.
-    programs.slock.enable = mkIf cfg.enable true;
-
-    # App launcher.
-    environment.systemPackages = mkIf cfg.enable [
-      (unstable.callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
-    ];
-
-    # If they're enabling a desktop, these seem like reasonable defaults.
-    services.printing.enable = mkIf cfg.enable (mkDefault true);
-    sound.enable = mkIf cfg.enable (mkDefault true);
-    hardware.pulseaudio.enable = mkIf cfg.enable (mkDefault true);
-  };
 }

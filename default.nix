@@ -50,14 +50,15 @@ in {
     };
   };
 
-  config = with lib; {
-    # Create a personal user profile. Other modules depend on this.
-    users.users = mkIf cfg.user.manage {
-      ${cfg.user.account} = {
-        isNormalUser = true;
-        description = cfg.user.fullName;
-        extraGroups = [ "wheel" ];
+  config = with lib;
+    mkIf cfg.user.manage {
+      # Create a personal user profile. Other modules depend on this.
+      users.users = {
+        ${cfg.user.account} = {
+          isNormalUser = true;
+          description = cfg.user.fullName;
+          extraGroups = [ "wheel" ];
+        };
       };
     };
-  };
 }

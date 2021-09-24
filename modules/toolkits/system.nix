@@ -13,8 +13,16 @@ in {
     };
   };
 
-  config = with lib; {
-    environment.systemPackages = with unstable;
-      mkIf cfg.enable [ acpi bottom ncspot playerctl rage scrot xclip ];
-  };
+  config = with lib;
+    mkIf cfg.enable {
+      environment.systemPackages = with unstable; [
+        acpi
+        bottom
+        ncspot
+        playerctl
+        rage
+        scrot
+        xclip
+      ];
+    };
 }

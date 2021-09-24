@@ -19,16 +19,20 @@ in {
     };
   };
 
-  config = with lib; {
-    environment.systemPackages = with unstable;
-      mkIf cfg.enable [ ipmitool kubectl terraform_1_0_0 ];
+  config = with lib;
+    mkIf cfg.enable {
+      environment.systemPackages = with unstable; [
+        ipmitool
+        kubectl
+        terraform_1_0_0
+      ];
 
-    virtualisation.docker = mkIf cfg.enable {
-      enable = mkDefault true;
-      package = cfg.docker.package;
-      autoPrune.enable = true;
+      virtualisation.docker = {
+        enable = mkDefault true;
+        package = cfg.docker.package;
+        autoPrune.enable = true;
+      };
+
+      users.users.${df.user.account}.extraGroups = [ "docker" ];
     };
-
-    users.users.${df.user.account}.extraGroups = mkIf cfg.enable [ "docker" ];
-  };
 }

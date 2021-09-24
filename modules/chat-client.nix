@@ -27,15 +27,16 @@ in {
     };
   };
 
-  config = with lib; {
-    environment.systemPackages = mkIf cfg.enable [
-      (unstable.weechat.override {
-        configure = { ... }: {
-          scripts = with unstable.weechatScripts;
-            (if cfg.matrix.enable then [ weechat-matrix ] else [ ])
-            ++ (if cfg.slack.enable then [ wee-slack ] else [ ]);
-        };
-      })
-    ];
-  };
+  config = with lib;
+    mkIf cfg.enable {
+      environment.systemPackages = [
+        (unstable.weechat.override {
+          configure = { ... }: {
+            scripts = with unstable.weechatScripts;
+              (if cfg.matrix.enable then [ weechat-matrix ] else [ ])
+              ++ (if cfg.slack.enable then [ wee-slack ] else [ ]);
+          };
+        })
+      ];
+    };
 }

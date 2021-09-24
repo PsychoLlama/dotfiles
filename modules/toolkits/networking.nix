@@ -19,10 +19,10 @@ in {
     };
   };
 
-  config = with lib; {
-    programs.wireshark.enable = mkIf cfg.enable true;
-    environment.systemPackages = with unstable;
-      mkIf cfg.enable [
+  config = with lib;
+    mkIf cfg.enable {
+      programs.wireshark.enable = true;
+      environment.systemPackages = with unstable; [
         (unstable.callPackage ../../pkgs/w3m.nix { keymap = cfg.w3m.keymap; })
         dogdns
         nmap
@@ -30,5 +30,5 @@ in {
         whois
         xh
       ];
-  };
+    };
 }

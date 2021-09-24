@@ -13,9 +13,9 @@ in {
     };
   };
 
-  config = with lib; {
-    networking.networkmanager.enable = cfg.enable;
-    users.users.${df.user.account}.extraGroups =
-      mkIf cfg.enable [ "networkmanager" ];
-  };
+  config = with lib;
+    mkIf cfg.enable {
+      networking.networkmanager.enable = true;
+      users.users.${df.user.account}.extraGroups = [ "networkmanager" ];
+    };
 }

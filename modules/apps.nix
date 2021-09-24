@@ -66,11 +66,19 @@ in {
     };
   };
 
-  config = with lib; {
-    environment.systemPackages =
-      (if browsers.firefox.enable then [ browsers.firefox.package ] else [ ])
-      ++ (if browsers.tor.enable then [ browsers.tor.package ] else [ ])
-      ++ (if browsers.brave.enable then [ browsers.brave.package ] else [ ])
-      ++ (if cfg.zathura.enable then [ cfg.zathura.package ] else [ ]);
-  };
+  config = with lib;
+    mkMerge [
+      (mkIf browsers.firefox.enable {
+        environment.systemPackages = [ browsers.firefox.package ];
+      })
+      (mkIf browsers.brave.enable {
+        environment.systemPackages = [ browsers.brave.package ];
+      })
+      (mkIf browsers.tor.enable {
+        environment.systemPackages = [ browsers.tor.package ];
+      })
+      (mkIf cfg.zathura.enable {
+        environment.systemPackages = [ cfg.zathura.package ];
+      })
+    ];
 }

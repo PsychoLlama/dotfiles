@@ -13,8 +13,8 @@ in {
     };
   };
 
-  config = with lib; {
-    environment.systemPackages = with unstable;
-      mkIf cfg.enable [ nodejs-16_x pastel yarn ];
-  };
+  config = with lib;
+    mkIf cfg.enable {
+      environment.systemPackages = with unstable; [ nodejs-16_x pastel yarn ];
+    };
 }

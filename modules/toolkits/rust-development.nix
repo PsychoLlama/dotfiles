@@ -13,9 +13,9 @@ in {
     };
   };
 
-  config = with lib; {
-    environment.systemPackages = with unstable;
-      mkIf cfg.enable [
+  config = with lib;
+    mkIf cfg.enable {
+      environment.systemPackages = with unstable; [
         cargo
         cargo-edit
         clippy
@@ -27,9 +27,9 @@ in {
         rustup
       ];
 
-    # Several popular Rust libraries depend on OpenSSL bindings.
-    environment.variables = mkIf cfg.enable {
-      PKG_CONFIG_PATH = "${unstable.openssl.dev}/lib/pkgconfig";
+      # Several popular Rust libraries depend on OpenSSL bindings.
+      environment.variables = {
+        PKG_CONFIG_PATH = "${unstable.openssl.dev}/lib/pkgconfig";
+      };
     };
-  };
 }

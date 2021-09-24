@@ -19,27 +19,31 @@ in {
     };
   };
 
-  config = with lib; {
-    environment.etc.gitconfig.source = mkIf cfg.enable ../../config/git.ini;
+  config = with lib;
+    mkMerge [
+      (mkIf cfg.enable {
+        environment.etc.gitconfig.source = ../../config/git.ini;
 
-    environment.systemPackages = with unstable;
-      mkIf cfg.enable [
-        git
-        gitAndTools.delta
-        miniserve
-        nixfmt
-        shellcheck
-        sshfs
-      ];
+        environment.systemPackages = with unstable; [
+          git
+          gitAndTools.delta
+          miniserve
+          nixfmt
+          shellcheck
+          sshfs
+        ];
+      })
 
-    environment.shellAliases = mkIf (cfg.enable && cfg.aliases.enable) {
-      g = "git";
-      c = "git commit";
-      b = "git branch";
-      ch = "git checkout";
-      h = "git diff HEAD";
-      hh = "git diff HEAD~1";
-      hhh = "git diff HEAD~2";
-    };
-  };
+      (mkIf (cfg.enable && cfg.aliases.enable) {
+        environment.shellAliases = {
+          g = "git";
+          c = "git commit";
+          b = "git branch";
+          ch = "git checkout";
+          h = "git diff HEAD";
+          hh = "git diff HEAD~1";
+          hhh = "git diff HEAD~2";
+        };
+      })
+    ];
 }
