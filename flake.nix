@@ -21,7 +21,7 @@
     let lib = import ./lib.nix inputs;
 
     in {
-      nixosModule = import ./default.nix;
+      nixosModules.default = import ./default.nix;
       overlay = import ./pkgs;
 
       nixosConfigurations = {

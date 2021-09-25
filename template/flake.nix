@@ -9,7 +9,7 @@
 
         specialArgs = { inherit self; };
 
-        modules = [ dotfiles.nixosModule ./configuration.nix ];
+        modules = [ dotfiles.nixosModules.default ./configuration.nix ];
       };
     };
   };
