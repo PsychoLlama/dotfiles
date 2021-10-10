@@ -59,11 +59,11 @@
       "flake": false,
       "locked": {
         "narHash": "sha256-jb/CApvgY1o/HYNjTJhHdPPtXOUdsJ+qYwb6lQkxVNI=",
-        "path": "plugins/git.vim",
+        "path": "./plugins/git.vim",
         "type": "path"
       },
       "original": {
-        "path": "plugins/git.vim",
+        "path": "./plugins/git.vim",
         "type": "path"
       }
     },
@@ -103,11 +103,11 @@
       "flake": false,
       "locked": {
         "narHash": "sha256-+LbFcGEkIziLS+XpLhlDByGNN9ltN9msgfb/jMLNVuA=",
-        "path": "plugins/misc.vim",
+        "path": "./plugins/misc.vim",
         "type": "path"
       },
       "original": {
-        "path": "plugins/misc.vim",
+        "path": "./plugins/misc.vim",
         "type": "path"
       }
     },
@@ -130,11 +130,11 @@
     "nginx-vim": {
       "flake": false,
       "locked": {
-        "lastModified": 1614287708,
-        "narHash": "sha256-/hvf+Lo8j1ZoW6QOO6LbJJrXG4aHAotM6j5/9kifwwI=",
+        "lastModified": 1633281202,
+        "narHash": "sha256-7GYNhnoTx7y+xo9dkfaO8KCM7StPFY8P1ldTFD9pGZ0=",
         "owner": "chr4",
         "repo": "nginx.vim",
-        "rev": "7b8e3ef48d8e60fe64bb1a85be52e66dd412c84d",
+        "rev": "ceeab164880ad90e73ab1be31dc3932777b9ef20",
         "type": "github"
       },
       "original": {
@@ -188,11 +188,11 @@
       "flake": false,
       "locked": {
         "narHash": "sha256-dLDvOTqlU9HvDW191BiMU6089Ah5xwB7rKR2oPsQsCk=",
-        "path": "plugins/stacktrace.vim",
+        "path": "./plugins/stacktrace.vim",
         "type": "path"
       },
       "original": {
-        "path": "plugins/stacktrace.vim",
+        "path": "./plugins/stacktrace.vim",
         "type": "path"
       }
     },
@@ -265,11 +265,11 @@
         "yajs-vim": "yajs-vim"
       },
       "locked": {
-        "lastModified": 1630374831,
-        "narHash": "sha256-zXGNrHSnkxj3M0uNozuwMLqaxfkTideh4RLnhN7RWHk=",
+        "lastModified": 1633455293,
+        "narHash": "sha256-BkUFWQ9WJ1/GMy6iE396etwN9QfN0Znh9wL82QHljt4=",
         "owner": "PsychoLlama",
         "repo": "vim-plugin-nursery",
-        "rev": "0f024d9eb9a03640077d5e6c82be0489b4733755",
+        "rev": "0b27147ddd2eb00b9cdbb1288c0c1e7ab5b51a46",
         "type": "github"
       },
       "original": {
