@@ -27,48 +27,13 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      # Enable the X11 windowing system.
-      services.xserver = {
+      # Enable a minimal desktop environment with Sway/Wayland.
+      programs.sway = {
         enable = true;
-
-        # Seems a more reasonable default.
-        autoRepeatDelay = mkDefault 250;
-
-        # Honestly, who uses caps lock?
-        xkbOptions = mkDefault "caps:escape";
-
-        libinput = {
-          enable = mkDefault true;
-
-          # Configure the touchpad.
-          touchpad = {
-            naturalScrolling = mkDefault true;
-            tapping = mkDefault false; # Disable soft tap to click.
-          };
-        };
-
-        # Swap out the login screen program.
-        displayManager.lightdm.greeters.enso.enable = mkDefault true;
-
-        # Use XMonad to manage the graphical environment.
-        windowManager.xmonad = {
-          enable = true;
-          enableContribAndExtras = mkDefault true;
-          config = cfg.xmonad.config;
-        };
+        extraSessionCommands = ''
+          # Remap caps lock to escape.
+          export XKB_DEFAULT_OPTIONS=caps:escape
+        '';
       };
-
-      # Screen locking utility.
-      programs.slock.enable = true;
-
-      # App launcher.
-      environment.systemPackages = [
-        (unstable.callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
-      ];
-
-      # If they're enabling a desktop, these seem like reasonable defaults.
-      services.printing.enable = mkDefault true;
-      sound.enable = mkDefault true;
-      hardware.pulseaudio.enable = mkDefault true;
     };
 }
