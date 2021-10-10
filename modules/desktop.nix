@@ -12,10 +12,10 @@ in {
       default = df.kitchen-sink.enable;
     };
 
-    xmonad.config = mkOption {
+    sway.config = mkOption {
       type = types.path;
       description = "Set the XMonad config file";
-      default = ../config/xmonad.hs;
+      default = ../config/sway.conf;
     };
 
     rofi.config = mkOption {
@@ -35,5 +35,11 @@ in {
           export XKB_DEFAULT_OPTIONS=caps:escape
         '';
       };
+
+      environment.systemPackages = [
+        (unstable.callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
+      ];
+
+      environment.etc."sway/config".source = cfg.sway.config;
     };
 }
