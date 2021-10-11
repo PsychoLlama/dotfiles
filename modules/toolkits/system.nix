@@ -18,11 +18,12 @@ in {
       environment.systemPackages = with unstable; [
         acpi
         bottom
+        grim
         ncspot
         playerctl
         rage
-        scrot
-        xclip
+        slurp
+        wl-clipboard
       ];
     };
 }
