@@ -4,14 +4,13 @@ A [NixOS](https://nixos.org/) flake that recreate my development machines.
 
 ---
 
-| | |
-|---|---|
-| Shell | [zsh](https://www.zsh.org/) |
-| DM | [lightdm](https://github.com/canonical/lightdm) + [enso](http://enso-os.site/) |
-| WM | [XMonad](https://xmonad.org/) |
-| Editor | [Neovim](http://neovim.io/) |
-| Terminal | [Alacritty](https://github.com/alacritty/alacritty) |
+| Category | Tool |
+|---|--:|
+| DE | [Sway](https://swaywm.org/) |
 | Launcher | [Rofi](https://github.com/davatorium/rofi) |
+| Terminal | [Alacritty](https://github.com/alacritty/alacritty) |
+| Shell | [zsh](https://www.zsh.org/) |
+| Editor | [Neovim](http://neovim.io/) |
 | Browser | [Firefox](https://www.mozilla.org/en-US/firefox/new/) |
 
 ## Usage
