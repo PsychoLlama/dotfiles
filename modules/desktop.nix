@@ -46,5 +46,10 @@ in {
       environment.loginShellInit = ''
         test "$(tty)" = /dev/tty1 && sway
       '';
+
+      # If they're enabling a desktop, these seem like reasonable defaults.
+      services.printing.enable = mkDefault true;
+      sound.enable = mkDefault true;
+      hardware.pulseaudio.enable = mkDefault true;
     };
 }
