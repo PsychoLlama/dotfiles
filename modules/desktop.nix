@@ -41,5 +41,10 @@ in {
       ];
 
       environment.etc."sway/config".source = cfg.sway.config;
+
+      # Automatically start Sway session on login.
+      environment.loginShellInit = ''
+        test "$(tty)" = /dev/tty1 && sway
+      '';
     };
 }
