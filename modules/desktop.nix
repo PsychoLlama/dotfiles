@@ -44,7 +44,7 @@ in {
 
       # Automatically start Sway session on login.
       environment.loginShellInit = ''
-        test "$(tty)" = /dev/tty1 && sway
+        test "$(tty)" = /dev/tty1 && exec sway
       '';
 
       # If they're enabling a desktop, these seem like reasonable defaults.
