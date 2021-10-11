@@ -43,10 +43,19 @@ in {
 
       environment.etc."sway/config".source = cfg.sway.config;
 
-      # Automatically start Sway session on login.
-      environment.loginShellInit = ''
-        test "$(tty)" = /dev/tty1 && exec sway
-      '';
+      services.greetd = {
+        enable = true;
+        settings.default_session = {
+          user = "greeter";
+          command = "${
+              lib.makeBinPath [ unstable.greetd.tuigreet ]
+            }/tuigreet --asterisks -trc sway";
+        };
+      };
+
+      # Avoids interleaving with systemd output.
+      systemd.services.greetd.serviceConfig.Type = "idle";
+      services.greetd.vt = 2;
 
       # If they're enabling a desktop, these seem like reasonable defaults.
       services.printing.enable = mkDefault true;
