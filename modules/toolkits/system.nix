@@ -18,6 +18,7 @@ in {
       environment.systemPackages = with unstable; [
         acpi
         bottom
+        brightnessctl
         grim
         ncspot
         playerctl
