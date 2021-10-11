@@ -36,8 +36,9 @@ in {
         '';
       };
 
-      environment.systemPackages = [
-        (unstable.callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
+      environment.systemPackages = with unstable; [
+        (callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
+        mako
       ];
 
       environment.etc."sway/config".source = cfg.sway.config;
