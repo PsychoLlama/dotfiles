@@ -16,6 +16,8 @@ vim.o.inccommand = 'nosplit'
 vim.o.wrapscan = false
 vim.o.pumheight = 10
 vim.o.autoread = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
 -- Display settings
 vim.o.incsearch = true
