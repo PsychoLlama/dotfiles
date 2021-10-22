@@ -24,6 +24,7 @@ in {
         playerctl
         rage
         slurp
+        wf-recorder
         wl-clipboard
       ];
     };
