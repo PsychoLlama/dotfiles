@@ -6,7 +6,7 @@ A [NixOS](https://nixos.org/) flake that recreate my development machines.
 
 | Category | Tool |
 |---|--:|
-| WM | [Sway](https://swaywm.org/) |
+| WM | [Sway](https://swaywm.org/) + [Waybar](https://github.com/Alexays/Waybar/) |
 | Launcher | [Rofi](https://github.com/davatorium/rofi) |
 | Terminal | [Alacritty](https://github.com/alacritty/alacritty) |
 | Shell | [zsh](https://www.zsh.org/) |
