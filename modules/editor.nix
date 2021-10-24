@@ -55,7 +55,6 @@ in {
               vim-plug
               vim-repeat
               vim-surround
-              vim-swap
               vim-terraform
 
               # 3rd party
@@ -71,6 +70,7 @@ in {
               stacktrace-vim
 
               # Treesitter integrations.
+              nvim-treesitter-textobjects
               (nvim-treesitter.withPlugins
                 (plugins: unstable.tree-sitter.allGrammars))
             ];

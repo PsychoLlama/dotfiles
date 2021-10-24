@@ -136,6 +136,27 @@ vim.g['alternaut#conventions'] = test_conventions
 require('nvim-treesitter.configs').setup({
   highlight = { enable = true },
   indent = { enable = true },
+  textobjects = {
+    swap = {
+      enable = true,
+      swap_next = {
+        ['g>'] = '@parameter.inner',
+      },
+      swap_previous = {
+        ['g<'] = '@parameter.inner',
+      },
+    },
+
+    select = {
+      enable = true,
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+      },
+    },
+  },
 })
 
 -- Misc
