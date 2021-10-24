@@ -67,7 +67,6 @@ in {
               alternaut-vim
               further-vim
               godown-vim
-              navitron-vim
               nginx-vim
               teleport-vim
               vim-nand2tetris

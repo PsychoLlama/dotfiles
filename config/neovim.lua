@@ -137,7 +137,7 @@ vim.g['further#prefer_modules'] = true
 vim.g['teleport#update_cwd'] = true
 vim.g.jsx_ext_required = 0
 vim.g.splitjoin_trailing_comma = true
-vim.g.loaded_netrwPlugin = true
+vim.g.netrw_banner = 0
 
 -- Finalize config after plugins load.
 --
