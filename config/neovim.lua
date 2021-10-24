@@ -132,6 +132,12 @@ test_conventions.vader = test_conventions.vim
 
 vim.g['alternaut#conventions'] = test_conventions
 
+-- Tree-Sitter
+require('nvim-treesitter.configs').setup({
+  highlight = { enable = true },
+  indent = { enable = true },
+})
+
 -- Misc
 vim.g['further#prefer_modules'] = true
 vim.g['teleport#update_cwd'] = true

@@ -42,11 +42,9 @@ in {
               auto-pairs
               coc-nvim
               onedark-vim
-              rust-vim
               skim
               skim-vim
               splitjoin-vim
-              typescript-vim
               undotree
               vader-vim
               vim-commentary
@@ -54,28 +52,27 @@ in {
               vim-fugitive
               vim-gitgutter
               vim-graphql
-              vim-markdown
-              vim-nix
               vim-plug
               vim-repeat
               vim-surround
               vim-swap
               vim-terraform
-              vim-toml
 
               # 3rd party
               alternaut-vim
               further-vim
               godown-vim
-              nginx-vim
               teleport-vim
               vim-nand2tetris
-              yajs-vim
 
               # Nursery. Depends on the nursery's Nix overlay.
               git-vim
               misc-vim
               stacktrace-vim
+
+              # Treesitter integrations.
+              (nvim-treesitter.withPlugins
+                (plugins: unstable.tree-sitter.allGrammars))
             ];
           })
         ];
