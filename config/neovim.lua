@@ -68,6 +68,8 @@ vim.api.nvim_set_keymap('i', '<s-tab>', 'editor#mappings#tab_completion(v:true)'
 vim.api.nvim_set_keymap('n', '<esc>', ':nohlsearch<cr><esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>;', ':call editor#mappings#test()<cr>', { noremap = true, silent = true })
 
+-- Markdown previewer
+vim.g.mkdp_browser = 'firefox'
 
 -- ALE engine
 vim.g.ale_sign_warning = '!'

@@ -41,6 +41,7 @@ in {
               ale
               auto-pairs
               coc-nvim
+              markdown-preview-nvim
               onedark-vim
               skim
               skim-vim
@@ -60,7 +61,6 @@ in {
               # 3rd party
               alternaut-vim
               further-vim
-              godown-vim
               navitron-vim
               teleport-vim
               vim-nand2tetris
