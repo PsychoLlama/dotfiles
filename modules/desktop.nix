@@ -3,6 +3,20 @@
 let
   df = config.dotfiles;
   cfg = config.dotfiles.desktop;
+  generateSwayInputsConfig = inputs:
+    let
+      inputDefinitions = lib.mapAttrsToList (inputName: input:
+        let
+          fieldDefinitions = lib.mapAttrsToList
+            (fieldName: field: "${fieldName} ${builtins.toString field}") input;
+
+        in ''
+          input "${inputName}" {
+            ${lib.concatStringsSep "\n" fieldDefinitions}
+          }
+        '') inputs;
+
+    in lib.concatStringsSep "\n" inputDefinitions;
 
 in {
   options.dotfiles.desktop = with lib; {
@@ -12,10 +26,23 @@ in {
       default = df.kitchen-sink.enable;
     };
 
-    sway.config = mkOption {
-      type = types.path;
-      description = "Set the XMonad config file";
-      default = ../config/sway.conf;
+    sway = {
+      config = mkOption {
+        type = types.path;
+        description = "Set the XMonad config file";
+        default = ../config/sway.conf;
+      };
+
+      inputs = mkOption {
+        type =
+          types.attrsOf (types.attrsOf (types.oneOf [ types.str types.int ]));
+        description = "Settings for Sway input devices";
+        example = literalExample ''
+          dotfiles.desktop.sway.inputs."AT_Keyboard" = {
+            repeat_delay = 250;
+          };
+        '';
+      };
     };
 
     rofi.config = mkOption {
@@ -63,6 +90,8 @@ in {
         ];
 
         environment.etc."sway/config".source = cfg.sway.config;
+        environment.etc."sway/config.d/inputs".text =
+          generateSwayInputsConfig cfg.sway.inputs;
 
         services.greetd = {
           enable = true;

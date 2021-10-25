@@ -25,6 +25,11 @@
       account = "overlord";
       fullName = "Jesse Gibson";
     };
+
+    desktop.sway.inputs = {
+      "2:7:SynPS/2_Synaptics_TouchPad" = { natural_scroll = "enabled"; };
+      "1:1:AT_Translated_Set_2_keyboard" = { repeat_delay = 250; };
+    };
   };
 
   services.syncthing = {
