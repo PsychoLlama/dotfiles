@@ -56,3 +56,12 @@ window#waybar {
   background-color: #e06c75; /* red */
   color: #282c34;
 }
+
+#idle_inhibitor {
+  font-size: 120%;
+}
+
+#idle_inhibitor.activated {
+  background-color: #61afef; /* green */
+  color: #282c34;
+}
