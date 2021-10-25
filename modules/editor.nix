@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, unstable, inputs, lib, ... }:
 
 let
   df = config.dotfiles;
@@ -61,6 +61,7 @@ in {
               alternaut-vim
               further-vim
               godown-vim
+              navitron-vim
               teleport-vim
               vim-nand2tetris
 

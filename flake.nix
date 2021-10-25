@@ -8,7 +8,7 @@
 
     vim-plugin-nursery = {
       url = "github:PsychoLlama/vim-plugin-nursery/main";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     darwin = {

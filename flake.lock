@@ -256,7 +256,7 @@
         "navitron-vim": "navitron-vim",
         "nginx-vim": "nginx-vim",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "stacktrace-vim": "stacktrace-vim",
         "teleport-vim": "teleport-vim",
