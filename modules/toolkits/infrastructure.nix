@@ -22,6 +22,7 @@ in {
   config = with lib;
     mkIf cfg.enable {
       environment.systemPackages = with unstable; [
+        dive
         ipmitool
         kubectl
         terraform_1_0_0
