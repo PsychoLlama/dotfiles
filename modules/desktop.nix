@@ -86,6 +86,7 @@ in {
 
         environment.systemPackages = with unstable; [
           (callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
+          wlsunset
           mako
         ];
 
