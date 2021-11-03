@@ -87,12 +87,16 @@ in {
         environment.systemPackages = with unstable; [
           (callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
           wlsunset
-          mako
+          dunst
         ];
 
         environment.etc."sway/config".source = cfg.sway.config;
         environment.etc."sway/config.d/inputs".text =
           generateSwayInputsConfig cfg.sway.inputs;
+
+        environment.etc."sway/config.d/notifications".text = ''
+          exec dunst -config ${../config/dunst.cfg}
+        '';
 
         services.greetd = {
           enable = true;
