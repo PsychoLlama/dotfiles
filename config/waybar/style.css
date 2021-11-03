@@ -5,8 +5,8 @@
   min-height: 0;
 }
 
-window#waybar {
-  background-color: #282c34;
+window {
+  background-color: #1e1e1e;
   color: #abb2bf;
   transition-property: background-color;
   transition-duration: 0.5s;
@@ -26,7 +26,7 @@ window#waybar {
 
 #workspaces button.focused {
   background-color: #abb2bf;
-  color: #282c34;
+  color: #1e1e1e;
 }
 
 .modules-center widget label {
@@ -42,19 +42,19 @@ window#waybar {
 
 #mode {
   background-color: #e06c75;
-  color: #282c34;
+  color: #1e1e1e;
   padding: 4px 8px;
   font-size: 120%;
 }
 
 #battery.warning {
   background-color: #e5c07b; /* yellow */
-  color: #282c34;
+  color: #1e1e1e;
 }
 
 #battery.critical {
   background-color: #e06c75; /* red */
-  color: #282c34;
+  color: #1e1e1e;
 }
 
 #idle_inhibitor {
@@ -63,5 +63,5 @@ window#waybar {
 
 #idle_inhibitor.activated {
   background-color: #61afef; /* green */
-  color: #282c34;
+  color: #1e1e1e;
 }
