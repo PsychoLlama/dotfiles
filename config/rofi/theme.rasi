@@ -1,10 +1,14 @@
-// Rofi theme. See `man rofi-theme` for details.
-// Adapted from taylor1791/dotfiles.
+/*
+ * Rofi theme. See `rofi-theme(5)` for details.
+ * Adapted from taylor1791/dotfiles.
+ *
+ * vim: ft=css
+ */
 
-// Global properties. Every element inherits these properties.
+/* Global properties. Every element inherits these properties. */
 * {
-  // OneDark theme.
-  black:          #282C34;
+  /* OneDarkPro theme. */
+  black:          #1E1E1E;
   white:          #ABB2BF;
   red:            #E06C75;
   green:          #98C379;
@@ -12,11 +16,11 @@
   blue:           #61AFEF;
   magenta:        #C678DD;
   cyan:           #56B6C2;
-  gutter-grey:    #4B5263;
-  comment-grey:   #5c6370;
+  gutter-gray:    #5C6370;
+  comment-gray:   #7D828D;
 
-  // Derived-colors
-  white10:        #ABB2BF0A; // @white 10/255 opaque 
+  /* Derived-colors */
+  white10:        #ABB2BF0A; /* @white 10/255 opaque  */
 
   background-color: @black;
   font:             "mononoki 16";
@@ -24,18 +28,18 @@
 }
 
 window {
-  border-color: @blue;
+  border-color: @gutter-gray;
   border:       2;
 }
 
 inputbar {
   padding:      0.25em;
   border:       0 dash 0 dash 2px dash 0 dash;
-  border-color: @gutter-grey;
+  border-color: @gutter-gray;
 }
 
-// To test an error message, use the following command:
-// $ rofi -e "Hello World"
+/* To test an error message, use the following command: */
+/* $ rofi -e "Hello World" */
 error-message {
   background-color: @magenta;
   text-color: @black;
@@ -47,14 +51,14 @@ textbox {
   text-color: inherit;
 }
 
-// To test a message, use the following command:
-// $ echo 'a:b:c' | rofi -sep : -dmenu -mesg 'Choose an option:'
+/* To test a message, use the following command: */
+/* $ echo 'a:b:c' | rofi -sep : -dmenu -mesg 'Choose an option:' */
 message {
   padding:      0.25em;
 }
 
-// It is hard not to test this with any rofi command. Example:
-// $ rofi -show drun
+/* It is hard not to test this with any rofi command. Example: */
+/* $ rofi -show drun */
 listview {
   background-color: @black;
   scrollbar:        true;
@@ -62,7 +66,7 @@ listview {
 
 scrollbar {
   handle-width: 0.5em;
-  handle-color: @gutter-grey;
+  handle-color: @gutter-gray;
 }
 
 element {
@@ -76,23 +80,23 @@ element.alternate.urgent {
   background-color: @white10;
 }
 
-// To test active states, run these commands:
-// $ 'a:b:c:d' | rofi -sep ':' -dmenu -a 2
-// $ 'a:b:c:d' | rofi -sep ':' -dmenu -a 3
+/* To test active states, run these commands: */
+/* $ 'a:b:c:d' | rofi -sep ':' -dmenu -a 2 */
+/* $ 'a:b:c:d' | rofi -sep ':' -dmenu -a 3 */
 element.normal.active,
 element.alternate.active {
   text-color: @blue;
 }
 
-// To test active states, run this command:
-// $ 'a:b:c:d' | rofi -sep ':' -dmenu -u 2-3
+/* To test active states, run this command: */
+/* $ 'a:b:c:d' | rofi -sep ':' -dmenu -u 2-3 */
 element.normal.urgent,
 element.alternate.urgent{
   text-color: @red;
 }
 
-// To test the selected states, run this command:
-// $ echo 'a,b,c,d' | rofi -sep , -dmenu -a 2 -u 3
+/* To test the selected states, run this command: */
+/* $ echo 'a,b,c,d' | rofi -sep , -dmenu -a 2 -u 3 */
 element.selected.normal,
 element.selected.active,
 element.selected.urgent {
@@ -111,4 +115,4 @@ element.selected.urgent {
   background-color: @red;
 }
 
-// I don't use the mode switcher; it is left unstyled.
+/* I don't use the mode switcher; it is left unstyled. */
