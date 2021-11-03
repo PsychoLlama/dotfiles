@@ -8,6 +8,7 @@ A [NixOS](https://nixos.org/) flake that recreate my development machines.
 |---|--:|
 | WM | [Sway](https://swaywm.org/) + [Waybar](https://github.com/Alexays/Waybar/) |
 | Launcher | [Rofi](https://github.com/davatorium/rofi) |
+| Notifications | [Dunst](https://github.com/dunst-project/dunst) |
 | Terminal | [Alacritty](https://github.com/alacritty/alacritty) |
 | Shell | [zsh](https://www.zsh.org/) |
 | Editor | [Neovim](http://neovim.io/) |
