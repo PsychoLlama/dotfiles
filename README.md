@@ -51,3 +51,7 @@ You can enable everything, or pick out the pieces you like by enabling them piec
   # ... and many other options. Check out `modules/` for more.
 }
 ```
+
+## Inspiration
+
+Thanks to [hlissner's dotfiles](https://github.com/hlissner/dotfiles/) for being so damn good. I learned a lot from his code.
