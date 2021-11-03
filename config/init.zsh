@@ -125,7 +125,18 @@ function vs {
 
 # Show information about a nix package.
 function gist {
-  nix eval --impure --json --expr "(import <pkgs> {}).$1.meta" | jq -r '.description, .homepage'
+  if (( $# < 1 )); then
+    echo 'Requires a package name.' >&2
+    return 1
+  fi
+
+  nix eval --offline --json --impure --expr "
+  let
+    flake = builtins.getFlake \"nixpkgs\";
+    pkgs = flake.legacyPackages.\${builtins.currentSystem};
+
+  in pkgs.$1.meta
+  " | jq -r '.description, .homepage'
 }
 
 # Encrypt stdin using public keys from GitHub.
