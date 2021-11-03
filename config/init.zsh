@@ -111,18 +111,6 @@ function vh {
   nvim -p "${files[@]}"
 }
 
-# Open search results in the editor.
-function vs {
-  local files=($(rg "$@" -l))
-
-  if (( ${#files} == 0 )); then
-    echo 'No results.' > /dev/stderr
-    return 1
-  fi
-
-  nvim -p "${files[@]}"
-}
-
 # Show information about a nix package.
 function gist {
   if (( $# < 1 )); then
