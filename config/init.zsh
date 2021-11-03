@@ -149,3 +149,35 @@ function encrypt {
 function decrypt {
   rage -d -i ~/.ssh/id_ed25519 -
 }
+
+# Manage git (p)rojects.
+function p {
+  local user repo project_dir=~/projects
+
+  if (( $# < 1 )); then
+    echo 'What do you want to clone?' >&2
+    return 1
+  fi
+
+  # Read out $user/$repo pattern.
+  IFS=/ read -r user repo <<< "$1"
+
+  # Allow a shorthand "$repo" assuming our own username.
+  if [[ -z "$repo" ]]; then
+    repo="$user"
+    user="PsychoLlama"
+  fi
+
+  # Force usernames to be lowercase, otherwise you could make quite a mess.
+  # Project names retain case for DX.
+  user="$(echo "$user" | tr '[:upper:]' '[:lower:]')"
+  repo="${repo/.git/}"
+
+  local repo_path="$project_dir/$user/$repo"
+
+  if [[ ! -d "$repo_path" ]]; then
+    git clone "git@github.com:$user/$repo" "$repo_path" "${@:2}" || return $?
+  fi
+
+  cd "$repo_path"
+}
