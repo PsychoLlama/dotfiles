@@ -42,7 +42,7 @@ in {
               auto-pairs
               coc-nvim
               markdown-preview-nvim
-              onedark-vim
+              onedarkpro-nvim
               skim
               skim-vim
               splitjoin-vim

@@ -115,36 +115,41 @@ font:
     y: 0
 
 # If `true`, bold text is drawn using the bright color variants.
-draw_bold_text_with_bright_colors: true
+# draw_bold_text_with_bright_colors: true
 
+# onedarkpro.nvim - onedark
 colors:
   primary:
-    background: '0x282c34'
-    foreground: '0xabb2bf'
-
-  cursor:
-    cursor: '0xabb2bf'
-    text: '0x282c34'
+    background: '#1e1e1e'
+    foreground: '#abb2bf'
 
   normal:
-    black:   '0x282c34'
-    red:     '0xe06c75'
-    green:   '0x98c379'
-    yellow:  '0xe5c07b'
-    blue:    '0x61afef'
-    magenta: '0xc678dd'
-    cyan:    '0x56b6c2'
-    white:   '0xabb2bf'
+    black:   '#1e1e1e'
+    red:     '#e06c75'
+    green:   '#98c379'
+    yellow:  '#e5c07b'
+    blue:    '#61afef'
+    magenta: '#c678dd'
+    cyan:    '#56b6c2'
+    white:   '#abb2bf'
 
   bright:
-    black:   '0x3e4452'
-    red:     '0xbe5046'
-    green:   '0x98c379'
-    yellow:  '0xd19a66'
-    blue:    '0x61afef'
-    magenta: '0xc678dd'
-    cyan:    '0x56b6c2'
-    white: '0x5c6370'
+    black:   '#3f3f3f'
+    red:     '#e06c75'
+    green:   '#98c379'
+    yellow:  '#e5c07b'
+    blue:    '#61afef'
+    magenta: '#c678dd'
+    cyan:    '#56b6c2'
+    white:   '#bfc5ce'
+
+  cursor:
+    cursor: CellForeground
+    text:   CellBackground
+
+  selection:
+    background: '#3e4452'
+    text: CellForeground
 
 # Visual Bell
 #

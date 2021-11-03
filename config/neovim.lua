@@ -161,6 +161,26 @@ require('nvim-treesitter.configs').setup({
   },
 })
 
+-- Color scheme (VS Code's One Dark Pro theme)
+local onedark = require('onedarkpro')
+local colors = onedark.get_colors()
+
+onedark.setup({
+  hlgroups = {
+    CursorLineNr = {
+      fg = colors.blue,
+    },
+    ALEWarningSign = {
+      fg = colors.gray,
+    },
+  },
+  styles = {
+    comments = "italic",
+  },
+})
+
+onedark.load()
+
 -- Misc
 vim.g['further#prefer_modules'] = true
 vim.g['teleport#update_cwd'] = true
@@ -176,20 +196,7 @@ vim.cmd([[
 augroup settings
   autocmd!
 
-  " Wait for plugins to initalize before setting the color scheme.
-  autocmd VimEnter * call g:__init() | delfunc! g:__init
-
   " Automatically maximize documentation pages.
   autocmd FileType help,man wincmd _
 augroup END
-
-func! g:__init() abort
-  colorscheme onedark
-
-  highlight clear ALEWarningSign
-  highlight ALEWarningSign ctermfg=gray
-
-  highlight clear CursorLine
-  highlight CursorLineNr ctermfg=blue
-endfunc
 ]])
