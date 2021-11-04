@@ -53,8 +53,7 @@ vim.api.nvim_set_keymap('n', '<space>', '<nop>', {})
 vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 
 -- Quick navigation
-vim.api.nvim_set_keymap('n', '<leader>v', ':call editor#mappings#edit_vimrc()<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>r', ':call editor#mappings#explore_current_dir()<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>r', ':call nnn#pick(expand("%:h"))<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>p', ':call editor#open_project_root()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
 vim.api.nvim_set_keymap('n', '<leader>f', ':Files!<cr>', { noremap = true })
@@ -152,13 +151,20 @@ require('nvim-treesitter.configs').setup({
     select = {
       enable = true,
       keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@class.outer',
+        ['ic'] = '@class.inner',
       },
     },
   },
+})
+
+-- N³ file browser
+require('nnn').setup({
+  replace_netrw = true,
+  layout = 'tabnew',
+  command = 'nnn -R',
 })
 
 -- Color scheme (VS Code's One Dark Pro theme)
@@ -186,7 +192,6 @@ vim.g['further#prefer_modules'] = true
 vim.g['teleport#update_cwd'] = true
 vim.g.jsx_ext_required = 0
 vim.g.splitjoin_trailing_comma = true
-vim.g.loaded_netrwPlugin = true
 
 -- Finalize config after plugins load.
 --
