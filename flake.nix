@@ -7,7 +7,7 @@
     hardware.url = "github:nixos/nixos-hardware/master";
 
     vim-plugin-nursery = {
-      url = "github:PsychoLlama/vim-plugin-nursery/main";
+      url = "github:PsychoLlama/vim-plugin-nursery";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 

@@ -95,22 +95,6 @@
         "type": "path"
       }
     },
-    "navitron-vim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1609278061,
-        "narHash": "sha256-B/w3FSsoSgL2m+0JhI4XM6o3+K0L+5EQOaDWhqCjVUk=",
-        "owner": "PsychoLlama",
-        "repo": "navitron.vim",
-        "rev": "4f7b319f425a4959f2b8bfe1f2cb08beb6937362",
-        "type": "github"
-      },
-      "original": {
-        "owner": "PsychoLlama",
-        "repo": "navitron.vim",
-        "type": "github"
-      }
-    },
     "nginx-vim": {
       "flake": false,
       "locked": {
@@ -197,19 +181,19 @@
         "type": "github"
       }
     },
-    "vim-jsx": {
+    "unison-vim": {
       "flake": false,
       "locked": {
-        "lastModified": 1569784850,
-        "narHash": "sha256-jT1WSAbRJsqF08Nr6LTEX2Vmi8UUtT4rX4fLeTyN8jM=",
-        "owner": "mxw",
-        "repo": "vim-jsx",
-        "rev": "8879e0d9c5ba0e04ecbede1c89f63b7a0efa24af",
+        "lastModified": 1636161964,
+        "narHash": "sha256-IOMljzN6JM3o94PYzSgDYr2OjWYg4mwrT3uH4hDeX2Q=",
+        "owner": "unisonweb",
+        "repo": "unison",
+        "rev": "d9f3dc923ed180c903013a3a20e4340b94b34ad7",
         "type": "github"
       },
       "original": {
-        "owner": "mxw",
-        "repo": "vim-jsx",
+        "owner": "unisonweb",
+        "repo": "unison",
         "type": "github"
       }
     },
@@ -236,45 +220,26 @@
         "further-vim": "further-vim",
         "git-vim": "git-vim",
         "misc-vim": "misc-vim",
-        "navitron-vim": "navitron-vim",
         "nginx-vim": "nginx-vim",
         "nixpkgs": [
           "nixpkgs-unstable"
         ],
         "stacktrace-vim": "stacktrace-vim",
         "teleport-vim": "teleport-vim",
-        "vim-jsx": "vim-jsx",
-        "vim-nand2tetris": "vim-nand2tetris",
-        "yajs-vim": "yajs-vim"
+        "unison-vim": "unison-vim",
+        "vim-nand2tetris": "vim-nand2tetris"
       },
       "locked": {
-        "lastModified": 1635743894,
-        "narHash": "sha256-J0P6a5C1pgrkX38AommnzDY23OgbKhtHRE1+N9/gqUM=",
+        "lastModified": 1636162847,
+        "narHash": "sha256-UjzEYCAXtQOo7DjOLfG2NjiHzY4u/XKKxmcdFfebGXM=",
         "owner": "PsychoLlama",
         "repo": "vim-plugin-nursery",
-        "rev": "d2a66dea753d7327740aa8ab33a064632955c805",
+        "rev": "3edd9c40d5515a081ce89df092fb2db7fcb90445",
         "type": "github"
       },
       "original": {
         "owner": "PsychoLlama",
-        "ref": "main",
         "repo": "vim-plugin-nursery",
-        "type": "github"
-      }
-    },
-    "yajs-vim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1569233220,
-        "narHash": "sha256-gN1Ji2/ApqJRHc1FNu+N7xegifKnQpGwTIqDvSwZfpY=",
-        "owner": "othree",
-        "repo": "yajs.vim",
-        "rev": "2bebc45ce94d02875803c67033b2d294a5375064",
-        "type": "github"
-      },
-      "original": {
-        "owner": "othree",
-        "repo": "yajs.vim",
         "type": "github"
       }
     }

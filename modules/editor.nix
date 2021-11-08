@@ -66,6 +66,7 @@ in {
               further-vim
               teleport-vim
               vim-nand2tetris
+              unison-vim
 
               # Nursery. Depends on the nursery's Nix overlay.
               git-vim
