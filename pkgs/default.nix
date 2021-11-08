@@ -1,5 +1,4 @@
 # Overlays custom software onto nixpkgs.
-self: super:
-{
-  # TODO: Add package overrides.
+self: super: {
+  nnn-full = super.callPackage ./nnn.nix { };
 }

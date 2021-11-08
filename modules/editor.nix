@@ -32,7 +32,7 @@ in {
       (mkIf cfg.enable {
         # Installed globally to play nicely with sudo.
         environment.systemPackages = [
-          (unstable.nnn.override { withNerdIcons = true; })
+          unstable.nnn-full
 
           (unstable.neovim.override {
             configure.customRC = ''
