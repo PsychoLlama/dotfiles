@@ -173,10 +173,21 @@ local colors = onedark.get_colors()
 
 onedark.setup({
   hlgroups = {
+    ALEWarningSign = {
+      fg = colors.gray,
+    },
+
+    -- Editor built-ins. See `:h highlight-groups` for details.
     CursorLineNr = {
       fg = colors.blue,
     },
-    ALEWarningSign = {
+    NormalFloat = {
+      bg = colors.menu,
+    },
+    VertSplit = {
+      fg = colors.menu,
+    },
+    StatusLineNC = {
       fg = colors.gray,
     },
   },
