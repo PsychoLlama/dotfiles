@@ -71,6 +71,23 @@
         "type": "github"
       }
     },
+    "navitron-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1609278061,
+        "narHash": "sha256-B/w3FSsoSgL2m+0JhI4XM6o3+K0L+5EQOaDWhqCjVUk=",
+        "owner": "PsychoLlama",
+        "repo": "navitron.vim",
+        "rev": "4f7b319f425a4959f2b8bfe1f2cb08beb6937362",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PsychoLlama",
+        "ref": "main",
+        "repo": "navitron.vim",
+        "type": "github"
+      }
+    },
     "nginx-vim": {
       "flake": false,
       "locked": {
@@ -148,11 +165,11 @@
     "unison-vim": {
       "flake": false,
       "locked": {
-        "lastModified": 1636346392,
-        "narHash": "sha256-1GRddvCbCEzROLFiJEOZ/kOot947+xhc7SfNrrmQnVE=",
+        "lastModified": 1636915799,
+        "narHash": "sha256-v9Ts19VF75VGFzdtQENKeeV7q49i1aCWIIlOW/6vtwY=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "9b40a29c625b235a423d6e7e86251fa545b1fec2",
+        "rev": "0801f25b5a14835bf6d33842aeead0f60fd26cc5",
         "type": "github"
       },
       "original": {
@@ -182,6 +199,7 @@
       "inputs": {
         "alternaut-vim": "alternaut-vim",
         "further-vim": "further-vim",
+        "navitron-nvim": "navitron-nvim",
         "nginx-vim": "nginx-vim",
         "nixpkgs": [
           "nixpkgs-unstable"
@@ -191,11 +209,11 @@
         "vim-nand2tetris": "vim-nand2tetris"
       },
       "locked": {
-        "lastModified": 1636846932,
-        "narHash": "sha256-Qif1e5R7YWYJG+A9YWAh+IV7bijCTqdO15dr0pxY6tE=",
+        "lastModified": 1637533651,
+        "narHash": "sha256-byaQs+tdDOxvZrpkpcaQJstJLthUAvgwrumFafhkjFM=",
         "owner": "PsychoLlama",
         "repo": "vim-plugin-nursery",
-        "rev": "c06c43496dcea59692689ad42cc78ee47f986140",
+        "rev": "ff80aefc88a39ae1a2c2b36f25e309f66c933881",
         "type": "github"
       },
       "original": {

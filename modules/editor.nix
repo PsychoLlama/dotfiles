@@ -32,8 +32,6 @@ in {
       (mkIf cfg.enable {
         # Installed globally to play nicely with sudo.
         environment.systemPackages = [
-          unstable.nnn-full
-
           (unstable.neovim.override {
             configure.customRC = ''
               source ${cfg.config}
@@ -44,7 +42,6 @@ in {
               auto-pairs
               coc-nvim
               markdown-preview-nvim
-              nnn-vim
               onedarkpro-nvim
               skim
               skim-vim
@@ -64,9 +61,10 @@ in {
               # 3rd party
               alternaut-vim
               further-vim
+              navitron-nvim
               teleport-vim
-              vim-nand2tetris
               unison-vim
+              vim-nand2tetris
 
               # Nursery. Depends on the nursery's Nix overlay.
               git-vim

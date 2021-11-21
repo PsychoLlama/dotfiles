@@ -13,6 +13,8 @@
   networking = {
     interfaces.wlp0s20f3.useDHCP = true;
     useDHCP = false; # Deprecated option - explicitly opt out.
+    firewall.allowedTCPPorts = [ 30000 ];
+    firewall.allowedUDPPorts = [ 30000 ];
   };
 
   # TODO: Manage background images more intelligently.
