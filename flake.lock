@@ -57,16 +57,15 @@
     },
     "hardware": {
       "locked": {
-        "lastModified": 1635449388,
-        "narHash": "sha256-i7hMiAgpRTGsMPTQKuNCDfW/ftQ+g9N6iaMj+RN6yws=",
+        "lastModified": 1638440530,
+        "narHash": "sha256-kmoNW+RmSka988iWvSrkiAxO8g6D76O0gW2cIIhL6U8=",
         "owner": "nixos",
         "repo": "nixos-hardware",
-        "rev": "518b9c2159e7d4b7696ee18b8828f9086012923b",
+        "rev": "4c9f07277bd4bc29a051ff2a0ca58c6403e3881a",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "master",
         "repo": "nixos-hardware",
         "type": "github"
       }
@@ -106,27 +105,27 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1635806954,
-        "narHash": "sha256-yX/zjbIL/HdXh8a92hWJ+31gsLLv7byA1XRuPARaLro=",
+        "lastModified": 1638587357,
+        "narHash": "sha256-2ySMW3QARG8BsRPmwe7clTbdCuaObromOKewykP+UJc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "372e59d2af704bffd133cbe029f1d5efe73ba6fb",
+        "rev": "e34c5379866833f41e2a36f309912fa675d687c7",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-21.05",
+        "ref": "nixos-21.11",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1635808042,
-        "narHash": "sha256-kQg7LzPj+UQlCAgD0dJhJ88QdzduXwIyqnTLXScKBbY=",
+        "lastModified": 1638761670,
+        "narHash": "sha256-LywnGCbjfMHp4lwAmIXozB/rAqPkCG0J8HhMPwXsR1U=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "550dab224a26ec25e20e82c0c8bfc764e01b772e",
+        "rev": "02336c5c5f719cd6bd4cfc5a091a1ccee6f06b1d",
         "type": "github"
       },
       "original": {
@@ -165,11 +164,11 @@
     "unison-vim": {
       "flake": false,
       "locked": {
-        "lastModified": 1636915799,
-        "narHash": "sha256-v9Ts19VF75VGFzdtQENKeeV7q49i1aCWIIlOW/6vtwY=",
+        "lastModified": 1638740159,
+        "narHash": "sha256-pin8UNsSesSmXgOtxbaCeeOazBjBMwooq+CRJ54rdAQ=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "0801f25b5a14835bf6d33842aeead0f60fd26cc5",
+        "rev": "effaba186a06b420d553e7efe6f8e456e37bacb9",
         "type": "github"
       },
       "original": {
@@ -209,11 +208,11 @@
         "vim-nand2tetris": "vim-nand2tetris"
       },
       "locked": {
-        "lastModified": 1637533651,
-        "narHash": "sha256-byaQs+tdDOxvZrpkpcaQJstJLthUAvgwrumFafhkjFM=",
+        "lastModified": 1638767922,
+        "narHash": "sha256-YaZp9PmG/1l3zGIu1bYk64VmCLRwG91IOUfE4z7kTQM=",
         "owner": "PsychoLlama",
         "repo": "vim-plugin-nursery",
-        "rev": "ff80aefc88a39ae1a2c2b36f25e309f66c933881",
+        "rev": "ca3b3f58765820cddb74e8b8cc72180f4e9f7e19",
         "type": "github"
       },
       "original": {

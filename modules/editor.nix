@@ -43,7 +43,6 @@ in {
               coc-nvim
               markdown-preview-nvim
               onedarkpro-nvim
-              skim
               skim-vim
               splitjoin-vim
               undotree
@@ -76,6 +75,9 @@ in {
               (nvim-treesitter.withPlugins
                 (plugins: unstable.tree-sitter.allGrammars))
             ];
+
+            # This is a hack to prevent name conflicts with skim-vim.
+            configure.packages.others.start = [ unstable.vimPlugins.skim ];
           })
         ];
 

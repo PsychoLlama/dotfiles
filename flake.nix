@@ -3,8 +3,8 @@
 
   inputs = {
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
-    hardware.url = "github:nixos/nixos-hardware/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
+    hardware.url = "github:nixos/nixos-hardware";
 
     vim-plugin-nursery = {
       url = "github:PsychoLlama/vim-plugin-nursery";
