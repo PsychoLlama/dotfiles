@@ -17,6 +17,33 @@
     firewall.allowedUDPPorts = [ 30000 ];
   };
 
+  nix = {
+    distributedBuilds = true;
+
+    # Two Raspberry Pis. I use these with NixOps to deploy my home-lab:
+    # https://github.com/PsychoLlama/home-lab/
+    buildMachines = [
+      {
+        hostName = "tron.selfhosted.city";
+        sshUser = "root";
+        system = "aarch64-linux";
+        sshKey = "/home/overlord/.ssh/remote_builder";
+      }
+      {
+        hostName = "clu.selfhosted.city";
+        sshUser = "root";
+        system = "aarch64-linux";
+        sshKey = "/home/overlord/.ssh/remote_builder";
+      }
+    ];
+  };
+
+  services.openssh.hostKeys = [{
+    type = "ed25519";
+    path = "/home/overlord/.ssh/remote_builder";
+    comment = "NixOps deploy key";
+  }];
+
   # TODO: Manage background images more intelligently.
   # services.xserver.displayManager.lightdm.background = /home/overlord/background-image;
 
