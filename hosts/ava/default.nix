@@ -13,8 +13,6 @@
   networking = {
     interfaces.wlp0s20f3.useDHCP = true;
     useDHCP = false; # Deprecated option - explicitly opt out.
-    firewall.allowedTCPPorts = [ 30000 ];
-    firewall.allowedUDPPorts = [ 30000 ];
   };
 
   nix = {
@@ -43,9 +41,6 @@
     path = "/home/overlord/.ssh/remote_builder";
     comment = "NixOps deploy key";
   }];
-
-  # TODO: Manage background images more intelligently.
-  # services.xserver.displayManager.lightdm.background = /home/overlord/background-image;
 
   dotfiles = {
     kitchen-sink.enable = true;
