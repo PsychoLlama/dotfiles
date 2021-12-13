@@ -164,11 +164,11 @@
     "unison-vim": {
       "flake": false,
       "locked": {
-        "lastModified": 1638740159,
-        "narHash": "sha256-pin8UNsSesSmXgOtxbaCeeOazBjBMwooq+CRJ54rdAQ=",
+        "lastModified": 1639200517,
+        "narHash": "sha256-FwYUg/OJmllaZpylSySCzo+TuKWLe4y2wb/yG3ig71E=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "effaba186a06b420d553e7efe6f8e456e37bacb9",
+        "rev": "4faca1cef859489f9c139df5e73fe124fc97376b",
         "type": "github"
       },
       "original": {
@@ -208,11 +208,11 @@
         "vim-nand2tetris": "vim-nand2tetris"
       },
       "locked": {
-        "lastModified": 1638767922,
-        "narHash": "sha256-YaZp9PmG/1l3zGIu1bYk64VmCLRwG91IOUfE4z7kTQM=",
+        "lastModified": 1639380947,
+        "narHash": "sha256-AiwbKUcasfRUI5MyGxj0C6AS+oWFp0JwjqTp/+KRMc8=",
         "owner": "PsychoLlama",
         "repo": "vim-plugin-nursery",
-        "rev": "ca3b3f58765820cddb74e8b8cc72180f4e9f7e19",
+        "rev": "b47415b6c414d73caadd38edcab1726f9c78d8b1",
         "type": "github"
       },
       "original": {
