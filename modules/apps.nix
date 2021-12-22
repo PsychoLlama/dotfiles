@@ -22,20 +22,6 @@ in {
         };
       };
 
-      brave = {
-        enable = mkOption {
-          type = types.bool;
-          description = "Enable the Brave browser";
-          default = df.kitchen-sink.enable;
-        };
-
-        package = mkOption {
-          type = types.package;
-          description = "Which Brave package to use";
-          default = unstable.brave;
-        };
-      };
-
       tor = {
         enable = mkOption {
           type = types.bool;
@@ -70,9 +56,6 @@ in {
     mkMerge [
       (mkIf browsers.firefox.enable {
         environment.systemPackages = [ browsers.firefox.package ];
-      })
-      (mkIf browsers.brave.enable {
-        environment.systemPackages = [ browsers.brave.package ];
       })
       (mkIf browsers.tor.enable {
         environment.systemPackages = [ browsers.tor.package ];
