@@ -82,7 +82,7 @@ in {
         ];
 
         environment.variables = {
-          MANPAGER = "nvim -c 'setfiletype man' -";
+          MANPAGER = "nvim -c 'Man!'";
           EDITOR = "nvim";
         };
       })
