@@ -58,7 +58,7 @@
 
   services.syncthing = {
     enable = true;
-    package = unstable.syncthing-cli;
+    package = unstable.syncthing;
 
     user = "overlord";
     group = "users";
@@ -73,14 +73,19 @@
 
     devices = {
       file-server = {
-        addresses = [ "dynamic" ];
-        id = "73NJCWB-2R4WVZC-IJ2IRPF-7XQH7P4-DM43L7L-HE4HV5D-MKU4Z4V-PL5QVQ5";
+        addresses = [ "tcp://hactar" ];
+        id = "WOBKELX-VEM3RTQ-3ZIP3KG-IYETMB3-3TRSNS7-VC43NA4-YE33VT4-ITUY6QF";
       };
 
       phone = {
         addresses = [ "dynamic" ];
         id = "YTUVZSZ-V4TOBKD-SCKD4B6-AOW5TMT-PGCLJO6-7MLGZII-FOYC7JO-LGP62AX";
       };
+    };
+
+    extraOptions = {
+      options.urAccepted = 3;
+      gui.theme = "dark";
     };
   };
 
