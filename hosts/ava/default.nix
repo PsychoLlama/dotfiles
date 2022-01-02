@@ -7,12 +7,14 @@
     # Use the systemd-boot EFI boot loader.
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
+    supportedFilesystems = [ "zfs" ];
   };
 
   # Network configuration.
   networking = {
     interfaces.wlp0s20f3.useDHCP = true;
     useDHCP = false; # Deprecated option - explicitly opt out.
+    hostId = "daf96cd8";
   };
 
   nix = {
