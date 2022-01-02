@@ -26,7 +26,7 @@ in {
         ipmitool
         kubectl
         nixopsUnstable
-        terraform_1_0_0
+        terraform
       ];
 
       virtualisation.docker = {

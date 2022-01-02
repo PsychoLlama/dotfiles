@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, unstable, lib, pkgs, ... }:
 
 let
   df = config.dotfiles;
@@ -18,10 +18,10 @@ in {
       environment.systemPackages = with unstable; [
         cargo
         cargo-edit
-        clippy
         gcc
         openssl.dev
         pkg-config
+        pkgs.clippy # Unstable build is currently failing.
         rls
         rustc
         rustup
