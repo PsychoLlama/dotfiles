@@ -74,7 +74,7 @@
     devices = {
       file-server = {
         addresses = [ "tcp://hactar" ];
-        id = "WOBKELX-VEM3RTQ-3ZIP3KG-IYETMB3-3TRSNS7-VC43NA4-YE33VT4-ITUY6QF";
+        id = "YOTWLUU-HU6VAII-DJFNJCT-QBVRGD7-EM37VVL-WNB2HFW-5YFWCUM-INTE4AI";
       };
 
       phone = {
