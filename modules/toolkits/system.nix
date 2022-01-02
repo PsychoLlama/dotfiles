@@ -21,6 +21,7 @@ in {
         brightnessctl
         grim
         ncspot
+        parted
         playerctl
         rage
         slurp
