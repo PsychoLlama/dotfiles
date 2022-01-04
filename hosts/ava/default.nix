@@ -91,5 +91,14 @@
     };
   };
 
+  programs.ssh.extraConfig = ''
+    CanonicalizeHostname yes
+    CanonicalDomains host.selfhosted.city
+    CanonicalizeMaxDots 0
+
+    Host *.host.selfhosted.city
+    User admin
+  '';
+
   system.stateVersion = "20.09";
 }
