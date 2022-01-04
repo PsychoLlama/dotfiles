@@ -24,13 +24,13 @@
     # https://github.com/PsychoLlama/home-lab/
     buildMachines = [
       {
-        hostName = "tron.selfhosted.city";
+        hostName = "tron.host.selfhosted.city";
         sshUser = "root";
         system = "aarch64-linux";
         sshKey = "/home/overlord/.ssh/remote_builder";
       }
       {
-        hostName = "clu.selfhosted.city";
+        hostName = "clu.host.selfhosted.city";
         sshUser = "root";
         system = "aarch64-linux";
         sshKey = "/home/overlord/.ssh/remote_builder";
