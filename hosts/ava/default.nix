@@ -75,7 +75,7 @@
 
     devices = {
       file-server = {
-        addresses = [ "tcp://hactar" ];
+        addresses = [ "tcp://hactar.host.selfhosted.city" ];
         id = "YOTWLUU-HU6VAII-DJFNJCT-QBVRGD7-EM37VVL-WNB2HFW-5YFWCUM-INTE4AI";
       };
 
