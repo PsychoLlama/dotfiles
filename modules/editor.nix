@@ -70,6 +70,12 @@ in {
               misc-vim
               stacktrace-vim
 
+              (unstable.vimUtils.buildVimPluginFrom2Nix {
+                pname = "vim-config";
+                version = "latest";
+                src = ../config/editor;
+              })
+
               # Treesitter integrations.
               nvim-treesitter-textobjects
               (nvim-treesitter.withPlugins

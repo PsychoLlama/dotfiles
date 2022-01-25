@@ -193,6 +193,11 @@ onedark.setup({
 
 onedark.load()
 
+-- Zettelkaesten
+require('regal').setup({
+  directory = "~/attic/slip-box",
+})
+
 -- Misc
 vim.g['further#prefer_modules'] = true
 vim.g['teleport#update_cwd'] = true
