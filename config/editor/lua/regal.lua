@@ -12,28 +12,35 @@ return {
   end,
 
   create_note = function()
-    local sentence_title = vim.fn.input('Title: ')
-    local normalized_title = vim.fn.tolower(vim.fn.tr(sentence_title, ' ', '-'))
+    local function normalize_title(title)
+      return vim.fn.tolower(vim.fn.tr(title, ' ', '-'))
+    end
 
-    local timestamp = vim.fn.localtime()
-    local iso_8601 = vim.fn.strftime('%Y-%m-%dT%H:%M:%SZ', timestamp)
+    vim.ui.input({ prompt = 'Title: ' }, function(title)
+      if title == nil or vim.trim(title) == '' then
+        return
+      end
 
-    local filename = timestamp .. '-' .. normalized_title .. '.md'
-    local filepath = directory .. '/' .. filename
+      local timestamp = vim.fn.localtime()
+      local iso_8601 = vim.fn.strftime('%Y-%m-%dT%H:%M:%SZ', timestamp)
 
-    vim.fn.writefile(
-      {
-        '---',
-        'title: ' .. sentence_title,
-        'createdAt: ' .. iso_8601,
-        '---',
-        '',
-        '',
-      },
-      filepath
-    )
+      local filename = timestamp .. '-' .. normalize_title(title) .. '.md'
+      local filepath = directory .. '/' .. filename
 
-    vim.api.nvim_command('edit ' .. filepath)
-    vim.fn.setpos('.', { vim.fn.bufnr('.'), vim.fn.line('$'), 1, 0 })
+      vim.fn.writefile(
+        {
+          '---',
+          'title: ' .. title,
+          'createdAt: ' .. iso_8601,
+          '---',
+          '',
+          '',
+        },
+        filepath
+      )
+
+      vim.api.nvim_command('edit ' .. filepath)
+      vim.api.nvim_feedkeys('GI', 'n', true)
+    end)
   end,
 }
