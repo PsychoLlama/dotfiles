@@ -20,6 +20,7 @@ in {
         bottom
         brightnessctl
         grim
+        man-pages
         ncspot
         parted
         playerctl
