@@ -167,6 +167,11 @@ local onedark = require('onedarkpro')
 local colors = onedark.get_colors()
 
 onedark.setup({
+  colors = {
+    onedark = {
+      bg = "#1e1e1e",
+    },
+  },
   hlgroups = {
     ALEWarningSign = {
       fg = colors.gray,
