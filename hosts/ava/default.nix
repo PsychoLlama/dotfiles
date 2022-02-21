@@ -70,6 +70,12 @@
     };
   };
 
+  # Orient the external monitor centered above the built-in screen.
+  environment.etc."sway/config.d/outputs".text = ''
+    output HDMI-A-1 pos 0 0
+    output eDP-1 pos 760 1440
+  '';
+
   services.syncthing = {
     enable = true;
     package = unstable.syncthing;
