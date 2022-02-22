@@ -1,4 +1,4 @@
-{ unstable, ... }:
+{ config, unstable, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ../common/linux.nix ];
@@ -17,37 +17,11 @@
   };
 
   nix = {
-    distributedBuilds = true;
+    trustedUsers = [ config.dotfiles.user.account ];
 
     extraOptions = ''
       builders-use-substitutes = true
     '';
-
-    # Two Raspberry Pis. I use these with NixOps to deploy my home-lab:
-    # https://github.com/PsychoLlama/home-lab/
-    buildMachines = [
-      {
-        hostName = "glados.host.selfhosted.city";
-        sshUser = "root";
-        system = "aarch64-linux";
-        sshKey = "/root/.ssh/nixops_deploy";
-        maxJobs = 4;
-      }
-      {
-        hostName = "tron.host.selfhosted.city";
-        sshUser = "root";
-        system = "aarch64-linux";
-        sshKey = "/root/.ssh/nixops_deploy";
-        maxJobs = 4;
-      }
-      {
-        hostName = "clu.host.selfhosted.city";
-        sshUser = "root";
-        system = "aarch64-linux";
-        sshKey = "/root/.ssh/nixops_deploy";
-        maxJobs = 4;
-      }
-    ];
   };
 
   services.openssh.hostKeys = [{
