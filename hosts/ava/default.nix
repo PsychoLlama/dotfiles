@@ -4,7 +4,6 @@
   imports = [ ./hardware-configuration.nix ../common/linux.nix ];
 
   boot = {
-    # Use the systemd-boot EFI boot loader.
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
   };
@@ -29,6 +28,11 @@
     path = "/root/.ssh/nixops_deploy";
     comment = "NixOps deploy key";
   }];
+
+  environment = {
+    systemPackages = [ unstable.borgbackup ];
+    variables.BORG_REPO = "/mnt/borg";
+  };
 
   dotfiles = {
     kitchen-sink.enable = true;
@@ -91,6 +95,11 @@
     Host *.host.selfhosted.city
     User admin
   '';
+
+  fileSystems."/mnt/borg" = {
+    device = "hactar.host.selfhosted.city:/mnt/pool0/borg/ava";
+    fsType = "nfs";
+  };
 
   system.stateVersion = "20.09";
 }
