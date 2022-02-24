@@ -6,6 +6,20 @@
   boot = {
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
+    initrd.supportedFilesystems = [ "zfs" ];
+    supportedFilesystems = [ "zfs" ];
+    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+
+    # ZFS doesn't support freeze/thaw APIs. Hibernation could corrupt files.
+    # https://github.com/openzfs/zfs/issues/260
+    kernelParams = [ "nohibernate" ];
+
+    # Fixes a potential issue where too many hardlinks in the nix store can
+    # brick the boot process.
+    loader.grub.copyKernels = true;
+
+    # Set a maximum size on the ZFS Adaptive Replacement Cache (1GB).
+    boot.kernelParams = [ "zfs.zfs_arc_max=1073741824" ];
   };
 
   # Network configuration.
