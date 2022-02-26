@@ -52,6 +52,4 @@
     # a problem as hibernation is currently disabled for ZFS support.
     randomEncryption.enable = true;
   }];
-
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }
