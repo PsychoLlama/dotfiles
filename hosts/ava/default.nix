@@ -67,6 +67,15 @@
     output eDP-1 pos 760 1440
   '';
 
+  services.zfs = {
+    trim.enable = true;
+    autoScrub.enable = true;
+    autoSnapshot = {
+      enable = true;
+      flags = "-k -p --utc";
+    };
+  };
+
   services.syncthing = {
     enable = true;
     package = unstable.syncthing;
