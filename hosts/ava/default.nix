@@ -109,14 +109,47 @@
     };
   };
 
-  programs.ssh.extraConfig = ''
-    CanonicalizeHostname yes
-    CanonicalDomains host.selfhosted.city
-    CanonicalizeMaxDots 0
+  programs.ssh = {
+    extraConfig = ''
+      CanonicalizeHostname yes
+      CanonicalDomains host.selfhosted.city
+      CanonicalizeMaxDots 0
 
-    Host *.host.selfhosted.city
-    User admin
-  '';
+      Host *.host.selfhosted.city
+      User admin
+    '';
+
+    knownHosts = let hostNames = host: [ "${host}.host.selfhosted.city" ];
+    in {
+      tron = {
+        hostNames = hostNames "tron";
+        publicKey = ''
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFsNbo3bbm0G11GAbRwnr944AitRyqoQMN4LG7rMsvpK
+        '';
+      };
+
+      clu = {
+        hostNames = hostNames "clu";
+        publicKey = ''
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyb4vh9xDEEV+30G0UPMTSdtVq3Tyfgl9I9VRwf226v
+        '';
+      };
+
+      glados = {
+        hostNames = hostNames "glados";
+        publicKey = ''
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLMZ6+HaPahE4gGIAWW/uGIl/y40p/rSfIhb5t4G+g9
+        '';
+      };
+
+      hactar = {
+        hostNames = hostNames "hactar";
+        publicKey = ''
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC7y/poo2XLNsxRoEAgIiUnJgbBa0KassSQSghdXWH1N
+        '';
+      };
+    };
+  };
 
   system.stateVersion = "20.09";
 }
