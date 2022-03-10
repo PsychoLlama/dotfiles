@@ -18,7 +18,11 @@ in {
       use = createPackageLoader system;
       unstable = use inputs.nixpkgs-unstable;
       pkgs = use inputs.nixpkgs;
-      systems = { "x86_64-darwin" = inputs.darwin.lib.darwinSystem; };
+      systems = {
+        "x86_64-darwin" = inputs.darwin.lib.darwinSystem;
+        "aarch64-darwin" = inputs.darwin.lib.darwinSystem;
+      };
+
       mkSystem = systems.${system} or inputs.nixpkgs.lib.nixosSystem;
 
     in mkSystem rec {
