@@ -11,23 +11,32 @@ in {
       description = "Whether to enable the system toolkit";
       default = df.kitchen-sink.enable;
     };
+
+    linux.enable = mkOption {
+      type = types.bool;
+      description = "Add tools for managing Linux";
+      default = df.kitchen-sink.enable;
+    };
   };
 
   config = with lib;
-    mkIf cfg.enable {
-      environment.systemPackages = with unstable; [
-        acpi
-        bottom
-        brightnessctl
-        grim
-        man-pages
-        ncspot
-        parted
-        playerctl
-        rage
-        slurp
-        wf-recorder
-        wl-clipboard
-      ];
-    };
+    with unstable;
+    mkMerge [
+      (mkIf cfg.enable {
+        environment.systemPackages = [ bottom man-pages ncspot rage ];
+      })
+
+      (mkIf cfg.linux.enable {
+        environment.systemPackages = [
+          acpi
+          brightnessctl
+          grim
+          parted
+          playerctl
+          slurp
+          wf-recorder
+          wl-clipboard
+        ];
+      })
+    ];
 }
