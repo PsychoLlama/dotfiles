@@ -16,14 +16,10 @@ in {
   config = with lib;
     mkIf cfg.enable {
       environment.systemPackages = with unstable; [
-        cargo
         cargo-edit
         gcc
         openssl.dev
         pkg-config
-        pkgs.clippy # Unstable build is currently failing.
-        rls
-        rustc
         rustup
       ];
 
