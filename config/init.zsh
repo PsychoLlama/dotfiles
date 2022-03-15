@@ -1,8 +1,5 @@
-prompt off # Disable default prompt settings (i.e. RPS1)
-
-eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
-
+# Use Vim keybindings
+set -o vi
 
 ##################
 # Shell Settings #

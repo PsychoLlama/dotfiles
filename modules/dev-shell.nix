@@ -75,6 +75,10 @@ in {
           syntaxHighlighting.enable = mkDefault true;
           autosuggestions.enable = mkDefault true;
           histSize = mkDefault 10000;
+          promptInit = ''
+            eval "$(starship init zsh)"
+            eval "$(zoxide init zsh)"
+          '';
         };
 
         users.users.${df.user.account}.shell = pkgs.zsh;
