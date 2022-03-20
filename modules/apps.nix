@@ -32,7 +32,7 @@ in {
         package = mkOption {
           type = types.package;
           description = "Which Tor browser package to use";
-          default = unstable.torbrowser;
+          default = unstable.tor-browser-bundle-bin;
         };
       };
     };
