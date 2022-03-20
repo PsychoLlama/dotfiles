@@ -63,8 +63,8 @@
 
   # Orient the external monitor centered above the built-in screen.
   environment.etc."sway/config.d/outputs".text = ''
-    output HDMI-A-1 pos 0 0
-    output eDP-1 pos 760 1440
+    output eDP-1 pos 0 0 mode 1920x1080
+    output HDMI-A-1 pos -760 -1440
   '';
 
   services.zfs = {
