@@ -60,7 +60,6 @@
     cleanup = "zap";
   };
 
-  programs.tmux.enableVim = true;
   programs.zsh.enable = true;
   services.nix-daemon.enable = true;
   fonts.enableFontDir = true;

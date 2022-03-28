@@ -151,5 +151,7 @@
     };
   };
 
+  networking.firewall.allowedTCPPorts = [ 4444 ];
+
   system.stateVersion = "20.09";
 }

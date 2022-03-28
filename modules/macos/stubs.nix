@@ -32,12 +32,5 @@ with lib; {
       autoPrune = mkOption { type = types.bool; };
       package = mkOption { type = types.derivation; };
     };
-
-    programs.tmux = {
-      historyLimit = mkOption { type = types.int; };
-      keyMode = mkOption { type = types.str; };
-      escapeTime = mkOption { type = types.int; };
-      customPaneNavigationAndResize = mkOption { type = types.str; };
-    };
   };
 }
