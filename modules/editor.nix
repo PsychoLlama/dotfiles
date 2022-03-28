@@ -24,6 +24,12 @@ in {
         description = "Enable a VimL linter";
         default = df.kitchen-sink.enable;
       };
+
+      extraConfig = mkOption {
+        type = types.lines;
+        description = "Extra lines to append to vimrc";
+        default = "";
+      };
     };
   };
 
@@ -35,6 +41,7 @@ in {
           (unstable.neovim.override {
             configure.customRC = ''
               source ${cfg.config}
+              ${cfg.extraConfig}
             '';
 
             configure.packages.plugins.start = with unstable.vimPlugins; [
