@@ -53,6 +53,7 @@ in {
 
         # Do machine-specific configuration.
         path
-      ];
+      ] ++ (inputs.nixpkgs.lib.optional pkgs.stdenv.hostPlatform.isDarwin
+        ./modules/macos);
     };
 }
