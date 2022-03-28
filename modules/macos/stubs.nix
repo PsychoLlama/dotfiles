@@ -10,6 +10,7 @@ with lib; {
     networking.networkmanager.enable = mkOption { type = types.bool; };
     programs.wireshark = { enable = mkEnableOption "Sway"; };
     security.sudo.wheelNeedsPassword = mkEnableOption "wheel pass";
+    programs.zsh.histSize = mkOption { type = types.int; };
 
     services.printing.enable = mkEnableOption "printing";
     sound.enable = mkEnableOption "sound";
@@ -18,12 +19,6 @@ with lib; {
     programs.sway = {
       enable = mkEnableOption "Sway";
       extraSessionCommands = mkOption { type = types.str; };
-    };
-
-    programs.zsh = {
-      autosuggestions.enable = mkEnableOption "autosuggest";
-      syntaxHighlighting.enable = mkEnableOption "autosuggest";
-      histSize = mkOption { type = types.int; };
     };
 
     services.greetd = {
