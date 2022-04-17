@@ -52,13 +52,18 @@ in {
       (mkIf cfg.enable {
         environment.etc."zshrc.local".source = cfg.zsh.rc;
 
-        environment.variables.STARSHIP_CONFIG = "${cfg.starship.config}";
+        environment.variables = {
+          MCFLY_KEY_SCHEME = "vim";
+          MCFLY_RESULTS_SORT = "LAST_RUN";
+          STARSHIP_CONFIG = "${cfg.starship.config}";
+        };
 
         environment.systemPackages = [
           (unstable.callPackage ../pkgs/alacritty.nix {
             configFile = cfg.alacritty.config;
           })
           unstable.starship
+          unstable.mcfly
         ];
 
         programs.tmux = {
@@ -78,6 +83,7 @@ in {
           promptInit = ''
             eval "$(starship init zsh)"
             eval "$(zoxide init zsh)"
+            eval "$(mcfly init zsh)"
           '';
         };
 
