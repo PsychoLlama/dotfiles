@@ -66,7 +66,6 @@ vim.api.nvim_set_keymap('i', '<s-tab>', 'editor#mappings#tab_completion(v:true)'
 -- Misc
 vim.api.nvim_set_keymap('n', '<esc>', ':nohlsearch<cr><esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>;', ':call editor#mappings#test()<cr>', { noremap = true, silent = true })
-vim.api.nvim_del_keymap('n', 'Y')
 
 -- Markdown previewer
 vim.g.mkdp_browser = 'firefox'
@@ -210,15 +209,8 @@ vim.g.jsx_ext_required = 0
 vim.g.splitjoin_trailing_comma = true
 vim.g.loaded_netrwPlugin = true
 
--- Finalize config after plugins load.
---
--- Lua doesn't support autocmd hooks yet.
--- See: https://github.com/neovim/neovim/pull/14661
-vim.cmd([[
-augroup settings
-  autocmd!
-
-  " Automatically maximize documentation pages.
-  autocmd FileType help,man wincmd _
-augroup END
-]])
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = vim.api.nvim_create_augroup('settings', {}),
+  pattern = { "help", "man" },
+  command = "wincmd _",
+})

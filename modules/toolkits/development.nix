@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, unstable, lib, pkgs, ... }:
 
 let
   df = config.dotfiles;
@@ -25,7 +25,7 @@ in {
         environment.etc.gitconfig.source = ../../config/git.ini;
 
         environment.systemPackages = with unstable; [
-          git
+          pkgs.git # The newer version causes issues with Nix flakes.
           gitAndTools.delta
           miniserve
           nixfmt
