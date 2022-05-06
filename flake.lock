@@ -41,11 +41,11 @@
     "further-vim": {
       "flake": false,
       "locked": {
-        "lastModified": 1594177442,
-        "narHash": "sha256-kninGuoM3Q6TvRrdsVa+PMTai938jeI28/JaOQOCqQM=",
+        "lastModified": 1651868823,
+        "narHash": "sha256-LREfRfcRdfvtMCnsxPPv+T53Wpbr5qYM+QAz/bf1dHg=",
         "owner": "PsychoLlama",
         "repo": "further.vim",
-        "rev": "2679c53d108381444b86d9fdcbbaa2833cd0235e",
+        "rev": "6e63187394e8102a742fdbbcb97947848d549c79",
         "type": "github"
       },
       "original": {
@@ -208,11 +208,11 @@
         "vim-nand2tetris": "vim-nand2tetris"
       },
       "locked": {
-        "lastModified": 1641611556,
-        "narHash": "sha256-1lfFL4B7SygchucD/LCNkyIAI5YxOYiz+sLeOiBou4I=",
+        "lastModified": 1651869056,
+        "narHash": "sha256-zoJMZXTBG0gC/4EAk8FwAzGJCoaq2ZAgJKL8DIKSfAs=",
         "owner": "PsychoLlama",
         "repo": "vim-plugin-nursery",
-        "rev": "c0ebf52884560c879b14e26bc63e0673a857c39c",
+        "rev": "eb4f241e12d97a84bd62d75396bf39693ba72d30",
         "type": "github"
       },
       "original": {
