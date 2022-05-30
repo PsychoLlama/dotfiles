@@ -70,6 +70,18 @@ function vf {
   nvim "$result"
 }
 
+# Open modified files in the editor.
+function vh {
+  local files=($(git ls-files --modified --others --exclude-standard 2> /dev/null))
+
+  if [[ "$?" != 0 ]] || (( ${#files} == 0 )); then
+    echo 'No modified files.' > /dev/stderr
+    return 1
+  fi
+
+  nvim -p "${files[@]}"
+}
+
 # Jump down to a directory using fuzzy search.
 function cf {
   local result="$(fd --type directory | sk)"
@@ -96,16 +108,15 @@ function mkcd {
   cd "$1"
 }
 
-# Open modified files in the editor.
-function vh {
-  local files=($(git ls-files --modified --others --exclude-standard 2> /dev/null))
+# Jump up a few directories.
+function up {
+  local dir_path
 
-  if [[ "$?" != 0 ]] || (( ${#files} == 0 )); then
-    echo 'No modified files.' > /dev/stderr
-    return 1
-  fi
+  for _ in {1..$1}; do
+    dir_path="${dir_path}${dir_path:+/}.."
+  done
 
-  nvim -p "${files[@]}"
+  cd "$dir_path"
 }
 
 # Show information about a nix package.
