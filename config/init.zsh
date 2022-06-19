@@ -70,6 +70,17 @@ function vf {
   nvim "$result"
 }
 
+# Fuzzy find and open a directory.
+function vt {
+  local result="$(fd --type directory | sk)"
+
+  if [[ -z "$result" ]]; then
+    return
+  fi
+
+  nvim "$result"
+}
+
 # Open modified files in the editor.
 function vh {
   local files=($(git ls-files --modified --others --exclude-standard 2> /dev/null))
