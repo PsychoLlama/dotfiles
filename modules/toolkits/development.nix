@@ -17,15 +17,24 @@ in {
       description = "Enable short git aliases";
       default = df.kitchen-sink.enable;
     };
+
+    git.extraConfig = mkOption {
+      type = types.str;
+      description = "Additional rules for .gitconfig";
+      default = "";
+    };
   };
 
   config = with lib;
     mkMerge [
       (mkIf cfg.enable {
-        environment.etc.gitconfig.source = ../../config/git.ini;
+        environment.etc.gitconfig.text = ''
+          ${builtins.readFile ../../config/git.ini}
+          ${cfg.git.extraConfig}
+        '';
 
         environment.systemPackages = with unstable; [
-          pkgs.git # The newer version causes issues with Nix flakes.
+          git
           gitAndTools.delta
           miniserve
           nixfmt
