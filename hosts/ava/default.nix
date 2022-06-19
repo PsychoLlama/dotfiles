@@ -1,4 +1,4 @@
-{ config, unstable, ... }:
+{ config, unstable, lib, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ../common/linux.nix ];
@@ -152,6 +152,10 @@
   };
 
   networking.firewall.allowedTCPPorts = [ 4444 ];
+
+  # fprintd doesn't play well with swaylock's pam module. It effectively
+  # disables password input.
+  services.fprintd.enable = lib.mkForce false;
 
   system.stateVersion = "20.09";
 }
