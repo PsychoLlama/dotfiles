@@ -62,7 +62,7 @@
 
   programs.zsh.enable = true;
   services.nix-daemon.enable = true;
-  fonts.enableFontDir = true;
+  fonts.fontDir.enable = true;
 
   system.stateVersion = 4;
 }
