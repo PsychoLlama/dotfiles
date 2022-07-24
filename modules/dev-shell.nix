@@ -96,7 +96,7 @@ in {
 
         users.users.${df.user.account}.shell = pkgs.zsh;
 
-        fonts.fonts = [ unstable.fira-code unstable.nerdfonts ];
+        fonts.fonts = [ unstable.fira-code ];
         console.font = "Fira Code";
       })
 
