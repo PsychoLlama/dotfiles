@@ -16,10 +16,18 @@ in {
       default = df.kitchen-sink.enable;
     };
 
-    zsh.rc = mkOption {
-      type = types.path;
-      description = "Set the zsh RC file";
-      default = ../config/init.zsh;
+    zsh = {
+      rc = mkOption {
+        type = types.path;
+        description = "Set the zsh RC file";
+        default = ../config/init.zsh;
+      };
+
+      extraConfig = mkOption {
+        type = types.str;
+        description = "Extra lines to append to the zshrc";
+        default = "# => unset";
+      };
     };
 
     alacritty.config = mkOption {
@@ -50,8 +58,14 @@ in {
   config = with lib;
     mkMerge [
       (mkIf cfg.enable {
-        environment.etc."zshrc.local".source = cfg.zsh.rc;
         environment.variables.STARSHIP_CONFIG = "${cfg.starship.config}";
+        environment.etc."zshrc.local".text = ''
+          # --- dotfiles.dev-shell.zsh.rc ---
+          source ${cfg.zsh.rc}
+
+          # --- dotfiles.dev-shell.zsh.extraConfig ---
+          ${cfg.zsh.extraConfig}
+        '';
 
         environment.systemPackages = [
           (unstable.callPackage ../pkgs/alacritty.nix {
