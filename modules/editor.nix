@@ -73,7 +73,6 @@ in {
               vim-nand2tetris
 
               # Nursery. Depends on the nursery's Nix overlay.
-              git-vim
               misc-vim
               stacktrace-vim
 
