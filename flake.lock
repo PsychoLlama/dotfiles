@@ -208,11 +208,11 @@
         "vim-nand2tetris": "vim-nand2tetris"
       },
       "locked": {
-        "lastModified": 1651869056,
-        "narHash": "sha256-zoJMZXTBG0gC/4EAk8FwAzGJCoaq2ZAgJKL8DIKSfAs=",
+        "lastModified": 1658722731,
+        "narHash": "sha256-rS7eWOrsTx0jwvNY2+e2y96rw2JMlGwV1TYFkN+dI8s=",
         "owner": "PsychoLlama",
         "repo": "vim-plugin-nursery",
-        "rev": "eb4f241e12d97a84bd62d75396bf39693ba72d30",
+        "rev": "243dc4a9eb8b63ba74b8173d63ab28c5f486f073",
         "type": "github"
       },
       "original": {
