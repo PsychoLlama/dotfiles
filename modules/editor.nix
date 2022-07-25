@@ -72,10 +72,6 @@ in {
               unison-vim
               vim-nand2tetris
 
-              # Nursery. Depends on the nursery's Nix overlay.
-              misc-vim
-              stacktrace-vim
-
               (unstable.vimUtils.buildVimPluginFrom2Nix {
                 pname = "vim-config";
                 version = "latest";
