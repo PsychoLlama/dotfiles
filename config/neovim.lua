@@ -111,7 +111,7 @@ local test_conventions = {
   },
 
   typescript = {
-    file_naming_conventions = { '{name}.test.{ext}' },
+    file_naming_conventions = { '{name}.test.{ext}', '{name}.test.unit.{ext}' },
     directory_naming_conventions = { '__tests__' },
     file_extensions = { 'ts', 'tsx', 'js' },
   },
