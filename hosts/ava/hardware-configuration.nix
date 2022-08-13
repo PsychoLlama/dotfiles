@@ -1,8 +1,8 @@
-{ config, lib, pkgs, modulesPath, inputs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
+    inputs.nixpkgs.nixosModules.notDetected
     inputs.hardware.nixosModules.lenovo-thinkpad-p1-gen3
   ];
 
