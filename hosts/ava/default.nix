@@ -43,7 +43,7 @@
   }];
 
   environment = {
-    systemPackages = [ unstable.borgbackup ];
+    systemPackages = [ unstable.borgbackup unstable.radare2 ];
     variables.BORG_REPO = "/mnt/borg";
   };
 
