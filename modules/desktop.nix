@@ -37,7 +37,7 @@ in {
         type =
           types.attrsOf (types.attrsOf (types.oneOf [ types.str types.int ]));
         description = "Settings for Sway input devices";
-        example = literalExample ''
+        example = literalExpression ''
           dotfiles.desktop.sway.inputs."AT_Keyboard" = {
             repeat_delay = 250;
           };
