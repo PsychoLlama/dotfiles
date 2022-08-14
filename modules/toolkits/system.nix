@@ -23,7 +23,7 @@ in {
     with unstable;
     mkMerge [
       (mkIf cfg.enable {
-        environment.systemPackages = [ bottom man-pages ncspot rage ];
+        environment.systemPackages = [ bottom man-pages ncspot rage duf ];
       })
 
       (mkIf cfg.linux.enable {
