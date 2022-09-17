@@ -17,30 +17,63 @@ in {
       description = "Enable short git aliases";
       default = df.kitchen-sink.enable;
     };
-
-    git.extraConfig = mkOption {
-      type = types.str;
-      description = "Additional rules for .gitconfig";
-      default = "";
-    };
   };
 
   config = with lib;
     mkMerge [
       (mkIf cfg.enable {
-        environment.etc.gitconfig.text = ''
-          ${builtins.readFile ../../config/git.ini}
-          ${cfg.git.extraConfig}
-        '';
-
         environment.systemPackages = with unstable; [
-          git
           gitAndTools.delta
           miniserve
           nixfmt
           shellcheck
           sshfs
         ];
+
+        programs.git = {
+          enable = true;
+          config = {
+            alias = {
+              a = "add --all";
+              d = "diff";
+              b = "branch";
+              l =
+                "log -1000 --format='%Cgreen%h%Creset: %an (%C(yellow)%ar%Creset)%n%s%n%n%b'";
+              f = "fetch";
+              r = "reset";
+              rr = "reset --hard HEAD";
+              rrr = "reset --hard HEAD^";
+              p = "push --set-upstream origin";
+              pf = "push --force-with-lease";
+              s = "stash";
+              ss = "stash save --include-untracked";
+              pl = "pull origin";
+              amend = "commit --amend";
+            };
+
+            user = {
+              email = mkDefault "JesseTheGibson@gmail.com";
+              name = "Jesse Gibson";
+            };
+
+            core = {
+              editor = "nvim";
+              pager =
+                "${unstable.gitAndTools.delta}/bin/delta --dark --syntax-theme='OneHalfDark'";
+            };
+
+            push = {
+              autoSetupRemote = true;
+              default = "current";
+            };
+
+            fetch.prune = true;
+            init.defaultBranch = "main";
+            pull.rebase = true;
+            rebase.autoStash = true;
+            commit.verbose = true;
+          };
+        };
       })
 
       (mkIf (cfg.enable && cfg.aliases.enable) {
