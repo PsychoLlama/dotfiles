@@ -39,7 +39,7 @@ in {
               b = "branch";
               l =
                 "log -1000 --format='%Cgreen%h%Creset: %an (%C(yellow)%ar%Creset)%n%s%n%n%b'";
-              f = "fetch";
+              f = "fetch origin";
               r = "reset";
               rr = "reset --hard HEAD";
               rrr = "reset --hard HEAD^";
@@ -67,7 +67,11 @@ in {
               default = "current";
             };
 
-            fetch.prune = true;
+            fetch = {
+              prune = true;
+              pruneTags = true;
+            };
+
             init.defaultBranch = "main";
             pull.rebase = true;
             rebase.autoStash = true;
