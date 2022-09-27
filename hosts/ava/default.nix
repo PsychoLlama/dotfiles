@@ -59,12 +59,12 @@
       "2:7:SynPS/2_Synaptics_TouchPad" = { natural_scroll = "enabled"; };
       "1:1:AT_Translated_Set_2_keyboard" = { repeat_delay = 200; };
     };
-  };
 
-  # `nixos-rebuild` executes as root and doesn't trust repositories
-  # belonging to other users (me).
-  programs.git.config.safe.directory =
-    "/home/overlord/projects/psychollama/dotfiles";
+    # `nixos-rebuild` executes as root and doesn't trust repositories
+    # belonging to other users (me).
+    toolkit.development.git.config.safe.directory =
+      "/home/overlord/projects/psychollama/dotfiles";
+  };
 
   # Orient the external monitor centered above the built-in screen.
   environment.etc."sway/config.d/outputs".text = ''
