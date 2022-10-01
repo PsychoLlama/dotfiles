@@ -5,7 +5,6 @@ let cfg = config.dotfiles;
 in {
   imports = [
     ./modules/apps.nix
-    ./modules/chat-client.nix
     ./modules/desktop.nix
     ./modules/dev-shell.nix
     ./modules/editor.nix

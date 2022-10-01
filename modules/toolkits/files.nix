@@ -23,7 +23,7 @@ in {
     mkMerge [
       (mkIf cfg.enable {
         environment.variables = {
-          SKIM_DEFAULT_COMMAND = "fd";
+          FZF_DEFAULT_COMMAND = "fd";
           BAT_THEME = "TwoDark";
           BAT_STYLE = "changes";
         };
@@ -34,13 +34,13 @@ in {
           du-dust
           exa
           fd
+          fzf
           glow
           hexyl
           ipfs
           jq
           pv
           ripgrep
-          skim
           tokei
           viu
           zoxide

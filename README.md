@@ -40,10 +40,9 @@ You can enable everything, or pick out the pieces you like by enabling them piec
     linter.enable = true;
   };
 
-  dotfiles.chat-client = {
+  dotfiles.apps.zathura = {
     enable = true;
-    matrix.enable = true;
-    slack.enable = true;
+    package = pkgs.zathura;
   };
 
   dotfiles.toolkit.rust-development.enable = true;

@@ -61,7 +61,7 @@ function v {
 
 # Fuzzy find and edit a file.
 function vf {
-  local result="$(fd --type file | sk)"
+  local result="$(fd --type file | fzf)"
 
   if [[ -z "$result" ]]; then
     return
@@ -72,7 +72,7 @@ function vf {
 
 # Fuzzy find and open a directory.
 function vt {
-  local result="$(fd --type directory | sk)"
+  local result="$(fd --type directory | fzf)"
 
   if [[ -z "$result" ]]; then
     return
@@ -95,7 +95,7 @@ function vh {
 
 # Jump down to a directory using fuzzy search.
 function cf {
-  local result="$(fd --type directory | sk)"
+  local result="$(fd --type directory | fzf)"
 
   if [[ -z "$result" ]]; then
     return

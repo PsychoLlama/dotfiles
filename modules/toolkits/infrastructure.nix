@@ -25,7 +25,6 @@ in {
         dive
         ipmitool
         kubectl
-        nixopsUnstable
         terraform
       ];
 

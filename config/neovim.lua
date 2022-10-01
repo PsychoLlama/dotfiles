@@ -172,7 +172,7 @@ onedark.setup({
       bg = "#1e1e1e",
     },
   },
-  hlgroups = {
+  highlights = {
     ALEWarningSign = {
       fg = colors.gray,
     },
