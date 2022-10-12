@@ -40,6 +40,7 @@ in {
           ipfs
           jq
           litecli
+          lnav
           pv
           ripgrep
           tokei
