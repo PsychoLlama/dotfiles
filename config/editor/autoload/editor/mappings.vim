@@ -10,22 +10,6 @@ func! s:is_typing_word() abort
   return l:prev_chars =~? '\w\{2}'
 endfunc
 
-func! editor#mappings#tab_completion(shifting) abort
-  if pumvisible()
-    if a:shifting
-      return "\<C-p>"
-    endif
-
-    return "\<C-n>"
-  endif
-
-  if s:is_typing_word()
-    return "\<C-n>"
-  endif
-
-  return "\t"
-endfunc
-
 " :Rexplore only works if the file was opened via netrw.
 func! editor#mappings#explore_current_dir() abort
   if &filetype is# 'netrw' || &filetype is# 'navitron'

@@ -59,10 +59,6 @@ vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
 vim.api.nvim_set_keymap('n', '<leader>f', ':Files!<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>s', ':Rg!<cr>', { noremap = true })
 
--- Support <tab> completion
-vim.api.nvim_set_keymap('i', '<tab>', 'editor#mappings#tab_completion(v:false)', { noremap = true, silent = true, expr = true })
-vim.api.nvim_set_keymap('i', '<s-tab>', 'editor#mappings#tab_completion(v:true)', { noremap = true, silent = true, expr = true })
-
 -- Misc
 vim.api.nvim_set_keymap('n', '<esc>', ':nohlsearch<cr><esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>;', ':call editor#mappings#test()<cr>', { noremap = true, silent = true })

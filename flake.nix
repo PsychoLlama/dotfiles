@@ -2,7 +2,7 @@
   description = "NixOS modules supporting my development environment";
 
   inputs = {
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
     hardware.url = "github:nixos/nixos-hardware";
 
