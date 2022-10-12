@@ -39,6 +39,7 @@ in {
           hexyl
           ipfs
           jq
+          litecli
           pv
           ripgrep
           tokei
