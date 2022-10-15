@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, nixpkgs-unstable, lib, ... }:
 
 let
   df = config.dotfiles;
@@ -28,7 +28,7 @@ in {
           BAT_STYLE = "changes";
         };
 
-        environment.systemPackages = with unstable; [
+        environment.systemPackages = with nixpkgs-unstable; [
           bat
           binutils
           du-dust

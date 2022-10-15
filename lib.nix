@@ -16,7 +16,7 @@ in {
   defineHost = system: path:
     let
       use = createPackageLoader system;
-      unstable = use inputs.nixpkgs-unstable;
+      nixpkgs-unstable = use inputs.nixpkgs-unstable;
       pkgs = use inputs.nixpkgs;
       systems = {
         "x86_64-darwin" = inputs.darwin.lib.darwinSystem;
@@ -29,7 +29,7 @@ in {
       inherit system;
 
       # Add stable and unstable package channels.
-      specialArgs = { inherit system inputs unstable; };
+      specialArgs = { inherit system inputs nixpkgs-unstable; };
 
       modules = [
         ({ lib, pkgs, ... }: {

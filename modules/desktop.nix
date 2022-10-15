@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, nixpkgs-unstable, lib, ... }:
 
 let
   df = config.dotfiles;
@@ -84,7 +84,7 @@ in {
           '';
         };
 
-        environment.systemPackages = with unstable; [
+        environment.systemPackages = with nixpkgs-unstable; [
           (callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
           wlsunset
           dunst
@@ -103,7 +103,7 @@ in {
           settings.default_session = {
             user = "greeter";
             command = "${
-                lib.makeBinPath [ unstable.greetd.tuigreet ]
+                lib.makeBinPath [ nixpkgs-unstable.greetd.tuigreet ]
               }/tuigreet --asterisks -trc sway";
           };
         };
@@ -121,8 +121,8 @@ in {
       (mkIf cfg.waybar.enable {
         environment.etc."sway/config.d/waybar".text = mkIf cfg.waybar.enable
           (let
-            init = unstable.writers.writeBash "init-waybar" ''
-              ${unstable.waybar}/bin/waybar \
+            init = nixpkgs-unstable.writers.writeBash "init-waybar" ''
+              ${nixpkgs-unstable.waybar}/bin/waybar \
                 --config ${cfg.waybar.config} \
                 --style ${cfg.waybar.style}
             '';
@@ -135,7 +135,7 @@ in {
             }
           '');
 
-        environment.systemPackages = [ unstable.waybar ];
+        environment.systemPackages = [ nixpkgs-unstable.waybar ];
       })
     ];
 }

@@ -1,4 +1,4 @@
-{ config, unstable, lib, pkgs, ... }:
+{ config, nixpkgs-unstable, lib, pkgs, ... }:
 
 let
   df = config.dotfiles;
@@ -29,7 +29,7 @@ in {
       package = mkOption {
         type = types.package;
         description = "Which package to install";
-        default = unstable.git;
+        default = nixpkgs-unstable.git;
       };
     };
   };
@@ -64,7 +64,7 @@ in {
           core = {
             editor = "nvim";
             pager =
-              "${unstable.gitAndTools.delta}/bin/delta --dark --syntax-theme='OneHalfDark'";
+              "${nixpkgs-unstable.gitAndTools.delta}/bin/delta --dark --syntax-theme='OneHalfDark'";
           };
 
           push = {
@@ -85,7 +85,7 @@ in {
       }
 
       (mkIf cfg.enable {
-        environment.systemPackages = with unstable; [
+        environment.systemPackages = with nixpkgs-unstable; [
           cfg.git.package
           gitAndTools.delta
           miniserve

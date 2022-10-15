@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, nixpkgs-unstable, lib, ... }:
 
 let
   df = config.dotfiles;
@@ -22,8 +22,10 @@ in {
   config = with lib;
     mkIf cfg.enable {
       programs.wireshark.enable = true;
-      environment.systemPackages = with unstable; [
-        (unstable.callPackage ../../pkgs/w3m.nix { keymap = cfg.w3m.keymap; })
+      environment.systemPackages = with nixpkgs-unstable; [
+        (nixpkgs-unstable.callPackage ../../pkgs/w3m.nix {
+          keymap = cfg.w3m.keymap;
+        })
         dogdns
         nmap
         termshark

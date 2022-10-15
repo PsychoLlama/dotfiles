@@ -1,4 +1,4 @@
-{ config, unstable, ... }:
+{ config, ... }:
 
 {
   environment.variables.GIT_CONFIG_SYSTEM = "/etc/gitconfig";

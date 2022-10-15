@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, nixpkgs-unstable, lib, ... }:
 
 let
   df = config.dotfiles;
@@ -15,13 +15,13 @@ in {
     docker.package = mkOption {
       type = types.package;
       description = "Which docker package to use";
-      default = unstable.docker;
+      default = nixpkgs-unstable.docker;
     };
   };
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with unstable; [
+      environment.systemPackages = with nixpkgs-unstable; [
         dive
         ipmitool
         kubectl

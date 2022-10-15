@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, nixpkgs-unstable, lib, ... }:
 
 let
   df = config.dotfiles;
@@ -15,6 +15,10 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with unstable; [ nodejs-16_x pastel yarn ];
+      environment.systemPackages = with nixpkgs-unstable; [
+        nodejs-16_x
+        pastel
+        yarn
+      ];
     };
 }

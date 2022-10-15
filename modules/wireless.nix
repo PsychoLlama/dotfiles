@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, lib, ... }:
 
 let
   df = config.dotfiles;

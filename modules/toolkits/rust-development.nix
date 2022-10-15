@@ -1,4 +1,4 @@
-{ config, unstable, lib, pkgs, ... }:
+{ config, nixpkgs-unstable, lib, pkgs, ... }:
 
 let
   df = config.dotfiles;
@@ -15,7 +15,7 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with unstable; [
+      environment.systemPackages = with nixpkgs-unstable; [
         cargo-edit
         gcc
         openssl.dev
@@ -25,7 +25,7 @@ in {
 
       # Several popular Rust libraries depend on OpenSSL bindings.
       environment.variables = {
-        PKG_CONFIG_PATH = "${unstable.openssl.dev}/lib/pkgconfig";
+        PKG_CONFIG_PATH = "${nixpkgs-unstable.openssl.dev}/lib/pkgconfig";
       };
     };
 }

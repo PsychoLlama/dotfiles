@@ -1,4 +1,4 @@
-{ config, pkgs, unstable, lib, ... }:
+{ config, pkgs, nixpkgs-unstable, lib, ... }:
 
 # dev-shell
 #
@@ -68,10 +68,10 @@ in {
         '';
 
         environment.systemPackages = [
-          (unstable.callPackage ../pkgs/alacritty.nix {
+          (nixpkgs-unstable.callPackage ../pkgs/alacritty.nix {
             configFile = cfg.alacritty.config;
           })
-          unstable.starship
+          nixpkgs-unstable.starship
         ];
 
         programs.tmux = {
@@ -96,7 +96,7 @@ in {
 
         users.users.${df.user.account}.shell = pkgs.zsh;
 
-        fonts.fonts = [ unstable.fira-code ];
+        fonts.fonts = [ nixpkgs-unstable.fira-code ];
         console.font = "Fira Code";
       })
 

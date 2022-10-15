@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, nixpkgs-unstable, lib, ... }:
 
 let
   df = config.dotfiles;
@@ -18,7 +18,7 @@ in {
         package = mkOption {
           type = types.package;
           description = "Which firefox package to use";
-          default = unstable.firefox;
+          default = nixpkgs-unstable.firefox;
         };
       };
 
@@ -32,7 +32,7 @@ in {
         package = mkOption {
           type = types.package;
           description = "Which Tor browser package to use";
-          default = unstable.tor-browser-bundle-bin;
+          default = nixpkgs-unstable.tor-browser-bundle-bin;
         };
       };
     };
@@ -47,7 +47,7 @@ in {
       package = mkOption {
         type = types.package;
         description = "Which zathura package to use";
-        default = unstable.zathura;
+        default = nixpkgs-unstable.zathura;
       };
     };
   };

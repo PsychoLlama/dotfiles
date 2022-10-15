@@ -1,4 +1,4 @@
-{ config, unstable, lib, ... }:
+{ config, nixpkgs-unstable, lib, ... }:
 
 let
   df = config.dotfiles;
@@ -20,7 +20,7 @@ in {
   };
 
   config = with lib;
-    with unstable;
+    with nixpkgs-unstable;
     mkMerge [
       (mkIf cfg.enable {
         environment.systemPackages = [ bottom man-pages ncspot rage duf ];
