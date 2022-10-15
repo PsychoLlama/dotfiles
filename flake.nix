@@ -18,7 +18,7 @@
   };
 
   outputs = inputs:
-    let lib = import ./lib.nix inputs;
+    let lib = import ./lib inputs;
 
     in {
       inherit lib;
