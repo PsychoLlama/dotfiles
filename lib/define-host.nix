@@ -26,6 +26,10 @@ in mkSystem rec {
       # Hostnames are set by the directory's name.
       networking.hostName = lib.mkDefault (baseNameOf path);
 
+      # Include custom NixOS modules in the generated man page.
+      documentation.nixos.extraModuleSources =
+        [ "${inputs.home-manager}/nixos" ];
+
       # This can be removed once nix flakes ship standard.
       nix = {
         package = pkgs.nixUnstable;
@@ -35,8 +39,11 @@ in mkSystem rec {
       };
     })
 
+    # Add home-manager for easier cross-platform support.
+    inputs.home-manager.nixosModules.home-manager
+
     # Load the dotfiles framework.
-    inputs.self.nixosModules.default
+    inputs.self.nixosModule
 
     # Do machine-specific configuration.
     path

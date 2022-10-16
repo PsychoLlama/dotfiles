@@ -67,6 +67,27 @@
         "type": "github"
       }
     },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1665475263,
+        "narHash": "sha256-T4at7d+KsQNWh5rfjvOtQCaIMWjSDlSgQZKvxb+LcEY=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "17208be516fc36e2ab0ceb064d931e90eb88b2a3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-22.05",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "navitron-nvim": {
       "flake": false,
       "locked": {
@@ -121,6 +142,7 @@
         "darwin": "darwin",
         "further-vim": "further-vim",
         "hardware": "hardware",
+        "home-manager": "home-manager",
         "navitron-nvim": "navitron-nvim",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",

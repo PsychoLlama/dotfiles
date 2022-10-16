@@ -59,5 +59,10 @@ in {
           extraGroups = [ "wheel" ];
         };
       };
+
+      home-manager = {
+        useGlobalPkgs = mkDefault true;
+        useUserPackages = mkDefault true;
+      };
     };
 }

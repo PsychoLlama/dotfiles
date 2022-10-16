@@ -45,12 +45,6 @@ in {
       };
     };
 
-    rofi.config = mkOption {
-      type = types.path;
-      description = "Set the Rofi configuration directory";
-      default = ../config/rofi;
-    };
-
     waybar = {
       enable = mkOption {
         type = types.bool;
@@ -84,11 +78,16 @@ in {
           '';
         };
 
-        environment.systemPackages = with nixpkgs-unstable; [
-          (callPackage ../pkgs/rofi.nix { configDir = cfg.rofi.config; })
-          wlsunset
-          dunst
-        ];
+        environment.systemPackages = with nixpkgs-unstable; [ wlsunset dunst ];
+
+        # TODO: Remove username assumption.
+        home-manager.users.${config.dotfiles.user.account}.programs.rofi = {
+          enable = true;
+          package = nixpkgs-unstable.rofi;
+          terminal = "alacritty";
+          theme = ../config/rofi/theme.rasi;
+          extraConfig.modi = "drun,run";
+        };
 
         environment.etc."sway/config".source = cfg.sway.config;
         environment.etc."sway/config.d/inputs".text =

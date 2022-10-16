@@ -1,6 +1,0 @@
-configuration {
-  modi: "drun,run";
-  terminal: "alacritty";
-}
-
-@theme "./theme.rasi"
