@@ -1,18 +1,9 @@
 inputs: system: path:
 
+# Injects dotfiles, flake inputs, and baseline NixOS configuration.
+
 let
-  overlays = [ inputs.vim-plugin-nursery.overlay (import ../pkgs/default.nix) ];
-
-  createPackageLoader = system: path:
-    import path {
-      inherit system;
-
-      # Add custom software to instances of nixpkgs.
-      overlays = overlays;
-    };
-
-  # Injects dotfiles, flake inputs, and baseline NixOS configuration.
-  use = createPackageLoader system;
+  use = flake: flake.legacyPackages.${system};
 
   nixpkgs-unstable = use inputs.nixpkgs-unstable;
   pkgs = use inputs.nixpkgs;
@@ -34,9 +25,6 @@ in mkSystem rec {
     ({ lib, pkgs, ... }: {
       # Hostnames are set by the directory's name.
       networking.hostName = lib.mkDefault (baseNameOf path);
-
-      # Add custom packages.
-      nixpkgs.overlays = overlays;
 
       # This can be removed once nix flakes ship standard.
       nix = {

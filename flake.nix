@@ -6,14 +6,35 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
     hardware.url = "github:nixos/nixos-hardware";
 
-    vim-plugin-nursery = {
-      url = "github:PsychoLlama/vim-plugin-nursery";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    darwin = {
-      url = "github:LnL7/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+    # TODO: Put these vim plugins in nixpkgs.
+    alternaut-vim = {
+      url = "github:PsychoLlama/alternaut.vim";
+      flake = false;
+    };
+
+    further-vim = {
+      url = "github:PsychoLlama/further.vim";
+      flake = false;
+    };
+
+    navitron-nvim = {
+      url = "github:PsychoLlama/navitron.vim";
+      flake = false;
+    };
+
+    teleport-vim = {
+      url = "github:PsychoLlama/teleport.vim";
+      flake = false;
+    };
+
+    unison-vim = {
+      url = "github:unisonweb/unison";
+      flake = false;
     };
   };
 

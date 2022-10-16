@@ -1,8 +1,21 @@
-{ config, nixpkgs-unstable, inputs, lib, ... }:
+{ config, pkgs, nixpkgs-unstable, inputs, lib, ... }:
 
 let
   df = config.dotfiles;
   cfg = df.editor;
+
+  # Non-standard vim plugins.
+  extraVimPlugins = with lib;
+    mapAttrs (pluginName: plugin:
+      pkgs.vimUtils.buildVimPluginFrom2Nix {
+        pname = pluginName;
+        version = plugin.shortRev or "latest";
+        src = plugin;
+      }) {
+        inherit (inputs) further-vim teleport-vim alternaut-vim navitron-nvim;
+        unison-vim = "${inputs.unison-vim}/editor-support/vim";
+        personal-vim-config = ../config/editor;
+      };
 
 in {
   options = with lib; {
@@ -45,7 +58,7 @@ in {
             '';
 
             configure.packages.plugins.start =
-              with nixpkgs-unstable.vimPlugins; [
+              with nixpkgs-unstable.vimPlugins // extraVimPlugins; [
                 ale
                 auto-pairs
                 coc-nvim
@@ -71,13 +84,7 @@ in {
                 navitron-nvim
                 teleport-vim
                 unison-vim
-                vim-nand2tetris
-
-                (nixpkgs-unstable.vimUtils.buildVimPluginFrom2Nix {
-                  pname = "vim-config";
-                  version = "latest";
-                  src = ../config/editor;
-                })
+                personal-vim-config
 
                 # Treesitter integrations.
                 nvim-treesitter-textobjects

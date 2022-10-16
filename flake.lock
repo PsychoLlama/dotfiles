@@ -12,7 +12,6 @@
       },
       "original": {
         "owner": "PsychoLlama",
-        "ref": "main",
         "repo": "alternaut.vim",
         "type": "github"
       }
@@ -24,16 +23,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1664210064,
-        "narHash": "sha256-df6nKVZe/yAhmJ9csirTPahc0dldwm3HBhCVNA6qWr0=",
+        "lastModified": 1665392861,
+        "narHash": "sha256-bCd8fYJMAb0LzabsiXl4nxECDoz483bJOCa2hjox7N0=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "02d2551c927b7d65ded1b3c7cd13da5cc7ae3fcf",
+        "rev": "ef56fd8979b5f4e800c4716f62076e00600b1172",
         "type": "github"
       },
       "original": {
         "owner": "LnL7",
-        "ref": "master",
         "repo": "nix-darwin",
         "type": "github"
       }
@@ -50,7 +48,6 @@
       },
       "original": {
         "owner": "PsychoLlama",
-        "ref": "master",
         "repo": "further.vim",
         "type": "github"
       }
@@ -82,24 +79,7 @@
       },
       "original": {
         "owner": "PsychoLlama",
-        "ref": "main",
         "repo": "navitron.vim",
-        "type": "github"
-      }
-    },
-    "nginx-vim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1633281202,
-        "narHash": "sha256-7GYNhnoTx7y+xo9dkfaO8KCM7StPFY8P1ldTFD9pGZ0=",
-        "owner": "chr4",
-        "repo": "nginx.vim",
-        "rev": "ceeab164880ad90e73ab1be31dc3932777b9ef20",
-        "type": "github"
-      },
-      "original": {
-        "owner": "chr4",
-        "repo": "nginx.vim",
         "type": "github"
       }
     },
@@ -137,11 +117,15 @@
     },
     "root": {
       "inputs": {
+        "alternaut-vim": "alternaut-vim",
         "darwin": "darwin",
+        "further-vim": "further-vim",
         "hardware": "hardware",
+        "navitron-nvim": "navitron-nvim",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "vim-plugin-nursery": "vim-plugin-nursery"
+        "teleport-vim": "teleport-vim",
+        "unison-vim": "unison-vim"
       }
     },
     "teleport-vim": {
@@ -156,7 +140,6 @@
       },
       "original": {
         "owner": "PsychoLlama",
-        "ref": "master",
         "repo": "teleport.vim",
         "type": "github"
       }
@@ -164,60 +147,16 @@
     "unison-vim": {
       "flake": false,
       "locked": {
-        "lastModified": 1639200517,
-        "narHash": "sha256-FwYUg/OJmllaZpylSySCzo+TuKWLe4y2wb/yG3ig71E=",
+        "lastModified": 1665795263,
+        "narHash": "sha256-LJdkh+FXZ4gW/egh/H/6bJ5BeKTNCNLK6mDG/v4Eme0=",
         "owner": "unisonweb",
         "repo": "unison",
-        "rev": "4faca1cef859489f9c139df5e73fe124fc97376b",
+        "rev": "9ba923f775d1245f2efd0c58adc8c2767c3d46c6",
         "type": "github"
       },
       "original": {
         "owner": "unisonweb",
         "repo": "unison",
-        "type": "github"
-      }
-    },
-    "vim-nand2tetris": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1509026020,
-        "narHash": "sha256-lua+XdVohOG6lUSP5inHEUpUwlVTP6zsKLJagMnGZYs=",
-        "owner": "sevko",
-        "repo": "vim-nand2tetris-syntax",
-        "rev": "f5d43604fc5f36a533bbf9e0cede09701f6b6c5a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sevko",
-        "ref": "master",
-        "repo": "vim-nand2tetris-syntax",
-        "type": "github"
-      }
-    },
-    "vim-plugin-nursery": {
-      "inputs": {
-        "alternaut-vim": "alternaut-vim",
-        "further-vim": "further-vim",
-        "navitron-nvim": "navitron-nvim",
-        "nginx-vim": "nginx-vim",
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ],
-        "teleport-vim": "teleport-vim",
-        "unison-vim": "unison-vim",
-        "vim-nand2tetris": "vim-nand2tetris"
-      },
-      "locked": {
-        "lastModified": 1658722731,
-        "narHash": "sha256-rS7eWOrsTx0jwvNY2+e2y96rw2JMlGwV1TYFkN+dI8s=",
-        "owner": "PsychoLlama",
-        "repo": "vim-plugin-nursery",
-        "rev": "243dc4a9eb8b63ba74b8173d63ab28c5f486f073",
-        "type": "github"
-      },
-      "original": {
-        "owner": "PsychoLlama",
-        "repo": "vim-plugin-nursery",
         "type": "github"
       }
     }
