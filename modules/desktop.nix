@@ -78,14 +78,10 @@ in {
           '';
         };
 
-        environment.systemPackages = with nixpkgs-unstable; [ wlsunset dunst ];
+        environment.systemPackages = with nixpkgs-unstable; [ wlsunset ];
         environment.etc."sway/config".source = cfg.sway.config;
         environment.etc."sway/config.d/inputs".text =
           generateSwayInputsConfig cfg.sway.inputs;
-
-        environment.etc."sway/config.d/notifications".text = ''
-          exec dunst -config ${../config/dunst.cfg}
-        '';
 
         services.greetd = {
           enable = true;

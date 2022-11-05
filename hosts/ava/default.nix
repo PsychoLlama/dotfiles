@@ -162,7 +162,7 @@
 
   home-manager.users.${config.dotfiles.user.account} = {
     imports = [ inputs.self.nixosModules.home-manager ];
-    presets.rofi.enable = true;
+    presets.desktop-environment.enable = true;
   };
 
   networking.firewall.allowedTCPPorts = [ 4444 ];
