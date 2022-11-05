@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, inputs, ... }:
 
 let cfg = config.dotfiles;
 
@@ -24,6 +24,12 @@ in {
       type = types.bool;
       description = "Enable everything";
       default = false;
+    };
+
+    bleeding-edge = mkOption {
+      type = types.bool;
+      description = "Use the latest packages";
+      default = cfg.kitchen-sink.enable;
     };
 
     user = {
@@ -64,5 +70,8 @@ in {
         useGlobalPkgs = mkDefault true;
         useUserPackages = mkDefault true;
       };
+
+      nixpkgs.overlays =
+        mkIf cfg.bleeding-edge [ inputs.self.overlays.latest-packages ];
     };
 }

@@ -44,13 +44,17 @@
   };
 
   outputs = inputs:
-    let lib = import ./lib inputs;
+    let
+      lib = import ./lib inputs;
+      inherit (inputs) nixpkgs-unstable;
 
     in {
       inherit lib;
 
       nixosModule = import ./default.nix;
-      overlay = import ./pkgs;
+
+      overlays.latest-packages =
+        import ./overlays/latest-packages.nix nixpkgs-unstable;
 
       nixosConfigurations = {
         ava = lib.defineHost "x86_64-linux" ./hosts/ava;

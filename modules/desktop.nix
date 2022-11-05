@@ -83,7 +83,6 @@ in {
         # TODO: Remove username assumption.
         home-manager.users.${config.dotfiles.user.account}.programs.rofi = {
           enable = true;
-          package = nixpkgs-unstable.rofi;
           terminal = "alacritty";
           theme = ../config/rofi/theme.rasi;
           extraConfig.modi = "drun,run";
