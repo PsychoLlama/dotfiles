@@ -53,6 +53,11 @@
 
       nixosModule = import ./default.nix;
 
+      nixosModules = {
+        dotfiles = inputs.self.nixosModule;
+        home-manager = ./modules/home-manager;
+      };
+
       overlays.latest-packages =
         import ./overlays/latest-packages.nix nixpkgs-unstable;
 

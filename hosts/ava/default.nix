@@ -1,4 +1,4 @@
-{ config, nixpkgs-unstable, lib, inputs, ... }:
+{ config, nixpkgs-unstable, lib, inputs, system, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ../common/linux.nix ];
@@ -50,6 +50,7 @@
     variables.BORG_REPO = "/mnt/borg";
   };
 
+  # TODO: Migrate to home-manager.
   dotfiles = {
     kitchen-sink.enable = true;
 
@@ -157,6 +158,11 @@
         '';
       };
     };
+  };
+
+  home-manager.users.${config.dotfiles.user.account} = {
+    imports = [ inputs.self.nixosModules.home-manager ];
+    presets.rofi.enable = true;
   };
 
   networking.firewall.allowedTCPPorts = [ 4444 ];

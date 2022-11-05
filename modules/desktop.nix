@@ -79,15 +79,6 @@ in {
         };
 
         environment.systemPackages = with nixpkgs-unstable; [ wlsunset dunst ];
-
-        # TODO: Remove username assumption.
-        home-manager.users.${config.dotfiles.user.account}.programs.rofi = {
-          enable = true;
-          terminal = "alacritty";
-          theme = ../config/rofi/theme.rasi;
-          extraConfig.modi = "drun,run";
-        };
-
         environment.etc."sway/config".source = cfg.sway.config;
         environment.etc."sway/config.d/inputs".text =
           generateSwayInputsConfig cfg.sway.inputs;
