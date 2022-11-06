@@ -16,8 +16,6 @@ in {
   config = with lib;
     mkMerge [
       (mkIf cfg.enable {
-        environment.variables.FZF_DEFAULT_COMMAND = "fd";
-
         environment.systemPackages = with nixpkgs-unstable; [
           binutils
           du-dust

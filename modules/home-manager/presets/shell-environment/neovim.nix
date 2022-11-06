@@ -46,7 +46,7 @@ in with lib; {
         (nvim-treesitter.withPlugins (plugins: attrValues plugins))
       ];
 
-      extraPackages = [ pkgs.vim-vint ];
+      extraPackages = [ pkgs.vim-vint pkgs.nixfmt pkgs.shellcheck ];
 
       extraConfig = ''
         set shell=${pkgs.zsh}/bin/zsh

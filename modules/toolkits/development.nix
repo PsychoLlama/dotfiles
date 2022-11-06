@@ -17,12 +17,7 @@ in {
   config = with lib;
     mkMerge [
       (mkIf cfg.enable {
-        environment.systemPackages = with nixpkgs-unstable; [
-          miniserve
-          nixfmt
-          shellcheck
-          sshfs
-        ];
+        environment.systemPackages = with nixpkgs-unstable; [ miniserve sshfs ];
       })
     ];
 }
