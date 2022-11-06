@@ -2,5 +2,5 @@
 #
 # Signature: inputs.nixpkgs-unstable => overlay
 unstable: self: pkgs: {
-  inherit (unstable.legacyPackages.${pkgs.system}) rofi dunst;
+  inherit (unstable.legacyPackages.${pkgs.system}) rofi dunst alacritty;
 }

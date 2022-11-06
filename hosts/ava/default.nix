@@ -162,7 +162,11 @@
 
   home-manager.users.${config.dotfiles.user.account} = {
     imports = [ inputs.self.nixosModules.home-manager ];
-    presets.desktop-environment.enable = true;
+
+    presets = {
+      desktop-environment.enable = true;
+      terminal-environment.enable = true;
+    };
   };
 
   networking.firewall.allowedTCPPorts = [ 4444 ];

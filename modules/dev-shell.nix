@@ -30,12 +30,6 @@ in {
       };
     };
 
-    alacritty.config = mkOption {
-      type = types.path;
-      description = "Set the alacritty config file";
-      default = ../config/alacritty.yml;
-    };
-
     starship.config = mkOption {
       type = types.path;
       description = "Set the starship config file";
@@ -67,12 +61,7 @@ in {
           ${cfg.zsh.extraConfig}
         '';
 
-        environment.systemPackages = [
-          (nixpkgs-unstable.callPackage ../pkgs/alacritty.nix {
-            configFile = cfg.alacritty.config;
-          })
-          nixpkgs-unstable.starship
-        ];
+        environment.systemPackages = [ nixpkgs-unstable.starship ];
 
         programs.tmux = {
           enable = true;
