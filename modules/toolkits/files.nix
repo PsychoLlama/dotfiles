@@ -26,7 +26,6 @@ in {
           bat
           binutils
           du-dust
-          exa
           fd
           fzf
           glow
