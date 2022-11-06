@@ -9,11 +9,14 @@ in with lib; {
   config = mkIf cfg.enable {
     programs.neovim = {
       enable = true;
+      coc.enable = true;
 
       plugins = with pkgs.vimPlugins; [
         ale
         auto-pairs
-        coc-nvim
+        coc-json
+        coc-rls
+        coc-tsserver
         fzf-vim
         markdown-preview-nvim
         onedarkpro-nvim

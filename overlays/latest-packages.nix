@@ -18,6 +18,7 @@ in {
   vimPlugins = pkgs.vimPlugins // {
     inherit (latest.vimPlugins)
       nvim-treesitter-textobjects nvim-treesitter ale fzf-vim
-      markdown-preview-nvim coc-nvim onedarkpro-nvim;
+      markdown-preview-nvim coc-nvim coc-json coc-tsserver coc-rls
+      onedarkpro-nvim;
   };
 }
