@@ -44,26 +44,6 @@ in {
         '';
       };
     };
-
-    waybar = {
-      enable = mkOption {
-        type = types.bool;
-        description = "Enable waybar";
-        default = df.kitchen-sink.enable;
-      };
-
-      config = mkOption {
-        type = types.path;
-        description = "Waybar config file";
-        default = ../config/waybar/config.json;
-      };
-
-      style = mkOption {
-        type = types.path;
-        description = "Waybar styles";
-        default = ../config/waybar/style.css;
-      };
-    };
   };
 
   config = with lib;
@@ -101,26 +81,6 @@ in {
         services.printing.enable = mkDefault true;
         sound.enable = mkDefault true;
         hardware.pulseaudio.enable = mkDefault true;
-      })
-
-      (mkIf cfg.waybar.enable {
-        environment.etc."sway/config.d/waybar".text = mkIf cfg.waybar.enable
-          (let
-            init = nixpkgs-unstable.writers.writeBash "init-waybar" ''
-              ${nixpkgs-unstable.waybar}/bin/waybar \
-                --config ${cfg.waybar.config} \
-                --style ${cfg.waybar.style}
-            '';
-          in ''
-            default_border none
-
-            bar {
-              swaybar_command ${init}
-              position top
-            }
-          '');
-
-        environment.systemPackages = [ nixpkgs-unstable.waybar ];
       })
     ];
 }
