@@ -8,7 +8,7 @@ let latest = nixpkgs-unstable.legacyPackages.${pkgs.system};
 in {
   inherit (latest)
     rofi dunst alacritty zoxide starship tmux fira-code nerdfonts exa bat
-    vim-vint fd bottom;
+    vim-vint fd bottom ncspot;
 
   neovim-unwrapped = pkgs.lib.recursiveUpdate latest.neovim-unwrapped {
     # Used by home-manager, which still assumes nvim 0.7.

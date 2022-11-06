@@ -10,6 +10,7 @@ in with lib; {
     ./fd.nix
     ./fzf.nix
     ./git.nix
+    ./ncspot.nix
     ./neovim.nix
   ];
 
@@ -23,6 +24,7 @@ in with lib; {
     fd.enable = mkDefault true;
     fzf.enable = mkDefault true;
     git.enable = mkDefault true;
+    ncspot.enable = mkDefault true;
     neovim.enable = mkDefault true;
   };
 }

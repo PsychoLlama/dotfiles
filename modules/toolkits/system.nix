@@ -22,9 +22,7 @@ in {
   config = with lib;
     with nixpkgs-unstable;
     mkMerge [
-      (mkIf cfg.enable {
-        environment.systemPackages = [ man-pages ncspot rage duf ];
-      })
+      (mkIf cfg.enable { environment.systemPackages = [ man-pages rage duf ]; })
 
       (mkIf cfg.linux.enable {
         environment.systemPackages = [
