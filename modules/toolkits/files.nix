@@ -21,8 +21,6 @@ in {
         environment.systemPackages = with nixpkgs-unstable; [
           binutils
           du-dust
-          fd
-          fzf
           glow
           hexyl
           ipfs
