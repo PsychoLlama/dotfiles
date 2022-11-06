@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let cfg = config.presets.dunst;
 
@@ -8,6 +8,7 @@ in with lib; {
 
   config.services.dunst = mkIf cfg.enable {
     enable = true;
+    package = pkgs.unstable.dunst;
     configFile = ../../../../config/dunst.cfg;
   };
 }

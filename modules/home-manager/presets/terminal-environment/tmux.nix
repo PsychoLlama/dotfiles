@@ -8,6 +8,7 @@ in with lib; {
 
   config.programs.tmux = mkIf cfg.enable {
     enable = true;
+    package = pkgs.unstable.tmux;
     customPaneNavigationAndResize = true;
     escapeTime = 0;
     historyLimit = 100000;

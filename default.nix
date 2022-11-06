@@ -69,7 +69,8 @@ in {
         useUserPackages = mkDefault true;
       };
 
-      nixpkgs.overlays = [ inputs.self.overlays.vim-plugins ]
-        ++ optional cfg.bleeding-edge inputs.self.overlays.latest-packages;
+      nixpkgs.overlays =
+        optional cfg.bleeding-edge inputs.self.overlays.latest-packages
+        ++ [ inputs.self.overlays.vim-plugins ];
     };
 }

@@ -11,6 +11,11 @@ in with lib; {
       enable = true;
       coc.enable = true;
 
+      package = recursiveUpdate pkgs.unstable.neovim-unwrapped {
+        # Used by home-manager, which still assumes nvim 0.7.
+        lua.pkgs.lib = pkgs.unstable.neovim-unwrapped.lua.pkgs.luaLib;
+      };
+
       plugins = with pkgs.vimPlugins; [
         ale
         auto-pairs
@@ -46,7 +51,7 @@ in with lib; {
         (nvim-treesitter.withPlugins (plugins: attrValues plugins))
       ];
 
-      extraPackages = [ pkgs.vim-vint pkgs.nixfmt pkgs.shellcheck ];
+      extraPackages = with pkgs.unstable; [ vim-vint nixfmt shellcheck ];
 
       extraConfig = ''
         set shell=${pkgs.zsh}/bin/zsh

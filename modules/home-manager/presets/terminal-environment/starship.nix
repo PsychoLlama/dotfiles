@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let cfg = config.presets.starship;
 
@@ -8,6 +8,7 @@ in with lib; {
 
   config.programs.starship = mkIf cfg.enable {
     enable = true;
+    package = pkgs.unstable.starship;
 
     settings = {
       add_newline = false;

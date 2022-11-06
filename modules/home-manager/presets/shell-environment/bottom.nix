@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let cfg = config.presets.bottom;
 
@@ -8,6 +8,7 @@ in with lib; {
 
   config.programs.bottom = mkIf cfg.enable {
     enable = true;
+    package = pkgs.unstable.bottom;
     settings.flags.temperature_type = "f";
   };
 }

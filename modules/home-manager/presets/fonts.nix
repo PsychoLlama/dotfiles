@@ -8,7 +8,7 @@ in with lib; {
   config = mkIf cfg.enable {
     fonts.fontconfig.enable = true;
 
-    home.packages = with pkgs; [
+    home.packages = with pkgs.unstable; [
       fira-code
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
