@@ -6,7 +6,6 @@ in {
   imports = [
     ./modules/apps.nix
     ./modules/desktop.nix
-    ./modules/editor.nix
     ./modules/passwordless-sudo.nix
     ./modules/wireless.nix
     ./modules/toolkits/development.nix
@@ -70,7 +69,7 @@ in {
         useUserPackages = mkDefault true;
       };
 
-      nixpkgs.overlays =
-        mkIf cfg.bleeding-edge [ inputs.self.overlays.latest-packages ];
+      nixpkgs.overlays = [ inputs.self.overlays.vim-plugins ]
+        ++ optional cfg.bleeding-edge inputs.self.overlays.latest-packages;
     };
 }

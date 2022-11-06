@@ -45,7 +45,6 @@ vim.o.history = 1000
 -- Integrations
 vim.o.clipboard = 'unnamedplus'
 vim.o.grepprg = 'rg -n'
-vim.o.shell = 'zsh'
 
 
 -- Use <space> as the leader key.

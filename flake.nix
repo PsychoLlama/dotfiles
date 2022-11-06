@@ -58,8 +58,11 @@
         home-manager = ./modules/home-manager;
       };
 
-      overlays.latest-packages =
-        import ./overlays/latest-packages.nix nixpkgs-unstable;
+      overlays = {
+        vim-plugins = import ./overlays/vim-plugins.nix inputs;
+        latest-packages =
+          import ./overlays/latest-packages.nix nixpkgs-unstable;
+      };
 
       nixosConfigurations = {
         ava = lib.defineHost "x86_64-linux" ./hosts/ava;
