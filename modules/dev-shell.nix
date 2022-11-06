@@ -30,12 +30,6 @@ in {
       };
     };
 
-    starship.config = mkOption {
-      type = types.path;
-      description = "Set the starship config file";
-      default = ../config/starship.toml;
-    };
-
     tmux.config = mkOption {
       type = types.path;
       description = "Set the tmux config file";
@@ -52,7 +46,6 @@ in {
   config = with lib;
     mkMerge [
       (mkIf cfg.enable {
-        environment.variables.STARSHIP_CONFIG = "${cfg.starship.config}";
         environment.etc."zshrc.local".text = ''
           # --- dotfiles.dev-shell.zsh.rc ---
           source ${cfg.zsh.rc}
@@ -60,8 +53,6 @@ in {
           # --- dotfiles.dev-shell.zsh.extraConfig ---
           ${cfg.zsh.extraConfig}
         '';
-
-        environment.systemPackages = [ nixpkgs-unstable.starship ];
 
         programs.tmux = {
           enable = true;
