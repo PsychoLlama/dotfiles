@@ -3,7 +3,8 @@
 let cfg = config.presets.git;
 
 in with lib; {
-  options.presets.git.enable = mkEnableOption "Replace ls with git";
+  options.presets.git.enable =
+    mkEnableOption "Provide an opinionated configuration for git";
 
   config = mkIf cfg.enable {
     home.shellAliases.g = "git";

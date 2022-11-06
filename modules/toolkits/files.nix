@@ -24,7 +24,6 @@ in {
           glow
           hexyl
           ipfs
-          jq
           litecli
           lnav
           pv
