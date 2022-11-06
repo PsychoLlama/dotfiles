@@ -28,7 +28,6 @@ in with lib; {
     # TODO: Move these into their respective configs, once they exist.
     home.shellAliases = {
       t = "tmux";
-      cat = "bat";
 
       g = "git";
       c = "git commit";

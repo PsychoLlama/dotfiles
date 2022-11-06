@@ -16,14 +16,9 @@ in {
   config = with lib;
     mkMerge [
       (mkIf cfg.enable {
-        environment.variables = {
-          FZF_DEFAULT_COMMAND = "fd";
-          BAT_THEME = "TwoDark";
-          BAT_STYLE = "changes";
-        };
+        environment.variables.FZF_DEFAULT_COMMAND = "fd";
 
         environment.systemPackages = with nixpkgs-unstable; [
-          bat
           binutils
           du-dust
           fd
