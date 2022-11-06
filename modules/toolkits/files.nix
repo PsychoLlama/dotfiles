@@ -45,7 +45,6 @@ in {
           ripgrep
           tokei
           viu
-          zoxide
         ];
       })
 
