@@ -3,5 +3,5 @@
 # Signature: inputs.nixpkgs-unstable => overlay
 unstable: self: pkgs: {
   inherit (unstable.legacyPackages.${pkgs.system})
-    rofi dunst alacritty zoxide starship tmux;
+    rofi dunst alacritty zoxide starship tmux fira-code nerdfonts;
 }

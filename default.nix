@@ -6,7 +6,6 @@ in {
   imports = [
     ./modules/apps.nix
     ./modules/desktop.nix
-    ./modules/dev-shell.nix
     ./modules/editor.nix
     ./modules/passwordless-sudo.nix
     ./modules/wireless.nix

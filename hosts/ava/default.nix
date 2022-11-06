@@ -166,6 +166,7 @@
     presets = {
       desktop-environment.enable = true;
       terminal-environment.enable = true;
+      fonts.enable = true;
     };
   };
 

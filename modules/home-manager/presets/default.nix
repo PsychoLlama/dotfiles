@@ -1,1 +1,1 @@
-{ imports = [ ./desktop-environment ./terminal-environment ]; }
+{ imports = [ ./desktop-environment ./terminal-environment ./fonts.nix ]; }

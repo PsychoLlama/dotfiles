@@ -28,11 +28,6 @@
   dotfiles = {
     user.account = "marvin";
 
-    dev-shell = {
-      enable = true;
-      tmux.aliases.enable = true;
-    };
-
     editor = {
       enable = true;
       linter.enable = true;
