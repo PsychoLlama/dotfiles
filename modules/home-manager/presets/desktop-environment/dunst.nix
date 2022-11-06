@@ -8,6 +8,6 @@ in with lib; {
 
   config.services.dunst = mkIf cfg.enable {
     enable = true;
-    configFile = ../../../config/dunst.cfg;
+    configFile = ../../../../config/dunst.cfg;
   };
 }

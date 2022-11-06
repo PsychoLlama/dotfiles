@@ -7,7 +7,7 @@ in with lib; {
 
   config.programs.rofi = mkIf cfg.enable {
     enable = true;
-    theme = ../../../config/rofi/theme.rasi;
+    theme = ../../../../config/rofi/theme.rasi;
     extraConfig.modi = "drun,run";
   };
 }

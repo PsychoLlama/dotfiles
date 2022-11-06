@@ -3,11 +3,13 @@
 let cfg = config.presets.desktop-environment;
 
 in with lib; {
+  imports = [ ./dunst.nix ./rofi.nix ];
+
   options.presets.desktop-environment.enable =
     mkEnableOption "Use an opinionated Linux desktop environment";
 
-  config = mkIf cfg.enable {
-    presets.dunst.enable = mkDefault true;
-    presets.rofi.enable = mkDefault true;
+  config.presets = mkIf cfg.enable {
+    dunst.enable = mkDefault true;
+    rofi.enable = mkDefault true;
   };
 }
