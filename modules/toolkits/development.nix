@@ -13,12 +13,6 @@ in {
       default = df.kitchen-sink.enable;
     };
 
-    aliases.enable = mkOption {
-      type = types.bool;
-      description = "Enable short git aliases";
-      default = df.kitchen-sink.enable;
-    };
-
     git = {
       config = mkOption {
         type = ini.type;
@@ -95,18 +89,6 @@ in {
         ];
 
         environment.etc.gitconfig.text = generators.toGitINI cfg.git.config;
-      })
-
-      (mkIf (cfg.enable && cfg.aliases.enable) {
-        environment.shellAliases = {
-          g = "git";
-          c = "git commit";
-          b = "git branch";
-          ch = "git checkout";
-          h = "git diff HEAD";
-          hh = "git diff HEAD~1";
-          hhh = "git diff HEAD~2";
-        };
       })
     ];
 }

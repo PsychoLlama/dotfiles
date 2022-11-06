@@ -3,7 +3,7 @@
 let cfg = config.presets.terminal-environment;
 
 in with lib; {
-  imports = [ ./alacritty.nix ./starship.nix ./zoxide.nix ];
+  imports = [ ./alacritty.nix ./starship.nix ./zoxide.nix ./zsh.nix ];
 
   options.presets.terminal-environment.enable =
     mkEnableOption "Use an opinionated terminal environment";
@@ -12,5 +12,6 @@ in with lib; {
     alacritty.enable = mkDefault true;
     starship.enable = mkDefault true;
     zoxide.enable = mkDefault true;
+    zsh.enable = mkDefault true;
   };
 }

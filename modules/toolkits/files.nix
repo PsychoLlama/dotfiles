@@ -11,12 +11,6 @@ in {
       description = "Enable file navigation/inspection toolkit";
       default = df.kitchen-sink.enable;
     };
-
-    replace = mkOption {
-      type = types.bool;
-      description = "Replaces cat & ls with fancier alternatives";
-      default = df.kitchen-sink.enable;
-    };
   };
 
   config = with lib;
@@ -46,14 +40,6 @@ in {
           tokei
           viu
         ];
-      })
-
-      (mkIf (cfg.enable && cfg.replace) {
-        environment.shellAliases = {
-          cat = "bat";
-          ls = "exa";
-          l = "exa -la";
-        };
       })
     ];
 }
