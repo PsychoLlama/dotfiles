@@ -33,7 +33,7 @@ in with lib; {
         white10 = mkLiteral "#ABB2BF0A"; # @white 10/255 opaque
 
         background-color = mkLiteral "@black";
-        font = "mononoki 16";
+        font = "Fira Code 16";
         text-color = mkLiteral "@white";
       };
 
