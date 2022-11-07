@@ -7,36 +7,6 @@ let
 
 in {
   options.dotfiles.apps = with lib; {
-    browsers = {
-      firefox = {
-        enable = mkOption {
-          type = types.bool;
-          description = "Enable Firefox";
-          default = df.kitchen-sink.enable;
-        };
-
-        package = mkOption {
-          type = types.package;
-          description = "Which firefox package to use";
-          default = nixpkgs-unstable.firefox;
-        };
-      };
-
-      tor = {
-        enable = mkOption {
-          type = types.bool;
-          description = "Enable the Tor browser";
-          default = df.kitchen-sink.enable;
-        };
-
-        package = mkOption {
-          type = types.package;
-          description = "Which Tor browser package to use";
-          default = nixpkgs-unstable.tor-browser-bundle-bin;
-        };
-      };
-    };
-
     zathura = {
       enable = mkOption {
         type = types.bool;
@@ -54,12 +24,6 @@ in {
 
   config = with lib;
     mkMerge [
-      (mkIf browsers.firefox.enable {
-        environment.systemPackages = [ browsers.firefox.package ];
-      })
-      (mkIf browsers.tor.enable {
-        environment.systemPackages = [ browsers.tor.package ];
-      })
       (mkIf cfg.zathura.enable {
         environment.systemPackages = [ cfg.zathura.package ];
       })
