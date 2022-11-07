@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, inputs, ... }:
 
 {
   environment.variables.GIT_CONFIG_SYSTEM = "/etc/gitconfig";
@@ -27,25 +27,28 @@
 
   dotfiles = {
     user.account = "marvin";
-
-    editor = {
-      enable = true;
-      linter.enable = true;
-    };
+    bleeding-edge = true;
 
     toolkit = {
-      networking.enable = true;
+      development.enable = true;
+      files.enable = true;
       js-development.enable = true;
+      networking.enable = true;
+    };
+  };
 
-      files = {
-        enable = true;
-        replace = true;
-      };
+  home-manager.users.${config.dotfiles.user.account} = {
+    imports = [ inputs.self.nixosModules.home-manager ];
+    home.stateVersion = "22.05";
 
-      development = {
-        enable = true;
-        aliases.enable = true;
-      };
+    programs.git = {
+      userName = "Jesse Gibson";
+      userEmail = "JesseTheGibson@gmail.com";
+    };
+
+    presets = {
+      terminal-environment.enable = true;
+      fonts.enable = true;
     };
   };
 
