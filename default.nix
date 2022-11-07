@@ -54,23 +54,32 @@ in {
   };
 
   config = with lib;
-    mkIf cfg.user.manage {
-      # Create a personal user profile. Other modules depend on this.
-      users.users = {
-        ${cfg.user.account} = {
-          isNormalUser = true;
-          description = cfg.user.fullName;
-          extraGroups = [ "wheel" ];
+    mkMerge [
+      (mkIf cfg.user.manage {
+        # Create a personal user profile. Other modules depend on this.
+        users.users = {
+          ${cfg.user.account} = {
+            isNormalUser = true;
+            description = cfg.user.fullName;
+            extraGroups = [ "wheel" ];
+          };
         };
-      };
 
-      home-manager = {
-        useGlobalPkgs = mkDefault true;
-        useUserPackages = mkDefault true;
-      };
+        home-manager = {
+          useGlobalPkgs = mkDefault true;
+          useUserPackages = mkDefault true;
+        };
+      })
 
-      nixpkgs.overlays =
-        optional cfg.bleeding-edge inputs.self.overlays.latest-packages
-        ++ [ inputs.self.overlays.vim-plugins ];
-    };
+      ({
+        nixpkgs.overlays = [
+          (if cfg.bleeding-edge then
+            inputs.self.overlays.latest-packages
+          else
+            (self: pkgs: { unstable = pkgs; }))
+        ];
+      })
+
+      { nixpkgs.overlays = [ inputs.self.overlays.vim-plugins ]; }
+    ];
 }
