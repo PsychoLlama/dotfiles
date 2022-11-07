@@ -13,6 +13,11 @@ let
     "aarch64-darwin" = inputs.darwin.lib.darwinSystem;
   };
 
+  platform-specific-dotfiles = {
+    "aarch64-darwin" = inputs.self.nixosModules.darwin;
+    "x86_64-darwin" = inputs.self.nixosModules.darwin;
+  }.${system} or inputs.self.nixosModules.nixos;
+
   mkSystem = systems.${system} or inputs.nixpkgs.lib.nixosSystem;
 
 in mkSystem rec {
@@ -25,10 +30,6 @@ in mkSystem rec {
     ({ lib, pkgs, ... }: {
       # Hostnames are set by the directory's name.
       networking.hostName = lib.mkDefault (baseNameOf path);
-
-      # Include custom NixOS modules in the generated man page.
-      documentation.nixos.extraModuleSources =
-        [ "${inputs.home-manager}/nixos" ];
 
       # This can be removed once nix flakes ship standard.
       nix = {
@@ -43,7 +44,7 @@ in mkSystem rec {
     inputs.home-manager.nixosModules.home-manager
 
     # Load the dotfiles framework.
-    inputs.self.nixosModules.dotfiles
+    platform-specific-dotfiles
 
     # Do machine-specific configuration.
     path

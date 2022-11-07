@@ -51,10 +51,12 @@
     in {
       inherit lib;
 
-      nixosModule = inputs.self.nixosModules.dotfiles;
+      nixosModule = inputs.self.nixosModules.nixos;
 
       nixosModules = {
         dotfiles = import ./default.nix;
+        nixos = import ./modules/nixos;
+        darwin = import ./modules/darwin;
         home-manager = ./modules/home-manager;
       };
 
