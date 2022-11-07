@@ -43,7 +43,7 @@ in mkSystem rec {
     inputs.home-manager.nixosModules.home-manager
 
     # Load the dotfiles framework.
-    inputs.self.nixosModule
+    inputs.self.nixosModules.dotfiles
 
     # Do machine-specific configuration.
     path
