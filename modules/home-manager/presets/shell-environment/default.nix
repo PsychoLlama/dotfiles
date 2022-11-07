@@ -13,6 +13,7 @@ in with lib; {
     ./jq.nix
     ./ncspot.nix
     ./neovim.nix
+    ./w3m.nix
   ];
 
   options.presets.shell-environment.enable =
@@ -28,5 +29,6 @@ in with lib; {
     jq.enable = mkDefault true;
     ncspot.enable = mkDefault true;
     neovim.enable = mkDefault true;
+    w3m.enable = mkDefault true;
   };
 }
