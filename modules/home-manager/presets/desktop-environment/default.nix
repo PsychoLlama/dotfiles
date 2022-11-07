@@ -10,6 +10,7 @@ in with lib; {
     ./sway.nix
     ./swayidle.nix
     ./waybar.nix
+    ./zathura.nix
   ];
 
   options.presets.desktop-environment.enable =
@@ -22,5 +23,6 @@ in with lib; {
     sway.enable = mkDefault true;
     swayidle.enable = mkDefault true;
     waybar.enable = mkDefault true;
+    zathura.enable = mkDefault true;
   };
 }

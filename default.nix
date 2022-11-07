@@ -4,7 +4,6 @@ let cfg = config.dotfiles;
 
 in {
   imports = [
-    ./modules/apps.nix
     ./modules/desktop.nix
     ./modules/passwordless-sudo.nix
     ./modules/wireless.nix
