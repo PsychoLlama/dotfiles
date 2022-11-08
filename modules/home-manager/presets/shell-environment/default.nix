@@ -11,6 +11,7 @@ in with lib; {
     ./fzf.nix
     ./git.nix
     ./jq.nix
+    ./miniserve.nix
     ./ncspot.nix
     ./neovim.nix
     ./w3m.nix
@@ -27,6 +28,7 @@ in with lib; {
     fzf.enable = mkDefault true;
     git.enable = mkDefault true;
     jq.enable = mkDefault true;
+    miniserve.enable = mkDefault true;
     ncspot.enable = mkDefault true;
     neovim.enable = mkDefault true;
     w3m.enable = mkDefault true;

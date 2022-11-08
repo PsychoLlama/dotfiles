@@ -1,1 +1,1 @@
-{ imports = [ ./fd.nix ./w3m.nix ]; }
+{ imports = [ ./fd.nix ./miniserve.nix ./w3m.nix ]; }
