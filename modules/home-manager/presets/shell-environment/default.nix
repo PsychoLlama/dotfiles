@@ -14,6 +14,7 @@ in with lib; {
     ./miniserve.nix
     ./ncspot.nix
     ./neovim.nix
+    ./sshfs.nix
     ./w3m.nix
   ];
 
@@ -31,6 +32,7 @@ in with lib; {
     miniserve.enable = mkDefault true;
     ncspot.enable = mkDefault true;
     neovim.enable = mkDefault true;
+    sshfs.enable = mkDefault true;
     w3m.enable = mkDefault true;
   };
 }

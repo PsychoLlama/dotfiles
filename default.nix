@@ -7,7 +7,6 @@ in {
     ./modules/desktop.nix
     ./modules/passwordless-sudo.nix
     ./modules/wireless.nix
-    ./modules/toolkits/development.nix
     ./modules/toolkits/files.nix
     ./modules/toolkits/infrastructure.nix
     ./modules/toolkits/js-development.nix
