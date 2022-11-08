@@ -9,9 +9,7 @@ in {
     ./modules/wireless.nix
     ./modules/toolkits/files.nix
     ./modules/toolkits/infrastructure.nix
-    ./modules/toolkits/js-development.nix
     ./modules/toolkits/networking.nix
-    ./modules/toolkits/rust-development.nix
     ./modules/toolkits/system.nix
   ];
 

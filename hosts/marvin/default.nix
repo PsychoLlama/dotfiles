@@ -32,7 +32,6 @@
     toolkit = {
       development.enable = true;
       files.enable = true;
-      js-development.enable = true;
       networking.enable = true;
     };
   };

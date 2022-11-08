@@ -45,8 +45,6 @@ You can enable everything, or pick out the pieces you like by enabling them piec
     package = pkgs.zathura;
   };
 
-  dotfiles.toolkit.rust-development.enable = true;
-
   # ... and many other options. Check out `modules/` for more.
 }
 ```
