@@ -3,12 +3,8 @@
 let cfg = config.dotfiles;
 
 in {
-  imports = [
-    ./modules/desktop.nix
-    ./modules/legacy.nix
-    ./modules/toolkits/files.nix
-    ./modules/toolkits/system.nix
-  ];
+  imports =
+    [ ./modules/desktop.nix ./modules/legacy.nix ./modules/toolkits.nix ];
 
   options.dotfiles = with lib; {
     kitchen-sink.enable = mkOption {
@@ -63,6 +59,12 @@ in {
         dotfiles = {
           passwordless-sudo.enable = mkDefault cfg.kitchen-sink.enable;
           wireless.enable = mkDefault cfg.kitchen-sink.enable;
+
+          toolkits = {
+            files.enable = mkDefault cfg.kitchen-sink.enable;
+            system.enable = mkDefault cfg.kitchen-sink.enable;
+            system.linux.enable = mkDefault cfg.kitchen-sink.enable;
+          };
         };
 
         home-manager = {
