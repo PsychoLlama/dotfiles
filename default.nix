@@ -5,10 +5,8 @@ let cfg = config.dotfiles;
 in {
   imports = [
     ./modules/desktop.nix
-    ./modules/passwordless-sudo.nix
-    ./modules/wireless.nix
+    ./modules/legacy.nix
     ./modules/toolkits/files.nix
-    ./modules/toolkits/networking.nix
     ./modules/toolkits/system.nix
   ];
 
@@ -62,6 +60,11 @@ in {
       })
 
       {
+        dotfiles = {
+          passwordless-sudo.enable = mkDefault cfg.kitchen-sink.enable;
+          wireless.enable = mkDefault cfg.kitchen-sink.enable;
+        };
+
         home-manager = {
           useGlobalPkgs = mkDefault true;
           useUserPackages = mkDefault true;
