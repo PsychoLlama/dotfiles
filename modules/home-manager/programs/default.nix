@@ -1,1 +1,13 @@
-{ imports = [ ./fd.nix ./miniserve.nix ./sshfs.nix ./w3m.nix ]; }
+{
+  imports = [
+    ./dogdns.nix
+    ./fd.nix
+    ./miniserve.nix
+    ./nmap.nix
+    ./sshfs.nix
+    ./termshark.nix
+    ./w3m.nix
+    ./whois.nix
+    ./xh.nix
+  ];
+}

@@ -1,8 +1,9 @@
 {
   imports = [
     ./desktop-environment
-    ./terminal-environment
-    ./shell-environment
     ./fonts.nix
+    ./shell-environment
+    ./terminal-environment
+    ./toolkits
   ];
 }

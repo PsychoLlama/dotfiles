@@ -22,6 +22,8 @@ in with lib; {
     mkEnableOption "Use an opinionated shell environment";
 
   config.presets = mkIf cfg.enable {
+    toolkits.networking.enable = mkDefault true;
+
     bat.enable = mkDefault true;
     bottom.enable = mkDefault true;
     exa.enable = mkDefault true;
