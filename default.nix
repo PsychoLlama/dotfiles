@@ -8,7 +8,6 @@ in {
     ./modules/passwordless-sudo.nix
     ./modules/wireless.nix
     ./modules/toolkits/files.nix
-    ./modules/toolkits/infrastructure.nix
     ./modules/toolkits/networking.nix
     ./modules/toolkits/system.nix
   ];
