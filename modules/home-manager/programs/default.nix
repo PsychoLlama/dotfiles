@@ -1,5 +1,6 @@
 {
   imports = [
+    ./dive.nix
     ./dogdns.nix
     ./fd.nix
     ./miniserve.nix

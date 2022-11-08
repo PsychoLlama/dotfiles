@@ -21,8 +21,6 @@ in {
 
   config = with lib;
     mkIf cfg.enable {
-      environment.systemPackages = with nixpkgs-unstable; [ dive ];
-
       virtualisation.docker = {
         enable = mkDefault true;
         package = cfg.docker.package;

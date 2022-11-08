@@ -15,6 +15,7 @@ in with lib; {
     ./ncspot.nix
     ./neovim.nix
     ./sshfs.nix
+    ./dive.nix
     ./w3m.nix
   ];
 
@@ -26,6 +27,7 @@ in with lib; {
 
     bat.enable = mkDefault true;
     bottom.enable = mkDefault true;
+    dive.enable = mkDefault true;
     exa.enable = mkDefault true;
     fd.enable = mkDefault true;
     fzf.enable = mkDefault true;
