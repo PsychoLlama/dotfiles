@@ -35,23 +35,23 @@ in mkSystem rec {
   # Add stable and unstable package channels.
   specialArgs = { inherit system inputs nixpkgs-unstable; };
 
-  modules = platform-specific-dotfiles
-    ++ (inputs.nixpkgs.lib.optional pkgs.stdenv.hostPlatform.isDarwin
-      ../modules/macos) ++ [
-        ({ lib, pkgs, ... }: {
-          # Hostnames are set by the directory's name.
-          networking.hostName = lib.mkDefault (baseNameOf path);
+  modules = [
+    ({ lib, pkgs, ... }: {
+      imports = platform-specific-dotfiles;
 
-          # This can be removed once nix flakes ship standard.
-          nix = {
-            package = pkgs.nixUnstable;
-            extraOptions = ''
-              experimental-features = nix-command flakes
-            '';
-          };
-        })
+      # Hostnames are set by the directory's name.
+      networking.hostName = lib.mkDefault (baseNameOf path);
 
-        # Do machine-specific configuration.
-        path
-      ];
+      # This can be removed once nix flakes ship standard.
+      nix = {
+        package = pkgs.nixUnstable;
+        extraOptions = ''
+          experimental-features = nix-command flakes
+        '';
+      };
+    })
+
+    # Do machine-specific configuration.
+    path
+  ];
 }
