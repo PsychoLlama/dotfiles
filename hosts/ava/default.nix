@@ -1,4 +1,4 @@
-{ config, nixpkgs-unstable, lib, inputs, system, ... }:
+{ config, pkgs, lib, inputs, system, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ../common/linux.nix ];
@@ -46,7 +46,7 @@
   }];
 
   environment = {
-    systemPackages = with nixpkgs-unstable; [ borgbackup radare2 ];
+    systemPackages = with pkgs.unstable; [ borgbackup radare2 ];
     variables.BORG_REPO = "/mnt/borg";
   };
 
@@ -82,7 +82,7 @@
 
   services.syncthing = {
     enable = true;
-    package = nixpkgs-unstable.syncthing;
+    package = pkgs.unstable.syncthing;
 
     user = "overlord";
     group = "users";

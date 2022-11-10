@@ -1,4 +1,4 @@
-{ config, lib, nixpkgs-unstable, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   df = config.dotfiles;
@@ -24,10 +24,9 @@ in with lib; {
   };
 
   config = with lib;
-    with nixpkgs-unstable;
     mkMerge [
       (mkIf cfg.files.enable {
-        environment.systemPackages = [
+        environment.systemPackages = with pkgs.unstable; [
           binutils
           du-dust
           glow
@@ -43,11 +42,11 @@ in with lib; {
       })
 
       (mkIf cfg.system.enable {
-        environment.systemPackages = [ man-pages rage duf ];
+        environment.systemPackages = with pkgs.unstable; [ man-pages rage duf ];
       })
 
       (mkIf cfg.system.linux.enable {
-        environment.systemPackages = [
+        environment.systemPackages = with pkgs.unstable; [
           acpi
           brightnessctl
           grim

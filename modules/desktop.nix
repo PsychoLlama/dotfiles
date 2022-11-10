@@ -1,4 +1,4 @@
-{ config, nixpkgs-unstable, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   df = config.dotfiles;
@@ -58,7 +58,7 @@ in {
           '';
         };
 
-        environment.systemPackages = with nixpkgs-unstable; [ wlsunset ];
+        environment.systemPackages = with pkgs.unstable; [ wlsunset ];
         environment.etc."sway/config".source = cfg.sway.config;
         environment.etc."sway/config.d/inputs".text =
           generateSwayInputsConfig cfg.sway.inputs;
@@ -68,7 +68,7 @@ in {
           settings.default_session = {
             user = "greeter";
             command = "${
-                lib.makeBinPath [ nixpkgs-unstable.greetd.tuigreet ]
+                lib.makeBinPath [ pkgs.unstable.greetd.tuigreet ]
               }/tuigreet --asterisks -trc sway";
           };
         };

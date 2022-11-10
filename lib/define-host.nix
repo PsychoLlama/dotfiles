@@ -3,10 +3,6 @@ inputs: system: path:
 # Injects dotfiles, flake inputs, and baseline NixOS configuration.
 
 let
-  use = flake: flake.legacyPackages.${system};
-
-  nixpkgs-unstable = use inputs.nixpkgs-unstable;
-  pkgs = use inputs.nixpkgs;
   darwinModules = [
     inputs.home-manager.darwinModules.home-manager
     inputs.self.nixosModules.darwin
@@ -29,11 +25,11 @@ let
 
   mkSystem = systems.${system} or inputs.nixpkgs.lib.nixosSystem;
 
-in mkSystem rec {
+in mkSystem {
   inherit system;
 
   # Add stable and unstable package channels.
-  specialArgs = { inherit system inputs nixpkgs-unstable; };
+  specialArgs = { inherit system inputs; };
 
   modules = [
     ({ lib, pkgs, ... }: {
