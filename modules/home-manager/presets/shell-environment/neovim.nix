@@ -51,7 +51,7 @@ in with lib; {
         (nvim-treesitter.withPlugins (plugins: attrValues plugins))
       ];
 
-      extraPackages = with pkgs.unstable; [ vim-vint nixfmt shellcheck ];
+      extraPackages = with pkgs.unstable; [ vim-vint nixfmt shellcheck nodejs ];
 
       extraConfig = ''
         set shell=${pkgs.zsh}/bin/zsh
