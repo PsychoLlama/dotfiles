@@ -57,7 +57,6 @@
     user = {
       name = "overlord";
       description = "Jesse Gibson";
-      extraGroups = [ "wheel" ];
     };
 
     desktop.sway.inputs = {
@@ -65,7 +64,10 @@
       "type:keyboard".repeat_delay = 200;
     };
 
-    presets.greetd.enable = true;
+    presets = {
+      god-mode.enable = true;
+      greetd.enable = true;
+    };
   };
 
   # Orient the external monitor centered above the built-in screen.
@@ -116,44 +118,48 @@
     };
   };
 
-  programs.ssh = {
-    extraConfig = ''
-      CanonicalizeHostname yes
-      CanonicalDomains host.selfhosted.city
-      CanonicalizeMaxDots 0
+  programs = {
+    wireshark.enable = true;
 
-      Host *.host.selfhosted.city
-      User admin
-    '';
+    ssh = {
+      extraConfig = ''
+        CanonicalizeHostname yes
+        CanonicalDomains host.selfhosted.city
+        CanonicalizeMaxDots 0
 
-    knownHosts = let hostNames = host: [ "${host}.host.selfhosted.city" ];
-    in {
-      tron = {
-        hostNames = hostNames "tron";
-        publicKey = ''
-          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFsNbo3bbm0G11GAbRwnr944AitRyqoQMN4LG7rMsvpK
-        '';
-      };
+        Host *.host.selfhosted.city
+        User admin
+      '';
 
-      clu = {
-        hostNames = hostNames "clu";
-        publicKey = ''
-          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyb4vh9xDEEV+30G0UPMTSdtVq3Tyfgl9I9VRwf226v
-        '';
-      };
+      knownHosts = let hostNames = host: [ "${host}.host.selfhosted.city" ];
+      in {
+        tron = {
+          hostNames = hostNames "tron";
+          publicKey = ''
+            ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFsNbo3bbm0G11GAbRwnr944AitRyqoQMN4LG7rMsvpK
+          '';
+        };
 
-      glados = {
-        hostNames = hostNames "glados";
-        publicKey = ''
-          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLMZ6+HaPahE4gGIAWW/uGIl/y40p/rSfIhb5t4G+g9
-        '';
-      };
+        clu = {
+          hostNames = hostNames "clu";
+          publicKey = ''
+            ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyb4vh9xDEEV+30G0UPMTSdtVq3Tyfgl9I9VRwf226v
+          '';
+        };
 
-      hactar = {
-        hostNames = hostNames "hactar";
-        publicKey = ''
-          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC7y/poo2XLNsxRoEAgIiUnJgbBa0KassSQSghdXWH1N
-        '';
+        glados = {
+          hostNames = hostNames "glados";
+          publicKey = ''
+            ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLMZ6+HaPahE4gGIAWW/uGIl/y40p/rSfIhb5t4G+g9
+          '';
+        };
+
+        hactar = {
+          hostNames = hostNames "hactar";
+          publicKey = ''
+            ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC7y/poo2XLNsxRoEAgIiUnJgbBa0KassSQSghdXWH1N
+          '';
+        };
       };
     };
   };

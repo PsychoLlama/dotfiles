@@ -24,7 +24,6 @@ in {
     mkMerge [
       {
         dotfiles = {
-          passwordless-sudo.enable = mkDefault cfg.kitchen-sink.enable;
           wireless.enable = mkDefault cfg.kitchen-sink.enable;
 
           toolkits = {

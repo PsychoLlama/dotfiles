@@ -1,1 +1,1 @@
-{ imports = [ ./greetd.nix ]; }
+{ imports = [ ./greetd.nix ./god-mode.nix ]; }

@@ -5,21 +5,11 @@
 let cfg = config.dotfiles;
 
 in with lib; {
-  options.dotfiles = {
-    passwordless-sudo.enable = mkEnableOption "Enable passwordless sudo";
-    wireless.enable = mkEnableOption "Enable wireless networking utilities";
+  options.dotfiles.wireless.enable =
+    mkEnableOption "Enable wireless networking utilities";
+
+  config = mkIf cfg.wireless.enable {
+    networking.networkmanager.enable = true;
+    users.users.${cfg.user.name}.extraGroups = [ "networkmanager" ];
   };
-
-  config = mkMerge [
-    {
-      security.sudo.wheelNeedsPassword = !cfg.passwordless-sudo.enable;
-      programs.wireshark.enable =
-        lib.mkDefault config.dotfiles.kitchen-sink.enable;
-    }
-
-    (mkIf cfg.wireless.enable {
-      networking.networkmanager.enable = true;
-      users.users.${cfg.user.name}.extraGroups = [ "networkmanager" ];
-    })
-  ];
 }
