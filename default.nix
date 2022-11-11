@@ -18,43 +18,10 @@ in {
       description = "Use the latest packages";
       default = cfg.kitchen-sink.enable;
     };
-
-    user = {
-      manage = mkOption {
-        type = types.bool;
-        description = "Whether to manage the user account";
-        default = config.dotfiles.kitchen-sink.enable;
-      };
-
-      account = mkOption {
-        type = types.str;
-        example = "ealderson";
-        description = "Your username";
-      };
-
-      fullName = mkOption {
-        type = types.str;
-        example = "Elliot Alderson";
-        description = ''
-          Short description of the user account, usually your full name.
-        '';
-      };
-    };
   };
 
   config = with lib;
     mkMerge [
-      (mkIf cfg.user.manage {
-        # Create a personal user profile. Other modules depend on this.
-        users.users = {
-          ${cfg.user.account} = {
-            isNormalUser = true;
-            description = cfg.user.fullName;
-            extraGroups = [ "wheel" ];
-          };
-        };
-      })
-
       {
         dotfiles = {
           passwordless-sudo.enable = mkDefault cfg.kitchen-sink.enable;

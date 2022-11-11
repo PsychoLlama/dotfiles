@@ -29,7 +29,7 @@
   };
 
   nix = {
-    trustedUsers = [ config.dotfiles.user.account ];
+    trustedUsers = [ config.dotfiles.user.name ];
 
     extraOptions = ''
       builders-use-substitutes = true
@@ -55,8 +55,9 @@
     kitchen-sink.enable = true;
 
     user = {
-      account = "overlord";
-      fullName = "Jesse Gibson";
+      name = "overlord";
+      description = "Jesse Gibson";
+      extraGroups = [ "wheel" ];
     };
 
     desktop.sway.inputs = {
@@ -157,7 +158,7 @@
     };
   };
 
-  home-manager.users.${config.dotfiles.user.account} = {
+  home-manager.users.${config.dotfiles.user.name} = {
     imports = [ inputs.self.nixosModules.home-manager ];
 
     programs.git = {

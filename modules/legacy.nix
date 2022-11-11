@@ -19,7 +19,7 @@ in with lib; {
 
     (mkIf cfg.wireless.enable {
       networking.networkmanager.enable = true;
-      users.users.${cfg.user.account}.extraGroups = [ "networkmanager" ];
+      users.users.${cfg.user.name}.extraGroups = [ "networkmanager" ];
     })
   ];
 }
