@@ -7,13 +7,10 @@ in with lib; {
   options.dotfiles.user = mkOption {
     type = types.nullOr types.attrs;
     description = "The primary user account";
-    default = null;
   };
 
   config = mkMerge [
-    (mkIf (cfg != null) {
-      users.users.${cfg.name} = mkAliasDefinitions options.dotfiles.user;
-    })
+    { users.users.${cfg.name} = mkAliasDefinitions options.dotfiles.user; }
 
     (mkIf (cfg != null) {
       users.users.${cfg.name}.isNormalUser = mkDefault true;

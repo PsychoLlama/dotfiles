@@ -3,8 +3,7 @@
 let cfg = config.dotfiles;
 
 in {
-  imports =
-    [ ./modules/desktop.nix ./modules/legacy.nix ./modules/toolkits.nix ];
+  imports = [ ./modules/desktop.nix ./modules/toolkits.nix ];
 
   options.dotfiles = with lib; {
     kitchen-sink.enable = mkOption {
@@ -23,14 +22,10 @@ in {
   config = with lib;
     mkMerge [
       {
-        dotfiles = {
-          wireless.enable = mkDefault cfg.kitchen-sink.enable;
-
-          toolkits = {
-            files.enable = mkDefault cfg.kitchen-sink.enable;
-            system.enable = mkDefault cfg.kitchen-sink.enable;
-            system.linux.enable = mkDefault cfg.kitchen-sink.enable;
-          };
+        dotfiles.toolkits = {
+          files.enable = mkDefault cfg.kitchen-sink.enable;
+          system.enable = mkDefault cfg.kitchen-sink.enable;
+          system.linux.enable = mkDefault cfg.kitchen-sink.enable;
         };
 
         home-manager = {

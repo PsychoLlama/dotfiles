@@ -67,6 +67,7 @@
     presets = {
       god-mode.enable = true;
       greetd.enable = true;
+      network-management.enable = true;
     };
   };
 
