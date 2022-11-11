@@ -52,7 +52,7 @@
 
   # TODO: Migrate to home-manager.
   dotfiles = {
-    kitchen-sink.enable = true;
+    presets.kitchen-sink.enable = true;
 
     user = {
       name = "overlord";
@@ -64,11 +64,8 @@
       "type:keyboard".repeat_delay = 200;
     };
 
-    presets = {
-      god-mode.enable = true;
-      greetd.enable = true;
-      network-management.enable = true;
-    };
+    # DEPRECATED OPTION
+    kitchen-sink.enable = true;
   };
 
   # Orient the external monitor centered above the built-in screen.

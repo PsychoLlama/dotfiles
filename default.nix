@@ -22,12 +22,6 @@ in {
   config = with lib;
     mkMerge [
       {
-        dotfiles.toolkits = {
-          files.enable = mkDefault cfg.kitchen-sink.enable;
-          system.enable = mkDefault cfg.kitchen-sink.enable;
-          system.linux.enable = mkDefault cfg.kitchen-sink.enable;
-        };
-
         home-manager = {
           useGlobalPkgs = mkDefault true;
           useUserPackages = mkDefault true;

@@ -1,1 +1,4 @@
-{ imports = [ ./greetd.nix ./god-mode.nix ./network-management.nix ]; }
+{
+  imports =
+    [ ./greetd.nix ./god-mode.nix ./kitchen-sink.nix ./network-management.nix ];
+}
