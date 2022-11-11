@@ -63,6 +63,8 @@
       "type:touchpad".natural_scroll = "enabled";
       "type:keyboard".repeat_delay = 200;
     };
+
+    presets.greetd.enable = true;
   };
 
   # Orient the external monitor centered above the built-in screen.
