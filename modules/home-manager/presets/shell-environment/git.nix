@@ -7,7 +7,15 @@ in with lib; {
     mkEnableOption "Provide an opinionated configuration for git";
 
   config = mkIf cfg.enable {
-    home.shellAliases.g = "git";
+    home.shellAliases = {
+      g = "git";
+      c = "git commit";
+      b = "git branch";
+      ch = "git checkout";
+      h = "git diff HEAD";
+      hh = "git diff HEAD~1";
+      hhh = "git diff HEAD~2";
+    };
 
     programs.git = {
       enable = true;
