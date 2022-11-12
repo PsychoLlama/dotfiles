@@ -1,4 +1,4 @@
-{ config, lib, options, ... }:
+{ config, lib, options, pkgs, ... }:
 
 with lib;
 
@@ -14,7 +14,7 @@ in {
   config = mkMerge [
     { users.users.${cfg.name} = mkAliasDefinitions options.dotfiles.user; }
 
-    (mkIf (cfg != null) {
+    (mkIf (cfg != null && pkgs.stdenv.isDarwin == false) {
       users.users.${cfg.name}.isNormalUser = mkDefault true;
     })
   ];

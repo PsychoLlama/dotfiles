@@ -5,6 +5,8 @@ with lib;
 let cfg = config.dotfiles;
 
 in {
+  imports = [ ./user.nix ];
+
   options.dotfiles = {
     packageSet = mkOption {
       type = types.enum [ "nixpkgs" "nixpkgs-unstable" ];
