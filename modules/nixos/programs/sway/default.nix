@@ -15,8 +15,8 @@ in {
     };
   };
 
-  config = {
-    environment.etc."sway/config".text =
-      mkIf (stringLength cfg.extraConfig > 0) cfg.extraConfig;
+  config.environment.etc."sway/config" = {
+    enable = stringLength cfg.extraConfig > 0;
+    text = cfg.extraConfig;
   };
 }
