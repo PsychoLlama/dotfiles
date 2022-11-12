@@ -59,9 +59,6 @@
       name = "overlord";
       description = "Jesse Gibson";
     };
-
-    # DEPRECATED OPTION
-    kitchen-sink.enable = true;
   };
 
   programs.sway.input = {

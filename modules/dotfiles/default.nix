@@ -6,12 +6,6 @@ let cfg = config.dotfiles;
 
 in {
   options.dotfiles = {
-    kitchen-sink.enable = mkOption {
-      type = types.bool;
-      description = "Enable everything";
-      default = false;
-    };
-
     package-set = mkOption {
       type = types.enum [ "nixpkgs" "nixpkgs-unstable" ];
       description = "Change the default package set for all dotfiles";
