@@ -42,7 +42,7 @@ in {
         scrolling.history = 0;
 
         # Default is too small.
-        font.size = 14;
+        font.size = if pkgs.stdenv.isDarwin then 16 else 14;
 
         # Preferably `hide_forever`, but people seem to like it.
         mouse.hide_when_typing = true;
