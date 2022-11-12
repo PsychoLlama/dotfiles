@@ -49,11 +49,11 @@ in mkSystem {
       };
 
       # This can be removed once nix flakes ship standard.
-      nix = {
+      nix = rec {
         package = pkgs.nixUnstable;
         settings.experimental-features = "nix-command flakes";
-        registry.pkgs.flake = inputs.nixpkgs-unstable;
-        nixPath = [ "nixpkgs=${inputs.nixpkgs-unstable}" ];
+        registry.pkgs.flake = inputs.${config.dotfiles.packageSet};
+        nixPath = [ "nixpkgs=${registry.pkgs.flake}" ];
       };
     })
 
