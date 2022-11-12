@@ -77,35 +77,5 @@
         description = "Creates a host built on the dotfiles framework";
         path = ./template;
       };
-
-      # EXPERIMENTAL: This exports preconfigured packages from the dotfiles
-      # framework by building a faux NixOS system, enabling a few programs,
-      # and extracting the generated packages from the module system.
-      packages = with inputs.nixpkgs.lib;
-        genAttrs systems.flakeExposed (system:
-          let
-            nixpkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${system};
-            nixosSystem = inputs.nixpkgs.lib.nixosSystem {
-              inherit system;
-
-              specialArgs = { inherit system inputs nixpkgs-unstable; };
-
-              modules = [
-                inputs.self.nixosModules.nixos
-                inputs.home-manager.nixosModule
-                {
-                  dotfiles.user.name = "temp";
-                  home-manager.users.temp = {
-                    imports = [ inputs.self.nixosModules.home-manager ];
-                    presets.neovim.enable = true;
-                  };
-                }
-              ];
-            };
-
-          in {
-            editor =
-              nixosSystem.config.home-manager.users.temp.programs.neovim.finalPackage;
-          });
     };
 }
