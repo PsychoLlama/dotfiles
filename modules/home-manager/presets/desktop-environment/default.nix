@@ -8,6 +8,7 @@ in {
   imports = [
     ./dunst.nix
     ./firefox.nix
+    ./gammastep.nix
     ./rofi.nix
     ./sway.nix
     ./swayidle.nix
@@ -22,6 +23,7 @@ in {
     presets = {
       dunst.enable = mkDefault true;
       firefox.enable = mkDefault true;
+      gammastep.enable = mkDefault true;
       rofi.enable = mkDefault true;
       sway.enable = mkDefault true;
       swayidle.enable = mkDefault true;
