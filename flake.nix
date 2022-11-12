@@ -2,18 +2,14 @@
   description = "NixOS modules supporting my development environment";
 
   inputs = {
+    darwin.url = "github:LnL7/nix-darwin";
+    hardware.url = "github:nixos/nixos-hardware";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
-    hardware.url = "github:nixos/nixos-hardware";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-22.05";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
-    darwin = {
-      url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # TODO: Put these vim plugins in nixpkgs.

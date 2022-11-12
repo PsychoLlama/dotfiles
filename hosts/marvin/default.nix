@@ -1,35 +1,37 @@
-{ config, inputs, ... }:
+{ config, pkgs, ... }:
 
 {
   dotfiles = {
-    user.name = "overlord";
     packageSet = "nixpkgs-unstable";
+
+    user = {
+      name = "overlord";
+      packages = with pkgs.unstable; [
+        (nerdfonts.override { fonts = [ "FiraCode" ]; })
+        fira-code
+      ];
+    };
   };
 
   home-manager.users.${config.dotfiles.user.name} = {
-    imports = [ inputs.self.nixosModules.home-manager ];
     home.stateVersion = "22.05";
+    presets.terminal-environment.enable = true;
 
-    programs.git = {
-      userName = "Jesse Gibson";
-      userEmail = "JesseTheGibson@gmail.com";
-    };
+    programs = {
+      alacritty.settings.font.normal.family = "Fira Code";
 
-    presets = {
-      terminal-environment.enable = true;
-      fonts.enable = true;
+      git = {
+        userName = "Jesse Gibson";
+        userEmail = "JesseTheGibson@gmail.com";
+      };
     };
   };
 
   homebrew = {
     enable = true;
     casks = [ "firefox" ];
-    cleanup = "zap";
+    onActivation.cleanup = "zap";
   };
-
-  programs.zsh.enable = true;
-  services.nix-daemon.enable = true;
-  fonts.fontDir.enable = true;
 
   system = {
     stateVersion = 4;
@@ -48,12 +50,16 @@
       };
 
       NSGlobalDomain = {
-        NSAutomaticQuoteSubstitutionEnabled = false;
-        InitialKeyRepeat = 20;
-        KeyRepeat = 2;
         AppleInterfaceStyle = "Dark";
         AppleShowAllExtensions = true;
+        InitialKeyRepeat = 18;
+        KeyRepeat = 2;
+        NSAutomaticQuoteSubstitutionEnabled = false;
       };
     };
   };
+
+  services.nix-daemon.enable = true;
+  programs.zsh.enable = true;
+  fonts.fontDir.enable = true;
 }
