@@ -172,8 +172,9 @@
 
     presets = {
       desktop-environment.enable = true;
-      terminal-environment.enable = true;
+      developer.enable = true;
       fonts.enable = true;
+      terminal-environment.enable = true;
     };
   };
 

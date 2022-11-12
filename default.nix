@@ -3,7 +3,7 @@
 let cfg = config.dotfiles;
 
 in {
-  imports = [ ./modules/desktop.nix ./modules/toolkits.nix ];
+  imports = [ ./modules/desktop.nix ];
 
   options.dotfiles = with lib; {
     kitchen-sink.enable = mkOption {

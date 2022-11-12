@@ -41,6 +41,21 @@ in with lib; {
       w3m.enable = mkDefault true;
     };
 
-    programs.parted.enable = mkDefault pkgs.stdenv.isLinux;
+    programs = {
+      binutils.enable = mkDefault true;
+      du-dust.enable = mkDefault true;
+      duf.enable = mkDefault true;
+      glow.enable = mkDefault true;
+      hexyl.enable = mkDefault true;
+      ipfs.enable = mkDefault true;
+      litecli.enable = mkDefault true;
+      lnav.enable = mkDefault true;
+      parted.enable = mkDefault pkgs.stdenv.isLinux;
+      pv.enable = mkDefault true;
+      rage.enable = mkDefault true;
+      ripgrep.enable = mkDefault true;
+      tokei.enable = mkDefault true;
+      viu.enable = mkDefault true;
+    };
   };
 }
