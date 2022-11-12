@@ -10,10 +10,10 @@ in {
       default = false;
     };
 
-    bleeding-edge = mkOption {
-      type = types.bool;
-      description = "Use the latest packages";
-      default = cfg.kitchen-sink.enable;
+    package-set = mkOption {
+      type = types.enum [ "nixpkgs" "nixpkgs-unstable" ];
+      description = "Change the default package set for all dotfiles";
+      default = "nixpkgs";
     };
   };
 
@@ -28,7 +28,7 @@ in {
 
       ({
         nixpkgs.overlays = [
-          (if cfg.bleeding-edge then
+          (if cfg.package-set == "nixpkgs-unstable" then
             inputs.self.overlays.latest-packages
           else
             (self: pkgs: { unstable = pkgs; }))

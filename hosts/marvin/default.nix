@@ -27,7 +27,7 @@
 
   dotfiles = {
     user.account = "marvin";
-    bleeding-edge = true;
+    package-set = "nixpkgs-unstable";
 
     toolkit = {
       development.enable = true;

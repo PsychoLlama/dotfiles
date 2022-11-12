@@ -54,7 +54,6 @@
       nixosModule = inputs.self.nixosModules.nixos;
 
       nixosModules = {
-        dotfiles = import ./default.nix;
         nixos = import ./modules/nixos;
         darwin = import ./modules/darwin;
         home-manager = ./modules/home-manager;
@@ -92,18 +91,10 @@
               specialArgs = { inherit system inputs nixpkgs-unstable; };
 
               modules = [
-                inputs.self.nixosModules.dotfiles
+                inputs.self.nixosModules.nixos
                 inputs.home-manager.nixosModule
                 {
-                  dotfiles = {
-                    bleeding-edge = true;
-                    user = {
-                      manage = true;
-                      account = "temp";
-                      fullName = "Surprising Hackaround";
-                    };
-                  };
-
+                  dotfiles.user.name = "temp";
                   home-manager.users.temp = {
                     imports = [ inputs.self.nixosModules.home-manager ];
                     presets.neovim.enable = true;
