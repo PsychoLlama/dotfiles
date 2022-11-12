@@ -60,10 +60,5 @@ in with lib; {
     environment.etc."sway/config".source = cfg.sway.config;
     environment.etc."sway/config.d/inputs".text =
       generateSwayInputsConfig cfg.sway.inputs;
-
-    # If they're enabling a desktop, these seem like reasonable defaults.
-    services.printing.enable = mkDefault true;
-    sound.enable = mkDefault true;
-    hardware.pulseaudio.enable = mkDefault true;
   };
 }

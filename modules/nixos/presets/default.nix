@@ -1,4 +1,9 @@
 {
-  imports =
-    [ ./greetd.nix ./god-mode.nix ./kitchen-sink.nix ./network-management.nix ];
+  imports = [
+    ./desktop-environment.nix
+    ./god-mode.nix
+    ./greetd.nix
+    ./kitchen-sink.nix
+    ./network-management.nix
+  ];
 }
