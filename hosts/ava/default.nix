@@ -59,6 +59,7 @@
 
   home-manager.users.${config.dotfiles.user.name} = {
     imports = [ inputs.self.nixosModules.home-manager ];
+    home.stateVersion = "22.05";
 
     programs.git = {
       userName = "Jesse Gibson";
