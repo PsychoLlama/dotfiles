@@ -22,7 +22,6 @@ in with lib; {
   config = mkIf cfg.enable {
     # Enable a minimal desktop environment with Sway/Wayland.
     programs.sway.enable = true;
-    dotfiles.user.packages = [ pkgs.unstable.wlsunset ];
     environment.etc."sway/config".source = cfg.sway.config;
   };
 }
