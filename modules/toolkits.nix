@@ -14,12 +14,6 @@ in with lib; {
         description = "Whether to enable the system toolkit";
         default = df.kitchen-sink.enable;
       };
-
-      linux.enable = mkOption {
-        type = types.bool;
-        description = "Add tools for managing Linux";
-        default = df.kitchen-sink.enable;
-      };
     };
   };
 
@@ -43,19 +37,6 @@ in with lib; {
 
       (mkIf cfg.system.enable {
         environment.systemPackages = with pkgs.unstable; [ man-pages rage duf ];
-      })
-
-      (mkIf cfg.system.linux.enable {
-        environment.systemPackages = with pkgs.unstable; [
-          acpi
-          brightnessctl
-          grim
-          parted
-          playerctl
-          slurp
-          wf-recorder
-          wl-clipboard
-        ];
       })
     ];
 }

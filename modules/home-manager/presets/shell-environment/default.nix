@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let cfg = config.presets.shell-environment;
 
@@ -22,21 +22,25 @@ in with lib; {
   options.presets.shell-environment.enable =
     mkEnableOption "Use an opinionated shell environment";
 
-  config.presets = mkIf cfg.enable {
-    toolkits.networking.enable = mkDefault true;
+  config = mkIf cfg.enable {
+    presets = {
+      toolkits.networking.enable = mkDefault true;
 
-    bat.enable = mkDefault true;
-    bottom.enable = mkDefault true;
-    dive.enable = mkDefault true;
-    exa.enable = mkDefault true;
-    fd.enable = mkDefault true;
-    fzf.enable = mkDefault true;
-    git.enable = mkDefault true;
-    jq.enable = mkDefault true;
-    miniserve.enable = mkDefault true;
-    ncspot.enable = mkDefault true;
-    neovim.enable = mkDefault true;
-    sshfs.enable = mkDefault true;
-    w3m.enable = mkDefault true;
+      bat.enable = mkDefault true;
+      bottom.enable = mkDefault true;
+      dive.enable = mkDefault true;
+      exa.enable = mkDefault true;
+      fd.enable = mkDefault true;
+      fzf.enable = mkDefault true;
+      git.enable = mkDefault true;
+      jq.enable = mkDefault true;
+      miniserve.enable = mkDefault true;
+      ncspot.enable = mkDefault true;
+      neovim.enable = mkDefault true;
+      sshfs.enable = mkDefault pkgs.stdenv.isLinux;
+      w3m.enable = mkDefault true;
+    };
+
+    programs.parted.enable = mkDefault pkgs.stdenv.isLinux;
   };
 }

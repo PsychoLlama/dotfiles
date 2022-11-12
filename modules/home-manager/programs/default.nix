@@ -18,14 +18,33 @@ in {
   imports = [
     ./w3m.nix
 
+    (makeProgramModule "acpi")
+    (makeProgramModule "binutils")
+    (makeProgramModule "brightnessctl")
     (makeProgramModule "dive")
     (makeProgramModule "dogdns")
+    (makeProgramModule "du-dust")
     (makeProgramModule "fd")
+    (makeProgramModule "glow")
+    (makeProgramModule "grim")
+    (makeProgramModule "hexyl")
+    (makeProgramModule "ipfs")
+    (makeProgramModule "litecli")
+    (makeProgramModule "lnav")
     (makeProgramModule "miniserve")
     (makeProgramModule "nmap")
+    (makeProgramModule "parted")
+    (makeProgramModule "playerctl")
+    (makeProgramModule "pv")
+    (makeProgramModule "ripgrep")
+    (makeProgramModule "slurp")
     (makeProgramModule "sshfs")
     (makeProgramModule "termshark")
+    (makeProgramModule "tokei")
+    (makeProgramModule "viu")
+    (makeProgramModule "wf-recorder")
     (makeProgramModule "whois")
+    (makeProgramModule "wl-clipboard")
     (makeProgramModule "xh")
   ];
 }

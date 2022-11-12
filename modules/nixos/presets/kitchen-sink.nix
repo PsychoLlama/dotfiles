@@ -16,7 +16,6 @@ in with lib; {
     toolkits = {
       files.enable = mkDefault true;
       system.enable = mkDefault true;
-      system.linux.enable = mkDefault true;
     };
   };
 }
