@@ -32,7 +32,7 @@ in mkSystem {
   specialArgs = { inherit system inputs; };
 
   modules = [
-    ({ lib, pkgs, ... }: {
+    ({ config, lib, pkgs, ... }: {
       imports = platform-specific-dotfiles;
 
       # Hostnames are set by the directory's name.
@@ -42,15 +42,16 @@ in mkSystem {
       home-manager = {
         useGlobalPkgs = lib.mkDefault true;
         useUserPackages = lib.mkDefault true;
+
+        # Add custom dotfiles modules to the HM framework.
+        users.${config.dotfiles.user.name}.imports =
+          [ inputs.self.nixosModules.home-manager ];
       };
 
       # This can be removed once nix flakes ship standard.
       nix = {
         package = pkgs.nixUnstable;
-        extraOptions = ''
-          experimental-features = nix-command flakes
-        '';
-
+        settings.experimental-features = "nix-command flakes";
         registry.pkgs.flake = inputs.nixpkgs-unstable;
         nixPath = [ "nixpkgs=${inputs.nixpkgs-unstable}" ];
       };

@@ -30,10 +30,7 @@
 
   nix = {
     trustedUsers = [ config.dotfiles.user.name ];
-
-    extraOptions = ''
-      builders-use-substitutes = true
-    '';
+    settings.builders-use-substitutes = true;
   };
 
   services.openssh.hostKeys = [{
@@ -58,7 +55,6 @@
   };
 
   home-manager.users.${config.dotfiles.user.name} = {
-    imports = [ inputs.self.nixosModules.home-manager ];
     home.stateVersion = "22.05";
 
     programs.git = {
