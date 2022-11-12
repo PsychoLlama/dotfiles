@@ -14,7 +14,17 @@ in {
 
     programs.neovim = {
       enable = true;
-      coc.enable = true;
+      coc = {
+        enable = true;
+
+        settings.languageserver = {
+          rust = {
+            command = "${pkgs.unstable.rust-analyzer}/bin/rust-analyzer";
+            filetypes = [ "rust" ];
+            rootPatterns = [ "Cargo.toml" ];
+          };
+        };
+      };
 
       package = recursiveUpdate pkgs.unstable.neovim-unwrapped {
         # Used by home-manager, which still assumes nvim 0.7.
@@ -25,7 +35,6 @@ in {
         ale
         auto-pairs
         coc-json
-        coc-rls
         coc-tsserver
         fzf-vim
         markdown-preview-nvim
@@ -56,7 +65,13 @@ in {
         (nvim-treesitter.withPlugins (plugins: attrValues plugins))
       ];
 
-      extraPackages = with pkgs.unstable; [ vim-vint nixfmt shellcheck nodejs ];
+      extraPackages = with pkgs.unstable; [
+        nixfmt
+        nodejs
+        shellcheck
+        vim-vint
+        rustup
+      ];
 
       extraConfig = ''
         set shell=${pkgs.zsh}/bin/zsh
