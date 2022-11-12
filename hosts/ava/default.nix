@@ -50,7 +50,6 @@
     variables.BORG_REPO = "/mnt/borg";
   };
 
-  # TODO: Migrate to home-manager.
   dotfiles = {
     presets.kitchen-sink.enable = true;
     packageSet = "nixpkgs-unstable";
@@ -61,64 +60,82 @@
     };
   };
 
-  programs.sway.input = {
-    "type:touchpad".natural_scroll = "enabled";
-    "type:keyboard" = {
-      xkb_options = "caps:escape";
-      repeat_delay = "200";
+  home-manager.users.${config.dotfiles.user.name} = {
+    imports = [ inputs.self.nixosModules.home-manager ];
+
+    programs.git = {
+      userName = "Jesse Gibson";
+      userEmail = "JesseTheGibson@gmail.com";
+    };
+
+    presets = {
+      desktop-environment.enable = true;
+      developer.enable = true;
+      fonts.enable = true;
+      terminal-environment.enable = true;
     };
   };
 
-  # Orient the external monitor centered above the built-in screen.
-  environment.etc."sway/config.d/outputs".text = ''
-    output eDP-1 pos 0 0 mode 1920x1080
-    output HDMI-A-1 pos -760 -1440
-  '';
+  services = {
+    zfs = {
+      trim.enable = true;
+      autoScrub.enable = true;
+      autoSnapshot = {
+        enable = true;
+        flags = "-k -p --utc";
+      };
+    };
 
-  services.zfs = {
-    trim.enable = true;
-    autoScrub.enable = true;
-    autoSnapshot = {
+    syncthing = {
       enable = true;
-      flags = "-k -p --utc";
-    };
-  };
+      package = pkgs.unstable.syncthing;
 
-  services.syncthing = {
-    enable = true;
-    package = pkgs.unstable.syncthing;
+      user = "overlord";
+      group = "users";
+      dataDir = "/home/overlord";
 
-    user = "overlord";
-    group = "users";
-    dataDir = "/home/overlord";
-
-    # A general-purpose box for reliable storage.
-    folders."/home/overlord/attic" = {
-      id = "attic";
-      devices = [ "file-server" "phone" ];
-      label = "Attic";
-    };
-
-    devices = {
-      file-server = {
-        addresses = [ "tcp://hactar.host.selfhosted.city" ];
-        id = "YOTWLUU-HU6VAII-DJFNJCT-QBVRGD7-EM37VVL-WNB2HFW-5YFWCUM-INTE4AI";
+      # A general-purpose box for reliable storage.
+      folders."/home/overlord/attic" = {
+        id = "attic";
+        devices = [ "file-server" "phone" ];
+        label = "Attic";
       };
 
-      phone = {
-        addresses = [ "dynamic" ];
-        id = "G6MC3RD-GQZ6MUT-MCAOAWP-5JQZTPE-6IEACQV-PWXRW23-KIPCLL2-UQVKLAU";
+      devices = {
+        file-server = {
+          addresses = [ "tcp://hactar.host.selfhosted.city" ];
+          id =
+            "YOTWLUU-HU6VAII-DJFNJCT-QBVRGD7-EM37VVL-WNB2HFW-5YFWCUM-INTE4AI";
+        };
+
+        phone = {
+          addresses = [ "dynamic" ];
+          id =
+            "G6MC3RD-GQZ6MUT-MCAOAWP-5JQZTPE-6IEACQV-PWXRW23-KIPCLL2-UQVKLAU";
+        };
+      };
+
+      extraOptions = {
+        options.urAccepted = 3;
+        gui.theme = "dark";
       };
     };
 
-    extraOptions = {
-      options.urAccepted = 3;
-      gui.theme = "dark";
-    };
+    # fprintd doesn't play well with swaylock's pam module. It effectively
+    # disables password input.
+    fprintd.enable = lib.mkForce false;
   };
 
   programs = {
     wireshark.enable = true;
+
+    sway.input = {
+      "type:touchpad".natural_scroll = "enabled";
+      "type:keyboard" = {
+        xkb_options = "caps:escape";
+        repeat_delay = "200";
+      };
+    };
 
     ssh = {
       extraConfig = ''
@@ -162,28 +179,6 @@
       };
     };
   };
-
-  home-manager.users.${config.dotfiles.user.name} = {
-    imports = [ inputs.self.nixosModules.home-manager ];
-
-    programs.git = {
-      userName = "Jesse Gibson";
-      userEmail = "JesseTheGibson@gmail.com";
-    };
-
-    presets = {
-      desktop-environment.enable = true;
-      developer.enable = true;
-      fonts.enable = true;
-      terminal-environment.enable = true;
-    };
-  };
-
-  networking.firewall.allowedTCPPorts = [ 4444 ];
-
-  # fprintd doesn't play well with swaylock's pam module. It effectively
-  # disables password input.
-  services.fprintd.enable = lib.mkForce false;
 
   system.stateVersion = "20.09";
 }
