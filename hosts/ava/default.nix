@@ -59,16 +59,16 @@
       description = "Jesse Gibson";
     };
 
-    desktop.sway.input = {
-      "type:touchpad".natural_scroll = "enabled";
-      "type:keyboard" = {
-        xkb_options = "caps:escape";
-        repeat_delay = "200";
-      };
-    };
-
     # DEPRECATED OPTION
     kitchen-sink.enable = true;
+  };
+
+  programs.sway.input = {
+    "type:touchpad".natural_scroll = "enabled";
+    "type:keyboard" = {
+      xkb_options = "caps:escape";
+      repeat_delay = "200";
+    };
   };
 
   # Orient the external monitor centered above the built-in screen.
