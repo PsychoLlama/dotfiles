@@ -15,10 +15,6 @@ in {
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
 
-    programs.alacritty.settings.font = rec {
-      normal.family = "Fira Code";
-      bold.family = normal.family;
-      italic.family = normal.family;
-    };
+    programs.alacritty.settings.font.normal.family = "Fira Code";
   };
 }
