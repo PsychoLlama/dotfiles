@@ -7,6 +7,9 @@ in with lib; {
     mkEnableOption "Configure Neovim as the one true editor";
 
   config = mkIf cfg.enable {
+    home.sessionVariables.MANPAGER =
+      "${config.programs.neovim.finalPackage}/bin/nvim -c 'Man!'";
+
     programs.neovim = {
       enable = true;
       coc.enable = true;
