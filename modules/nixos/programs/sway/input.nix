@@ -14,7 +14,7 @@ let
 
         in ''
           input "${inputName}" {
-            ${concatStringsSep "\n" fieldDefinitions}
+            ${concatStringsSep "\n  " fieldDefinitions}
           }
         '') inputs;
 
@@ -31,6 +31,5 @@ in {
     '';
   };
 
-  config.environment.etc."sway/config.d/input".text =
-    mkIf cfg.enable (generateSwayInputsConfig cfg.input);
+  config.programs.sway.extraConfig = generateSwayInputsConfig cfg.input;
 }

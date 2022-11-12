@@ -21,7 +21,9 @@ in with lib; {
 
   config = mkIf cfg.enable {
     # Enable a minimal desktop environment with Sway/Wayland.
-    programs.sway.enable = true;
-    environment.etc."sway/config".source = cfg.sway.config;
+    programs.sway = {
+      enable = true;
+      extraConfig = builtins.readFile cfg.sway.config;
+    };
   };
 }
