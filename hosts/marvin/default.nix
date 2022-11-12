@@ -27,7 +27,7 @@
 
   dotfiles = {
     user.account = "marvin";
-    package-set = "nixpkgs-unstable";
+    packageSet = "nixpkgs-unstable";
 
     toolkit = {
       development.enable = true;

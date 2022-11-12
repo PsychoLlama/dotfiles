@@ -53,7 +53,7 @@
   # TODO: Migrate to home-manager.
   dotfiles = {
     presets.kitchen-sink.enable = true;
-    package-set = "nixpkgs-unstable";
+    packageSet = "nixpkgs-unstable";
 
     user = {
       name = "overlord";
