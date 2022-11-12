@@ -1,42 +1,12 @@
 { config, inputs, ... }:
 
 {
-  environment.variables.GIT_CONFIG_SYSTEM = "/etc/gitconfig";
-
-  system.keyboard = {
-    enableKeyMapping = true;
-    remapCapsLockToEscape = true;
-  };
-
-  system.defaults = {
-    dock = {
-      autohide = true;
-      orientation = "left";
-      show-recents = false;
-      static-only = true;
-    };
-
-    NSGlobalDomain = {
-      NSAutomaticQuoteSubstitutionEnabled = false;
-      InitialKeyRepeat = 20;
-      KeyRepeat = 2;
-      AppleInterfaceStyle = "Dark";
-      AppleShowAllExtensions = true;
-    };
-  };
-
   dotfiles = {
-    user.account = "marvin";
+    user.name = "overlord";
     packageSet = "nixpkgs-unstable";
-
-    toolkit = {
-      development.enable = true;
-      files.enable = true;
-      networking.enable = true;
-    };
   };
 
-  home-manager.users.${config.dotfiles.user.account} = {
+  home-manager.users.${config.dotfiles.user.name} = {
     imports = [ inputs.self.nixosModules.home-manager ];
     home.stateVersion = "22.05";
 
@@ -61,5 +31,29 @@
   services.nix-daemon.enable = true;
   fonts.fontDir.enable = true;
 
-  system.stateVersion = 4;
+  system = {
+    stateVersion = 4;
+
+    keyboard = {
+      enableKeyMapping = true;
+      remapCapsLockToEscape = true;
+    };
+
+    defaults = {
+      dock = {
+        autohide = true;
+        orientation = "left";
+        show-recents = false;
+        static-only = true;
+      };
+
+      NSGlobalDomain = {
+        NSAutomaticQuoteSubstitutionEnabled = false;
+        InitialKeyRepeat = 20;
+        KeyRepeat = 2;
+        AppleInterfaceStyle = "Dark";
+        AppleShowAllExtensions = true;
+      };
+    };
+  };
 }
