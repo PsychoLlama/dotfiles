@@ -50,6 +50,9 @@ in mkSystem {
         extraOptions = ''
           experimental-features = nix-command flakes
         '';
+
+        registry.pkgs.flake = inputs.nixpkgs-unstable;
+        nixPath = [ "nixpkgs=${inputs.nixpkgs-unstable}" ];
       };
     })
 

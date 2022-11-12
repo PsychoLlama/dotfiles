@@ -34,9 +34,6 @@
     extraOptions = ''
       builders-use-substitutes = true
     '';
-
-    registry.pkgs.flake = inputs.nixpkgs-unstable;
-    nixPath = [ "nixpkgs=${inputs.nixpkgs-unstable}" ];
   };
 
   services.openssh.hostKeys = [{
