@@ -17,12 +17,15 @@ in {
       coc = {
         enable = true;
 
-        settings.languageserver = {
-          rust = {
+        settings = {
+          languageserver.rust = {
             command = "${pkgs.unstable.rust-analyzer}/bin/rust-analyzer";
             filetypes = [ "rust" ];
             rootPatterns = [ "Cargo.toml" ];
           };
+
+          "eslint.autoFixOnSave" = true;
+          "coc.preferences.formatOnSaveFiletypes" = [ "*" ];
         };
       };
 
@@ -34,7 +37,9 @@ in {
       plugins = with pkgs.vimPlugins; [
         ale
         auto-pairs
+        coc-eslint
         coc-json
+        coc-prettier
         coc-tsserver
         fzf-vim
         markdown-preview-nvim

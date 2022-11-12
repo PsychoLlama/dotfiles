@@ -67,35 +67,23 @@ vim.api.nvim_set_keymap('n', '<leader>m', ':MarkdownPreview<cr>', { noremap = tr
 -- Markdown previewer
 vim.g.mkdp_browser = 'firefox'
 
--- ALE engine
+-- ALE engine (TODO: Replace with coc.nvim)
 vim.g.ale_sign_warning = '!'
 vim.g.ale_sign_error = 'x'
 vim.g.ale_fix_on_save = true
 
-vim.g.ale_javascript_prettier_use_local_config = 1
 vim.g.ale_sh_shellcheck_options = '-e SC2155'
 
 vim.g.ale_linters = {
-  javascript = { 'eslint' },
   bash = { 'shellcheck' },
   sh = { 'shellcheck' },
-  rust = { 'rls' },
-  graphql = { 'gqlint' },
   vim = { 'vint' },
 }
 
 vim.g.ale_fixers = {
-  javascript = { 'prettier' },
-  typescript = { 'prettier' },
   terraform = { 'terraform' },
-  tex = { 'latexindent' },
   hcl = { 'terraform' },
-  rust = { 'rustfmt' },
   nix = { 'nixfmt' }
-}
-
-vim.g.ale_pattern_options = {
-  ['.*/node_modules/.*'] = { ale_enabled = false },
 }
 
 -- Test/source file alternation
