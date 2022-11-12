@@ -5,10 +5,11 @@ let
   cfg = config.dotfiles.desktop;
   generateSwayInputsConfig = inputs:
     let
-      inputDefinitions = lib.mapAttrsToList (inputName: input:
+      inputDefinitions = lib.mapAttrsToList (inputName: inputs:
         let
           fieldDefinitions = lib.mapAttrsToList
-            (fieldName: field: "${fieldName} ${builtins.toString field}") input;
+            (fieldName: field: "${fieldName} ${builtins.toString field}")
+            inputs;
 
         in ''
           input "${inputName}" {
@@ -29,16 +30,16 @@ in with lib; {
     sway = {
       config = mkOption {
         type = types.path;
-        description = "Set the XMonad config file";
+        description = "Set the Sway config file";
         default = ../config/sway.conf;
       };
 
-      inputs = mkOption {
+      input = mkOption {
         type =
           types.attrsOf (types.attrsOf (types.oneOf [ types.str types.int ]));
         description = "Settings for Sway input devices";
         example = literalExpression ''
-          dotfiles.desktop.sway.inputs."AT_Keyboard" = {
+          dotfiles.desktop.sway.input."AT_Keyboard" = {
             repeat_delay = 250;
           };
         '';
@@ -48,17 +49,11 @@ in with lib; {
 
   config = mkIf cfg.enable {
     # Enable a minimal desktop environment with Sway/Wayland.
-    programs.sway = {
-      enable = true;
-      extraSessionCommands = ''
-        # Remap caps lock to escape.
-        export XKB_DEFAULT_OPTIONS=caps:escape
-      '';
-    };
+    programs.sway.enable = true;
+    dotfiles.user.packages = [ pkgs.unstable.wlsunset ];
 
-    environment.systemPackages = with pkgs.unstable; [ wlsunset ];
     environment.etc."sway/config".source = cfg.sway.config;
     environment.etc."sway/config.d/inputs".text =
-      generateSwayInputsConfig cfg.sway.inputs;
+      generateSwayInputsConfig cfg.sway.input;
   };
 }

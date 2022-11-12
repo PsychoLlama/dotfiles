@@ -59,9 +59,12 @@
       description = "Jesse Gibson";
     };
 
-    desktop.sway.inputs = {
+    desktop.sway.input = {
       "type:touchpad".natural_scroll = "enabled";
-      "type:keyboard".repeat_delay = 200;
+      "type:keyboard" = {
+        xkb_options = "caps:escape";
+        repeat_delay = "200";
+      };
     };
 
     # DEPRECATED OPTION
