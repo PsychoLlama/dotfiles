@@ -38,6 +38,12 @@ in mkSystem {
       # Hostnames are set by the directory's name.
       networking.hostName = lib.mkDefault (baseNameOf path);
 
+      # Set reasonable defaults for home-manager.
+      home-manager = {
+        useGlobalPkgs = lib.mkDefault true;
+        useUserPackages = lib.mkDefault true;
+      };
+
       # This can be removed once nix flakes ship standard.
       nix = {
         package = pkgs.nixUnstable;

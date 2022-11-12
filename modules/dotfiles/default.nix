@@ -13,23 +13,10 @@ in {
     };
   };
 
-  config = mkMerge [
-    {
-      home-manager = {
-        useGlobalPkgs = mkDefault true;
-        useUserPackages = mkDefault true;
-      };
-    }
-
-    ({
-      nixpkgs.overlays = [
-        (if cfg.packageSet == "nixpkgs-unstable" then
-          inputs.self.overlays.latest-packages
-        else
-          (self: pkgs: { unstable = pkgs; }))
-      ];
-    })
-
-    { nixpkgs.overlays = [ inputs.self.overlays.vim-plugins ]; }
-  ];
+  config.nixpkgs.overlays = [
+    (if cfg.packageSet == "nixpkgs-unstable" then
+      inputs.self.overlays.latest-packages
+    else
+      (self: pkgs: { unstable = pkgs; }))
+  ] ++ [ inputs.self.overlays.vim-plugins ];
 }
