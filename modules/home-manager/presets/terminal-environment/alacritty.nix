@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.alacritty;
 
-in with lib; {
+in {
   options.presets.alacritty.enable =
     mkEnableOption "Use the Alacritty terminal emulator";
 

@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.zoxide;
 
-in with lib; {
+in {
   options.presets.zoxide.enable =
     mkEnableOption "Use Zoxide to jump around directories";
 

@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.dotfiles.presets.desktop-environment;
 
-in with lib; {
+in {
   options.dotfiles.presets.desktop-environment.enable =
     mkEnableOption "Configure a desktop environment";
 

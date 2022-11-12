@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.firefox;
 
-in with lib; {
+in {
   options.presets.firefox.enable =
     mkEnableOption "Install and configure Firefox";
 

@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.toolkits.networking.termshark;
 
-in with lib; {
+in {
   options.presets.toolkits.networking.termshark.enable =
     mkEnableOption "Install and configure termshark";
 

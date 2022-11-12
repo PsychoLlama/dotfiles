@@ -1,8 +1,10 @@
 { config, lib, ... }:
 
+with lib;
+
 let cfg = config.presets.desktop-environment;
 
-in with lib; {
+in {
   imports = [
     ./dunst.nix
     ./firefox.nix

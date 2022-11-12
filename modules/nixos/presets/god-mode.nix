@@ -1,8 +1,10 @@
 { config, lib, ... }:
 
+with lib;
+
 let cfg = config.dotfiles.presets.god-mode;
 
-in with lib; {
+in {
   options.dotfiles.presets.god-mode.enable =
     mkEnableOption "Enable passwordless sudo";
 

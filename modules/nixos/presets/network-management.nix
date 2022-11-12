@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.dotfiles.presets.network-management;
 
-in with lib; {
+in {
   options.dotfiles.presets.network-management.enable =
     mkEnableOption "Configure network management tools";
 

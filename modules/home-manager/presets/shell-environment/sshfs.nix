@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.sshfs;
 
-in with lib; {
+in {
   options.presets.sshfs.enable = mkEnableOption "Install and configure sshfs";
 
   # Not enabled by default on macOS (no support for FUSE).

@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.bat;
 
-in with lib; {
+in {
   options.presets.bat.enable = mkEnableOption "Replace cat with bat";
 
   config = mkIf cfg.enable {

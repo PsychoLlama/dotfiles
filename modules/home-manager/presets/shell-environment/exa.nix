@@ -1,8 +1,10 @@
 { config, lib, ... }:
 
+with lib;
+
 let cfg = config.presets.exa;
 
-in with lib; {
+in {
   options.presets.exa.enable = mkEnableOption "Replace ls with exa";
 
   config = mkIf cfg.enable {

@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.zathura;
 
-in with lib; {
+in {
   options.presets.zathura.enable =
     mkEnableOption "Install and configure Zathura";
 

@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.ncspot;
 
-in with lib; {
+in {
   options.presets.ncspot.enable = mkEnableOption "Install and configure ncspot";
 
   config.programs.ncspot = mkIf cfg.enable {

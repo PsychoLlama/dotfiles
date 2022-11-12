@@ -1,11 +1,13 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let
   cfg = config.presets.swayidle;
   swaylock = "${pkgs.swaylock}/bin/swaylock -Ffc 000000";
   swaymsg = "${pkgs.sway}/bin/swaymsg";
 
-in with lib; {
+in {
   options.presets.swayidle.enable =
     mkEnableOption "Automatically lock the computer when inactive";
 

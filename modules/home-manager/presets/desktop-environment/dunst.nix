@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.dunst;
 
-in with lib; {
+in {
   options.presets.dunst.enable =
     mkEnableOption "Use the dunst notification daemon";
 

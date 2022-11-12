@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.starship;
 
-in with lib; {
+in {
   options.presets.starship.enable =
     mkEnableOption "Use an opinionated Starship prompt";
 

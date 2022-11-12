@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.tmux;
 
-in with lib; {
+in {
   options.presets.tmux.enable =
     mkEnableOption "Use an opinionated tmux configuration";
 

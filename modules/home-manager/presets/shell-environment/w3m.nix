@@ -1,11 +1,13 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 # w3m is tremendously useful while debugging a NixOS issue that bricks your
 # window manager, leaving you with only a terminal.
 
 let cfg = config.presets.w3m;
 
-in with lib; {
+in {
   options.presets.w3m.enable = mkEnableOption "Install and configure w3m";
 
   config = mkIf cfg.enable {

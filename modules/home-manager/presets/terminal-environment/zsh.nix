@@ -1,8 +1,10 @@
 { config, lib, ... }:
 
+with lib;
+
 let cfg = config.presets.zsh;
 
-in with lib; {
+in {
   options.presets.zsh.enable =
     mkEnableOption "Use an opinionated Zsh configuration";
 

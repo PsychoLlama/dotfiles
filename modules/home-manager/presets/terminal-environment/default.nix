@@ -1,8 +1,10 @@
 { config, lib, ... }:
 
+with lib;
+
 let cfg = config.presets.terminal-environment;
 
-in with lib; {
+in {
   imports =
     [ ./alacritty.nix ./starship.nix ./tmux.nix ./zoxide.nix ./zsh.nix ];
 

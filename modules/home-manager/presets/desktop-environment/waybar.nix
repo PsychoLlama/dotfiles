@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.waybar;
 
-in with lib; {
+in {
   options.presets.waybar.enable = mkEnableOption "Install and configure Waybar";
 
   config.programs.waybar = mkIf cfg.enable {

@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.dotfiles.presets.greetd;
 
-in with lib; {
+in {
   options.dotfiles.presets.greetd.enable =
     mkEnableOption "Use recommended fonts";
 

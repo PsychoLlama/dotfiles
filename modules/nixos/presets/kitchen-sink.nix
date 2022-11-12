@@ -1,8 +1,10 @@
 { config, lib, ... }:
 
+with lib;
+
 let cfg = config.dotfiles.presets.kitchen-sink;
 
-in with lib; {
+in {
   options.dotfiles.presets.kitchen-sink.enable =
     mkEnableOption "Enable everything by default";
 

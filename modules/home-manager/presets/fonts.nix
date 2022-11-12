@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.fonts;
 
-in with lib; {
+in {
   options.presets.fonts.enable = mkEnableOption "Use recommended fonts";
 
   config = mkIf cfg.enable {

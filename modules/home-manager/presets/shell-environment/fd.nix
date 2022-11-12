@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.fd;
 
-in with lib; {
+in {
   options.presets.fd.enable = mkEnableOption "Whether to enable fd-find";
 
   config = mkIf cfg.enable {

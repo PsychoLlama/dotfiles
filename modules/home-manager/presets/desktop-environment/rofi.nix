@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.rofi;
 
-in with lib; {
+in {
   options.presets.rofi.enable = mkEnableOption "Use the rofi launcher";
 
   config.programs.rofi = mkIf cfg.enable {

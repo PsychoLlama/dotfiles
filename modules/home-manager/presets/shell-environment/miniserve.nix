@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.miniserve;
 
-in with lib; {
+in {
   options.presets.miniserve.enable =
     mkEnableOption "Install and configure miniserve";
 

@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.neovim;
 
-in with lib; {
+in {
   options.presets.neovim.enable =
     mkEnableOption "Configure Neovim as the one true editor";
 

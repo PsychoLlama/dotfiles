@@ -1,8 +1,10 @@
 { config, lib, ... }:
 
+with lib;
+
 let cfg = config.presets.git;
 
-in with lib; {
+in {
   options.presets.git.enable =
     mkEnableOption "Provide an opinionated configuration for git";
 

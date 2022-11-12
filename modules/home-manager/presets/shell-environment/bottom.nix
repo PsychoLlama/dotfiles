@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.bottom;
 
-in with lib; {
+in {
   options.presets.bottom.enable =
     mkEnableOption "Use and configure the bottom process monitor";
 

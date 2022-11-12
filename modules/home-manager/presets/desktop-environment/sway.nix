@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.sway;
 
-in with lib; {
+in {
   options.presets.sway.enable = mkEnableOption "Use the Sway window manager";
 
   # This module is a lie. It approximates the behavior of Sway *if* it were

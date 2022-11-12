@@ -1,8 +1,10 @@
 { config, lib, ... }:
 
+with lib;
+
 let cfg = config.presets.toolkits.networking;
 
-in with lib; {
+in {
   imports = [ ./dogdns.nix ./nmap.nix ./termshark.nix ./whois.nix ./xh.nix ];
 
   options.presets.toolkits.networking.enable =

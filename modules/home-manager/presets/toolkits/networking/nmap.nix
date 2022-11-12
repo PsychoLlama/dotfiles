@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.toolkits.networking.nmap;
 
-in with lib; {
+in {
   options.presets.toolkits.networking.nmap.enable =
     mkEnableOption "Install and configure nmap";
 

@@ -1,8 +1,10 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let cfg = config.presets.shell-environment;
 
-in with lib; {
+in {
   imports = [
     ./bat.nix
     ./bottom.nix
