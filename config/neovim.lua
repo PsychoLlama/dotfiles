@@ -9,6 +9,19 @@ vim.o.tabstop = 2
 vim.o.shiftwidth = 0
 vim.o.shiftround = true
 
+-- Support <tab> completion
+vim.api.nvim_set_keymap('i', '<tab>', 'editor#mappings#tab_completion(v:false)', {
+  noremap = true,
+  silent = true,
+  expr = true,
+})
+
+vim.api.nvim_set_keymap('i', '<s-tab>', 'editor#mappings#tab_completion(v:true)', {
+  noremap = true,
+  silent = true,
+  expr = true,
+})
+
 -- Interaction settings
 vim.o.wildmenu = true
 vim.o.wildmode = 'longest,list,full'
@@ -30,7 +43,7 @@ vim.o.numberwidth = 3
 vim.o.list = true
 vim.o.listchars = 'tab:) ,trail:.'
 vim.o.foldenable = false
-vim.o.updatetime = 0
+vim.o.updatetime = 300
 vim.o.linebreak = true
 vim.o.cursorline = true
 
@@ -58,6 +71,9 @@ vim.api.nvim_set_keymap('n', '<leader>p', ':call editor#open_project_root()<cr>'
 vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
 vim.api.nvim_set_keymap('n', '<leader>f', ':Files!<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>s', ':Rg!<cr>', { noremap = true })
+
+-- coc.nvim
+vim.api.nvim_set_keymap('n', 'gd', '<Plug>(coc-definition)', { silent = true })
 
 -- Misc
 vim.api.nvim_set_keymap('n', '<esc>', ':nohlsearch<cr><esc>', { noremap = true, silent = true })

@@ -10,6 +10,25 @@ func! s:is_typing_word() abort
   return l:prev_chars =~? '\w\{2}'
 endfunc
 
+func! editor#mappings#tab_completion(shifting) abort
+  " Tabbed while completion was active.
+  if coc#pum#visible()
+    if a:shifting
+      return coc#pum#prev(1)
+    endif
+
+    return coc#pum#next(1)
+  endif
+
+  " The completion menu isn't open, but there's enough context for it.
+  if s:is_typing_word()
+    return coc#refresh()
+  endif
+
+  " You probably just wanted a regular "\t" character.
+  return "\<Tab>"
+endfunc
+
 " :Rexplore only works if the file was opened via netrw.
 func! editor#mappings#explore_current_dir() abort
   if &filetype is# 'netrw' || &filetype is# 'navitron'
