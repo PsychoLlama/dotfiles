@@ -116,8 +116,6 @@ vim.g.ale_linters = {
 }
 
 vim.g.ale_fixers = {
-  terraform = { 'terraform' },
-  hcl = { 'terraform' },
   nix = { 'nixfmt' }
 }
 

@@ -18,10 +18,18 @@ in {
         enable = true;
 
         settings = {
-          languageserver.rust = {
-            command = "${pkgs.unstable.rust-analyzer}/bin/rust-analyzer";
-            filetypes = [ "rust" ];
-            rootPatterns = [ "Cargo.toml" ];
+          languageserver = {
+            rust = {
+              command = "${pkgs.unstable.rust-analyzer}/bin/rust-analyzer";
+              filetypes = [ "rust" ];
+              rootPatterns = [ "Cargo.toml" ];
+            };
+
+            terraform = {
+              command = "${pkgs.unstable.terraform-ls}/bin/terraform-ls";
+              args = [ "serve" ];
+              filetypes = [ "terraform" "hcl" ];
+            };
           };
 
           "eslint.autoFixOnSave" = true;
@@ -55,7 +63,6 @@ in {
         vim-plug
         vim-repeat
         vim-surround
-        vim-terraform
 
         # 3rd party
         alternaut-vim
@@ -72,9 +79,10 @@ in {
       extraPackages = with pkgs.unstable; [
         nixfmt
         nodejs
-        shellcheck
-        vim-vint
         rustup
+        shellcheck
+        terraform
+        vim-vint
       ];
 
       extraConfig = ''
