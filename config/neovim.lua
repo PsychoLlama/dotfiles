@@ -102,23 +102,6 @@ vim.api.nvim_set_keymap('n', '<leader>m', ':MarkdownPreview<cr>', { noremap = tr
 -- Markdown previewer
 vim.g.mkdp_browser = 'firefox'
 
--- ALE engine (TODO: Replace with coc.nvim)
-vim.g.ale_sign_warning = '!'
-vim.g.ale_sign_error = 'x'
-vim.g.ale_fix_on_save = true
-
-vim.g.ale_sh_shellcheck_options = '-e SC2155'
-
-vim.g.ale_linters = {
-  bash = { 'shellcheck' },
-  sh = { 'shellcheck' },
-  vim = { 'vint' },
-}
-
-vim.g.ale_fixers = {
-  nix = { 'nixfmt' }
-}
-
 -- Test/source file alternation
 local test_conventions = {
   javascript = {
@@ -180,10 +163,6 @@ onedark.setup({
     },
   },
   highlights = {
-    ALEWarningSign = {
-      fg = colors.gray,
-    },
-
     -- Editor built-ins. See `:h highlight-groups` for details.
     CursorLineNr = {
       fg = colors.blue,

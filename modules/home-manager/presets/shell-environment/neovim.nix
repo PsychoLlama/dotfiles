@@ -2,7 +2,37 @@
 
 with lib;
 
-let cfg = config.presets.neovim;
+let
+  cfg = config.presets.neovim;
+  yaml = pkgs.formats.yaml { };
+  efm-config = {
+    languages = rec {
+      vim = {
+        lint-command = "vint -";
+        lint-source = "vint";
+        lint-stdin = true;
+        lint-formats = [ "%f:%l:%c: %m" ];
+      };
+
+      bash = {
+        lint-command = "shellcheck -f gcc -x -";
+        lint-source = "shellcheck";
+        lint-stdin = true;
+        lint-formats = [
+          "%f:%l:%c: %trror: %m"
+          "%f:%l:%c: %tarning: %m"
+          "%f:%l:%c: %tote: %m"
+        ];
+      };
+
+      sh = bash;
+
+      nix = {
+        format-command = "nixfmt --quiet";
+        format-stdin = true;
+      };
+    };
+  };
 
 in {
   options.presets.neovim.enable =
@@ -17,18 +47,24 @@ in {
       coc = {
         enable = true;
 
-        settings = {
+        settings = with pkgs.unstable; {
           languageserver = {
             rust = {
-              command = "${pkgs.unstable.rust-analyzer}/bin/rust-analyzer";
+              command = "${rust-analyzer}/bin/rust-analyzer";
               filetypes = [ "rust" ];
               rootPatterns = [ "Cargo.toml" ];
             };
 
             terraform = {
-              command = "${pkgs.unstable.terraform-ls}/bin/terraform-ls";
+              command = "${terraform-ls}/bin/terraform-ls";
               args = [ "serve" ];
               filetypes = [ "terraform" "hcl" ];
+            };
+
+            efm = {
+              command = "${efm-langserver}/bin/efm-langserver";
+              args = [ "-c" (yaml.generate "efm-config.yaml" efm-config) ];
+              filetypes = attrNames efm-config.languages;
             };
           };
 
@@ -43,7 +79,6 @@ in {
       };
 
       plugins = with pkgs.vimPlugins; [
-        ale
         auto-pairs
         coc-eslint
         coc-json
