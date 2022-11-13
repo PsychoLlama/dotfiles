@@ -59,7 +59,6 @@ in {
 
         # 3rd party
         alternaut-vim
-        further-vim
         navitron-nvim
         teleport-vim
         unison-vim

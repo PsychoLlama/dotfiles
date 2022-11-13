@@ -73,7 +73,22 @@ vim.api.nvim_set_keymap('n', '<leader>f', ':Files!<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>s', ':Rg!<cr>', { noremap = true })
 
 -- coc.nvim
-vim.api.nvim_set_keymap('n', 'gd', '<Plug>(coc-definition)', { silent = true })
+vim.keymap.set('n', 'gd', '<Plug>(coc-definition)')
+vim.keymap.set('n', 'gy', '<Plug>(coc-type-definition)')
+vim.keymap.set('n', 'gi', '<Plug>(coc-implementation)')
+vim.keymap.set('n', 'gr', '<Plug>(coc-references)')
+vim.keymap.set('n', 'K', function()
+  if vim.fn.CocAction('hasProvider', 'hover') then
+    vim.fn.CocActionAsync('doHover')
+  else
+    vim.fn.feedkeys('K', 'in')
+  end
+end)
+
+vim.keymap.set({ 'x', 'o' }, 'if', '<Plug>(coc-funcobj-i)')
+vim.keymap.set({ 'x', 'o' }, 'af', '<Plug>(coc-funcobj-a)')
+vim.keymap.set({ 'x', 'o' }, 'ic', '<Plug>(coc-classobj-i)')
+vim.keymap.set({ 'x', 'o' }, 'ac', '<Plug>(coc-classobj-a)')
 
 -- Misc
 vim.api.nvim_set_keymap('n', '<esc>', ':nohlsearch<cr><esc>', { noremap = true, silent = true })
@@ -149,16 +164,6 @@ require('nvim-treesitter.configs').setup({
         ['g<'] = '@parameter.inner',
       },
     },
-
-    select = {
-      enable = true,
-      keymaps = {
-        ['af'] = '@function.outer',
-        ['if'] = '@function.inner',
-        ['ac'] = '@class.outer',
-        ['ic'] = '@class.inner',
-      },
-    },
   },
 })
 
@@ -204,7 +209,6 @@ require('regal').setup({
 })
 
 -- Misc
-vim.g['further#prefer_modules'] = true
 vim.g['teleport#update_cwd'] = true
 vim.g.jsx_ext_required = 0
 vim.g.splitjoin_trailing_comma = true

@@ -36,22 +36,6 @@
         "type": "github"
       }
     },
-    "further-vim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1651868823,
-        "narHash": "sha256-LREfRfcRdfvtMCnsxPPv+T53Wpbr5qYM+QAz/bf1dHg=",
-        "owner": "PsychoLlama",
-        "repo": "further.vim",
-        "rev": "6e63187394e8102a742fdbbcb97947848d549c79",
-        "type": "github"
-      },
-      "original": {
-        "owner": "PsychoLlama",
-        "repo": "further.vim",
-        "type": "github"
-      }
-    },
     "hardware": {
       "locked": {
         "lastModified": 1664628729,
@@ -140,7 +124,6 @@
       "inputs": {
         "alternaut-vim": "alternaut-vim",
         "darwin": "darwin",
-        "further-vim": "further-vim",
         "hardware": "hardware",
         "home-manager": "home-manager",
         "navitron-nvim": "navitron-nvim",

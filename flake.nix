@@ -22,11 +22,6 @@
       flake = false;
     };
 
-    further-vim = {
-      url = "github:PsychoLlama/further.vim";
-      flake = false;
-    };
-
     navitron-nvim = {
       url = "github:PsychoLlama/navitron.vim";
       flake = false;
