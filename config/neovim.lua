@@ -43,7 +43,7 @@ vim.o.numberwidth = 3
 vim.o.list = true
 vim.o.listchars = 'tab:) ,trail:.'
 vim.o.foldenable = false
-vim.o.updatetime = 300
+vim.o.updatetime = 100
 vim.o.linebreak = true
 vim.o.cursorline = true
 
@@ -77,6 +77,15 @@ vim.keymap.set('n', 'gd', '<Plug>(coc-definition)')
 vim.keymap.set('n', 'gy', '<Plug>(coc-type-definition)')
 vim.keymap.set('n', 'gi', '<Plug>(coc-implementation)')
 vim.keymap.set('n', 'gr', '<Plug>(coc-references)')
+
+vim.keymap.set({ 'x', 'o' }, 'if', '<Plug>(coc-funcobj-i)')
+vim.keymap.set({ 'x', 'o' }, 'af', '<Plug>(coc-funcobj-a)')
+vim.keymap.set({ 'x', 'o' }, 'ic', '<Plug>(coc-classobj-i)')
+vim.keymap.set({ 'x', 'o' }, 'ac', '<Plug>(coc-classobj-a)')
+
+vim.keymap.set('n', '[g', '<Plug>(coc-diagnostic-prev)')
+vim.keymap.set('n', ']g', '<Plug>(coc-diagnostic-next)')
+
 vim.keymap.set('n', 'K', function()
   if vim.fn.CocAction('hasProvider', 'hover') then
     vim.fn.CocActionAsync('doHover')
@@ -84,11 +93,6 @@ vim.keymap.set('n', 'K', function()
     vim.fn.feedkeys('K', 'in')
   end
 end)
-
-vim.keymap.set({ 'x', 'o' }, 'if', '<Plug>(coc-funcobj-i)')
-vim.keymap.set({ 'x', 'o' }, 'af', '<Plug>(coc-funcobj-a)')
-vim.keymap.set({ 'x', 'o' }, 'ic', '<Plug>(coc-classobj-i)')
-vim.keymap.set({ 'x', 'o' }, 'ac', '<Plug>(coc-classobj-a)')
 
 -- Misc
 vim.api.nvim_set_keymap('n', '<esc>', ':nohlsearch<cr><esc>', { noremap = true, silent = true })
