@@ -39,8 +39,11 @@ in {
     mkEnableOption "Configure Neovim as the one true editor";
 
   config = mkIf cfg.enable {
-    home.sessionVariables.MANPAGER =
-      "${config.programs.neovim.finalPackage}/bin/nvim -c 'Man!'";
+    home.sessionVariables = let inherit (config.programs.neovim) finalPackage;
+    in {
+      EDITOR = "${finalPackage}/bin/nvim";
+      MANPAGER = "${finalPackage}/bin/nvim -c 'Man!'";
+    };
 
     programs.neovim = {
       enable = true;
