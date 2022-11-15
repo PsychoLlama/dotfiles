@@ -90,6 +90,20 @@ in {
             text = "CellForeground";
           };
         };
+
+        # Achieve some normalcy while switching between macOS and Linux.
+        keybindings = optionals pkgs.stdenv.isDarwin [
+          {
+            key = "C";
+            mods = "Control|Shift";
+            action = "Copy";
+          }
+          {
+            key = "V";
+            mods = "Control|Shift";
+            action = "Paste";
+          }
+        ];
       };
     };
   };
