@@ -9,6 +9,19 @@ let
       HOME="$(mktemp -d)" starship init nu > $out
     '';
 
+  nushell-env-file = {
+    executable = true;
+    source = ../../../../config/nushell/env.nu;
+  };
+
+  nushell-config-file = {
+    executable = true;
+    text = ''
+      source ${../../../../config/nushell/config.nu}
+      source ${starship-completions}
+    '';
+  };
+
 in {
   options.presets.nushell.enable =
     mkEnableOption "Install and configure Nushell";
@@ -24,19 +37,15 @@ in {
     };
 
     # TODO: Make this all configurable from outside the preset.
-    xdg = {
-      configFile."nushell/config.nu" = {
-        executable = true;
-        text = ''
-          source ${../../../../config/nushell/config.nu}
-          source ${starship-completions}
-        '';
-      };
+    xdg = optionalAttrs (pkgs.stdenv.isDarwin == false) {
+      configFile."nushell/config.nu" = nushell-config-file;
+      configFile."nushell/env.nu" = nushell-env-file;
+    };
 
-      configFile."nushell/env.nu" = {
-        executable = true;
-        source = ../../../../config/nushell/env.nu;
-      };
+    # Why they gotta make it so hard.
+    home.file = optionalAttrs (pkgs.stdenv.isDarwin) {
+      "Library/Application Support/nushell/config.nu" = nushell-config-file;
+      "Library/Application Support/nushell/env.nu" = nushell-env-file;
     };
   };
 }
