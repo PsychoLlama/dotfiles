@@ -111,7 +111,7 @@ in {
 
         # Treesitter integrations.
         nvim-treesitter-textobjects
-        (nvim-treesitter.withPlugins (plugins: attrValues plugins))
+        nvim-treesitter.withAllGrammars
       ];
 
       extraPackages = with pkgs.unstable; [
