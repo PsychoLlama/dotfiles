@@ -46,6 +46,8 @@ vim.o.foldenable = false
 vim.o.updatetime = 100
 vim.o.linebreak = true
 vim.o.cursorline = true
+vim.o.cmdheight = 0
+vim.o.laststatus = 3
 
 -- Storage settings
 vim.o.backupcopy = 'yes'
