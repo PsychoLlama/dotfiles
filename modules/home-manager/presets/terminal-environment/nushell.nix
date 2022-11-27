@@ -6,7 +6,8 @@ let
   cfg = config.presets.nushell;
   starship-completions =
     pkgs.runCommand "starship-init" { buildInputs = [ pkgs.starship ]; } ''
-      HOME="$(mktemp -d)" starship init nu > $out
+      HOME="$(mktemp --directory)" starship init nu > "$out"
+      sed 's/term size -c/term size/' --in-place "$out"
     '';
 
   nushell-env-file = {
