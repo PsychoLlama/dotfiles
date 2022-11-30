@@ -4,10 +4,16 @@ with lib;
 
 let
   cfg = config.presets.nushell;
-  starship-completions =
-    pkgs.runCommand "starship-init" { buildInputs = [ pkgs.starship ]; } ''
-      HOME="$(mktemp --directory)" starship init nu > "$out"
-      sed 's/term size -c/term size/' --in-place "$out"
+  starship-prompt-setup = pkgs.runCommand "starship-init" {
+    buildInputs = [ pkgs.unstable.starship ];
+  } ''
+    HOME="$(mktemp --directory)" starship init nu > "$out"
+    sed 's/term size -c/term size/' --in-place "$out"
+  '';
+
+  zoxide-command-setup =
+    pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
+      zoxide init nushell > "$out"
     '';
 
   # Generate aliases to match other shells. HM doesn't provide this
@@ -25,7 +31,8 @@ let
     executable = true;
     text = ''
       source ${../../../../config/nushell/config.nu}
-      source ${starship-completions}
+      source ${starship-prompt-setup}
+      source ${zoxide-command-setup}
       source ${nushell-aliases}
     '';
   };
