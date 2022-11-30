@@ -10,6 +10,12 @@ let
       sed 's/term size -c/term size/' --in-place "$out"
     '';
 
+  # Generate aliases to match other shells. HM doesn't provide this
+  # automatically.
+  nushell-aliases = pkgs.writeScript "nushell-aliases" (concatStringsSep "\n"
+    (mapAttrsToList (alias: action: "alias ${alias} = ${action}")
+      config.home.shellAliases));
+
   nushell-env-file = {
     executable = true;
     source = ../../../../config/nushell/env.nu;
@@ -20,6 +26,7 @@ let
     text = ''
       source ${../../../../config/nushell/config.nu}
       source ${starship-completions}
+      source ${nushell-aliases}
     '';
   };
 
