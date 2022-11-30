@@ -137,13 +137,7 @@ function gist {
     return 1
   fi
 
-  nix eval --offline --json --impure --expr "
-  let
-    flake = builtins.getFlake \"nixpkgs\";
-    pkgs = flake.legacyPackages.\${builtins.currentSystem};
-
-  in pkgs.$1.meta
-  " | jq -r '.description, .homepage'
+  nix eval --offline --json nixpkgs#$1.meta | jq -r '.description, .homepage'
 }
 
 # Encrypt stdin using public keys from GitHub.
