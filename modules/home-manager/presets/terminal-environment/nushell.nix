@@ -16,25 +16,9 @@ let
       zoxide init nushell > "$out"
     '';
 
-  # Generate aliases to match other shells. HM doesn't provide this
-  # automatically.
-  nushell-aliases = pkgs.writeScript "nushell-aliases" (concatStringsSep "\n"
-    (mapAttrsToList (alias: action: "alias ${alias} = ${action}")
-      config.home.shellAliases));
-
   nushell-env-file = {
     executable = true;
     source = ../../../../config/nushell/env.nu;
-  };
-
-  nushell-config-file = {
-    executable = true;
-    text = ''
-      source ${../../../../config/nushell/config.nu}
-      source ${starship-prompt-setup}
-      source ${zoxide-command-setup}
-      source ${nushell-aliases}
-    '';
   };
 
 in {
@@ -45,6 +29,13 @@ in {
     programs.nushell = {
       enable = true;
       package = pkgs.unstable.nushell;
+      shellAliases = config.home.shellAliases;
+
+      initExtra = ''
+        source ${../../../../config/nushell/config.nu}
+        source ${starship-prompt-setup}
+        source ${zoxide-command-setup}
+      '';
 
       # By default, this symlinks to the wrong location with the wrong format.
       # Use nulang config files instead.
@@ -53,13 +44,11 @@ in {
 
     # TODO: Make this all configurable from outside the preset.
     xdg = optionalAttrs (pkgs.stdenv.isDarwin == false) {
-      configFile."nushell/config.nu" = nushell-config-file;
       configFile."nushell/env.nu" = nushell-env-file;
     };
 
     # Why they gotta make it so hard.
     home.file = optionalAttrs (pkgs.stdenv.isDarwin) {
-      "Library/Application Support/nushell/config.nu" = nushell-config-file;
       "Library/Application Support/nushell/env.nu" = nushell-env-file;
     };
   };

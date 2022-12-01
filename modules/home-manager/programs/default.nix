@@ -16,6 +16,7 @@ let
 
 in {
   imports = [
+    ./nushell
     ./w3m.nix
 
     (makeProgramModule "acpi")
