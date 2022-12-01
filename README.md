@@ -77,7 +77,6 @@ There's a lot more that's undocumented. Read the code to see all the options.
 - Launcher: [Rofi](https://github.com/davatorium/rofi)
 - Notifications: [Dunst](https://github.com/dunst-project/dunst)
 - Terminal: [Alacritty](https://github.com/alacritty/alacritty)
-- Shell: [zsh](https://www.zsh.org/)
+- Shell: [nushell](https://www.nushell.sh/) and [zsh](https://www.zsh.org/)
 - Editor: [Neovim](http://neovim.io/)
 - Browser: [Firefox](https://www.mozilla.org/en-US/firefox/new/)
-
