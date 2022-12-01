@@ -134,3 +134,72 @@ module completions {
 
 # Get just the extern definitions without the custom completion commands
 use completions *
+
+
+#########################
+# Convenience Functions #
+#########################
+
+# Open the editor.
+def n [...files: path] {
+  if ($files | length) == 0 {
+    nvim $env.PWD
+  } else {
+    nvim -p $files
+  }
+}
+
+# Fuzzy find and edit a file.
+def nf [] {
+  let selected_file = (fd --type file | fzf)
+
+  if ($selected_file | str length) > 0 {
+    nvim ($selected_file | str trim)
+  }
+}
+
+# Fuzzy find and open a directory.
+def nt [] {
+  let selected_dir = (fd --type directory | fzf)
+
+  if ($selected_dir | str length) > 0 {
+    nvim ($selected_dir | str trim)
+  }
+}
+
+# Fuzzy find and open a directory.
+def-env cf [] {
+  let selected_dir = (fd --type directory | fzf)
+
+  cd (if ($selected_dir | str length) > 0 {
+    $selected_dir | str trim
+  } else {
+    ""
+  })
+}
+
+# Show information about a nix package.
+def gist [pkg_name: string] {
+  nix eval --offline --json $"nixpkgs#($pkg_name).meta" | jq -r '.description, .homepage'
+}
+
+# `mkdir` and `cd` in one move.
+def-env md [directory: path] {
+  mkdir $directory
+  cd $directory
+}
+
+# Show git status.
+def s [] {
+  let repo_check = do --ignore-errors {
+    git rev-parse --is-inside-work-tree | complete
+  }
+
+  if $repo_check.exit_code == 0 {
+    git status
+  } else {
+    echo 'Not a git repo.'
+  }
+}
+
+# TODO: Port encryption toolkit and repo manager.
