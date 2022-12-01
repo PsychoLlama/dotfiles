@@ -6,6 +6,8 @@ let-env PROMPT_INDICATOR_VI_INSERT = { "" }
 let-env PROMPT_INDICATOR_VI_NORMAL = { "" }
 let-env PROMPT_MULTILINE_INDICATOR = { "" }
 
+let-env SSH_AUTH_SOCK = "/tmp/ssh-agent.sock"
+
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
 # - converted from a value back to a string when running external commands (to_string)
