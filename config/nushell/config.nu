@@ -221,3 +221,27 @@ def encrypt [
 def decrypt [] {
   rage --decrypt --identity ~/.ssh/id_ed25519 -
 }
+
+# Manage git (p)rojects.
+def-env p [
+  project: string # A GitHub user/project shorthand.
+  --root = ~/projects # Where to store all the repositories.
+  --user = PsychoLlama # Your GitHub username.
+  ...extra_git_args # Arguments passed on to `git clone`.
+] {
+  let resource = (
+    [$"($user)/($project)"] ++ $project
+    | parse '{user}/{repo}'
+    | last
+    | upsert user ($in.user | str downcase)
+    | upsert repo ($in.repo | str replace '\b\.git$' '')
+  )
+
+  let clone_destination = ([$root $resource.user $resource.repo] | path join)
+
+  if not ($clone_destination | path exists) {
+    git clone $"git@github.com:($resource.user)/($resource.repo)" $clone_destination $extra_git_args
+  }
+
+  cd $clone_destination
+}
