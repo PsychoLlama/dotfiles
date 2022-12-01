@@ -202,4 +202,22 @@ def s [] {
   }
 }
 
-# TODO: Port encryption toolkit and repo manager.
+# Encrypt stdin using public keys from GitHub.
+def encrypt [
+  username: string # Any GitHub username.
+] {
+  let plaintext = $in
+  let keys = (
+    | fetch $"https://github.com/($username).keys"
+    | lines
+    | each { [ "--recipient" $in ] }
+    | flatten
+  )
+
+  $plaintext | rage --armor $keys -
+}
+
+# Decrypt stdin using the SSH private key.
+def decrypt [] {
+  rage --decrypt --identity ~/.ssh/id_ed25519 -
+}
