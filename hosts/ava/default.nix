@@ -28,9 +28,9 @@
     hostId = "daf96cd8";
   };
 
-  nix = {
-    trustedUsers = [ config.dotfiles.user.name ];
-    settings.builders-use-substitutes = true;
+  nix.settings = {
+    trusted-users = [ config.dotfiles.user.name ];
+    builders-use-substitutes = true;
   };
 
   services.openssh.hostKeys = [{
