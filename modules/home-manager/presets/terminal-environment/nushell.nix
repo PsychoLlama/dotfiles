@@ -29,7 +29,13 @@ in {
     programs.nushell = {
       enable = true;
       package = pkgs.unstable.nushell;
-      shellAliases = config.home.shellAliases;
+
+      # Use the default aliases, except for `ls` overrides. Nushell has
+      # a great `ls` replacement.
+      shellAliases = filterAttrs (key: value: key != "l" && key != "ls")
+        config.home.shellAliases // {
+          l = "ls";
+        };
 
       initExtra = ''
         source ${../../../../config/nushell/config.nu}
