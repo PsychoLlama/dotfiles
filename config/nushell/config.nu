@@ -202,6 +202,26 @@ def s [] {
   }
 }
 
+# Drop into a shell providing nix packages.
+def , [
+  package_name: string # Anything from nixpkgs.
+  ...extra_packages: string # Optional extras.
+] {
+  # Default bare identifiers to the nixpkgs flake.
+  def canonicalize [ident: string] {
+    if ($ident | str contains '#') {
+      $ident
+    } else {
+      $"nixpkgs#($ident)"
+    }
+  }
+
+  nix shell (
+    | [$package_name] ++ $extra_packages
+    | each { |ident| canonicalize $ident }
+  )
+}
+
 # Encrypt stdin using public keys from GitHub.
 def encrypt [
   username: string # Any GitHub username.
