@@ -71,6 +71,8 @@
   };
 
   services = {
+    automatic-timezoned.enable = true;
+
     zfs = {
       trim.enable = true;
       autoScrub.enable = true;
