@@ -1,10 +1,15 @@
 let-env config = {
   edit_mode: vi
-  enable_external_completion: true
-  partial_completions: false
-  quick_completions: true
   shell_integration: true
   show_banner: false
+  completions: {
+    case_sensitive: false
+    partial: false
+    quick: true
+    external: {
+      enable: true
+    }
+  }
 }
 
 
