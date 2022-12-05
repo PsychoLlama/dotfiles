@@ -87,6 +87,7 @@ in {
         coc-json
         coc-prettier
         coc-tsserver
+        copilot-vim
         fzf-vim
         markdown-preview-nvim
         onedarkpro-nvim
@@ -116,7 +117,7 @@ in {
 
       extraPackages = with pkgs.unstable; [
         nixfmt
-        nodejs
+        nodejs-16_x
         rustup
         shellcheck
         terraform

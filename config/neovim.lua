@@ -74,6 +74,10 @@ vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
 vim.api.nvim_set_keymap('n', '<leader>f', ':Files!<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>s', ':Rg!<cr>', { noremap = true })
 
+-- Copilot.vim
+vim.g.copilot_no_tab_map = true
+vim.api.nvim_set_keymap('i', '<c-j>', 'copilot#Accept("\\<CR>")', { noremap = true, expr = true, silent = true })
+
 -- coc.nvim
 vim.keymap.set('n', 'gd', '<Plug>(coc-definition)')
 vim.keymap.set('n', 'gy', '<Plug>(coc-type-definition)')
