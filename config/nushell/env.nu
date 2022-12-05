@@ -6,6 +6,9 @@ let-env PROMPT_INDICATOR_VI_INSERT = { "" }
 let-env PROMPT_INDICATOR_VI_NORMAL = { "" }
 let-env PROMPT_MULTILINE_INDICATOR = { "" }
 
+# TODO: Pull these from `home.sessionVariables`.
+let-env EDITOR = "nvim"
+let-env MANPAGER = "nvim -c 'Man!'"
 let-env SSH_AUTH_SOCK = "/tmp/ssh-agent.sock"
 
 # Specifies how environment variables are:
