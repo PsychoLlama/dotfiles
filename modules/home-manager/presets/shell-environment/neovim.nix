@@ -72,6 +72,7 @@ in {
           };
 
           "eslint.autoFixOnSave" = true;
+          "tsserver.useLocalTsdk" = true;
           "coc.preferences.formatOnSaveFiletypes" = [ "*" ];
         };
       };
