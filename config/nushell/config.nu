@@ -208,7 +208,7 @@ def s [] {
 }
 
 # Drop into a shell providing nix packages.
-def , [
+def "," [
   package_name: string # Anything from nixpkgs.
   ...extra_packages: string # Optional extras.
 ] {
@@ -225,6 +225,11 @@ def , [
     | [$package_name] ++ $extra_packages
     | each { |ident| canonicalize $ident }
   )
+}
+
+# Drop into a nix development shell.
+def ">>" [] {
+  nix develop --command $env.SHELL
 }
 
 # Encrypt stdin using public keys from GitHub.
