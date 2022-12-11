@@ -127,7 +127,9 @@ in {
         rustup
         shellcheck
         terraform
+        unzip # For source-diving Plug'n'Play dependencies.
         vim-vint
+        yarn
       ];
 
       extraConfig = ''

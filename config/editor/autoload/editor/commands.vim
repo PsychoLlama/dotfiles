@@ -18,7 +18,8 @@ func! editor#commands#node() abort
   wincmd J
   resize 10
   execute 'lcd ' . fnameescape(l:project)
-  call termopen('node')
+  setlocal nonumber signcolumn=no
+  call termopen('yarn node')
   normal! A
 endfunc
 
