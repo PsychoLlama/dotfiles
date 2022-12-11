@@ -42,10 +42,6 @@ in {
         source ${starship-prompt-setup}
         source ${zoxide-command-setup}
       '';
-
-      # By default, this symlinks to the wrong location with the wrong format.
-      # Use nulang config files instead.
-      settings = { };
     };
 
     # TODO: Make this all configurable from outside the preset.
@@ -53,7 +49,8 @@ in {
       configFile."nushell/env.nu" = nushell-env-file;
     };
 
-    # Why they gotta make it so hard.
+    # By default, HM symlinks config files to the wrong location on Darwin.
+    # I do it manually to make it portable.
     home.file = optionalAttrs (pkgs.stdenv.isDarwin) {
       "Library/Application Support/nushell/env.nu" = nushell-env-file;
     };
