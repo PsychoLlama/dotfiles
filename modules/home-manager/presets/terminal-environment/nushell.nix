@@ -34,7 +34,7 @@ in {
       # a great `ls` replacement.
       shellAliases = filterAttrs (key: value: key != "l" && key != "ls")
         config.home.shellAliases // {
-          l = "ls";
+          l = "ls --all";
         };
 
       initExtra = ''
