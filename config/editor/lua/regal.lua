@@ -13,7 +13,7 @@ return {
 
   create_note = function()
     local function normalize_title(title)
-      return vim.fn.tolower(vim.fn.tr(title, ' ', '-'))
+      return vim.fn.tolower(vim.fn.tr(title, ' :', '--'))
     end
 
     vim.ui.input({ prompt = 'Title: ' }, function(title)
