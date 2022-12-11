@@ -22,7 +22,7 @@ in {
     alacritty.enable = mkDefault true;
     nushell.enable = mkDefault true;
     shell-environment.enable = mkDefault true;
-    ssh-agent.enable = mkDefault pkgs.stdenv.isLinux;
+    ssh-agent.enable = mkDefault true;
     starship.enable = mkDefault true;
     tmux.enable = mkDefault true;
     zoxide.enable = mkDefault true;

@@ -4,7 +4,7 @@ with lib;
 
 let
   cfg = config.presets.ssh-agent;
-  sockPath = config.services.ssh-agent.socket;
+  socketName = config.services.ssh-agent.socket;
 
 in {
   options.presets.ssh-agent.enable = mkEnableOption "ssh-agent";
@@ -12,9 +12,13 @@ in {
   config = mkIf cfg.enable {
     services.ssh-agent.enable = true;
 
-    home.sessionVariables.SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR}/${sockPath}";
-    programs.nushell.initExtra = ''
-      let-env SSH_AUTH_SOCK = $"($env.XDG_RUNTIME_DIR)/${sockPath}"
+    home.sessionVariables.SSH_AUTH_SOCK =
+      "\${XDG_RUNTIME_DIR-/tmp}/${socketName}";
+
+    programs.nushell.initExtra = if pkgs.stdenv.isDarwin then ''
+      let-env SSH_AUTH_SOCK = "/tmp/${socketName}"
+    '' else ''
+      let-env SSH_AUTH_SOCK = $"($env.XDG_RUNTIME_DIR)/${socketName}"
     '';
   };
 }
