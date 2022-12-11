@@ -135,6 +135,13 @@ module completions {
     --verbose(-v)                                   # be more verbose
     --help                                          # Display this help message
   ]
+
+  # Show, delete, and create branches
+  export extern "git branch" [
+    --delete(-d): string@"nu-complete git branches" # delete a branch
+    -D: string@"nu-complete git branches"           # forcefully delete a branch
+    --help                                          # display this help message
+  ]
 }
 
 # Get just the extern definitions without the custom completion commands
