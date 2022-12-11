@@ -71,9 +71,14 @@ in {
             };
           };
 
+          "coc.preferences.formatOnSave" = true;
+          "codeLens.enable" = true;
+          "diagnostic.virtualText" = true;
+          "diagnostic.virtualTextCurrentLineOnly" = false;
           "eslint.autoFixOnSave" = true;
+          "outline.autoPreview" = true;
+          "suggest.noselect" = true;
           "tsserver.useLocalTsdk" = true;
-          "coc.preferences.formatOnSaveFiletypes" = [ "*" ];
         };
       };
 

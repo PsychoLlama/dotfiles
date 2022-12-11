@@ -172,9 +172,6 @@ onedark.setup({
     CursorLineNr = {
       fg = colors.blue,
     },
-    NormalFloat = {
-      bg = colors.menu,
-    },
     VertSplit = {
       fg = colors.menu,
     },
