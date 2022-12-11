@@ -1,1 +1,1 @@
-{ imports = [ ./presets ./programs ]; }
+{ imports = [ ./presets ./programs ./services ]; }

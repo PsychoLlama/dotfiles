@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -8,6 +8,7 @@ in {
   imports = [
     ./alacritty.nix
     ./nushell.nix
+    ./ssh-agent.nix
     ./starship.nix
     ./tmux.nix
     ./zoxide.nix
@@ -21,6 +22,7 @@ in {
     alacritty.enable = mkDefault true;
     nushell.enable = mkDefault true;
     shell-environment.enable = mkDefault true;
+    ssh-agent.enable = mkDefault pkgs.stdenv.isLinux;
     starship.enable = mkDefault true;
     tmux.enable = mkDefault true;
     zoxide.enable = mkDefault true;

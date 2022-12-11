@@ -35,17 +35,6 @@ for i in {1..5}; do
 done
 
 
-##################
-# Key Management #
-##################
-
-export SSH_AUTH_SOCK=/tmp/ssh-agent.sock
-
-if [[ ! -S "$SSH_AUTH_SOCK" ]]; then
-  eval "$(ssh-agent -a "$SSH_AUTH_SOCK" > /dev/null)"
-fi
-
-
 #########################
 # Convenience Functions #
 #########################
