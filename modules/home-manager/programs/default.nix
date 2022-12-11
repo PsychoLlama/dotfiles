@@ -16,6 +16,7 @@ let
 
 in {
   imports = [
+    ./glow.nix
     ./nushell
     ./w3m.nix
 
@@ -27,7 +28,6 @@ in {
     (makeProgramModule "du-dust")
     (makeProgramModule "duf")
     (makeProgramModule "fd")
-    (makeProgramModule "glow")
     (makeProgramModule "grim")
     (makeProgramModule "hexyl")
     (makeProgramModule "ipfs")

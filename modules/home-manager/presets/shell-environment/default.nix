@@ -8,16 +8,17 @@ in {
   imports = [
     ./bat.nix
     ./bottom.nix
+    ./dive.nix
     ./exa.nix
     ./fd.nix
     ./fzf.nix
     ./git.nix
+    ./glow.nix
     ./jq.nix
     ./miniserve.nix
     ./ncspot.nix
     ./neovim.nix
     ./sshfs.nix
-    ./dive.nix
     ./w3m.nix
   ];
 
@@ -35,6 +36,7 @@ in {
       fd.enable = mkDefault true;
       fzf.enable = mkDefault true;
       git.enable = mkDefault true;
+      glow.enable = mkDefault true;
       jq.enable = mkDefault true;
       miniserve.enable = mkDefault true;
       ncspot.enable = mkDefault true;
@@ -47,7 +49,6 @@ in {
       binutils.enable = mkDefault true;
       du-dust.enable = mkDefault true;
       duf.enable = mkDefault true;
-      glow.enable = mkDefault true;
       hexyl.enable = mkDefault true;
       ipfs.enable = mkDefault true;
       litecli.enable = mkDefault true;
