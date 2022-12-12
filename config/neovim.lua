@@ -67,7 +67,7 @@ vim.api.nvim_set_keymap('n', '<space>', '<nop>', {})
 vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 
 -- Quick navigation
-vim.api.nvim_set_keymap('n', '<leader>r', ':call editor#mappings#explore_current_dir()<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>[', ':call editor#mappings#explore_current_dir()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>p', ':call editor#open_project_root()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
 vim.api.nvim_set_keymap('n', '<leader>f', ':Files!<cr>', { noremap = true })
@@ -86,6 +86,8 @@ vim.keymap.set('i', '<cr>', [[coc#pum#visible() ? coc#pum#confirm() : "\<c-g>u\<
   expr = true,
   noremap = true,
 })
+
+vim.keymap.set('n', '<leader>rn', '<Plug>(coc-rename)')
 
 vim.keymap.set({ 'x', 'o' }, 'if', '<Plug>(coc-funcobj-i)')
 vim.keymap.set({ 'x', 'o' }, 'af', '<Plug>(coc-funcobj-a)')
