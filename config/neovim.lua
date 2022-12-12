@@ -82,6 +82,10 @@ vim.keymap.set('n', 'gd', '<Plug>(coc-definition)')
 vim.keymap.set('n', 'gy', '<Plug>(coc-type-definition)')
 vim.keymap.set('n', 'gi', '<Plug>(coc-implementation)')
 vim.keymap.set('n', 'gr', '<Plug>(coc-references)')
+vim.keymap.set('i', '<cr>', [[coc#pum#visible() ? coc#pum#confirm() : "\<c-g>u\<cr>\<c-r>=coc#on_enter()\<cr>"]], {
+  expr = true,
+  noremap = true,
+})
 
 vim.keymap.set({ 'x', 'o' }, 'if', '<Plug>(coc-funcobj-i)')
 vim.keymap.set({ 'x', 'o' }, 'af', '<Plug>(coc-funcobj-a)')

@@ -88,9 +88,9 @@ in {
       };
 
       plugins = with pkgs.vimPlugins; [
-        auto-pairs
         coc-eslint
         coc-json
+        coc-pairs
         coc-prettier
         coc-tsserver
         copilot-vim
