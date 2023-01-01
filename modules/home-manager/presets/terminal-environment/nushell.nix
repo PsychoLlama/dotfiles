@@ -8,12 +8,12 @@ let
     buildInputs = [ pkgs.unstable.starship ];
   } ''
     HOME="$(mktemp --directory)" starship init nu > "$out"
-    sed 's/term size -c/term size/' --in-place "$out"
   '';
 
   zoxide-command-setup =
     pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
       zoxide init nushell > "$out"
+      sed -e 's/&&/and/g' -e 's/||/or/g' --in-place "$out"
     '';
 
   nushell-env-file = {
