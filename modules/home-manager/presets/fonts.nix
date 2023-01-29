@@ -11,7 +11,13 @@ in {
     fonts.fontconfig.enable = true;
 
     home.packages = with pkgs.unstable; [
-      fira-code
+      (fira-code.overrideAttrs (attrs: {
+        # The default `truetype` name conflicts with nerdfonts.
+        postInstall = ''
+          mv $out/share/fonts/{truetype,fira-code}
+        '';
+      }))
+
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
 
