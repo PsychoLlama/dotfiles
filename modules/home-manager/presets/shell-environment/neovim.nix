@@ -72,7 +72,6 @@ in {
           };
 
           "coc.preferences.formatOnSave" = true;
-          "codeLens.enable" = true;
           "diagnostic.virtualText" = true;
           "diagnostic.virtualTextCurrentLineOnly" = false;
           "eslint.autoFixOnSave" = true;
