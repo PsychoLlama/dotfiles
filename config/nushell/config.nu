@@ -262,7 +262,7 @@ def decrypt [] {
 # Manage git (p)rojects.
 def-env p [
   project: string # A GitHub user/project shorthand.
-  --root = ~/projects # Where to store all the repositories.
+  --root = $"($env.HOME)/projects" # Where to store all the repositories.
   --user = PsychoLlama # Your GitHub username.
   ...extra_git_args # Arguments passed on to `git clone`.
 ] {
