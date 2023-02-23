@@ -8,7 +8,7 @@ endfunc
 " Find the root of the current repo directory.
 " Optionally accepts a file path.
 " Returns v:null if it isn't in a git repo.
-func! s:find_repo_root(...) abort
+func! git#repo#find_root(...) abort
   let l:directory = a:0 ? a:000[0] : expand('%:p')
 
   " Resolve the parent directory if given a filename.
@@ -24,7 +24,7 @@ func! git#repo#is_file_tracked(file, ...) abort
   let l:config = get(a:, 1, {})
   let l:revision = get(l:config, 'revision', v:null)
 
-  let l:git_repo = s:find_repo_root(a:file)
+  let l:git_repo = git#repo#find_root(a:file)
   let l:repo_relative = substitute(a:file, l:git_repo, '', '')
   let l:rel_filename = simplify('./' . l:repo_relative)
 
