@@ -31,6 +31,7 @@ vim.o.pumheight = 10
 vim.o.autoread = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
+vim.o.mouse = ''
 
 -- Display settings
 vim.o.incsearch = true
