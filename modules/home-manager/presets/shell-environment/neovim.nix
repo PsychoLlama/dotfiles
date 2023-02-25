@@ -94,6 +94,7 @@ in {
         coc-tsserver
         copilot-vim
         fzf-vim
+        lualine-nvim
         markdown-preview-nvim
         onedarkpro-nvim
         splitjoin-vim

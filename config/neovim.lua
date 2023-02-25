@@ -168,6 +168,9 @@ local onedark = require('onedarkpro')
 local colors = require('onedarkpro.helpers').get_colors('onedark')
 
 onedark.setup({
+  options = {
+    transparency = true,
+  },
   colors = {
     onedark = {
       bg = "#1e1e1e",
@@ -188,15 +191,46 @@ onedark.setup({
   styles = {
     comments = "italic",
   },
-  options = {
-    transparency = true,
-  },
 })
 
 onedark.load()
 
 -- Clear the cursor line. I only use it for the cursor line number.
 vim.api.nvim_set_hl(0, 'CursorLine', {})
+
+-- lualine.nvim
+local lualine_theme = require('lualine.themes.onedark')
+
+lualine_theme.normal.c.bg = nil
+lualine_theme.inactive.c.bg = nil
+
+require('lualine').setup({
+  options = {
+    theme = lualine_theme,
+  },
+  sections = {
+    lualine_a = { },
+    lualine_b = { 'branch' },
+    lualine_c = {
+      'filename',
+      {
+        'diagnostics',
+        sources = { 'coc' },
+      },
+    },
+    lualine_x = { 'filetype' },
+    lualine_y = { 'progress' },
+    lualine_z = { 'location' },
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = { 'filename' },
+    lualine_x = { 'location' },
+    lualine_y = {},
+    lualine_z = {},
+  },
+})
 
 -- Zettelkaesten
 require('regal').setup({
