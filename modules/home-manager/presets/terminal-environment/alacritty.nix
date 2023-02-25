@@ -25,6 +25,8 @@ in {
           # Open fullscreen by default.
           startup_mode = "Fullscreen";
 
+          opacity = 0.85;
+
           # Default window size in columns/lines.
           dimensions = {
             columns = 80;

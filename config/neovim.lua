@@ -189,9 +189,15 @@ onedark.setup({
   styles = {
     comments = "italic",
   },
+  options = {
+    transparency = true,
+  },
 })
 
 onedark.load()
+
+-- Clear the cursor line. I only use it for the cursor line number.
+vim.api.nvim_set_hl(0, 'CursorLine', {})
 
 -- Zettelkaesten
 require('regal').setup({
