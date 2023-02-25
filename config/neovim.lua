@@ -28,6 +28,8 @@ vim.o.wildmode = 'longest,list,full'
 vim.o.inccommand = 'nosplit'
 vim.o.wrapscan = false
 vim.o.pumheight = 10
+vim.o.pumblend = 30
+vim.o.winblend = 30
 vim.o.autoread = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -181,11 +183,14 @@ onedark.setup({
     CursorLineNr = {
       fg = colors.blue,
     },
-    VertSplit = {
-      fg = colors.menu,
+    GitGutterAdd = {
+      fg = colors.green,
     },
-    StatusLineNC = {
-      fg = colors.gray,
+    GitGutterChange = {
+      fg = colors.yellow,
+    },
+    GitGutterDelete = {
+      fg = colors.red,
     },
   },
   styles = {
