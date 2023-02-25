@@ -18,7 +18,11 @@ in {
       extraConfig = builtins.readFile ../../../config/sway.conf;
 
       input = {
-        "type:touchpad".natural_scroll = "enabled";
+        "type:touchpad" = {
+          natural_scroll = "enabled";
+          tap = "disabled";
+        };
+
         "type:keyboard" = {
           xkb_options = "caps:escape";
           repeat_delay = "200";
