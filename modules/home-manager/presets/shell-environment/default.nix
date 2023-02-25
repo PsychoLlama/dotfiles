@@ -8,6 +8,7 @@ in {
   imports = [
     ./bat.nix
     ./bottom.nix
+    ./direnv.nix
     ./dive.nix
     ./exa.nix
     ./fd.nix
@@ -31,6 +32,7 @@ in {
 
       bat.enable = mkDefault true;
       bottom.enable = mkDefault true;
+      direnv.enable = mkDefault true;
       dive.enable = mkDefault true;
       exa.enable = mkDefault true;
       fd.enable = mkDefault true;
