@@ -1,67 +1,60 @@
 * {
-  border: none;
-  font-family: Helvetica, sans-serif;
-  font-size: 14px;
-  min-height: 0;
+  font-size: 15px;
 }
 
 window {
-  background-color: #1e1e1e;
+  background-color: rgba(30, 30, 30, 0.9);
   color: #abb2bf;
-  transition-property: background-color;
-  transition-duration: 0.5s;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid #1e1e1e; /* OneDark black */
 }
 
 #workspaces button {
-  padding: 0 8px;
-  background-color: rgba(255, 255, 255, 0.2);
+  all: unset;
+  padding: 4px 12px;
+  padding-top: 8px;
   border-radius: 0;
-  color: #abb2bf;
-}
 
-#workspaces button:hover {
-  background-color: #98c379;
+  border-width: 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  transition: background-color 200ms, border-bottom-color 200ms;
 }
 
 #workspaces button.focused {
-  background-color: #abb2bf;
-  color: #1e1e1e;
+  border-bottom-color: rgba(255, 255, 255, 0.8);
 }
 
-.modules-center widget label {
-  font-size: 120%;
+#workspaces button:hover {
+  border-bottom-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .modules-right widget label {
-  margin: 4px 4px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  padding: 4px 8px;
+  all: unset;
+  margin: 0 4px;
+  padding: 0px 8px;
 }
 
-#mode {
-  background-color: #e06c75;
-  color: #1e1e1e;
-  padding: 4px 8px;
-  font-size: 120%;
+#pulseaudio.muted {
+  color: #e06c75; /* red */
+}
+
+#network.disconnected,
+#network.disabled {
+  color: #e06c75; /* red */
+}
+
+.modules-right widget:last-child label {
+  margin-right: 0;
 }
 
 #battery.warning {
-  background-color: #e5c07b; /* yellow */
-  color: #1e1e1e;
+  color: #e5c07b; /* yellow */
 }
 
 #battery.critical {
-  background-color: #e06c75; /* red */
-  color: #1e1e1e;
-}
-
-#idle_inhibitor {
-  font-size: 120%;
+  color: #e06c75; /* red */
 }
 
 #idle_inhibitor.activated {
-  background-color: #61afef; /* green */
-  color: #1e1e1e;
+  color: #e06c75; /* red */
 }

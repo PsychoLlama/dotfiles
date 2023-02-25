@@ -14,11 +14,11 @@ in {
 
     settings.main-bar = {
       layer = "top";
-      modules-left = [ "sway/workspaces" "sway/mode" ];
+      modules-left = [ "sway/workspaces" ];
       modules-center = [ "sway/window" ];
       modules-right = [
-        "pulseaudio"
         "network"
+        "pulseaudio"
         "backlight"
         "battery"
         "clock"
@@ -27,9 +27,11 @@ in {
 
       idle_inhibitor = {
         format = "{icon}";
+        tooltip-format-activated = "Automatic lock enabled";
+        tooltip-format-deactivated = "Automatic lock disabled";
         format-icons = {
-          activated = "";
-          deactivated = "";
+          activated = "";
+          deactivated = "";
         };
       };
 
@@ -43,7 +45,7 @@ in {
 
       backlight = {
         format = "{percent}% {icon}";
-        format-icons = [ "" "" "" ];
+        format-icons = [ "" ];
       };
 
       battery = {
@@ -62,9 +64,9 @@ in {
       network = {
         format-wifi = "{essid}";
         format-ethernet = "{ipaddr}/{cidr}";
+        format-linked = "{ifname} (No IP)";
+        format-disconnected = "Offline";
         tooltip-format = "{ifname}: {ipaddr}/{cidr}";
-        format-linked = "{ifname} (No IP) ";
-        format-disconnected = "";
       };
 
       pulseaudio = {
