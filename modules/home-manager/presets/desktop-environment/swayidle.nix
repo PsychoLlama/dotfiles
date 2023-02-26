@@ -4,7 +4,7 @@ with lib;
 
 let
   cfg = config.presets.swayidle;
-  swaylock = "${pkgs.swaylock}/bin/swaylock -Ffc 000000";
+  swaylock = "${pkgs.swaylock}/bin/swaylock";
   swaymsg = "${pkgs.sway}/bin/swaymsg";
 
 in {

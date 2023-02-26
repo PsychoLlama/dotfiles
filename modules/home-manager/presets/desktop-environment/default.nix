@@ -13,6 +13,7 @@ in {
     ./sway.nix
     ./swaybg.nix
     ./swayidle.nix
+    ./swaylock.nix
     ./waybar.nix
     ./zathura.nix
   ];
@@ -29,6 +30,7 @@ in {
       sway.enable = mkDefault true;
       swaybg.enable = mkDefault true;
       swayidle.enable = mkDefault true;
+      swaylock.enable = mkDefault true;
       waybar.enable = mkDefault true;
       zathura.enable = mkDefault true;
     };
