@@ -292,3 +292,9 @@ def-env p [
 
   cd $clone_destination
 }
+
+# Change the desktop wallpaper.
+def 'wallpaper set' [image: path] {
+  ln -sf $image ~/attic/images/wallpapers/current
+  systemctl --user restart swaybg.service
+}
