@@ -1,1 +1,1 @@
-{ imports = [ ./ssh-agent.nix ]; }
+{ imports = [ ./ssh-agent.nix ./swaybg.nix ]; }

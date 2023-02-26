@@ -11,6 +11,7 @@ in {
     ./gammastep.nix
     ./rofi.nix
     ./sway.nix
+    ./swaybg.nix
     ./swayidle.nix
     ./waybar.nix
     ./zathura.nix
@@ -26,6 +27,7 @@ in {
       gammastep.enable = mkDefault true;
       rofi.enable = mkDefault true;
       sway.enable = mkDefault true;
+      swaybg.enable = mkDefault true;
       swayidle.enable = mkDefault true;
       waybar.enable = mkDefault true;
       zathura.enable = mkDefault true;
