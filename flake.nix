@@ -61,11 +61,11 @@
       };
 
       nixosConfigurations = {
-        ava = lib.defineHost "x86_64-linux" ./hosts/ava;
+        ava = lib.defineHost.nixosSystem "x86_64-linux" ./hosts/ava;
       };
 
       darwinConfigurations = {
-        marvin = lib.defineHost "x86_64-darwin" ./hosts/marvin;
+        marvin = lib.defineHost.darwinSystem "x86_64-darwin" ./hosts/marvin;
       };
 
       defaultTemplate = {

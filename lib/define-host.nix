@@ -1,63 +1,93 @@
-inputs: system: path:
+{ nixpkgs, self, darwin, home-manager, ... }@inputs:
 
-# Injects dotfiles, flake inputs, and baseline NixOS configuration.
+# Wraps the system builders for NixOS, Darwin, and Home Manager to inject the
+# dotfiles framework and provide base configuration.
 
 let
-  darwinModules = [
-    inputs.home-manager.darwinModules.home-manager
-    inputs.self.nixosModules.darwin
-  ];
+  makeSpecialArgs = system: { inherit system inputs; };
 
-  nixosModules = [
-    inputs.home-manager.nixosModules.home-manager
-    inputs.self.nixosModules.nixos
-  ];
-
-  systems = {
-    "x86_64-darwin" = inputs.darwin.lib.darwinSystem;
-    "aarch64-darwin" = inputs.darwin.lib.darwinSystem;
+  # Assign the hostname based on the config's directory name.
+  #
+  # Example:
+  #  ./hosts/host_abc123/default.nix -> host_abc123
+  makeHostnameConfig = configPath: {
+    networking.hostName = nixpkgs.lib.mkDefault (baseNameOf configPath);
   };
 
-  platform-specific-dotfiles = {
-    "aarch64-darwin" = darwinModules;
-    "x86_64-darwin" = darwinModules;
-  }.${system} or nixosModules;
+  # An opinionated module enabling Nix flakes.
+  nix-flakes = { config, pkgs, inputs, ... }: {
+    nix = rec {
+      package = pkgs.nixUnstable;
+      settings.experimental-features = "nix-command flakes";
+      registry.nixpkgs.flake = inputs.${config.dotfiles.packageSet};
+      nixPath = [ "nixpkgs=${registry.nixpkgs.flake}" ];
+    };
+  };
 
-  mkSystem = systems.${system} or inputs.nixpkgs.lib.nixosSystem;
+  # Set reasonable defaults for home-manager as a submodule.
+  hm-submodule = { config, lib, pkgs, ... }: {
+    home-manager = {
+      useGlobalPkgs = lib.mkDefault true;
+      useUserPackages = lib.mkDefault true;
 
-in mkSystem {
-  inherit system;
+      # Add custom dotfiles modules to the HM framework.
+      users.${config.dotfiles.user.name}.imports =
+        [ inputs.self.nixosModules.home-manager ];
+    };
+  };
 
-  # Add stable and unstable package channels.
-  specialArgs = { inherit system inputs; };
+in {
+  nixosSystem = system: configPath:
+    nixpkgs.lib.nixosSystem {
+      inherit system;
 
-  modules = [
-    ({ config, lib, pkgs, ... }: {
-      imports = platform-specific-dotfiles;
+      specialArgs = makeSpecialArgs system;
 
-      # Hostnames are set by the directory's name.
-      networking.hostName = lib.mkDefault (baseNameOf path);
+      modules = [
+        inputs.home-manager.nixosModules.home-manager
+        inputs.self.nixosModules.nixos
 
-      # Set reasonable defaults for home-manager.
-      home-manager = {
-        useGlobalPkgs = lib.mkDefault true;
-        useUserPackages = lib.mkDefault true;
+        nix-flakes
+        hm-submodule
+        (makeHostnameConfig configPath)
 
-        # Add custom dotfiles modules to the HM framework.
-        users.${config.dotfiles.user.name}.imports =
-          [ inputs.self.nixosModules.home-manager ];
-      };
+        # Host config.
+        configPath
+      ];
+    };
 
-      # This can be removed once nix flakes ship standard.
-      nix = rec {
-        package = pkgs.nixUnstable;
-        settings.experimental-features = "nix-command flakes";
-        registry.nixpkgs.flake = inputs.${config.dotfiles.packageSet};
-        nixPath = [ "nixpkgs=${registry.nixpkgs.flake}" ];
-      };
-    })
+  darwinSystem = system: configPath:
+    darwin.lib.darwinSystem {
+      inherit system;
 
-    # Do machine-specific configuration.
-    path
-  ];
+      specialArgs = makeSpecialArgs system;
+
+      modules = [
+        inputs.home-manager.darwinModules.home-manager
+        inputs.self.nixosModules.darwin
+
+        nix-flakes
+        hm-submodule
+        (makeHostnameConfig configPath)
+
+        # Host config.
+        configPath
+      ];
+    };
+
+  homeManagerConfiguration = system: configPath:
+    home-manager.lib.homeManagerConfiguration {
+      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      inherit system;
+
+      specialArgs = makeSpecialArgs system;
+
+      modules = [
+        inputs.self.nixosModules.home-manager
+        nix-flakes
+
+        # Host config.
+        configPath
+      ];
+    };
 }
