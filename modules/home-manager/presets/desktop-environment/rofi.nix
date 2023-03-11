@@ -2,7 +2,9 @@
 
 with lib;
 
-let cfg = config.presets.rofi;
+let
+  inherit (config.theme) palette;
+  cfg = config.presets.rofi;
 
 in {
   options.presets.rofi.enable = mkEnableOption "Use the rofi launcher";
@@ -17,26 +19,15 @@ in {
       # Rofi theme. See `rofi-theme(5)` for details.
       # Adapted from taylor1791/dotfiles.
 
-      # Global properties. Every element inherits these properties.
       "*" = {
-        # OneDarkPro theme.
-        black = mkLiteral "#1E1E1E";
-        white = mkLiteral "#ABB2BF";
-        red = mkLiteral "#E06C75";
-        green = mkLiteral "#98C379";
-        yellow = mkLiteral "#E5C07B";
-        blue = mkLiteral "#61AFEF";
-        magenta = mkLiteral "#C678DD";
-        cyan = mkLiteral "#56B6C2";
+        # TODO: Derive these from the theme.
         gutter-gray = mkLiteral "#5C6370";
         comment-gray = mkLiteral "#7D828D";
-
-        # Derived-colors
         white10 = mkLiteral "#ABB2BF0A"; # @white 10/255 opaque
 
-        background-color = mkLiteral "@black";
+        background-color = mkLiteral palette.normal.black;
         font = "Fira Code 16";
-        text-color = mkLiteral "@white";
+        text-color = mkLiteral palette.normal.white;
       };
 
       window = {
@@ -53,8 +44,8 @@ in {
       # To test an error message, use the following command:
       # $ rofi -e "Hello World"
       error-message = {
-        background-color = mkLiteral "@magenta";
-        text-color = mkLiteral "@black";
+        background-color = mkLiteral palette.normal.magenta;
+        text-color = mkLiteral palette.normal.black;
         padding = mkLiteral "1em";
       };
 
@@ -70,7 +61,7 @@ in {
       # It is hard not to test this with any rofi command. Example:
       # $ rofi -show drun
       listview = {
-        background-color = mkLiteral "@black";
+        background-color = mkLiteral palette.normal.black;
         scrollbar = true;
       };
 
@@ -93,25 +84,27 @@ in {
       # $ 'a:b:c:d' | rofi -sep ':' -dmenu -a 2
       # $ 'a:b:c:d' | rofi -sep ':' -dmenu -a 3
       "element.normal.active, element.alternate.active" = {
-        text-color = mkLiteral "@blue";
+        text-color = mkLiteral palette.normal.blue;
       };
 
       # To test active states, run this command:
       # $ 'a:b:c:d' | rofi -sep ':' -dmenu -u 2-3
       "element.normal.urgent, element.alternate.urgent" = {
-        text-color = mkLiteral "@red";
+        text-color = mkLiteral palette.normal.red;
       };
 
       # To test the selected states, run this command:
       # $ echo 'a,b,c,d' | rofi -sep , -dmenu -a 2 -u 3
       "element.selected.normal, element.selected.active, element.selected.urgent" =
         {
-          text-color = mkLiteral "@black";
+          text-color = mkLiteral palette.normal.black;
         };
 
-      "element.selected.normal".background-color = mkLiteral "@white";
-      "element.selected.active".background-color = mkLiteral "@blue";
-      "element.selected.urgent".background-color = mkLiteral "@red";
+      "element.selected.normal".background-color =
+        mkLiteral palette.normal.white;
+      "element.selected.active".background-color =
+        mkLiteral palette.normal.blue;
+      "element.selected.urgent".background-color = mkLiteral palette.normal.red;
 
       # I don't use the mode switcher; it is left unstyled.
     };
