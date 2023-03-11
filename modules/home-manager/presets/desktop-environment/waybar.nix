@@ -2,7 +2,24 @@
 
 with lib;
 
-let cfg = config.presets.waybar;
+let
+  inherit (config.theme) palette;
+  cfg = config.presets.waybar;
+
+  # Convert the color palette to a flat list of colors.
+  # { bright-red = "<hex>"; normal-red = "<hex>"; ... }
+  colors = let
+    inherit (mapAttrs (style: colors:
+      concatMapAttrs (id: color: { ${style + "-" + id} = color; }) colors)
+      config.theme.palette)
+      bright normal;
+
+  in mergeAttrs bright normal;
+
+  # Convert the color palette to GTK CSS color definitions.
+  # "@define-color bright-red <hex>;"
+  gtk-css-color-defs = concatStringsSep "\n"
+    (mapAttrsToList (name: value: "@define-color ${name} ${value};") colors);
 
 in {
   options.presets.waybar.enable = mkEnableOption "Install and configure Waybar";
@@ -10,7 +27,11 @@ in {
   config.programs.waybar = mkIf cfg.enable {
     enable = true;
     package = pkgs.unstable.waybar;
-    style = ../../../../config/waybar.css;
+    style = ''
+      ${gtk-css-color-defs}
+
+      @import url("${../../../../config/waybar.css}");
+    '';
 
     settings.main-bar = {
       layer = "top";

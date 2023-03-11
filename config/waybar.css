@@ -3,9 +3,9 @@
 }
 
 window {
-  background-color: rgba(30, 30, 30, 0.9);
+  background-color: alpha(@normal-black, 0.9);
   color: #abb2bf;
-  border-bottom: 2px solid #1e1e1e; /* OneDark black */
+  border-bottom: 2px solid @normal-black;
 }
 
 #workspaces button {
@@ -15,17 +15,17 @@ window {
   border-radius: 0;
 
   border-width: 0;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid alpha(@bright-white, 0.2);
   transition: background-color 200ms, border-bottom-color 200ms;
 }
 
 #workspaces button.focused {
-  border-bottom-color: rgba(255, 255, 255, 0.8);
+  border-bottom-color: alpha(@bright-white, 0.8);
 }
 
 #workspaces button:hover {
-  border-bottom-color: rgba(255, 255, 255, 0.8);
-  background-color: rgba(255, 255, 255, 0.2);
+  border-bottom-color: alpha(@bright-white, 0.8);
+  background-color: alpha(@bright-white, 0.2);
 }
 
 .modules-right widget label {
@@ -35,12 +35,12 @@ window {
 }
 
 #pulseaudio.muted {
-  color: #e06c75; /* red */
+  color: @normal-red;
 }
 
 #network.disconnected,
 #network.disabled {
-  color: #e06c75; /* red */
+  color: @normal-red;
 }
 
 .modules-right widget:last-child label {
@@ -48,13 +48,13 @@ window {
 }
 
 #battery.warning {
-  color: #e5c07b; /* yellow */
+  color: @normal-yellow;
 }
 
 #battery.critical {
-  color: #e06c75; /* red */
+  color: @normal-red;
 }
 
 #idle_inhibitor.activated {
-  color: #e06c75; /* red */
+  color: @normal-red;
 }
