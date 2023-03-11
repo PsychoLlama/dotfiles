@@ -2,7 +2,9 @@
 
 with lib;
 
-let cfg = config.presets.zathura;
+let
+  inherit (config.theme) palette;
+  cfg = config.presets.zathura;
 
 in {
   options.presets.zathura.enable =
@@ -29,50 +31,50 @@ in {
         # A OneDark theme for zathura
         font = "Fira Code 13";
 
-        default-bg = "#282C34";
-        default-fg = "#ABB2BF";
-        statusbar-bg = "#2C323C";
-        statusbar-fg = "#ABB2BF";
-        inputbar-bg = "#282C34";
-        inputbar-fg = "#ABB2BF";
+        default-bg = palette.normal.black;
+        default-fg = palette.normal.white;
+        statusbar-bg = palette.bright.black;
+        statusbar-fg = palette.normal.white;
+        inputbar-bg = palette.normal.black;
+        inputbar-fg = palette.normal.white;
 
         # To test, use tab completion. E.g :open <TAB>
-        completion-bg = "#2C323C";
-        completion-fg = "#ABB2BF";
-        completion-group-bg = "#2C323C";
-        completion-group-fg = "#ABB2BF";
-        completion-highlight-fg = "#2C323C";
-        completion-highlight-bg = "#61AFEF";
+        completion-bg = palette.bright.black;
+        completion-fg = palette.normal.white;
+        completion-group-bg = palette.bright.black;
+        completion-group-fg = palette.normal.white;
+        completion-highlight-fg = palette.bright.black;
+        completion-highlight-bg = palette.normal.blue;
 
-        render-loading-bg = "#2C323C";
-        render-loading-fg = "#61AFEF";
+        render-loading-bg = palette.bright.black;
+        render-loading-fg = palette.normal.blue;
 
         # To test, search for text
-        highlight-color = "#61AFEF";
-        highlight-active-color = "#C678DD";
+        highlight-color = palette.normal.blue;
+        highlight-active-color = palette.normal.magenta;
 
         # To test, open the index with <TAB>.
-        index-bg = "#282C34";
-        index-fg = "#ABB2BF";
-        index-active-bg = "#61AFEF";
-        index-active-fg = "#2C323C";
+        index-bg = palette.normal.black;
+        index-fg = palette.normal.white;
+        index-active-bg = palette.normal.blue;
+        index-active-fg = palette.bright.black;
 
         # To test, select some text with the mouse.
-        notification-bg = "#98C379";
-        notification-fg = "#282C34";
+        notification-bg = palette.normal.green;
+        notification-fg = palette.normal.black;
 
-        notification-warning-bg = "#E5C07B";
-        notification-warning-fg = "#282C34";
+        notification-warning-bg = palette.normal.yellow;
+        notification-warning-fg = palette.normal.black;
 
         # To test, set an unkown option. E.g :set chicken fried
-        notification-error-bg = "#E06C75";
-        notification-error-fg = "#282C34";
+        notification-error-bg = palette.normal.red;
+        notification-error-fg = palette.normal.black;
 
         # Recolor the pdfs to match OneDark. Impressive.
         recolor = true;
         recolor-keephue = true;
-        recolor-darkcolor = "#ABB2BF";
-        recolor-lightcolor = "#282C34";
+        recolor-darkcolor = palette.normal.white;
+        recolor-lightcolor = palette.normal.black;
       };
     };
   };
