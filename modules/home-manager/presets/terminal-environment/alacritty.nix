@@ -2,7 +2,9 @@
 
 with lib;
 
-let cfg = config.presets.alacritty;
+let
+  cfg = config.presets.alacritty;
+  inherit (config.theme) palette;
 
 in {
   options.presets.alacritty.enable =
@@ -52,34 +54,12 @@ in {
         # Start tmux automatically.
         shell.program = "${pkgs.tmux}/bin/tmux";
 
-        # Source: OneDarkPro.nvim
-        # TODO: Extract this into a color palette module.
         colors = {
+          inherit (palette) normal bright;
+
           primary = {
-            background = "#1e1e1e";
-            foreground = "#abb2bf";
-          };
-
-          normal = {
-            black = "#1e1e1e";
-            red = "#e06c75";
-            green = "#98c379";
-            yellow = "#e5c07b";
-            blue = "#61afef";
-            magenta = "#c678dd";
-            cyan = "#56b6c2";
-            white = "#abb2bf";
-          };
-
-          bright = {
-            black = "#3f3f3f";
-            red = "#e06c75";
-            green = "#98c379";
-            yellow = "#e5c07b";
-            blue = "#61afef";
-            magenta = "#c678dd";
-            cyan = "#56b6c2";
-            white = "#bfc5ce";
+            background = palette.normal.black;
+            foreground = palette.normal.white;
           };
 
           cursor = {
