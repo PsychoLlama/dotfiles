@@ -78,13 +78,24 @@ in {
   homeManagerConfiguration = system: configPath:
     home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${system};
-      inherit system;
-
-      specialArgs = makeSpecialArgs system;
+      extraSpecialArgs = makeSpecialArgs system;
 
       modules = [
         inputs.self.nixosModules.home-manager
-        nix-flakes
+
+        ({ pkgs, ... }: {
+          # TODO: Allow configuring the package set through home-manager.
+          # Currently it assumes a NixOS/Darwin layer.
+          nixpkgs.overlays = [
+            inputs.self.overlays.latest-packages
+            inputs.self.overlays.vim-plugins
+          ];
+
+          nix = rec {
+            package = pkgs.nixUnstable;
+            settings.experimental-features = "nix-command flakes";
+          };
+        })
 
         # Host config.
         configPath

@@ -68,6 +68,11 @@
         marvin = lib.defineHost.darwinSystem "x86_64-darwin" ./hosts/marvin;
       };
 
+      homeConfigurations = {
+        overlord =
+          lib.defineHost.homeManagerConfiguration "x86_64-linux" ./hosts/tars;
+      };
+
       defaultTemplate = {
         description = "Creates a host built on the dotfiles framework";
         path = ./template;
