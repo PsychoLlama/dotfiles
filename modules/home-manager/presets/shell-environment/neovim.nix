@@ -104,7 +104,6 @@ in {
         vim-endwise
         vim-fugitive
         vim-gitgutter
-        vim-graphql
         vim-plug
         vim-repeat
         vim-surround
