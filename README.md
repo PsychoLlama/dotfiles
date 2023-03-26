@@ -9,12 +9,7 @@
 >
 > This is my personal dotfiles framework. It changes a lot, and without notice. Harvest it for parts or inspiration, but maybe don't rely on it.
 
-This is a set of NixOS modules and [each machine](https://github.com/PsychoLlama/dotfiles/tree/main/hosts) is based off of it. You can use it as a flake. There's a template for convenience:
-
-```sh
-mkdir new-host && cd new-host
-nix flake init --template github:PsychoLlama/dotfiles
-```
+This is a set of NixOS modules and [each machine](https://github.com/PsychoLlama/dotfiles/tree/main/hosts) is based off of it. You can use it as a flake.
 
 You can enable everything, or pick out the bits you like by enabling them piecemeal:
 

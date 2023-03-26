@@ -73,9 +73,9 @@
           lib.defineHost.homeManagerConfiguration "x86_64-linux" ./hosts/tars;
       };
 
-      defaultTemplate = {
-        description = "Creates a host built on the dotfiles framework";
-        path = ./template;
+      templates.project = {
+        description = "Create a project development environment";
+        path = ./templates/project;
       };
     };
 }
