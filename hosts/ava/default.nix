@@ -1,7 +1,7 @@
 { config, pkgs, lib, inputs, system, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ../common/linux.nix ];
+  imports = [ ./hardware-configuration.nix ];
 
   boot = {
     loader.systemd-boot.enable = true;
@@ -181,6 +181,8 @@
     };
   };
 
+  fonts.enableDefaultFonts = true;
+  hardware.bluetooth.enable = true;
   virtualisation.docker.enable = true;
   system.stateVersion = "20.09";
 }
