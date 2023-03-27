@@ -73,9 +73,16 @@
           lib.defineHost.homeManagerConfiguration "x86_64-linux" ./hosts/tars;
       };
 
-      templates.project = {
-        description = "Create a project development environment";
-        path = ./templates/project;
+      templates = {
+        js = {
+          description = "Create a JavaScript development environment";
+          path = ./templates/js;
+        };
+
+        rust = {
+          description = "Create a Rust development environment";
+          path = ./templates/rust;
+        };
       };
     };
 }
