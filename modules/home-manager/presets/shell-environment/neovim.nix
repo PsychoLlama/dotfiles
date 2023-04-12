@@ -81,11 +81,6 @@ in {
         };
       };
 
-      package = recursiveUpdate pkgs.unstable.neovim-unwrapped {
-        # Used by home-manager, which still assumes nvim 0.7.
-        lua.pkgs.lib = pkgs.unstable.neovim-unwrapped.lua.pkgs.luaLib;
-      };
-
       plugins = with pkgs.vimPlugins; [
         coc-eslint
         coc-json
