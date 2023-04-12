@@ -213,9 +213,9 @@ def-env md [directory: path] {
 
 # Show git status.
 def s [] {
-  let repo_check = do --ignore-errors {
+  let repo_check = (do --ignore-errors {
     git rev-parse --is-inside-work-tree | complete
-  }
+  })
 
   if $repo_check.exit_code == 0 {
     git status
@@ -257,7 +257,7 @@ def encrypt [
   let keys = (
     | fetch $"https://github.com/($username).keys"
     | lines
-    | each { [ "--recipient" $in ] }
+    | each { || [ "--recipient" $in ] }
     | flatten
   )
 

@@ -16,9 +16,13 @@ let
       sed -e 's/&&/and/g' -e 's/||/or/g' --in-place "$out"
     '';
 
+  # TODO: Use the generated home-manager text instead of making my own.
   nushell-env-file = {
     executable = true;
-    source = ../../../../config/nushell/env.nu;
+    text = ''
+      source ${../../../../config/nushell/env.nu};
+      ${config.programs.nushell.extraEnv}
+    '';
   };
 
 in {

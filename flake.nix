@@ -62,6 +62,7 @@
 
       nixosConfigurations = {
         ava = lib.defineHost.nixosSystem "x86_64-linux" ./hosts/ava;
+        potato = "x86_64-linux" { networking.hostName = "potato"; };
       };
 
       darwinConfigurations = {

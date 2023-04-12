@@ -1,10 +1,10 @@
 # Nushell Environment Config File
 # The prompt indicators are environmental variables that represent
 # the state of the prompt
-let-env PROMPT_INDICATOR = { "" }
-let-env PROMPT_INDICATOR_VI_INSERT = { "" }
-let-env PROMPT_INDICATOR_VI_NORMAL = { "" }
-let-env PROMPT_MULTILINE_INDICATOR = { "" }
+let-env PROMPT_INDICATOR = { || "" }
+let-env PROMPT_INDICATOR_VI_INSERT = { || "" }
+let-env PROMPT_INDICATOR_VI_NORMAL = { || "" }
+let-env PROMPT_MULTILINE_INDICATOR = { || "" }
 
 # TODO: Pull these from `home.sessionVariables`.
 let-env EDITOR = "nvim"
@@ -17,6 +17,6 @@ let-env MANPAGER = "nvim -c 'Man!'"
 let-env ENV_CONVERSIONS = {
   "PATH": {
     from_string: { |s| $s | split row (char esep) | path expand -n }
-    to_string: { |v| $v | path expand -n | str collect (char esep) }
+    to_string: { |v| $v | path expand -n | str join (char esep) }
   }
 }
