@@ -49,9 +49,10 @@
       nixosModule = inputs.self.nixosModules.nixos;
 
       nixosModules = {
-        nixos = import ./modules/nixos;
         darwin = import ./modules/darwin;
+        editor = ./modules/editor;
         home-manager = ./modules/home-manager;
+        nixos = import ./modules/nixos;
       };
 
       overlays = {
