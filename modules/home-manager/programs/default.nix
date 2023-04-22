@@ -16,7 +16,7 @@ let
 
 in {
   imports = [
-    ./editors.nix
+    ./editor.nix
     ./glow.nix
     ./nushell
     ./w3m.nix

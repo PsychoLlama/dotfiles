@@ -6,6 +6,8 @@ with lib;
   imports = [ ./plugins.nix ];
 
   options = {
+    enable = mkEnableOption "Whether to enable Neovim";
+
     neovim = mkOption {
       type = types.package;
       description = "The generated neovim package";
@@ -27,7 +29,7 @@ with lib;
     extraPlugins = mkOption {
       type = types.listOf types.package;
       description = "Extra plugins to install";
-      default = [];
+      default = [ ];
     };
 
     extraConfig = mkOption {
