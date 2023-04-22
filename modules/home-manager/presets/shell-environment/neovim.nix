@@ -49,6 +49,7 @@ in {
 
     programs.editor = {
       enable = true;
+      package = pkgs.unstable.neovim;
 
       plugins = {
         coc-nvim = {
