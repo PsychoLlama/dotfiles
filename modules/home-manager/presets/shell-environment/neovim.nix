@@ -3,6 +3,7 @@
 with lib;
 
 let
+  trueByDefault = mkDefault true;
   cfg = config.presets.neovim;
   yaml = pkgs.formats.yaml { };
   efm-config = {
@@ -39,81 +40,84 @@ in {
     mkEnableOption "Configure Neovim as the one true editor";
 
   config = mkIf cfg.enable {
-    home.sessionVariables = let inherit (config.programs.neovim) finalPackage;
+    home.sessionVariables = let inherit (config.programs.editor) neovim;
+
     in {
-      EDITOR = "${finalPackage}/bin/nvim";
-      MANPAGER = "${finalPackage}/bin/nvim -c 'Man!'";
+      EDITOR = "${neovim}/bin/nvim";
+      MANPAGER = "${neovim}/bin/nvim -c 'Man!'";
     };
 
-    programs.neovim = {
+    programs.editor = {
       enable = true;
-      coc = {
-        enable = true;
 
-        settings = with pkgs.unstable; {
-          languageserver = {
-            rust = {
-              command = "${rust-analyzer}/bin/rust-analyzer";
-              filetypes = [ "rust" ];
-              rootPatterns = [ "Cargo.toml" ];
+      plugins = {
+        coc-nvim = {
+          enable = trueByDefault;
+
+          settings = with pkgs.unstable; {
+            languageserver = {
+              rust = {
+                command = "${rust-analyzer}/bin/rust-analyzer";
+                filetypes = [ "rust" ];
+                rootPatterns = [ "Cargo.toml" ];
+              };
+
+              terraform = {
+                command = "${terraform-ls}/bin/terraform-ls";
+                args = [ "serve" ];
+                filetypes = [ "terraform" "hcl" ];
+              };
+
+              efm = {
+                command = "${efm-langserver}/bin/efm-langserver";
+                args = [ "-c" (yaml.generate "efm-config.yaml" efm-config) ];
+                filetypes = attrNames efm-config.languages;
+              };
             };
 
-            terraform = {
-              command = "${terraform-ls}/bin/terraform-ls";
-              args = [ "serve" ];
-              filetypes = [ "terraform" "hcl" ];
-            };
-
-            efm = {
-              command = "${efm-langserver}/bin/efm-langserver";
-              args = [ "-c" (yaml.generate "efm-config.yaml" efm-config) ];
-              filetypes = attrNames efm-config.languages;
-            };
+            "coc.preferences.formatOnSave" = true;
+            "diagnostic.virtualText" = true;
+            "diagnostic.virtualTextCurrentLineOnly" = false;
+            "eslint.autoFixOnSave" = true;
+            "outline.autoPreview" = true;
+            "suggest.noselect" = true;
+            "tsserver.useLocalTsdk" = true;
           };
-
-          "coc.preferences.formatOnSave" = true;
-          "diagnostic.virtualText" = true;
-          "diagnostic.virtualTextCurrentLineOnly" = false;
-          "eslint.autoFixOnSave" = true;
-          "outline.autoPreview" = true;
-          "suggest.noselect" = true;
-          "tsserver.useLocalTsdk" = true;
         };
-      };
 
-      plugins = with pkgs.vimPlugins; [
-        coc-eslint
-        coc-json
-        coc-pairs
-        coc-prettier
-        coc-tsserver
-        copilot-vim
-        fzf-vim
-        lualine-nvim
-        markdown-preview-nvim
-        onedarkpro-nvim
-        splitjoin-vim
-        undotree
-        vader-vim
-        vim-commentary
-        vim-endwise
-        vim-fugitive
-        vim-gitgutter
-        vim-plug
-        vim-repeat
-        vim-surround
+        coc-eslint.enable = trueByDefault;
+        coc-json.enable = trueByDefault;
+        coc-pairs.enable = trueByDefault;
+        coc-prettier.enable = trueByDefault;
+        coc-tsserver.enable = trueByDefault;
+        copilot-vim.enable = trueByDefault;
+        fzf-vim.enable = trueByDefault;
+        lualine-nvim.enable = trueByDefault;
+        markdown-preview-nvim.enable = trueByDefault;
+        onedarkpro-nvim.enable = trueByDefault;
+        splitjoin-vim.enable = trueByDefault;
+        undotree.enable = trueByDefault;
+        vader-vim.enable = trueByDefault;
+        vim-commentary.enable = trueByDefault;
+        vim-endwise.enable = trueByDefault;
+        vim-fugitive.enable = trueByDefault;
+        vim-gitgutter.enable = trueByDefault;
+        vim-plug.enable = trueByDefault;
+        vim-repeat.enable = trueByDefault;
+        vim-surround.enable = trueByDefault;
 
         # 3rd party
-        alternaut-vim
-        navitron-nvim
-        teleport-vim
-        unison-vim
-        personal-vim-config
+        alternaut-vim.enable = trueByDefault;
+        navitron-nvim.enable = trueByDefault;
+        teleport-vim.enable = trueByDefault;
+        unison-vim.enable = trueByDefault;
+        personal-vim-config.enable = trueByDefault;
 
         # Treesitter integrations.
-        nvim-treesitter-textobjects
-        nvim-treesitter.withAllGrammars
-      ];
+        nvim-treesitter-textobjects.enable = trueByDefault;
+      };
+
+      extraPlugins = with pkgs.vimPlugins; [ nvim-treesitter.withAllGrammars ];
 
       extraPackages = with pkgs.unstable; [
         nixfmt
