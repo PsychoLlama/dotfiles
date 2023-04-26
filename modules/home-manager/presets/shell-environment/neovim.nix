@@ -27,11 +27,6 @@ let
       };
 
       sh = bash;
-
-      nix = {
-        format-command = "nixfmt --quiet";
-        format-stdin = true;
-      };
     };
   };
 
@@ -67,6 +62,14 @@ in {
                 command = "${terraform-ls}/bin/terraform-ls";
                 args = [ "serve" ];
                 filetypes = [ "terraform" "hcl" ];
+              };
+
+              nix = {
+                command = "${nil}/bin/nil";
+                filetypes = [ "nix" ];
+                rootPatterns = [ "flake.nix" ];
+                settings.nil.formatting.command =
+                  [ "${nixfmt}/bin/nixfmt" "--quiet" ];
               };
 
               efm = {
@@ -121,7 +124,6 @@ in {
       extraPlugins = with pkgs.vimPlugins; [ nvim-treesitter.withAllGrammars ];
 
       extraPackages = with pkgs.unstable; [
-        nixfmt
         nodejs-16_x
         rustup
         shellcheck
