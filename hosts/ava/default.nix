@@ -35,8 +35,8 @@
 
   services.openssh.hostKeys = [{
     type = "ed25519";
-    path = "/root/.ssh/nixops_deploy";
-    comment = "NixOps deploy key";
+    path = "/root/.ssh/home_lab";
+    comment = "Home Lab deploy key";
   }];
 
   environment = {
