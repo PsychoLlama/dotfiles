@@ -19,8 +19,12 @@ let
     nix = rec {
       package = pkgs.nixUnstable;
       settings.experimental-features = "nix-command flakes";
-      registry.nixpkgs.flake = inputs.${config.dotfiles.packageSet};
       nixPath = [ "nixpkgs=${registry.nixpkgs.flake}" ];
+
+      registry = {
+        nixpkgs.flake = inputs.${config.dotfiles.packageSet};
+        dotfiles.flake = inputs.self;
+      };
     };
   };
 

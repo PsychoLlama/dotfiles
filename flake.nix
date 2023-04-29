@@ -46,13 +46,11 @@
     in {
       inherit lib;
 
-      nixosModule = inputs.self.nixosModules.nixos;
-
       nixosModules = {
-        darwin = import ./modules/darwin;
+        darwin = ./modules/darwin;
         editor = ./modules/editor;
         home-manager = ./modules/home-manager;
-        nixos = import ./modules/nixos;
+        nixos = ./modules/nixos;
       };
 
       overlays = {
@@ -63,7 +61,6 @@
 
       nixosConfigurations = {
         ava = lib.defineHost.nixosSystem "x86_64-linux" ./hosts/ava;
-        potato = "x86_64-linux" { networking.hostName = "potato"; };
       };
 
       darwinConfigurations = {
