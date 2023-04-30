@@ -14,7 +14,7 @@ in {
     default = { };
   };
 
-  config.extraConfig = mkIf (cfg.enable && cfg.patterns != { }) ''
+  config.plugins.alternaut-vim.extraConfig = mkIf (cfg.patterns != { }) ''
     let g:alternaut#conventions = json_decode(readfile("${patternsFile}"))
   '';
 }

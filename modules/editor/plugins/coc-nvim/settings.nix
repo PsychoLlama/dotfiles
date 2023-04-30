@@ -18,7 +18,7 @@ in {
     '';
   };
 
-  config.extraConfig = mkIf cfg.enable ''
+  config.plugins.coc-nvim.extraConfig = mkIf (cfg.settings != { }) ''
     let g:coc_config_home = "${configDir}"
   '';
 }

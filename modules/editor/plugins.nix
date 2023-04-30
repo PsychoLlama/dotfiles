@@ -11,14 +11,35 @@ let
     mapAttrsToList (pluginName: _: pkgs.vimPlugins.${pluginName})
     enabledVimPluginSet;
 
+  # Attrset of enabled plugins that define a config.
+  enabledPluginsWithConfig =
+    filterAttrs (pluginName: plugin: plugin.extraConfig != "")
+    enabledVimPluginSet;
+
+  # `:source` commands for every plugin that defines a config.
+  enabledPluginConfigs = concatMapStringsSep "\n" (config: "source ${config}")
+    (mapAttrsToList (pluginName: plugin:
+      pkgs.writeText "${pluginName}-config.vim" plugin.extraConfig)
+      enabledPluginsWithConfig);
+
 in {
   imports = [ ./plugins ];
 
   # Generate an option for every vim plugin.
   options.plugins = mapAttrs' (pluginName: plugin: {
     name = pluginName;
-    value.enable = mkEnableOption "Add ${pluginName}";
+    value = {
+      enable = mkEnableOption "Add ${pluginName}";
+      extraConfig = mkOption {
+        type = types.lines;
+        description = "Extra lines for the vim config file";
+        default = "";
+      };
+    };
   }) pkgs.vimPlugins;
 
-  config.extraPlugins = enabledPluginPackages;
+  config = {
+    extraPlugins = enabledPluginPackages;
+    extraConfig = enabledPluginConfigs;
+  };
 }
