@@ -83,5 +83,13 @@
           path = ./templates/rust;
         };
       };
+
+      packages = with inputs.nixpkgs.lib;
+        genAttrs systems.flakeExposed (system: {
+          editor = lib.buildEditor {
+            inherit system;
+            config.presets.base.enable = true;
+          };
+        });
     };
 }
