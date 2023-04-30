@@ -3,7 +3,7 @@
 with lib;
 
 {
-  imports = [ ./plugins.nix ];
+  imports = [ ./plugins.nix ./presets ];
 
   options = {
     enable = mkEnableOption "Whether to enable Neovim";
