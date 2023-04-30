@@ -79,6 +79,11 @@ in {
         };
       };
 
+      markdown-preview-nvim = {
+        enable = trueByDefault;
+        browser = mkDefault "firefox";
+      };
+
       coc-eslint.enable = trueByDefault;
       coc-json.enable = trueByDefault;
       coc-pairs.enable = trueByDefault;
@@ -87,7 +92,6 @@ in {
       copilot-vim.enable = trueByDefault;
       fzf-vim.enable = trueByDefault;
       lualine-nvim.enable = trueByDefault;
-      markdown-preview-nvim.enable = trueByDefault;
       onedarkpro-nvim.enable = trueByDefault;
       splitjoin-vim.enable = trueByDefault;
       undotree.enable = trueByDefault;

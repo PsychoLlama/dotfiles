@@ -1,1 +1,1 @@
-{ imports = [ ./coc-nvim ./alternaut-vim ]; }
+{ imports = [ ./coc-nvim ./alternaut-vim ./markdown-preview-nvim ]; }
