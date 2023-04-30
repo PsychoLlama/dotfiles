@@ -5,30 +5,6 @@ with lib;
 let
   trueByDefault = mkDefault true;
   cfg = config.presets.base;
-  yaml = pkgs.formats.yaml { };
-  efm-config = {
-    languages = rec {
-      vim = {
-        lint-command = "vint -";
-        lint-source = "vint";
-        lint-stdin = true;
-        lint-formats = [ "%f:%l:%c: %m" ];
-      };
-
-      bash = {
-        lint-command = "shellcheck -f gcc -x -";
-        lint-source = "shellcheck";
-        lint-stdin = true;
-        lint-formats = [
-          "%f:%l:%c: %trror: %m"
-          "%f:%l:%c: %tarning: %m"
-          "%f:%l:%c: %tote: %m"
-        ];
-      };
-
-      sh = bash;
-    };
-  };
 
 in {
   options.presets.base.enable = mkEnableOption "Create an opinionated editor";
@@ -61,12 +37,6 @@ in {
               settings.nil.formatting.command =
                 [ "${nixfmt}/bin/nixfmt" "--quiet" ];
             };
-
-            efm = {
-              command = "${efm-langserver}/bin/efm-langserver";
-              args = [ "-c" (yaml.generate "efm-config.yaml" efm-config) ];
-              filetypes = attrNames efm-config.languages;
-            };
           };
 
           "coc.preferences.formatOnSave" = true;
@@ -76,6 +46,32 @@ in {
           "outline.autoPreview" = true;
           "suggest.noselect" = true;
           "tsserver.useLocalTsdk" = true;
+        };
+
+        efm = with pkgs.unstable; {
+          enable = trueByDefault;
+
+          settings.languages = rec {
+            vim = {
+              lint-command = "${vim-vint}/bin/vint -";
+              lint-source = "vint";
+              lint-stdin = true;
+              lint-formats = [ "%f:%l:%c: %m" ];
+            };
+
+            bash = {
+              lint-command = "${shellcheck}/bin/shellcheck -f gcc -x -";
+              lint-source = "shellcheck";
+              lint-stdin = true;
+              lint-formats = [
+                "%f:%l:%c: %trror: %m"
+                "%f:%l:%c: %tarning: %m"
+                "%f:%l:%c: %tote: %m"
+              ];
+            };
+
+            sh = bash;
+          };
         };
       };
 
@@ -153,10 +149,8 @@ in {
     extraPackages = with pkgs.unstable; [
       nodejs-16_x
       rustup
-      shellcheck
       terraform
       unzip # For source-diving Plug'n'Play dependencies.
-      vim-vint
       yarn
     ];
 
