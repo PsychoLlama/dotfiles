@@ -12,7 +12,7 @@ let
     enabledVimPluginSet;
 
 in {
-  imports = [ ./plugins/coc-nvim ];
+  imports = [ ./plugins ];
 
   # Generate an option for every vim plugin.
   options.plugins = mapAttrs' (pluginName: plugin: {
