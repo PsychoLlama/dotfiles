@@ -148,36 +148,26 @@
         User admin
       '';
 
-      knownHosts = let hostNames = host: [ "${host}.host.selfhosted.city" ];
-      in {
-        tron = {
-          hostNames = hostNames "tron";
-          publicKey = ''
-            ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFsNbo3bbm0G11GAbRwnr944AitRyqoQMN4LG7rMsvpK
-          '';
+      knownHosts = let
+        fqdn = host: "${host}.host.selfhosted.city";
+        hostsMap = {
+          ${fqdn "tron"} =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFsNbo3bbm0G11GAbRwnr944AitRyqoQMN4LG7rMsvpK";
+
+          ${fqdn "clu"} =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyb4vh9xDEEV+30G0UPMTSdtVq3Tyfgl9I9VRwf226v";
+
+          ${fqdn "glados"} =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLMZ6+HaPahE4gGIAWW/uGIl/y40p/rSfIhb5t4G+g9";
+
+          ${fqdn "hal"} =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ40gjV2WwbH/RSeMRxTlVr1iNL+rfLNBRzABQnY+Edj";
+
+          ${fqdn "viki"} =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGN2YYhNp9ZlWpkx8BR+HKKP493DUeJIui617CxTfoU3";
         };
 
-        clu = {
-          hostNames = hostNames "clu";
-          publicKey = ''
-            ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyb4vh9xDEEV+30G0UPMTSdtVq3Tyfgl9I9VRwf226v
-          '';
-        };
-
-        glados = {
-          hostNames = hostNames "glados";
-          publicKey = ''
-            ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLMZ6+HaPahE4gGIAWW/uGIl/y40p/rSfIhb5t4G+g9
-          '';
-        };
-
-        hactar = {
-          hostNames = hostNames "hactar";
-          publicKey = ''
-            ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC7y/poo2XLNsxRoEAgIiUnJgbBa0KassSQSghdXWH1N
-          '';
-        };
-      };
+      in lib.mapAttrs (fqdn: publicKey: { inherit publicKey; }) hostsMap;
     };
   };
 
