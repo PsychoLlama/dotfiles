@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, system, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -100,9 +100,9 @@
 
       devices = {
         file-server = {
-          addresses = [ "tcp://hactar.host.selfhosted.city" ];
+          addresses = [ "tcp://hal.host.selfhosted.city" ];
           id =
-            "YOTWLUU-HU6VAII-DJFNJCT-QBVRGD7-EM37VVL-WNB2HFW-5YFWCUM-INTE4AI";
+            "MLM3RUS-6LHM76Q-OPW5UIC-EAH7EUM-ZNG6TJW-TDASURZ-GCZ2YOX-ASNI6Q4";
         };
 
         phone = {
