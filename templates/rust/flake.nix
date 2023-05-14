@@ -1,15 +1,19 @@
 {
   description = "Development environment";
 
-  outputs = { self, nixpkgs }:
+  inputs.rust-overlay.url = "github:oxalica/rust-overlay";
+
+  outputs = { self, nixpkgs, rust-overlay }:
     let inherit (nixpkgs) lib;
 
     in {
       devShell = lib.genAttrs lib.systems.flakeExposed (system:
-        let pkgs = import nixpkgs { inherit system; };
+        let
+          overlays = [ (import rust-overlay) ];
+          pkgs = import nixpkgs { inherit system overlays; };
 
         in pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [ cargo clippy rustc rustfmt ];
+          nativeBuildInputs = with pkgs; [ rust-bin.stable.latest.complete ];
         });
     };
 }
