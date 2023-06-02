@@ -147,7 +147,7 @@ in {
     extraPlugins = with pkgs.vimPlugins; [ nvim-treesitter.withAllGrammars ];
 
     extraPackages = with pkgs.unstable; [
-      nodejs-16_x
+      nodejs-18_x
       rustup
       terraform
       unzip # For source-diving Plug'n'Play dependencies.
