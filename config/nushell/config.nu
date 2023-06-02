@@ -255,7 +255,7 @@ def encrypt [
 ] {
   let plaintext = $in
   let keys = (
-    | fetch $"https://github.com/($username).keys"
+    | http get $"https://github.com/($username).keys"
     | lines
     | each { || [ "--recipient" $in ] }
     | flatten
