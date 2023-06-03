@@ -16,15 +16,6 @@ let
       sed -e 's/&&/and/g' -e 's/||/or/g' --in-place "$out"
     '';
 
-  # TODO: Use the generated home-manager text instead of making my own.
-  nushell-env-file = {
-    executable = true;
-    text = ''
-      source ${../../../../config/nushell/env.nu};
-      ${config.programs.nushell.extraEnv}
-    '';
-  };
-
 in {
   options.presets.nushell.enable =
     mkEnableOption "Install and configure Nushell";
@@ -41,22 +32,15 @@ in {
           l = "ls --all";
         };
 
-      initExtra = ''
+      extraConfig = ''
         source ${../../../../config/nushell/config.nu}
         source ${starship-prompt-setup}
         source ${zoxide-command-setup}
       '';
-    };
 
-    # TODO: Make this all configurable from outside the preset.
-    xdg = optionalAttrs (pkgs.stdenv.isDarwin == false) {
-      configFile."nushell/env.nu" = nushell-env-file;
-    };
-
-    # By default, HM symlinks config files to the wrong location on Darwin.
-    # I do it manually to make it portable.
-    home.file = optionalAttrs (pkgs.stdenv.isDarwin) {
-      "Library/Application Support/nushell/env.nu" = nushell-env-file;
+      extraEnv = ''
+        source ${../../../../config/nushell/env.nu};
+      '';
     };
   };
 }

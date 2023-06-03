@@ -272,7 +272,7 @@ def decrypt [] {
 # Manage git (p)rojects.
 def-env p [
   project: string # A GitHub user/project shorthand.
-  --root = $"($env.HOME)/projects" # Where to store all the repositories.
+  --root = ~/projects # Where to store all the repositories.
   --user = PsychoLlama # Your GitHub username.
   ...extra_git_args # Arguments passed on to `git clone`.
 ] {
@@ -284,7 +284,7 @@ def-env p [
     | upsert repo ($in.repo | str replace '\b\.git$' '')
   )
 
-  let clone_destination = ([$root $resource.user $resource.repo] | path join)
+  let clone_destination = ([($root | path expand) $resource.user $resource.repo] | path join)
 
   if not ($clone_destination | path exists) {
     git clone $"git@github.com:($resource.user)/($resource.repo)" $clone_destination $extra_git_args
