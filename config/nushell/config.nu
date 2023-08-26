@@ -1,4 +1,4 @@
-let-env config = {
+$env.config = {
   edit_mode: vi
   shell_integration: true
   show_banner: false

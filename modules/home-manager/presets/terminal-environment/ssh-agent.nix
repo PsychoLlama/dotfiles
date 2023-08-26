@@ -16,9 +16,9 @@ in {
       "\${XDG_RUNTIME_DIR-/tmp}/${socketName}";
 
     programs.nushell.extraEnv = if pkgs.stdenv.isDarwin then ''
-      let-env SSH_AUTH_SOCK = "/tmp/${socketName}"
+      $env.SSH_AUTH_SOCK = "/tmp/${socketName}"
     '' else ''
-      let-env SSH_AUTH_SOCK = $"($env.XDG_RUNTIME_DIR)/${socketName}"
+      $env.SSH_AUTH_SOCK = $"($env.XDG_RUNTIME_DIR)/${socketName}"
     '';
   };
 }
