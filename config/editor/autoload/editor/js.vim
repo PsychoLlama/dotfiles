@@ -128,7 +128,7 @@ func! s:get_test_runner(...) abort
     endif
 
     let l:command = s:extract_test_command(l:test_script)
-    let l:project_dir = fnamemodify(l:package_path, ':h')
+    let l:project_dir = fnamemodify(l:package_path, ':p:h')
     return { 'command': l:command, 'project': l:project_dir }
   endfor
 
@@ -148,12 +148,15 @@ func! editor#js#get_test_command_for_path(...) abort
   " Make the file path project relative.
   let l:test_path = '.' . l:path[strlen(l:runner.project):]
 
-  if l:runner.command =~# '\v(jest|react-scripts)'
-    let l:runner.command = 'yarn -s run ' . l:runner.command
-    let l:runner.command .= ' --watch --collectCoverage=false '
-    let l:runner.command .= shellescape(l:test_path)
+
+  " Try to detect the test runner so we can put it in watch mode.
+  if l:runner.command =~# '\C\Vjest'
+    let l:runner.command = 'yarn run ' . l:runner.command
+    let l:runner.command .= ' --watch --collectCoverage=false ' . shellescape(l:test_path)
+  elseif l:runner.command =~# '\C\Vvitest'
+    let l:runner.command = 'yarn run vitest' " Watch mode is the default.
   else
-    let l:runner.command = 'yarn -s run ' . l:runner.command
+    let l:runner.command = 'yarn run ' . l:runner.command
     let l:runner.command .= ' --watch ' . shellescape(l:test_path)
   endif
 

@@ -59,23 +59,19 @@ func! editor#mappings#test() abort
     endif
   endif
 
-  let l:runner = editor#js#get_test_command_for_path(l:file_path)
-  let l:cmd = 'cd ' . fnameescape(l:runner.project) . '; '
-  let l:cmd .= l:runner.command
-  let l:code_pane = tmux#get_variable('pane_id')
-
-  if str2nr(tmux#get_variable('window_panes')) < 2
-    let l:test_pane = tmux#split_window({
-          \   'horizontal': v:true,
-          \   'percent': 45,
-          \ })
-    call tmux#send_keys(l:cmd, '^M')
-  else
-    let l:test_pane = tmux#get_variable('pane_at_right')
-    call tmux#select_pane(1)
-    call tmux#send_keys('^C')
-    call tmux#send_keys('^L', l:cmd, '^M')
+  if str2nr(tmux#get_variable('window_panes')) > 1
+    call tmux#kill_other_panes()
   endif
+
+  let l:runner = editor#js#get_test_command_for_path(l:file_path)
+  let l:cmd = l:runner.command
+  let l:code_pane = tmux#get_variable('pane_id')
+  let l:test_pane = tmux#split_window({
+        \   'horizontal': v:true,
+        \   'percent': 45,
+        \   'cwd': l:runner.project,
+        \   'exec': 'nix develop --command ' . l:runner.command,
+        \ })
 
   call tmux#select_pane(l:code_pane)
 endfunc

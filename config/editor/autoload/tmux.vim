@@ -7,6 +7,8 @@ func! tmux#split_window(...) abort
   let l:config = get(a:000, 0, {})
   let l:horizontal = get(l:config, 'horizontal', v:false)
   let l:percent = get(l:config, 'percent', 0)
+  let l:cwd = get(l:config, 'cwd', '')
+  let l:exec = get(l:config, 'exec', '')
 
   let l:cmd = 'tmux split-window'
   if l:horizontal
@@ -15,6 +17,14 @@ func! tmux#split_window(...) abort
 
   if l:percent > 0
     let l:cmd .= ' -p ' . l:percent
+  endif
+
+  if strlen(l:cwd) > 0
+    let l:cmd .= ' -c ' . shellescape(l:cwd)
+  endif
+
+  if strlen(l:exec) > 0
+    let l:cmd .= ' ' . l:exec
   endif
 
   call system(l:cmd)
@@ -32,4 +42,9 @@ endfunc
 " By index (e.g. 1, 2, 3) or by ID (e.g. %20, %16)
 func! tmux#select_pane(id) abort
   call system('tmux select-pane -t ' . a:id)
+endfunc
+
+func! tmux#kill_other_panes() abort
+  let l:current_panel = tmux#get_variable('pane_id')
+  call system('tmux kill-pane -a -t ' . shellescape(l:current_panel))
 endfunc
