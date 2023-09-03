@@ -39,6 +39,7 @@ in {
       acpi.enable = mkDefault true;
       brightnessctl.enable = mkDefault true;
       grim.enable = mkDefault true;
+      pamixer.enable = mkDefault true;
       parted.enable = mkDefault true;
       playerctl.enable = mkDefault true;
       slurp.enable = mkDefault true;

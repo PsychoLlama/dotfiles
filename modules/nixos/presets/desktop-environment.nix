@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 
@@ -9,9 +9,17 @@ in {
     mkEnableOption "Configure a desktop environment";
 
   config = mkIf cfg.enable {
-    hardware.pulseaudio.enable = mkDefault true;
     services.printing.enable = mkDefault true;
-    sound.enable = mkDefault true;
+
+    # Used by Pipewire to get real-time thread priority.
+    security.rtkit.enable = mkDefault true;
+
+    services.pipewire = {
+      enable = mkDefault true;
+      audio.enable = mkDefault true;
+      alsa.enable = mkDefault true;
+      pulse.enable = mkDefault true;
+    };
 
     programs.sway = {
       enable = mkDefault true;
