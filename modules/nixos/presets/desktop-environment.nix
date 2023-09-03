@@ -11,6 +11,9 @@ in {
   config = mkIf cfg.enable {
     services.printing.enable = mkDefault true;
 
+    # Powers screen capture in Firefox.
+    xdg.portal.wlr.enable = true;
+
     # Used by Pipewire to get real-time thread priority.
     security.rtkit.enable = mkDefault true;
 
