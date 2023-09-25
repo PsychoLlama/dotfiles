@@ -69,7 +69,8 @@ vim.api.nvim_set_keymap('n', '<space>', '<nop>', {})
 vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 
 -- Quick navigation
-vim.api.nvim_set_keymap('n', '<leader>[', ':call editor#mappings#explore_current_dir()<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>[', ':call editor#mappings#explore_current_dir()<cr>',
+  { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>p', ':call editor#open_project_root()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
 vim.api.nvim_set_keymap('n', '<leader>f', ':Files!<cr>', { noremap = true })
@@ -178,7 +179,7 @@ require('lualine').setup({
     theme = lualine_theme,
   },
   sections = {
-    lualine_a = { },
+    lualine_a = {},
     lualine_b = { 'branch' },
     lualine_c = {
       'filename',
@@ -206,11 +207,15 @@ require('regal').setup({
   directory = "~/attic/slip-box",
 })
 
+-- Navitron
+require('navitron').setup({
+  -- Default options.
+})
+
 -- Misc
 vim.g['teleport#update_cwd'] = true
 vim.g.jsx_ext_required = 0
 vim.g.splitjoin_trailing_comma = true
-vim.g.loaded_netrwPlugin = true
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = vim.api.nvim_create_augroup('settings', {}),
