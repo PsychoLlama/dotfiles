@@ -5,7 +5,7 @@ nixpkgs-unstable: self: pkgs: rec {
   unstable = nixpkgs-unstable.legacyPackages.${pkgs.system};
 
   # Some modules cannot be overridden at the module level.
-  inherit (unstable) bat exa;
+  inherit (unstable) bat;
 
   # Be reckless, run all vim plugins as latest.
   vimPlugins = unstable.vimPlugins;

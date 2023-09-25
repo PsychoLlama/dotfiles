@@ -10,7 +10,7 @@ in {
     ./bottom.nix
     ./direnv.nix
     ./dive.nix
-    ./exa.nix
+    ./eza.nix
     ./fd.nix
     ./fzf.nix
     ./git.nix
@@ -34,7 +34,7 @@ in {
       bottom.enable = mkDefault true;
       direnv.enable = mkDefault true;
       dive.enable = mkDefault true;
-      exa.enable = mkDefault true;
+      eza.enable = mkDefault true;
       fd.enable = mkDefault true;
       fzf.enable = mkDefault true;
       git.enable = mkDefault true;

@@ -27,6 +27,7 @@ in {
     (makeProgramModule "dogdns")
     (makeProgramModule "du-dust")
     (makeProgramModule "duf")
+    (makeProgramModule "eza")
     (makeProgramModule "fd")
     (makeProgramModule "grim")
     (makeProgramModule "hexyl")
