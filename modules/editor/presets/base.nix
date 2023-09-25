@@ -46,6 +46,8 @@ in {
           "outline.autoPreview" = true;
           "suggest.noselect" = true;
           "tsserver.useLocalTsdk" = true;
+          "sumneko-lua.serverDir" = lua-language-server;
+          "Lua.diagnostics.globals" = [ "vim" ];
         };
 
         efm = with pkgs.unstable; {
@@ -84,6 +86,7 @@ in {
       coc-json.enable = trueByDefault;
       coc-pairs.enable = trueByDefault;
       coc-prettier.enable = trueByDefault;
+      coc-sumneko-lua.enable = trueByDefault;
       coc-tsserver.enable = trueByDefault;
       copilot-vim.enable = trueByDefault;
       fzf-vim.enable = trueByDefault;
