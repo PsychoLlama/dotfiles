@@ -204,7 +204,7 @@ require('lualine').setup({
 
 -- Zettelkaesten
 require('regal').setup({
-  directory = "~/attic/slip-box",
+  slip_box = "~/attic/slip-box",
 })
 
 -- Navitron

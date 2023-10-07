@@ -1,13 +1,13 @@
 vim.api.nvim_set_keymap(
   'n',
   '<leader>no',
-  ':lua require("regal").open_notes()<cr>',
-  { noremap = true, silent = true }
+  '<Plug>(regal-open-notes)',
+  { noremap = true }
 )
 
 vim.api.nvim_set_keymap(
   'n',
   '<leader>ni',
-  ':lua require("regal").create_note()<cr>',
-  { noremap = true, silent = true }
+  '<Plug>(regal-create-note)',
+  { noremap = true }
 )
