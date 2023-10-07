@@ -104,6 +104,7 @@ in {
       vim-surround.enable = trueByDefault;
 
       # 3rd party
+      deja-view-vim.enable = trueByDefault;
       navitron-nvim.enable = trueByDefault;
       teleport-vim.enable = trueByDefault;
       unison-vim.enable = trueByDefault;

@@ -27,6 +27,11 @@
       flake = false;
     };
 
+    deja-view-vim = {
+      url = "github:PsychoLlama/deja-view.vim";
+      flake = false;
+    };
+
     teleport-vim = {
       url = "github:PsychoLlama/teleport.vim";
       flake = false;

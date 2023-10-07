@@ -11,7 +11,7 @@ let
       });
 
   extraVimPlugins = mapToVimPlugins {
-    inherit (inputs) teleport-vim alternaut-vim navitron-nvim;
+    inherit (inputs) teleport-vim alternaut-vim navitron-nvim deja-view-vim;
     unison-vim = "${inputs.unison-vim}/editor-support/vim";
     personal-vim-config = ../config/editor;
   };

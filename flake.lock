@@ -36,6 +36,22 @@
         "type": "github"
       }
     },
+    "deja-view-vim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1637822845,
+        "narHash": "sha256-wYjTxP/KyNriSBW9fyHNje3KqEMca23e5+9FSw9ObGA=",
+        "owner": "PsychoLlama",
+        "repo": "deja-view.vim",
+        "rev": "1017e538a2711127046b11e07c73f223d2d8a718",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PsychoLlama",
+        "repo": "deja-view.vim",
+        "type": "github"
+      }
+    },
     "hardware": {
       "locked": {
         "lastModified": 1692952286,
@@ -124,6 +140,7 @@
       "inputs": {
         "alternaut-vim": "alternaut-vim",
         "darwin": "darwin",
+        "deja-view-vim": "deja-view-vim",
         "hardware": "hardware",
         "home-manager": "home-manager",
         "navitron-nvim": "navitron-nvim",
