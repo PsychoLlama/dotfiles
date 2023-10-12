@@ -45,11 +45,29 @@
 
   outputs = inputs:
     let
-      lib = import ./lib inputs;
+      dlib = import ./lib inputs; # (d)otfiles lib
+      inherit (inputs.nixpkgs-unstable) lib;
       inherit (inputs) nixpkgs-unstable;
 
+      # The list of systems supported by nixpkgs and hydra.
+      defaultSystems =
+        [ "aarch64-linux" "aarch64-darwin" "x86_64-darwin" "x86_64-linux" ];
+
+      pkgsFor = system:
+        import inputs.nixpkgs-unstable {
+          inherit system;
+          overlays = [ inputs.self.overlays.vim-plugins ];
+        };
+
+      eachSystem = fn:
+        inputs.nixpkgs-unstable.lib.pipe defaultSystems [
+          (map (system: lib.nameValuePair system (pkgsFor system)))
+          lib.listToAttrs
+          (lib.mapAttrs fn)
+        ];
+
     in {
-      inherit lib;
+      lib = dlib;
 
       nixosModules = {
         darwin = ./modules/darwin;
@@ -65,16 +83,16 @@
       };
 
       nixosConfigurations = {
-        ava = lib.defineHost.nixosSystem "x86_64-linux" ./hosts/ava;
+        ava = dlib.defineHost.nixosSystem "x86_64-linux" ./hosts/ava;
       };
 
       darwinConfigurations = {
-        marvin = lib.defineHost.darwinSystem "x86_64-darwin" ./hosts/marvin;
+        marvin = dlib.defineHost.darwinSystem "x86_64-darwin" ./hosts/marvin;
       };
 
       homeConfigurations = {
         overlord =
-          lib.defineHost.homeManagerConfiguration "x86_64-linux" ./hosts/tars;
+          dlib.defineHost.homeManagerConfiguration "x86_64-linux" ./hosts/tars;
       };
 
       templates = {
@@ -89,12 +107,32 @@
         };
       };
 
-      packages = with inputs.nixpkgs.lib;
-        genAttrs systems.flakeExposed (system: {
-          editor = lib.buildEditor {
-            inherit system;
-            config.presets.base.enable = true;
-          };
+      packages = eachSystem (system: pkgs: {
+        editor = dlib.buildEditor {
+          inherit system;
+          config.presets.base.enable = true;
+        };
+      });
+
+      devShell = eachSystem (system: pkgs:
+        pkgs.mkShell {
+          buildInputs = [
+            (dlib.buildEditor {
+              inherit system;
+
+              config = {
+                presets.base.enable = true;
+                plugins.personal-vim-config.enable = false;
+
+                # Link to the mutable vim config so it can be edited without
+                # a rebuild. Use `nix shell '.#editor'` to build the final.
+                extraConfig = lib.mkBefore ''
+                  let s:repo = systemlist('git rev-parse --show-toplevel')[0]
+                  exe 'set rtp^=' . s:repo . '/config/editor'
+                '';
+              };
+            })
+          ];
         });
     };
 }
