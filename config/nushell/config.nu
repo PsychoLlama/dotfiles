@@ -192,7 +192,11 @@ def-env cf [] {
 
 # Show information about a nix package.
 def gist [pkg_name: string] {
-  nix eval --offline --json $"nixpkgs#($pkg_name).meta" | jq -r '.description, .homepage'
+  let pkg = nix eval --offline --json $"nixpkgs#($pkg_name).meta" | from json
+  let title = $"(ansi white_bold)($pkg.name) (ansi reset)($pkg.description)"
+  let url = $"(ansi green)($pkg.homepage)(ansi reset)"
+
+  $"($title)\n($url)"
 }
 
 # `mkdir` and `cd` in one move.
