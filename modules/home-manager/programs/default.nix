@@ -18,6 +18,7 @@ in {
   imports = [
     ./editor.nix
     ./glow.nix
+    ./nushell
     ./w3m.nix
 
     (makeProgramModule "acpi")

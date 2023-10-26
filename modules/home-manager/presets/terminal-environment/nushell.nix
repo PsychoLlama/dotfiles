@@ -25,6 +25,12 @@ in {
       enable = true;
       package = pkgs.unstable.nushell;
 
+      scripts = {
+        enable = true;
+        package = pkgs.unstable.nu_scripts;
+        completions = [ "cargo" "git" "just" "nix" "npm" ];
+      };
+
       # Use the default aliases, except for `ls` overrides. Nushell has
       # a great `ls` replacement.
       shellAliases = filterAttrs (key: value: key != "l" && key != "ls")
