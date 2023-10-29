@@ -37,6 +37,7 @@ in {
     (makeProgramModule "lnav")
     (makeProgramModule "miniserve")
     (makeProgramModule "nmap")
+    (makeProgramModule "onefetch")
     (makeProgramModule "pamixer")
     (makeProgramModule "parted")
     (makeProgramModule "playerctl")

@@ -55,6 +55,7 @@ in {
       ipfs.enable = mkDefault true;
       litecli.enable = mkDefault true;
       lnav.enable = mkDefault true;
+      onefetch.enable = mkDefault true;
       parted.enable = mkDefault pkgs.stdenv.isLinux;
       pv.enable = mkDefault true;
       rage.enable = mkDefault true;
