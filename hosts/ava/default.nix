@@ -145,7 +145,7 @@
         CanonicalizeMaxDots 0
 
         Host *.host.selfhosted.city
-        User admin
+        User root
       '';
 
       knownHosts = let
