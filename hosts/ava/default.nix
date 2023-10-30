@@ -148,26 +148,21 @@
         User root
       '';
 
-      knownHosts = let
-        fqdn = host: "${host}.host.selfhosted.city";
-        hostsMap = {
-          ${fqdn "tron"} =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFsNbo3bbm0G11GAbRwnr944AitRyqoQMN4LG7rMsvpK";
-
-          ${fqdn "clu"} =
+      knownHosts = lib.mapAttrs' (hostName: publicKey:
+        lib.nameValuePair "${hostName}.host.selfhosted.city" {
+          inherit publicKey;
+        }) {
+          rpi4-001 =
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyb4vh9xDEEV+30G0UPMTSdtVq3Tyfgl9I9VRwf226v";
-
-          ${fqdn "glados"} =
+          rpi4-002 =
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLMZ6+HaPahE4gGIAWW/uGIl/y40p/rSfIhb5t4G+g9";
-
-          ${fqdn "hal"} =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ40gjV2WwbH/RSeMRxTlVr1iNL+rfLNBRzABQnY+Edj";
-
-          ${fqdn "viki"} =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGN2YYhNp9ZlWpkx8BR+HKKP493DUeJIui617CxTfoU3";
+          rpi4-003 =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFsNbo3bbm0G11GAbRwnr944AitRyqoQMN4LG7rMsvpK";
+          rpi3-001 =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2VZGgphnMAD5tLG+IHBlBWdlUPNfvYEMDK8OQCrG/A";
+          rpi3-002 =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKrGfslz9RlB2EzrTL3SfO/NZB5fPiVXWkK+aQRZrlel";
         };
-
-      in lib.mapAttrs (fqdn: publicKey: { inherit publicKey; }) hostsMap;
     };
   };
 
