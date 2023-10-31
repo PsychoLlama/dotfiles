@@ -24,12 +24,6 @@ in {
               rootPatterns = [ "Cargo.toml" ];
             };
 
-            terraform = {
-              command = "${terraform-ls}/bin/terraform-ls";
-              args = [ "serve" ];
-              filetypes = [ "terraform" "hcl" ];
-            };
-
             nix = {
               command = "${nil}/bin/nil";
               filetypes = [ "nix" ];
@@ -153,7 +147,6 @@ in {
     extraPackages = with pkgs.unstable; [
       nodejs-18_x
       rustup
-      terraform
       unzip # For source-diving Plug'n'Play dependencies.
       yarn
     ];
