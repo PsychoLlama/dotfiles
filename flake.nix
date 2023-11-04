@@ -43,28 +43,22 @@
     };
   };
 
-  outputs = inputs:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
     let
       dlib = import ./lib inputs; # (d)otfiles lib
-      inherit (inputs.nixpkgs-unstable) lib;
-      inherit (inputs) nixpkgs-unstable;
+      inherit (nixpkgs) lib;
 
       # The list of systems supported by nixpkgs and hydra.
       defaultSystems =
         [ "aarch64-linux" "aarch64-darwin" "x86_64-darwin" "x86_64-linux" ];
 
-      pkgsFor = system:
-        import inputs.nixpkgs-unstable {
+      loadPkgs = system:
+        import nixpkgs-unstable {
           inherit system;
-          overlays = [ inputs.self.overlays.vim-plugins ];
+          overlays = [ self.overlays.vim-plugins ];
         };
 
-      eachSystem = fn:
-        inputs.nixpkgs-unstable.lib.pipe defaultSystems [
-          (map (system: lib.nameValuePair system (pkgsFor system)))
-          lib.listToAttrs
-          (lib.mapAttrs fn)
-        ];
+      eachSystem = lib.flip lib.mapAttrs (lib.genAttrs defaultSystems loadPkgs);
 
     in {
       lib = dlib;
