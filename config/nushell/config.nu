@@ -53,6 +53,12 @@ def-env cf [] {
 # Show information about a nix package.
 def gist [pkg_name: string] {
   let pkg = nix eval --offline --json $"nixpkgs#($pkg_name).meta" | from json
+
+  # Probably because the package doesn't exist. Nix would've printed an error.
+  if $pkg == null {
+    return
+  }
+
   let title = $"(ansi white_bold)($pkg.name) (ansi reset)($pkg.description)"
   let url = $"(ansi green)($pkg.homepage)(ansi reset)"
 
