@@ -122,6 +122,7 @@ in {
           };
 
           "typescript.tsx" = typescript;
+          "typescriptreact" = typescript;
           typescript = {
             file_naming_conventions =
               [ "{name}.test.{ext}" "{name}.test.unit.{ext}" ];
