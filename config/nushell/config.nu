@@ -40,7 +40,7 @@ def nt [] {
 }
 
 # Fuzzy find and open a directory.
-def-env cf [] {
+def --env cf [] {
   let selected_dir = fd --type directory | fzf
 
   cd (if ($selected_dir | str length) > 0 {
@@ -66,7 +66,7 @@ def gist [pkg_name: string] {
 }
 
 # `mkdir` and `cd` in one move.
-def-env md [directory: path] {
+def --env md [directory: path] {
   mkdir $directory
   cd $directory
 }
@@ -130,11 +130,10 @@ def decrypt [] {
 }
 
 # Manage git (p)rojects.
-def-env p [
+def --env p [
   project: string # A GitHub user/project shorthand.
-  --root = ~/projects # Where to store all the repositories.
-  --user = PsychoLlama # Your GitHub username.
-  ...extra_git_args # Arguments passed on to `git clone`.
+  --root: string = ~/projects # Where to store all the repositories.
+  --user: string = PsychoLlama # Your GitHub username.
 ] {
   let resource = (
     [$"($user)/($project)"] ++ $project
@@ -147,7 +146,7 @@ def-env p [
   let clone_destination = [($root | path expand) $resource.user $resource.repo] | path join
 
   if not ($clone_destination | path exists) {
-    git clone $"git@github.com:($resource.user)/($resource.repo)" $clone_destination $extra_git_args
+    git clone $"git@github.com:($resource.user)/($resource.repo)" $clone_destination
   }
 
   cd $clone_destination
