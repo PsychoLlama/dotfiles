@@ -90,13 +90,18 @@
       };
 
       templates = {
+        project = {
+          description = "Flake environment with no assumptions";
+          path = ./templates/project;
+        };
+
         js = {
-          description = "Create a JavaScript development environment";
+          description = "Flake environment for building JavaScript projects";
           path = ./templates/js;
         };
 
         rust = {
-          description = "Create a Rust development environment";
+          description = "Flake environment for building Rust projects";
           path = ./templates/rust;
         };
       };
