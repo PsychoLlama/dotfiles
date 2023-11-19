@@ -42,6 +42,12 @@ in {
         source ${../../../../config/nushell/config.nu}
         source ${starship-prompt-setup}
         source ${zoxide-command-setup}
+
+        ${optionalString pkgs.stdenv.isLinux ''
+          def ip [...args] {
+            ^ip --json $args | from json
+          }
+        ''}
       '';
 
       extraEnv = ''
