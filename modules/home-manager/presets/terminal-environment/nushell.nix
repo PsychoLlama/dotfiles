@@ -4,24 +4,19 @@ with lib;
 
 let
   cfg = config.presets.nushell;
-  starship-prompt-setup = pkgs.runCommand "starship-init" {
-    buildInputs = [ pkgs.unstable.starship ];
-  } ''
-    HOME="$(mktemp --directory)" starship init nu > "$out"
-  '';
 
   zoxide-command-setup =
     pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
       zoxide init nushell > "$out"
-      sed -e 's/&&/and/g' -e 's/||/or/g' --in-place "$out"
+      sed -e 's/def-env/def --env/g' --in-place "$out"
     '';
 
 in {
   options.presets.nushell.enable =
     mkEnableOption "Install and configure Nushell";
 
-  config = mkIf cfg.enable {
-    programs.nushell = {
+  config.programs = mkIf cfg.enable {
+    nushell = {
       enable = true;
       package = pkgs.unstable.nushell;
 
@@ -40,7 +35,6 @@ in {
 
       extraConfig = ''
         source ${../../../../config/nushell/config.nu}
-        source ${starship-prompt-setup}
         source ${zoxide-command-setup}
 
         ${optionalString pkgs.stdenv.isLinux ''
@@ -54,5 +48,8 @@ in {
         source ${../../../../config/nushell/env.nu};
       '';
     };
+
+    # The default completions are incompatible with newer versions of Nushell.
+    zoxide.enableNushellIntegration = false;
   };
 }
