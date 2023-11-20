@@ -100,7 +100,7 @@
 
       devices = {
         file-server = {
-          addresses = [ "tcp://hal.host.selfhosted.city" ];
+          addresses = [ "tcp://rpi3-002.host.selfhosted.city" ];
           id =
             "MLM3RUS-6LHM76Q-OPW5UIC-EAH7EUM-ZNG6TJW-TDASURZ-GCZ2YOX-ASNI6Q4";
         };
