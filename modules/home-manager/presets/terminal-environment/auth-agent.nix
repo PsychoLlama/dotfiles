@@ -3,14 +3,14 @@
 with lib;
 
 let
-  cfg = config.presets.ssh-agent;
-  socketName = config.services.ssh-agent.socket;
+  cfg = config.presets.auth-agent;
+  socketName = config.services.auth-agent.socket;
 
 in {
-  options.presets.ssh-agent.enable = mkEnableOption "ssh-agent";
+  options.presets.auth-agent.enable = mkEnableOption "Cross platform ssh-agent";
 
   config = mkIf cfg.enable {
-    services.ssh-agent.enable = true;
+    services.auth-agent.enable = true;
 
     home.sessionVariables.SSH_AUTH_SOCK =
       "\${XDG_RUNTIME_DIR-/tmp}/${socketName}";

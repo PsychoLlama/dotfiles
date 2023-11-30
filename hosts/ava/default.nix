@@ -91,30 +91,30 @@
       group = "users";
       dataDir = "/home/overlord";
 
-      # A general-purpose box for reliable storage.
-      folders."/home/overlord/attic" = {
-        id = "attic";
-        devices = [ "file-server" "phone" ];
-        label = "Attic";
-      };
-
-      devices = {
-        file-server = {
-          addresses = [ "tcp://rpi3-002.host.selfhosted.city" ];
-          id =
-            "MLM3RUS-6LHM76Q-OPW5UIC-EAH7EUM-ZNG6TJW-TDASURZ-GCZ2YOX-ASNI6Q4";
-        };
-
-        phone = {
-          addresses = [ "dynamic" ];
-          id =
-            "S2U7KKV-SXJGOI3-6MSJWIT-U2JP32Y-HH7WZU5-ZDS6KAT-6CNYRAM-ZQTWZAQ";
-        };
-      };
-
-      extraOptions = {
+      settings = {
         options.urAccepted = 3;
         gui.theme = "dark";
+
+        # A general-purpose box for reliable storage.
+        folders."/home/overlord/attic" = {
+          id = "attic";
+          devices = [ "file-server" "phone" ];
+          label = "Attic";
+        };
+
+        devices = {
+          file-server = {
+            addresses = [ "tcp://rpi3-002.host.selfhosted.city" ];
+            id =
+              "MLM3RUS-6LHM76Q-OPW5UIC-EAH7EUM-ZNG6TJW-TDASURZ-GCZ2YOX-ASNI6Q4";
+          };
+
+          phone = {
+            addresses = [ "dynamic" ];
+            id =
+              "S2U7KKV-SXJGOI3-6MSJWIT-U2JP32Y-HH7WZU5-ZDS6KAT-6CNYRAM-ZQTWZAQ";
+          };
+        };
       };
     };
 
@@ -166,7 +166,7 @@
     };
   };
 
-  fonts.enableDefaultFonts = true;
+  fonts.enableDefaultPackages = true;
   hardware.bluetooth.enable = true;
   virtualisation.docker.enable = true;
   system.stateVersion = "20.09";

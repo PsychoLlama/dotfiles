@@ -2,10 +2,12 @@
 
 with lib;
 
-let cfg = config.services.ssh-agent;
+let cfg = config.services.auth-agent;
 
 in {
-  options.services.ssh-agent = {
+  # NOTE: This service used to be called `ssh-agent` but HM 23.11 added
+  # a service with a conflicting name that only works on Linux.
+  options.services.auth-agent = {
     enable = mkEnableOption "SSH agent";
     package = mkPackageOption pkgs "openssh" { };
 
@@ -22,7 +24,7 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable && pkgs.stdenv.isLinux) {
-      systemd.user.services.ssh-agent = {
+      systemd.user.services.auth-agent = {
         Install.WantedBy = [ "default.target" ];
 
         Unit = {
@@ -40,7 +42,7 @@ in {
     })
 
     (mkIf (cfg.enable && pkgs.stdenv.isDarwin) {
-      launchd.agents.ssh-agent = {
+      launchd.agents.auth-agent = {
         enable = true;
         config = {
           KeepAlive = true;
@@ -48,7 +50,7 @@ in {
           ProgramArguments = [
             (let
               socket = "/tmp/${cfg.socket}";
-              scriptPath = pkgs.writers.writeBash "ssh-agent-service" ''
+              scriptPath = pkgs.writers.writeBash "auth-agent-service" ''
                 ${pkgs.coreutils}/bin/rm -f ${escapeShellArg socket}
                 ${cfg.package}/bin/ssh-agent -D -a ${escapeShellArg socket}
               '';

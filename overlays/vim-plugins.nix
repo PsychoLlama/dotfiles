@@ -4,7 +4,7 @@ let
   # Non-standard vim plugins. Mostly my own.
   mapToVimPlugins = with pkgs.lib;
     mapAttrs (pluginName: plugin:
-      pkgs.vimUtils.buildVimPluginFrom2Nix {
+      pkgs.vimUtils.buildVimPlugin {
         pname = pluginName;
         version = plugin.shortRev or "latest";
         src = plugin;

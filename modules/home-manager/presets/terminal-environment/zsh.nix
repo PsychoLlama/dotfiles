@@ -11,7 +11,7 @@ in {
   config.programs.zsh = mkIf cfg.enable {
     enable = true;
     enableAutosuggestions = mkDefault true;
-    enableSyntaxHighlighting = mkDefault true;
+    syntaxHighlighting.enable = mkDefault true;
     defaultKeymap = "viins";
 
     # Essentially, never delete shell history.
