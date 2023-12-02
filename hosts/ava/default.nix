@@ -166,8 +166,10 @@
     };
   };
 
+  # TODO: Figure out why docker service is failing (zfs driver?)
+  virtualisation.docker.enable = false;
+
   fonts.enableDefaultPackages = true;
   hardware.bluetooth.enable = true;
-  virtualisation.docker.enable = true;
   system.stateVersion = "20.09";
 }
