@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.whois;
+let cfg = config.programs.presets.whois;
 
 in {
-  options.presets.whois.enable =
+  options.programs.presets.whois.enable =
     mkEnableOption "Install and configure whois";
 
   config.programs.whois = mkIf cfg.enable {

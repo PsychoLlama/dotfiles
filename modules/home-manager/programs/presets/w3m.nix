@@ -5,10 +5,10 @@ with lib;
 # w3m is tremendously useful while debugging a NixOS issue that bricks your
 # window manager, leaving you with only a terminal.
 
-let cfg = config.presets.w3m;
+let cfg = config.programs.presets.w3m;
 
 in {
-  options.presets.w3m.enable = mkEnableOption "Install and configure w3m";
+  options.programs.presets.w3m.enable = mkEnableOption "Install and configure w3m";
 
   config = mkIf cfg.enable {
     programs.w3m = {

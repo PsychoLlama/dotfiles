@@ -2,7 +2,7 @@
 
 with lib;
 
-let cfg = config.presets.programs;
+let cfg = config.programs.presets;
 
 in {
   imports = [
@@ -28,11 +28,11 @@ in {
     ./xh.nix
   ];
 
-  options.presets.programs.enable =
+  options.programs.presets.enable =
     mkEnableOption "Use an opinionated shell environment";
 
   config = mkIf cfg.enable {
-    presets = {
+    programs.presets = {
       bat.enable = mkDefault true;
       bottom.enable = mkDefault true;
       direnv.enable = mkDefault true;

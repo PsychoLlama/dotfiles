@@ -19,6 +19,7 @@ in {
     ./editor.nix
     ./glow.nix
     ./nushell
+    ./presets
     ./w3m.nix
 
     (makeProgramModule "acpi")

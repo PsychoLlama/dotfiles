@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.miniserve;
+let cfg = config.programs.presets.miniserve;
 
 in {
-  options.presets.miniserve.enable =
+  options.programs.presets.miniserve.enable =
     mkEnableOption "Install and configure miniserve";
 
   config.programs.miniserve = mkIf cfg.enable {

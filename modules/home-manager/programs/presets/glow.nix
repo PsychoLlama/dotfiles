@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.glow;
+let cfg = config.programs.presets.glow;
 
 in {
-  options.presets.glow.enable =
+  options.programs.presets.glow.enable =
     mkEnableOption "Use an opinionated install of the Glow markdown viewer";
 
   config = mkIf cfg.enable {

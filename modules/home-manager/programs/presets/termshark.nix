@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.termshark;
+let cfg = config.programs.presets.termshark;
 
 in {
-  options.presets.termshark.enable =
+  options.programs.presets.termshark.enable =
     mkEnableOption "Install and configure termshark";
 
   config.programs.termshark = mkIf cfg.enable {

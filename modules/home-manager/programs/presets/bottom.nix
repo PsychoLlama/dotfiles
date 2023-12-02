@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.bottom;
+let cfg = config.programs.presets.bottom;
 
 in {
-  options.presets.bottom.enable =
+  options.programs.presets.bottom.enable =
     mkEnableOption "Use and configure the bottom process monitor";
 
   config.programs.bottom = mkIf cfg.enable {

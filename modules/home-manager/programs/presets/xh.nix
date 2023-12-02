@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.xh;
+let cfg = config.programs.presets.xh;
 
 in {
-  options.presets.xh.enable =
+  options.programs.presets.xh.enable =
     mkEnableOption "Install and configure xh, a curl alternative";
 
   config.programs.xh = mkIf cfg.enable {

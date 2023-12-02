@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.sshfs;
+let cfg = config.programs.presets.sshfs;
 
 in {
-  options.presets.sshfs.enable = mkEnableOption "Install and configure sshfs";
+  options.programs.presets.sshfs.enable = mkEnableOption "Install and configure sshfs";
 
   # Not enabled by default on macOS (no support for FUSE).
   config.programs.sshfs = mkIf cfg.enable {

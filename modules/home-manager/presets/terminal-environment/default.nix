@@ -18,14 +18,17 @@ in {
   options.presets.terminal-environment.enable =
     mkEnableOption "Use an opinionated terminal environment";
 
-  config.presets = mkIf cfg.enable {
-    alacritty.enable = mkDefault true;
-    nushell.enable = mkDefault true;
-    programs.enable = mkDefault true;
-    auth-agent.enable = mkDefault true;
-    starship.enable = mkDefault true;
-    tmux.enable = mkDefault true;
-    zoxide.enable = mkDefault true;
-    zsh.enable = mkDefault true;
+  config = mkIf cfg.enable {
+    programs.presets.enable = mkDefault true;
+
+    presets = {
+      alacritty.enable = mkDefault true;
+      nushell.enable = mkDefault true;
+      auth-agent.enable = mkDefault true;
+      starship.enable = mkDefault true;
+      tmux.enable = mkDefault true;
+      zoxide.enable = mkDefault true;
+      zsh.enable = mkDefault true;
+    };
   };
 }

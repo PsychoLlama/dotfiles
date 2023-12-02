@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.git;
+let cfg = config.programs.presets.git;
 
 in {
-  options.presets.git.enable =
+  options.programs.presets.git.enable =
     mkEnableOption "Provide an opinionated configuration for git";
 
   config = mkIf cfg.enable {

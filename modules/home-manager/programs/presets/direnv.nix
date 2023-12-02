@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.direnv;
+let cfg = config.programs.presets.direnv;
 
 in {
-  options.presets.direnv.enable = mkEnableOption "Install and configure direnv";
+  options.programs.presets.direnv.enable = mkEnableOption "Install and configure direnv";
   config.programs.direnv = mkIf cfg.enable {
     enable = true;
     enableNushellIntegration = false;

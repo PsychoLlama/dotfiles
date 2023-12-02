@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.eza;
+let cfg = config.programs.presets.eza;
 
 in {
-  options.presets.eza.enable = mkEnableOption "Replace ls with eza";
+  options.programs.presets.eza.enable = mkEnableOption "Replace ls with eza";
 
   config = mkIf cfg.enable {
     programs.eza = {
