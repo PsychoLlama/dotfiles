@@ -4,10 +4,10 @@ with lib;
 
 let
   inherit (config.theme) palette;
-  cfg = config.presets.rofi;
+  cfg = config.programs.presets.rofi;
 
 in {
-  options.presets.rofi.enable = mkEnableOption "Use the rofi launcher";
+  options.programs.presets.rofi.enable = mkEnableOption "Use the rofi launcher";
 
   config.programs.rofi = mkIf cfg.enable {
     enable = true;

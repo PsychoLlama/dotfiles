@@ -3,12 +3,12 @@
 with lib;
 
 let
-  cfg = config.presets.swayidle;
+  cfg = config.services.presets.swayidle;
   swaylock = "${pkgs.swaylock}/bin/swaylock";
   swaymsg = "${pkgs.sway}/bin/swaymsg";
 
 in {
-  options.presets.swayidle.enable =
+  options.services.presets.swayidle.enable =
     mkEnableOption "Automatically lock the computer when inactive";
 
   config.services.swayidle = mkIf cfg.enable {

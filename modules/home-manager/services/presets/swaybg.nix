@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.swaybg;
+let cfg = config.services.presets.swaybg;
 
 in {
-  options.presets.swaybg.enable =
+  options.services.presets.swaybg.enable =
     mkEnableOption "Manage wallpapers with swaybg";
 
   config.services.swaybg = mkIf cfg.enable {

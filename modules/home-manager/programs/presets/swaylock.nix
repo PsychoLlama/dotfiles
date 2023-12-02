@@ -1,14 +1,14 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 
 let
   inherit (config.theme) palette;
-  cfg = config.presets.swaylock;
+  cfg = config.programs.presets.swaylock;
   semi-black = "${palette.normal.black}d9"; # alpha(0.85)
 
 in {
-  options.presets.swaylock.enable =
+  options.programs.presets.swaylock.enable =
     mkEnableOption "Give Swaylock an opinionated configuration";
 
   config.programs.swaylock.settings = mkIf cfg.enable {

@@ -26,5 +26,10 @@
     ./xh.nix
     ./zoxide.nix
     ./zsh.nix
+    ./firefox.nix
+    ./rofi.nix
+    ./swaylock.nix
+    ./waybar.nix
+    ./zathura.nix
   ];
 }

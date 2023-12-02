@@ -2,37 +2,19 @@
 
 with lib;
 
-let cfg = config.presets.desktop-environment;
+let cfg = config.profiles.linux-desktop;
 
 in {
-  imports = [
-    ./dunst.nix
-    ./firefox.nix
-    ./gammastep.nix
-    ./rofi.nix
-    ./sway.nix
-    ./swaybg.nix
-    ./swayidle.nix
-    ./swaylock.nix
-    ./waybar.nix
-    ./zathura.nix
-  ];
-
-  options.presets.desktop-environment.enable =
+  options.profiles.linux-desktop.enable =
     mkEnableOption "Use an opinionated Linux desktop environment";
 
   config = mkIf cfg.enable {
-    presets = {
+    services.presets = {
       dunst.enable = mkDefault true;
-      firefox.enable = mkDefault true;
       gammastep.enable = mkDefault true;
-      rofi.enable = mkDefault true;
       sway.enable = mkDefault true;
       swaybg.enable = mkDefault true;
       swayidle.enable = mkDefault true;
-      swaylock.enable = mkDefault true;
-      waybar.enable = mkDefault true;
-      zathura.enable = mkDefault true;
     };
 
     programs = {
@@ -45,6 +27,14 @@ in {
       slurp.enable = mkDefault true;
       wf-recorder.enable = mkDefault true;
       wl-clipboard.enable = mkDefault true;
+
+      presets = {
+        firefox.enable = mkDefault true;
+        rofi.enable = mkDefault true;
+        swaylock.enable = mkDefault true;
+        waybar.enable = mkDefault true;
+        zathura.enable = mkDefault true;
+      };
     };
   };
 }
