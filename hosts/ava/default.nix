@@ -57,6 +57,7 @@
 
   home-manager.users.${config.dotfiles.user.name} = {
     home.stateVersion = "22.05";
+    home.packages = [ pkgs.man-pages ];
 
     programs.git = {
       userName = "Jesse Gibson";
@@ -68,10 +69,7 @@
       linux-desktop.enable = true;
     };
 
-    presets = {
-      developer.enable = true;
-      fonts.enable = true;
-    };
+    presets.fonts.enable = true;
   };
 
   services = {

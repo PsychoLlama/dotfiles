@@ -1,1 +1,1 @@
-{ imports = [ ./developer.nix ./fonts.nix ]; }
+{ imports = [ ./fonts.nix ]; }
