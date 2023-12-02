@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.tmux;
+let cfg = config.programs.presets.tmux;
 
 in {
-  options.presets.tmux.enable =
+  options.programs.presets.tmux.enable =
     mkEnableOption "Use an opinionated tmux configuration";
 
   config = mkIf cfg.enable {

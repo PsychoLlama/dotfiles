@@ -6,7 +6,8 @@ let cfg = config.services.auth-agent;
 
 in {
   # NOTE: This service used to be called `ssh-agent` but HM 23.11 added
-  # a service with a conflicting name that only works on Linux.
+  # a service with a conflicting name that only works on Linux. I suspect most
+  # macOS users prefer Keychain.
   options.services.auth-agent = {
     enable = mkEnableOption "SSH agent";
     package = mkPackageOption pkgs "openssh" { };

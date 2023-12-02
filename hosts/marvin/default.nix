@@ -15,6 +15,8 @@
 
   home-manager.users.${config.dotfiles.user.name} = {
     home.stateVersion = "22.05";
+
+    # TODO: This was removed. Create an equivalent profile.
     presets.terminal-environment.enable = true;
 
     programs = {

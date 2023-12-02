@@ -63,11 +63,11 @@
       userEmail = "JesseTheGibson@gmail.com";
     };
 
+    profiles.full.enable = true;
     presets = {
       desktop-environment.enable = true;
       developer.enable = true;
       fonts.enable = true;
-      terminal-environment.enable = true;
     };
   };
 

@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.starship;
+let cfg = config.programs.presets.starship;
 
 in {
-  options.presets.starship.enable =
+  options.programs.presets.starship.enable =
     mkEnableOption "Use an opinionated Starship prompt";
 
   config.programs.starship = mkIf cfg.enable {

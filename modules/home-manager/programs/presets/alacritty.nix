@@ -3,11 +3,11 @@
 with lib;
 
 let
-  cfg = config.presets.alacritty;
+  cfg = config.programs.presets.alacritty;
   inherit (config.theme) palette;
 
 in {
-  options.presets.alacritty.enable =
+  options.programs.presets.alacritty.enable =
     mkEnableOption "Use the Alacritty terminal emulator";
 
   config = mkIf cfg.enable {

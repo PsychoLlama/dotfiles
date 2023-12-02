@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.zsh;
+let cfg = config.programs.presets.zsh;
 
 in {
-  options.presets.zsh.enable =
+  options.programs.presets.zsh.enable =
     mkEnableOption "Use an opinionated Zsh configuration";
 
   config.programs.zsh = mkIf cfg.enable {
