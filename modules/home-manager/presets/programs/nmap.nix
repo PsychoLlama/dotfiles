@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.toolkits.networking.nmap;
+let cfg = config.presets.nmap;
 
 in {
-  options.presets.toolkits.networking.nmap.enable =
+  options.presets.nmap.enable =
     mkEnableOption "Install and configure nmap";
 
   config.programs.nmap = mkIf cfg.enable {

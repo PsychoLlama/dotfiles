@@ -21,7 +21,7 @@ in {
   config.presets = mkIf cfg.enable {
     alacritty.enable = mkDefault true;
     nushell.enable = mkDefault true;
-    shell-environment.enable = mkDefault true;
+    programs.enable = mkDefault true;
     auth-agent.enable = mkDefault true;
     starship.enable = mkDefault true;
     tmux.enable = mkDefault true;

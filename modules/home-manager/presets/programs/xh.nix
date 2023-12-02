@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.toolkits.networking.xh;
+let cfg = config.presets.xh;
 
 in {
-  options.presets.toolkits.networking.xh.enable =
+  options.presets.xh.enable =
     mkEnableOption "Install and configure xh, a curl alternative";
 
   config.programs.xh = mkIf cfg.enable {

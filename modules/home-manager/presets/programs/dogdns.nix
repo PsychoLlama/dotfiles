@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.toolkits.networking.dogdns;
+let cfg = config.presets.dogdns;
 
 in {
-  options.presets.toolkits.networking.dogdns.enable =
+  options.presets.dogdns.enable =
     mkEnableOption "Install and configure dog, a DNS client";
 
   config.programs.dogdns = mkIf cfg.enable {

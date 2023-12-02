@@ -3,8 +3,7 @@
     ./desktop-environment
     ./developer.nix
     ./fonts.nix
-    ./shell-environment
+    ./programs
     ./terminal-environment
-    ./toolkits
   ];
 }

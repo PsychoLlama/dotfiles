@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.presets.toolkits.networking.whois;
+let cfg = config.presets.whois;
 
 in {
-  options.presets.toolkits.networking.whois.enable =
+  options.presets.whois.enable =
     mkEnableOption "Install and configure whois";
 
   config.programs.whois = mkIf cfg.enable {

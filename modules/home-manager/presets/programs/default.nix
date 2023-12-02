@@ -2,7 +2,7 @@
 
 with lib;
 
-let cfg = config.presets.shell-environment;
+let cfg = config.presets.programs;
 
 in {
   imports = [
@@ -21,19 +21,23 @@ in {
     ./neovim.nix
     ./sshfs.nix
     ./w3m.nix
+    ./dogdns.nix
+    ./nmap.nix
+    ./termshark.nix
+    ./whois.nix
+    ./xh.nix
   ];
 
-  options.presets.shell-environment.enable =
+  options.presets.programs.enable =
     mkEnableOption "Use an opinionated shell environment";
 
   config = mkIf cfg.enable {
     presets = {
-      toolkits.networking.enable = mkDefault true;
-
       bat.enable = mkDefault true;
       bottom.enable = mkDefault true;
       direnv.enable = mkDefault true;
       dive.enable = mkDefault true;
+      dogdns.enable = mkDefault true;
       eza.enable = mkDefault true;
       fd.enable = mkDefault true;
       fzf.enable = mkDefault true;
@@ -43,8 +47,12 @@ in {
       miniserve.enable = mkDefault true;
       ncspot.enable = mkDefault true;
       neovim.enable = mkDefault true;
+      nmap.enable = mkDefault true;
       sshfs.enable = mkDefault pkgs.stdenv.isLinux;
+      termshark.enable = mkDefault true;
       w3m.enable = mkDefault true;
+      whois.enable = mkDefault true;
+      xh.enable = mkDefault true;
     };
 
     programs = {
