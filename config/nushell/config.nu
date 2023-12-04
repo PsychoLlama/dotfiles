@@ -57,6 +57,9 @@ def gist [
 
   # Show all the metadata
   --long (-l)
+
+  # Open the homepage
+  --open (-o)
 ] {
   let pkg = nix eval --offline --json $"nixpkgs#($pkg_path).meta" | from json
 
@@ -67,6 +70,11 @@ def gist [
 
   if $long {
     return $pkg
+  }
+
+  if $open {
+    start $pkg.homepage
+    return $pkg.homepage
   }
 
   $pkg
