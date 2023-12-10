@@ -4,12 +4,19 @@ with lib;
 
 let
   cfg = config.programs.presets.nushell;
+  jsonFormat = pkgs.formats.json { };
 
-  zoxide-command-setup =
+  zoxideCommandSetup =
     pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
       zoxide init nushell > "$out"
       sed -e 's/def-env/def --env/g' --in-place "$out"
     '';
+
+  # Some modules use POSIX interpolation, which Nushell obviously doesn't
+  # support. Just ignore them.
+  safeSessionVariables =
+    filterAttrs (_: value: strings.hasInfix "\${" value == false)
+    config.home.sessionVariables;
 
 in {
   options.programs.presets.nushell.enable =
@@ -35,7 +42,11 @@ in {
 
       extraConfig = ''
         source ${../../../../config/nushell/config.nu}
-        source ${zoxide-command-setup}
+        source ${zoxideCommandSetup}
+
+        open ${
+          jsonFormat.generate "session-variables.json" safeSessionVariables
+        } | load-env
 
         ${optionalString pkgs.stdenv.isLinux ''
           def ip [...args] {

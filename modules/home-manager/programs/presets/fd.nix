@@ -5,7 +5,8 @@ with lib;
 let cfg = config.programs.presets.fd;
 
 in {
-  options.programs.presets.fd.enable = mkEnableOption "Whether to enable fd-find";
+  options.programs.presets.fd.enable =
+    mkEnableOption "Whether to enable fd-find";
 
   config = mkIf cfg.enable {
     programs.fd = {
