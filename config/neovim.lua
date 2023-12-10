@@ -73,8 +73,8 @@ vim.api.nvim_set_keymap('n', '<leader>[', ':call editor#mappings#explore_current
   { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>p', ':call editor#open_project_root()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
-vim.api.nvim_set_keymap('n', '<leader>f', ':Files!<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>s', ':Rg!<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>f', ':Files<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>b', ':Buffers<cr>', { noremap = true })
 
 -- Copilot.vim
 vim.g.copilot_no_tab_map = true

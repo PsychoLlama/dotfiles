@@ -14,7 +14,7 @@ in {
       c = "git commit";
       b = "git branch";
       ch = "git checkout";
-      h = "git diff HEAD";
+      h = "git diff HEAD --staged";
       hh = "git diff HEAD~1";
       hhh = "git diff HEAD~2";
     };
