@@ -14,9 +14,7 @@ in {
       du-dust.enable = mkDefault true;
       duf.enable = mkDefault true;
       hexyl.enable = mkDefault true;
-      ipfs.enable = mkDefault true;
-      litecli.enable = mkDefault true;
-      lnav.enable = mkDefault true;
+      ipfs.enable = mkDefault pkgs.stdenv.isLinux;
       onefetch.enable = mkDefault true;
       parted.enable = mkDefault pkgs.stdenv.isLinux;
       pv.enable = mkDefault true;
@@ -49,7 +47,6 @@ in {
         tmux.enable = mkDefault true;
         w3m.enable = mkDefault true;
         whois.enable = mkDefault true;
-        xh.enable = mkDefault true;
         zoxide.enable = mkDefault true;
         zsh.enable = mkDefault true;
       };

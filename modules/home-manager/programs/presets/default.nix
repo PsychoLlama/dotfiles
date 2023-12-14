@@ -23,7 +23,6 @@
     ./tmux.nix
     ./w3m.nix
     ./whois.nix
-    ./xh.nix
     ./zoxide.nix
     ./zsh.nix
     ./firefox.nix

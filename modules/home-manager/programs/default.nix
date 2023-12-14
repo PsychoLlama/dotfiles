@@ -33,8 +33,6 @@ in {
     (makeProgramModule "grim")
     (makeProgramModule "hexyl")
     (makeProgramModule "ipfs")
-    (makeProgramModule "litecli")
-    (makeProgramModule "lnav")
     (makeProgramModule "miniserve")
     (makeProgramModule "nmap")
     (makeProgramModule "onefetch")
@@ -51,6 +49,5 @@ in {
     (makeProgramModule "wf-recorder")
     (makeProgramModule "whois")
     (makeProgramModule "wl-clipboard")
-    (makeProgramModule "xh")
   ];
 }
