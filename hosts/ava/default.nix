@@ -51,7 +51,7 @@
     user = {
       name = "overlord";
       description = "Jesse Gibson";
-      extraGroups = [ "docker" ];
+      extraGroups = [ "podman" ];
     };
   };
 
@@ -167,8 +167,10 @@
     };
   };
 
-  # TODO: Figure out why docker service is failing (zfs driver?)
-  virtualisation.docker.enable = false;
+  virtualisation.podman = {
+    enable = true;
+    autoPrune.enable = true;
+  };
 
   fonts.enableDefaultPackages = true;
   hardware.bluetooth.enable = true;
