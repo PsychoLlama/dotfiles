@@ -41,6 +41,8 @@
       url = "github:unisonweb/unison";
       flake = false;
     };
+
+    tree-sitter-remix.url = "github:PsychoLlama/tree-sitter-remix";
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
@@ -55,7 +57,10 @@
       loadPkgs = system:
         import nixpkgs-unstable {
           inherit system;
-          overlays = [ self.overlays.vim-plugins ];
+          overlays = [
+            inputs.tree-sitter-remix.overlays.custom-grammars
+            self.overlays.vim-plugins
+          ];
         };
 
       eachSystem = lib.flip lib.mapAttrs (lib.genAttrs defaultSystems loadPkgs);

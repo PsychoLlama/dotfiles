@@ -100,6 +100,7 @@ in {
       # 3rd party
       deja-view-vim.enable = trueByDefault;
       navitron-nvim.enable = trueByDefault;
+      remix-nvim.enable = trueByDefault;
       teleport-vim.enable = trueByDefault;
       unison-vim.enable = trueByDefault;
       personal-vim-config.enable = trueByDefault;
@@ -143,7 +144,12 @@ in {
       nvim-treesitter-textobjects.enable = trueByDefault;
     };
 
-    extraPlugins = with pkgs.vimPlugins; [ nvim-treesitter.withAllGrammars ];
+    extraPlugins = with pkgs.vimPlugins;
+      [
+        (nvim-treesitter.withPlugins (_:
+          nvim-treesitter.allGrammars
+          ++ [ pkgs.tree-sitter.builtGrammars.tree-sitter-remix ]))
+      ];
 
     extraPackages = with pkgs.unstable; [
       nodejs-18_x

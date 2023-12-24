@@ -20,5 +20,8 @@ in {
       inputs.self.overlays.latest-packages
     else
       (self: pkgs: { unstable = pkgs; }))
-  ] ++ [ inputs.self.overlays.vim-plugins ];
+  ] ++ [
+    inputs.tree-sitter-remix.overlays.custom-grammars
+    inputs.self.overlays.vim-plugins
+  ];
 }

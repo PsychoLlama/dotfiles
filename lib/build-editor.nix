@@ -1,4 +1,4 @@
-{ nixpkgs, nixpkgs-unstable, self, ... }:
+{ nixpkgs, nixpkgs-unstable, tree-sitter-remix, self, ... }:
 { system, config ? { } }:
 
 # This utility exposes the Neovim module outside the typical module system.
@@ -17,7 +17,11 @@ let
 
     specialArgs.pkgs = import nixpkgs {
       inherit system;
-      overlays = [ self.overlays.latest-packages self.overlays.vim-plugins ];
+      overlays = [
+        tree-sitter-remix.overlays.custom-grammars
+        self.overlays.latest-packages
+        self.overlays.vim-plugins
+      ];
     };
   };
 
