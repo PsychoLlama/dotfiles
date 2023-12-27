@@ -4,16 +4,22 @@
   inputs.rust-overlay.url = "github:oxalica/rust-overlay";
 
   outputs = { self, nixpkgs, rust-overlay }:
-    let inherit (nixpkgs) lib;
+    let
+      inherit (nixpkgs) lib;
+
+      overlays = [ (import rust-overlay) ];
+
+      systems =
+        [ "aarch64-linux" "aarch64-darwin" "x86_64-darwin" "x86_64-linux" ];
+
+      eachSystem = lib.flip lib.mapAttrs (lib.genAttrs systems
+        (system: import nixpkgs { inherit system overlays; }));
 
     in {
-      devShell = lib.genAttrs lib.systems.flakeExposed (system:
-        let
-          overlays = [ (import rust-overlay) ];
-          pkgs = import nixpkgs { inherit system overlays; };
-
-        in pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [ rust-bin.stable.latest.complete ];
+      devShell = eachSystem (system: pkgs:
+        pkgs.mkShell {
+          nativeBuildInputs =
+            [ (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml) ];
         });
     };
 }
