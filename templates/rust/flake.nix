@@ -18,7 +18,7 @@
     in {
       devShell = eachSystem (system: pkgs:
         pkgs.mkShell {
-          nativeBuildInputs =
+          packages =
             [ (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml) ];
         });
     };

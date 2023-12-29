@@ -12,7 +12,7 @@
         (lib.genAttrs systems (system: nixpkgs.legacyPackages.${system}));
 
     in {
-      devShell = eachSystem (system: pkgs: pkgs.mkShell { buildInputs = [ ]; });
+      devShell = eachSystem (system: pkgs: pkgs.mkShell { packages = [ ]; });
     };
 }
 
