@@ -254,11 +254,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1703441507,
-        "narHash": "sha256-mvcnBgwNrHW2F1yUuL37d2RFp2Fni90G5E0t4VGB7n4=",
+        "lastModified": 1704134820,
+        "narHash": "sha256-PM1D1FyssXcBX61XYi49WcLOpLtq1TggwEoGV2efgYE=",
         "owner": "PsychoLlama",
         "repo": "tree-sitter-remix",
-        "rev": "70fe85878b900057bf936b7bdb5dbf37e15f4f48",
+        "rev": "56872f1e61bf17728cb76ef888c5907774c7c906",
         "type": "github"
       },
       "original": {
