@@ -4,8 +4,6 @@
   imports = [ ./hardware-configuration.nix ];
 
   boot = {
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
     initrd.supportedFilesystems = [ "zfs" ];
     supportedFilesystems = [ "zfs" ];
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
@@ -16,9 +14,14 @@
     # Also, set a maximum size on the ZFS Adaptive Replacement Cache (1GB).
     kernelParams = [ "nohibernate" "zfs.zfs_arc_max=1073741824" ];
 
-    # Fixes a potential issue where too many hardlinks in the nix store can
-    # brick the boot process.
-    loader.grub.copyKernels = true;
+    loader = {
+      # Fixes a potential issue where too many hardlinks in the nix store can
+      # brick the boot process.
+      grub.copyKernels = true;
+
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+    };
   };
 
   # Network configuration.
@@ -28,9 +31,17 @@
     hostId = "daf96cd8";
   };
 
-  nix.settings = {
-    trusted-users = [ config.dotfiles.user.name ];
-    builders-use-substitutes = true;
+  nix = {
+    settings = {
+      trusted-users = [ config.dotfiles.user.name ];
+      builders-use-substitutes = true;
+    };
+
+    # Prune older entries to avoid running out of space on the boot partition.
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 180d";
+    };
   };
 
   services.openssh.hostKeys = [{
