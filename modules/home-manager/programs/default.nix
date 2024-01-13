@@ -16,6 +16,7 @@ let
 
 in {
   imports = [
+    ./alacritty.nix
     ./editor.nix
     ./glow.nix
     ./nushell
