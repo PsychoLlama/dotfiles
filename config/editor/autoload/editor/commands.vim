@@ -24,6 +24,17 @@ func! editor#commands#node() abort
 endfunc
 
 
+" :Nix
+func! editor#commands#nix() abort
+  new Nix Repl
+  wincmd J
+  resize 10
+  setlocal nonumber signcolumn=no
+  call termopen('nix repl -f flake:nixpkgs --offline')
+  normal! A
+endfunc
+
+
 " :Perm +x
 func! editor#commands#permissions(...) abort
   let l:file_path = expand('%:p')
