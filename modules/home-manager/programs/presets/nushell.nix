@@ -9,7 +9,7 @@ let
   zoxideCommandSetup =
     pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
       zoxide init nushell > "$out"
-      sed -e 's/def-env/def --env/g' --in-place "$out"
+      sed -e 's/-- $rest/-- ...$rest/' --in-place "$out"
     '';
 
   # Some modules use POSIX interpolation, which Nushell obviously doesn't
