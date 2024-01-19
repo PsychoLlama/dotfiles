@@ -51,8 +51,20 @@ in {
         # Preferably `hide_forever`, but people seem to like it.
         mouse.hide_when_typing = true;
 
-        # Start tmux automatically.
-        shell.program = "${pkgs.tmux}/bin/tmux";
+        # Start tmux automatically. Join a session if one already exists.
+        shell.program = pkgs.writeScript "start-tmux" ''
+          first_session="$(
+            ${pkgs.tmux}/bin/tmux list-sessions \
+            -F '#{session_id}' 2>/dev/null \
+            | head -1 || true
+          )"
+
+          if [[ -n "$first_session" ]]; then
+            ${pkgs.tmux}/bin/tmux attach-session -t "$first_session"
+          else
+            ${pkgs.tmux}/bin/tmux new-session
+          fi
+        '';
 
         colors = {
           inherit (palette) normal bright;
