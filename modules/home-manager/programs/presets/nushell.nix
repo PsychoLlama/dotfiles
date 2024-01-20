@@ -30,7 +30,7 @@ in {
       scripts = {
         enable = true;
         package = pkgs.unstable.nu_scripts;
-        completions = [ "cargo" "git" "just" "nix" "npm" ];
+        completions = [ "cargo" "git" "nix" "npm" ];
       };
 
       # Use the default aliases, except for `ls` overrides. Nushell has

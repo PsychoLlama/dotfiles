@@ -17,7 +17,7 @@ def n [...files: path] {
   if ($files | length) == 0 {
     nvim $env.PWD
   } else {
-    nvim -p $files
+    nvim -p ...$files
   }
 }
 
@@ -117,8 +117,8 @@ def "," [
     }
   }
 
-  nix shell (
-    | [$package_name] ++ $extra_packages
+  nix shell ...(
+    | [$package_name ...$extra_packages]
     | each { |ident| canonicalize $ident }
   )
 }
@@ -140,7 +140,7 @@ def encrypt [
     | flatten
   )
 
-  $plaintext | rage --armor $keys -
+  $plaintext | rage --armor ...$keys -
 }
 
 # Decrypt stdin using the SSH private key.
