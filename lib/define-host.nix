@@ -1,4 +1,4 @@
-{ nixpkgs, self, darwin, home-manager, ... }@inputs:
+{ nixpkgs, darwin, home-manager, ... }@inputs:
 
 # Wraps the system builders for NixOS, Darwin, and Home Manager to inject the
 # dotfiles framework and provide base configuration.
@@ -95,7 +95,7 @@ in {
             inputs.self.overlays.vim-plugins
           ];
 
-          nix = rec {
+          nix = {
             package = pkgs.nixUnstable;
             settings.experimental-features = "nix-command flakes";
           };

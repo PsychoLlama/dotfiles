@@ -47,8 +47,7 @@
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
     let
-      dlib = import ./lib inputs; # (d)otfiles lib
-      inherit (nixpkgs) lib;
+      lib = import ./lib inputs;
 
       # The list of systems supported by nixpkgs and hydra.
       defaultSystems =
@@ -66,7 +65,7 @@
       eachSystem = lib.flip lib.mapAttrs (lib.genAttrs defaultSystems loadPkgs);
 
     in {
-      lib = dlib;
+      lib = lib.dotfiles;
 
       nixosModules = {
         darwin = ./modules/darwin;
@@ -82,16 +81,18 @@
       };
 
       nixosConfigurations = {
-        ava = dlib.defineHost.nixosSystem "x86_64-linux" ./hosts/ava;
+        ava = lib.dotfiles.defineHost.nixosSystem "x86_64-linux" ./hosts/ava;
       };
 
       darwinConfigurations = {
-        marvin = dlib.defineHost.darwinSystem "x86_64-darwin" ./hosts/marvin;
+        marvin =
+          lib.dotfiles.defineHost.darwinSystem "x86_64-darwin" ./hosts/marvin;
       };
 
       homeConfigurations = {
         overlord =
-          dlib.defineHost.homeManagerConfiguration "x86_64-linux" ./hosts/tars;
+          lib.dotfiles.defineHost.homeManagerConfiguration "x86_64-linux"
+          ./hosts/tars;
       };
 
       templates = {
@@ -112,7 +113,7 @@
       };
 
       packages = eachSystem (system: pkgs: {
-        editor = dlib.buildEditor {
+        editor = lib.dotfiles.buildEditor {
           inherit system;
           config.presets.base.enable = true;
         };
@@ -121,7 +122,7 @@
       devShell = eachSystem (system: pkgs:
         pkgs.mkShell {
           buildInputs = [
-            (dlib.buildEditor {
+            (lib.dotfiles.buildEditor {
               inherit system;
 
               config = {
