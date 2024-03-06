@@ -18,7 +18,7 @@ in {
       escapeTime = 0;
       historyLimit = 100000;
       keyMode = "vi";
-      shell = "${pkgs.unstable.nushell}/bin/nu";
+      shell = "${config.programs.nushell.package}/bin/nu";
       extraConfig = builtins.readFile ../../../../config/tmux.conf;
     };
 
