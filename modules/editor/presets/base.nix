@@ -88,6 +88,7 @@ in {
       onedarkpro-nvim.enable = trueByDefault;
       splitjoin-vim.enable = trueByDefault;
       undotree.enable = trueByDefault;
+      unison.enable = trueByDefault;
       vader-vim.enable = trueByDefault;
       vim-commentary.enable = trueByDefault;
       vim-endwise.enable = trueByDefault;
@@ -102,7 +103,6 @@ in {
       navitron-nvim.enable = trueByDefault;
       remix-nvim.enable = trueByDefault;
       teleport-vim.enable = trueByDefault;
-      unison-vim.enable = trueByDefault;
       personal-vim-config.enable = trueByDefault;
 
       alternaut-vim = {

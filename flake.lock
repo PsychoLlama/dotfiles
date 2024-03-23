@@ -194,8 +194,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "teleport-vim": "teleport-vim",
-        "tree-sitter-remix": "tree-sitter-remix",
-        "unison-vim": "unison-vim"
+        "tree-sitter-remix": "tree-sitter-remix"
       }
     },
     "rust-overlay": {
@@ -264,22 +263,6 @@
       "original": {
         "owner": "PsychoLlama",
         "repo": "tree-sitter-remix",
-        "type": "github"
-      }
-    },
-    "unison-vim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1711156313,
-        "narHash": "sha256-hHf+lYDPid+MUqUK0aIZuOwXejjpvUbNKtKuvHtY84E=",
-        "owner": "unisonweb",
-        "repo": "unison",
-        "rev": "90cc22c830475e70c536c4148c24c6056b60cba6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "unisonweb",
-        "repo": "unison",
         "type": "github"
       }
     }

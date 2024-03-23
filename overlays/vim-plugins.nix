@@ -13,7 +13,6 @@ let
   extraVimPlugins = mapToVimPlugins {
     inherit (inputs) teleport-vim alternaut-vim navitron-nvim deja-view-vim;
     inherit (inputs.tree-sitter-remix.packages.${pkgs.system}) remix-nvim;
-    unison-vim = "${inputs.unison-vim}/editor-support/vim";
     personal-vim-config = ../config/editor;
   };
 

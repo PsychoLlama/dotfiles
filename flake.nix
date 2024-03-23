@@ -37,11 +37,6 @@
       flake = false;
     };
 
-    unison-vim = {
-      url = "github:unisonweb/unison";
-      flake = false;
-    };
-
     tree-sitter-remix.url = "github:PsychoLlama/tree-sitter-remix";
   };
 
