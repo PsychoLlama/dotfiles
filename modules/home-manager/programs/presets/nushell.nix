@@ -50,7 +50,7 @@ in {
 
         ${optionalString pkgs.stdenv.isLinux ''
           def ip [...args] {
-            ^ip --json $args | from json
+            ^ip --json ...$args | from json
           }
         ''}
       '';
