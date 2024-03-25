@@ -86,7 +86,7 @@ in {
         };
 
         # Achieve some normalcy while switching between macOS and Linux.
-        keybindings = mkIf pkgs.stdenv.isDarwin [
+        keyboard.bindings = mkIf pkgs.stdenv.isDarwin [
           {
             key = "C";
             mods = "Control|Shift";
