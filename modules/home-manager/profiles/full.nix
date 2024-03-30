@@ -18,6 +18,7 @@ in {
       onefetch.enable = mkDefault true;
       parted.enable = mkDefault pkgs.stdenv.isLinux;
       pv.enable = mkDefault true;
+      radare2.enable = mkDefault true;
       rage.enable = mkDefault true;
       ripgrep.enable = mkDefault true;
       tokei.enable = mkDefault true;

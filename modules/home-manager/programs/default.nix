@@ -41,6 +41,7 @@ in {
     (makeProgramModule "parted")
     (makeProgramModule "playerctl")
     (makeProgramModule "pv")
+    (makeProgramModule "radare2")
     (makeProgramModule "rage")
     (makeProgramModule "slurp")
     (makeProgramModule "sshfs")
