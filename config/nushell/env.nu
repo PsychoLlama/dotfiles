@@ -11,7 +11,7 @@ $env.PROMPT_MULTILINE_INDICATOR = { || "" }
 # - converted from a value back to a string when running external commands (to_string)
 # Note: The conversions happen *after* config.nu is loaded
 $env.ENV_CONVERSIONS = {
-  "PATH": {
+  PATH: {
     from_string: { |s| $s | split row (char esep) | path expand -n }
     to_string: { |v| $v | path expand -n | str join (char esep) }
   }

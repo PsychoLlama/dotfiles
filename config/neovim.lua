@@ -142,6 +142,11 @@ require('nvim-treesitter.configs').setup({
   },
 })
 
+---@see https://github.com/nvim-treesitter/nvim-treesitter#adding-parsers
+require('nvim-treesitter.parsers').get_parser_configs().nu = {
+  -- Default settings.
+}
+
 -- Color scheme (VS Code's One Dark Pro theme)
 local onedark = require('onedarkpro')
 local colors = require('onedarkpro.helpers').get_colors('onedark')

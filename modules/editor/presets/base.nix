@@ -147,8 +147,10 @@ in {
     extraPlugins = with pkgs.vimPlugins;
       [
         (nvim-treesitter.withPlugins (_:
-          nvim-treesitter.allGrammars
-          ++ [ pkgs.tree-sitter.builtGrammars.tree-sitter-remix ]))
+          nvim-treesitter.allGrammars ++ [
+            pkgs.tree-sitter.builtGrammars.tree-sitter-remix
+            pkgs.tree-sitter.builtGrammars.tree-sitter-nu
+          ]))
       ];
 
     extraPackages = with pkgs.unstable; [
