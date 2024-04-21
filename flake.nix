@@ -113,26 +113,5 @@
           config.presets.base.enable = true;
         };
       });
-
-      devShell = eachSystem (system: pkgs:
-        pkgs.mkShell {
-          buildInputs = [
-            (lib.dotfiles.buildEditor {
-              inherit system;
-
-              config = {
-                presets.base.enable = true;
-                plugins.personal-vim-config.enable = false;
-
-                # Link to the mutable vim config so it can be edited without
-                # a rebuild. Use `nix shell '.#editor'` to build the final.
-                extraConfig = lib.mkBefore ''
-                  let s:repo = systemlist('git rev-parse --show-toplevel')[0]
-                  exe 'set rtp^=' . s:repo . '/config/editor'
-                '';
-              };
-            })
-          ];
-        });
     };
 }
