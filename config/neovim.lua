@@ -69,8 +69,20 @@ vim.api.nvim_set_keymap('n', '<space>', '<nop>', {})
 vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 
 -- Quick navigation
-vim.api.nvim_set_keymap('n', '<leader>[', ':call editor#mappings#explore_current_dir()<cr>',
-  { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>[', '', {
+  noremap = true,
+  silent = true,
+  callback = function()
+    if vim.tbl_contains({ 'navitron', 'netrw' }, vim.o.filetype) then
+      return
+    end
+
+    local current_file = vim.fn.expand('%:p')
+    local parent_directory = vim.fn.fnamemodify(current_file, ':p:h')
+    require('navitron').open(parent_directory)
+  end
+})
+
 vim.api.nvim_set_keymap('n', '<leader>p', ':call editor#open_project_root()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
 vim.api.nvim_set_keymap('n', '<leader>f', ':Files<cr>', { noremap = true })

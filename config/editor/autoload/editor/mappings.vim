@@ -29,18 +29,6 @@ func! editor#mappings#tab_completion(shifting) abort
   return "\<Tab>"
 endfunc
 
-" :Rexplore only works if the file was opened via netrw.
-func! editor#mappings#explore_current_dir() abort
-  if &filetype is# 'netrw' || &filetype is# 'navitron'
-    return
-  endif
-
-  let l:filename = expand('%:p:t')
-  let l:curdir = expand('%:p:h')
-  execute 'edit ' . fnameescape(l:curdir)
-  call search('\V\^' . l:filename . '\$')
-endfunc
-
 func! editor#mappings#test() abort
   if &filetype !~# '\v(javascript|typescript)'
     echo 'WHAT ARE YOU DOING!'
