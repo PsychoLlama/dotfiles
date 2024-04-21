@@ -173,11 +173,14 @@ local lualine_theme = require('lualine.themes.onedark')
 
 lualine_theme.normal.c.bg = nil
 
--- Disable fg mode colors for the branch name.
-lualine_theme.normal.b.fg = nil
-lualine_theme.insert.b.fg = nil
-lualine_theme.visual.b.fg = nil
-lualine_theme.command.b.fg = nil
+pcall(function()
+  -- Disable fg mode colors for the branch name.
+  -- Unknown why, but sometimes these objects don't exist yet.
+  lualine_theme.normal.b.fg = nil
+  lualine_theme.insert.b.fg = nil
+  lualine_theme.visual.b.fg = nil
+  lualine_theme.command.b.fg = nil
+end)
 
 require('lualine').setup({
   options = {
