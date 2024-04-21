@@ -31,6 +31,12 @@ in {
               settings.nil.formatting.command =
                 [ "${nixfmt}/bin/nixfmt" "--quiet" ];
             };
+
+            nushell = {
+              command = "nu";
+              args = [ "--lsp" ];
+              filetypes = [ "nu" ];
+            };
           };
 
           "coc.preferences.formatOnSave" = true;
