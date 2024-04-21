@@ -172,7 +172,12 @@ vim.api.nvim_set_hl(0, 'CursorLine', {})
 local lualine_theme = require('lualine.themes.onedark')
 
 lualine_theme.normal.c.bg = nil
-lualine_theme.inactive.c.bg = nil
+
+-- Disable fg mode colors for the branch name.
+lualine_theme.normal.b.fg = nil
+lualine_theme.insert.b.fg = nil
+lualine_theme.visual.b.fg = nil
+lualine_theme.command.b.fg = nil
 
 require('lualine').setup({
   options = {
