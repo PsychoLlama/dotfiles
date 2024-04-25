@@ -29,7 +29,7 @@ in {
               filetypes = [ "nix" ];
               rootPatterns = [ "flake.nix" ];
               settings.nil.formatting.command =
-                [ "${nixfmt}/bin/nixfmt" "--quiet" ];
+                [ "${nixfmt-classic}/bin/nixfmt" "--quiet" ];
             };
 
             nushell = {
