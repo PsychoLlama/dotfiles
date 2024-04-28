@@ -8,6 +8,7 @@
     ./dogdns.nix
     ./eza.nix
     ./fd.nix
+    ./firefox.nix
     ./fzf.nix
     ./git.nix
     ./glow.nix
@@ -17,18 +18,18 @@
     ./neovim.nix
     ./nmap.nix
     ./nushell.nix
+    ./rofi.nix
     ./sshfs.nix
     ./starship.nix
+    ./swaylock.nix
     ./termshark.nix
     ./tmux.nix
     ./w3m.nix
+    ./waybar.nix
+    ./wezterm.nix
     ./whois.nix
+    ./zathura.nix
     ./zoxide.nix
     ./zsh.nix
-    ./firefox.nix
-    ./rofi.nix
-    ./swaylock.nix
-    ./waybar.nix
-    ./zathura.nix
   ];
 }
