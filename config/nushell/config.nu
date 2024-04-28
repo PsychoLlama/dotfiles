@@ -2,6 +2,17 @@ $env.config = {
   edit_mode: vi
   shell_integration: true
   show_banner: false
+  footer_mode: 20
+  history: {
+    max_size: 100_000_000_000
+  }
+  table: {
+    mode: psql
+  }
+  cursor_shape: {
+    vi_normal: block
+    vi_insert: line
+  }
   completions: {
     case_sensitive: false
     partial: false
