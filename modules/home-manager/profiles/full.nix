@@ -46,7 +46,6 @@ in {
         starship.enable = mkDefault true;
         termshark.enable = mkDefault true;
         tmux.enable = mkDefault true;
-        w3m.enable = mkDefault true;
         wezterm.enable = mkDefault true;
         whois.enable = mkDefault true;
         zoxide.enable = mkDefault true;

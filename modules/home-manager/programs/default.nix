@@ -21,7 +21,6 @@ in {
     ./glow.nix
     ./nushell
     ./presets
-    ./w3m.nix
 
     (makeProgramModule "acpi")
     (makeProgramModule "binutils")

@@ -24,7 +24,6 @@
     ./swaylock.nix
     ./termshark.nix
     ./tmux.nix
-    ./w3m.nix
     ./waybar.nix
     ./wezterm.nix
     ./whois.nix
