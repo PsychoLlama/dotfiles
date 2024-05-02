@@ -29,14 +29,13 @@ let
   };
 
   # Set reasonable defaults for home-manager as a submodule.
-  hm-submodule = { config, lib, pkgs, ... }: {
+  hm-submodule = { lib, ... }: {
     home-manager = {
       useGlobalPkgs = lib.mkDefault true;
       useUserPackages = lib.mkDefault true;
 
       # Add custom dotfiles modules to the HM framework.
-      users.${config.dotfiles.user.name}.imports =
-        [ inputs.self.nixosModules.home-manager ];
+      sharedModules = [ inputs.self.nixosModules.home-manager ];
     };
   };
 
