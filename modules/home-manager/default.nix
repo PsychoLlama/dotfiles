@@ -1,1 +1,9 @@
-{ imports = [ ./presets ./profiles ./programs ./services ./theme.nix ]; }
+{
+  imports = [
+    ./presets
+    ./profiles
+    ./programs
+    ./services
+    ./theme.nix
+  ];
+}

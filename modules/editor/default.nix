@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -64,9 +69,12 @@ let
       vim.cmd.packadd(plugin_name)
     end)
   '';
-
-in {
-  imports = [ ./plugins.nix ./presets ];
+in
+{
+  imports = [
+    ./plugins.nix
+    ./presets
+  ];
 
   options = {
     enable = mkEnableOption "Whether to enable Neovim";

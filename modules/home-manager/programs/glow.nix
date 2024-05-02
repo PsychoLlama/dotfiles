@@ -1,12 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
 let
   cfg = config.programs.glow;
   yaml = pkgs.formats.yaml { };
-
-in {
+in
+{
   options.programs.glow = {
     enable = mkEnableOption "Enable the Glow markdown viewer";
     package = mkPackageOption pkgs "glow" { };
@@ -20,7 +25,6 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = [ cfg.package ];
-    xdg.configFile."glow/glow.yml".source =
-      yaml.generate "glow-config" cfg.settings;
+    xdg.configFile."glow/glow.yml".source = yaml.generate "glow-config" cfg.settings;
   };
 }

@@ -1,5 +1,14 @@
-{ nixpkgs, nixpkgs-unstable, tree-sitter-remix, self, ... }:
-{ system, config ? { } }:
+{
+  nixpkgs,
+  nixpkgs-unstable,
+  tree-sitter-remix,
+  self,
+  ...
+}:
+{
+  system,
+  config ? { },
+}:
 
 # This utility exposes the Neovim module outside the typical module system.
 # This is useful to export an editor as a flake package output.
@@ -13,7 +22,10 @@ with nixpkgs.lib;
 
 let
   mod = modules.evalModules {
-    modules = [ self.nixosModules.editor { inherit config; } ];
+    modules = [
+      self.nixosModules.editor
+      { inherit config; }
+    ];
 
     specialArgs.pkgs = import nixpkgs {
       inherit system;
@@ -24,5 +36,5 @@ let
       ];
     };
   };
-
-in mod.config.neovim
+in
+mod.config.neovim

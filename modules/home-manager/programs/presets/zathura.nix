@@ -1,14 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
 let
   inherit (config.theme) palette;
   cfg = config.programs.presets.zathura;
-
-in {
-  options.programs.presets.zathura.enable =
-    mkEnableOption "Install and configure Zathura";
+in
+{
+  options.programs.presets.zathura.enable = mkEnableOption "Install and configure Zathura";
 
   config = mkIf cfg.enable {
     programs.zathura = {

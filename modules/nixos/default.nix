@@ -1,1 +1,7 @@
-{ imports = [ ../dotfiles ./presets ./programs ]; }
+{
+  imports = [
+    ../dotfiles
+    ./presets
+    ./programs
+  ];
+}

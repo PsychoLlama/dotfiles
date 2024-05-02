@@ -40,15 +40,26 @@
     tree-sitter-remix.url = "github:PsychoLlama/tree-sitter-remix";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      ...
+    }:
     let
       lib = import ./lib inputs;
 
       # The list of systems supported by nixpkgs and hydra.
-      defaultSystems =
-        [ "aarch64-linux" "aarch64-darwin" "x86_64-darwin" "x86_64-linux" ];
+      defaultSystems = [
+        "aarch64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+        "x86_64-linux"
+      ];
 
-      loadPkgs = system:
+      loadPkgs =
+        system:
         import nixpkgs-unstable {
           inherit system;
           overlays = [
@@ -58,8 +69,8 @@
         };
 
       eachSystem = lib.flip lib.mapAttrs (lib.genAttrs defaultSystems loadPkgs);
-
-    in {
+    in
+    {
       lib = lib.dotfiles;
 
       nixosModules = {
@@ -71,8 +82,7 @@
 
       overlays = {
         vim-plugins = import ./overlays/vim-plugins.nix inputs;
-        latest-packages =
-          import ./overlays/latest-packages.nix nixpkgs-unstable;
+        latest-packages = import ./overlays/latest-packages.nix nixpkgs-unstable;
       };
 
       nixosConfigurations = {
@@ -80,14 +90,11 @@
       };
 
       darwinConfigurations = {
-        marvin =
-          lib.dotfiles.defineHost.darwinSystem "x86_64-darwin" ./hosts/marvin;
+        marvin = lib.dotfiles.defineHost.darwinSystem "x86_64-darwin" ./hosts/marvin;
       };
 
       homeConfigurations = {
-        overlord =
-          lib.dotfiles.defineHost.homeManagerConfiguration "x86_64-linux"
-          ./hosts/tars;
+        overlord = lib.dotfiles.defineHost.homeManagerConfiguration "x86_64-linux" ./hosts/tars;
       };
 
       templates = {
@@ -107,11 +114,13 @@
         };
       };
 
-      packages = eachSystem (system: pkgs: {
-        editor = lib.dotfiles.buildEditor {
-          inherit system;
-          config.presets.base.enable = true;
-        };
-      });
+      packages = eachSystem (
+        system: pkgs: {
+          editor = lib.dotfiles.buildEditor {
+            inherit system;
+            config.presets.base.enable = true;
+          };
+        }
+      );
     };
 }

@@ -1,4 +1,9 @@
-{ nixpkgs, darwin, home-manager, ... }@inputs:
+{
+  nixpkgs,
+  darwin,
+  home-manager,
+  ...
+}@inputs:
 
 # Wraps the system builders for NixOS, Darwin, and Home Manager to inject the
 # dotfiles framework and provide base configuration.
@@ -15,32 +20,42 @@ let
   };
 
   # An opinionated module enabling Nix flakes.
-  nix-flakes = { config, pkgs, inputs, ... }: {
-    nix = rec {
-      package = pkgs.nixUnstable;
-      settings.experimental-features = "nix-command flakes";
-      nixPath = [ "nixpkgs=${registry.nixpkgs.flake}" ];
+  nix-flakes =
+    {
+      config,
+      pkgs,
+      inputs,
+      ...
+    }:
+    {
+      nix = rec {
+        package = pkgs.nixUnstable;
+        settings.experimental-features = "nix-command flakes";
+        nixPath = [ "nixpkgs=${registry.nixpkgs.flake}" ];
 
-      registry = {
-        nixpkgs.flake = inputs.${config.dotfiles.packageSet};
-        dotfiles.flake = inputs.self;
+        registry = {
+          nixpkgs.flake = inputs.${config.dotfiles.packageSet};
+          dotfiles.flake = inputs.self;
+        };
       };
     };
-  };
 
   # Set reasonable defaults for home-manager as a submodule.
-  hm-submodule = { lib, ... }: {
-    home-manager = {
-      useGlobalPkgs = lib.mkDefault true;
-      useUserPackages = lib.mkDefault true;
+  hm-submodule =
+    { lib, ... }:
+    {
+      home-manager = {
+        useGlobalPkgs = lib.mkDefault true;
+        useUserPackages = lib.mkDefault true;
 
-      # Add custom dotfiles modules to the HM framework.
-      sharedModules = [ inputs.self.nixosModules.home-manager ];
+        # Add custom dotfiles modules to the HM framework.
+        sharedModules = [ inputs.self.nixosModules.home-manager ];
+      };
     };
-  };
-
-in {
-  nixosSystem = system: configPath:
+in
+{
+  nixosSystem =
+    system: configPath:
     nixpkgs.lib.nixosSystem {
       inherit system;
 
@@ -59,7 +74,8 @@ in {
       ];
     };
 
-  darwinSystem = system: configPath:
+  darwinSystem =
+    system: configPath:
     darwin.lib.darwinSystem {
       inherit system;
 
@@ -78,7 +94,8 @@ in {
       ];
     };
 
-  homeManagerConfiguration = system: configPath:
+  homeManagerConfiguration =
+    system: configPath:
     home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${system};
       extraSpecialArgs = makeSpecialArgs system;
@@ -86,19 +103,22 @@ in {
       modules = [
         inputs.self.nixosModules.home-manager
 
-        ({ pkgs, ... }: {
-          # TODO: Allow configuring the package set through home-manager.
-          # Currently it assumes a NixOS/Darwin layer.
-          nixpkgs.overlays = [
-            inputs.self.overlays.latest-packages
-            inputs.self.overlays.vim-plugins
-          ];
+        (
+          { pkgs, ... }:
+          {
+            # TODO: Allow configuring the package set through home-manager.
+            # Currently it assumes a NixOS/Darwin layer.
+            nixpkgs.overlays = [
+              inputs.self.overlays.latest-packages
+              inputs.self.overlays.vim-plugins
+            ];
 
-          nix = {
-            package = pkgs.nixUnstable;
-            settings.experimental-features = "nix-command flakes";
-          };
-        })
+            nix = {
+              package = pkgs.nixUnstable;
+              settings.experimental-features = "nix-command flakes";
+            };
+          }
+        )
 
         # Host config.
         configPath

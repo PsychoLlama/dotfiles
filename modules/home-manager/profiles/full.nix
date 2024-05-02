@@ -1,12 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.profiles.full;
-
-in {
-  options.profiles.full.enable =
-    mkEnableOption "Enable all dotfiles programs and services";
+let
+  cfg = config.profiles.full;
+in
+{
+  options.profiles.full.enable = mkEnableOption "Enable all dotfiles programs and services";
 
   config = mkIf cfg.enable {
     programs = {

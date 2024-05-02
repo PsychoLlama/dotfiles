@@ -2,11 +2,11 @@
 
 with lib;
 
-let cfg = config.dotfiles.presets.kitchen-sink;
-
-in {
-  options.dotfiles.presets.kitchen-sink.enable =
-    mkEnableOption "Enable everything by default";
+let
+  cfg = config.dotfiles.presets.kitchen-sink;
+in
+{
+  options.dotfiles.presets.kitchen-sink.enable = mkEnableOption "Enable everything by default";
 
   config.dotfiles.presets = mkIf cfg.enable {
     desktop-environment.enable = mkDefault true;

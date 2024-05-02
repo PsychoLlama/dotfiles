@@ -1,12 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.programs.presets.starship;
-
-in {
-  options.programs.presets.starship.enable =
-    mkEnableOption "Use an opinionated Starship prompt";
+let
+  cfg = config.programs.presets.starship;
+in
+{
+  options.programs.presets.starship.enable = mkEnableOption "Use an opinionated Starship prompt";
 
   config.programs.starship = mkIf cfg.enable {
     enable = true;

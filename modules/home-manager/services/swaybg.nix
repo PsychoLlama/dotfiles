@@ -1,10 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.services.swaybg;
-
-in {
+let
+  cfg = config.services.swaybg;
+in
+{
   options.services.swaybg = {
     enable = mkEnableOption "Enable the swaybg wallpaper daemon";
     package = mkPackageOption pkgs "swaybg" { };
@@ -16,8 +22,14 @@ in {
     };
 
     mode = mkOption {
-      type =
-        types.enum [ "fill" "stretch" "center" "tile" "fit" "solid_color" ];
+      type = types.enum [
+        "fill"
+        "stretch"
+        "center"
+        "tile"
+        "fit"
+        "solid_color"
+      ];
       default = "fill";
       description = "How to fit the background image.";
     };
@@ -30,7 +42,12 @@ in {
     };
 
     image = mkOption {
-      type = types.nullOr (types.oneOf [ types.path types.str ]);
+      type = types.nullOr (
+        types.oneOf [
+          types.path
+          types.str
+        ]
+      );
       default = null;
       description = "Path to a background image relative to $HOME.";
       example = "./Pictures/wallpaper.png";
@@ -50,13 +67,15 @@ in {
       Service = {
         Type = "simple";
         ExecStart = "${cfg.package}/bin/swaybg ${
-            concatStringsSep " " (cli.toGNUCommandLine { } {
+          concatStringsSep " " (
+            cli.toGNUCommandLine { } {
               image = cfg.image;
               output = cfg.output;
               mode = cfg.mode;
               color = cfg.color;
-            })
-          }";
+            }
+          )
+        }";
       };
     };
   };

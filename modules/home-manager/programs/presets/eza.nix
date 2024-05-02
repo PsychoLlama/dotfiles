@@ -1,10 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.programs.presets.eza;
-
-in {
+let
+  cfg = config.programs.presets.eza;
+in
+{
   options.programs.presets.eza.enable = mkEnableOption "Replace ls with eza";
 
   config = mkIf cfg.enable {

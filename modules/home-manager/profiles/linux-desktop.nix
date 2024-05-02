@@ -2,11 +2,11 @@
 
 with lib;
 
-let cfg = config.profiles.linux-desktop;
-
-in {
-  options.profiles.linux-desktop.enable =
-    mkEnableOption "Use an opinionated Linux desktop environment";
+let
+  cfg = config.profiles.linux-desktop;
+in
+{
+  options.profiles.linux-desktop.enable = mkEnableOption "Use an opinionated Linux desktop environment";
 
   config = mkIf cfg.enable {
     services.presets = {

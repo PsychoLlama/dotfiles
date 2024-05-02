@@ -1,12 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.services.presets.dunst;
-
-in {
-  options.services.presets.dunst.enable =
-    mkEnableOption "Use the dunst notification daemon";
+let
+  cfg = config.services.presets.dunst;
+in
+{
+  options.services.presets.dunst.enable = mkEnableOption "Use the dunst notification daemon";
 
   config.services.dunst = mkIf cfg.enable {
     enable = true;

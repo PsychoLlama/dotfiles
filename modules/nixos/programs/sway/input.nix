@@ -1,28 +1,43 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 
 let
   cfg = config.programs.sway;
-  generateSwayInputsConfig = inputs:
+  generateSwayInputsConfig =
+    inputs:
     let
-      inputDefinitions = mapAttrsToList (inputName: inputs:
+      inputDefinitions = mapAttrsToList (
+        inputName: inputs:
         let
-          fieldDefinitions = mapAttrsToList
-            (fieldName: field: "${fieldName} ${builtins.toString field}")
-            inputs;
-
-        in ''
+          fieldDefinitions = mapAttrsToList (
+            fieldName: field: "${fieldName} ${builtins.toString field}"
+          ) inputs;
+        in
+        ''
           input "${inputName}" {
             ${concatStringsSep "\n  " fieldDefinitions}
           }
-        '') inputs;
-
-    in concatStringsSep "\n" inputDefinitions;
-
-in {
+        ''
+      ) inputs;
+    in
+    concatStringsSep "\n" inputDefinitions;
+in
+{
   options.programs.sway.input = mkOption {
-    type = types.attrsOf (types.attrsOf (types.oneOf [ types.str types.int ]));
+    type = types.attrsOf (
+      types.attrsOf (
+        types.oneOf [
+          types.str
+          types.int
+        ]
+      )
+    );
     description = "Settings for Sway input devices";
     example = literalExpression ''
       sway.input."AT_Keyboard" = {

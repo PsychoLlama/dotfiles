@@ -6,10 +6,9 @@ let
   inherit (config.theme) palette;
   cfg = config.programs.presets.swaylock;
   semi-black = "${palette.normal.black}d9"; # alpha(0.85)
-
-in {
-  options.programs.presets.swaylock.enable =
-    mkEnableOption "Give Swaylock an opinionated configuration";
+in
+{
+  options.programs.presets.swaylock.enable = mkEnableOption "Give Swaylock an opinionated configuration";
 
   config.programs.swaylock.settings = mkIf cfg.enable {
     image = "attic/images/wallpapers/current";

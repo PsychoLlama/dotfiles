@@ -1,10 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.services.auth-agent;
-
-in {
+let
+  cfg = config.services.auth-agent;
+in
+{
   # NOTE: This service used to be called `ssh-agent` but HM 23.11 added
   # a service with a conflicting name that only works on Linux. I suspect most
   # macOS users prefer Keychain.
@@ -49,13 +55,16 @@ in {
           KeepAlive = true;
           RunAtLoad = true;
           ProgramArguments = [
-            (let
-              socket = "/tmp/${cfg.socket}";
-              scriptPath = pkgs.writers.writeBash "auth-agent-service" ''
-                ${pkgs.coreutils}/bin/rm -f ${escapeShellArg socket}
-                ${cfg.package}/bin/ssh-agent -D -a ${escapeShellArg socket}
-              '';
-            in toString scriptPath)
+            (
+              let
+                socket = "/tmp/${cfg.socket}";
+                scriptPath = pkgs.writers.writeBash "auth-agent-service" ''
+                  ${pkgs.coreutils}/bin/rm -f ${escapeShellArg socket}
+                  ${cfg.package}/bin/ssh-agent -D -a ${escapeShellArg socket}
+                '';
+              in
+              toString scriptPath
+            )
           ];
         };
       };

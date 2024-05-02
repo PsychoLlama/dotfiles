@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -8,8 +13,8 @@ let
   configDir = pkgs.linkFarm "coc-settings" {
     "coc-settings.json" = jsonFormat.generate "coc-settings.json" cfg.settings;
   };
-
-in {
+in
+{
   options.plugins.coc-nvim.settings = mkOption {
     type = jsonFormat.type;
     default = { };

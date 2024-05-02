@@ -1,11 +1,19 @@
 let
   # Define a simple `programs.<name>` module that installs and configures an
   # arbitrary package.
-  makeProgramModule = pkgName:
-    { config, lib, pkgs, ... }:
-    let cfg = config.programs.${pkgName};
-
-    in with lib; {
+  makeProgramModule =
+    pkgName:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    let
+      cfg = config.programs.${pkgName};
+    in
+    with lib;
+    {
       options.programs.${pkgName} = {
         enable = mkEnableOption "Whether to install ${pkgName}";
         package = mkPackageOption pkgs pkgName { };
@@ -13,8 +21,8 @@ let
 
       config.home.packages = mkIf cfg.enable [ cfg.package ];
     };
-
-in {
+in
+{
   imports = [
     ./alacritty.nix
     ./editor.nix

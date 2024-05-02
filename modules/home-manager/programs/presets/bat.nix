@@ -1,10 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.programs.presets.bat;
-
-in {
+let
+  cfg = config.programs.presets.bat;
+in
+{
   options.programs.presets.bat.enable = mkEnableOption "Replace cat with bat";
 
   config = mkIf cfg.enable {

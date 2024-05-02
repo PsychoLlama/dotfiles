@@ -1,12 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.services.presets.gammastep;
-
-in {
-  options.services.presets.gammastep.enable =
-    mkEnableOption "Use the gammastep blue light filter";
+let
+  cfg = config.services.presets.gammastep;
+in
+{
+  options.services.presets.gammastep.enable = mkEnableOption "Use the gammastep blue light filter";
 
   config.services.gammastep = mkIf cfg.enable {
     enable = true;

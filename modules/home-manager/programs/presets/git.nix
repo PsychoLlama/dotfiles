@@ -2,11 +2,11 @@
 
 with lib;
 
-let cfg = config.programs.presets.git;
-
-in {
-  options.programs.presets.git.enable =
-    mkEnableOption "Provide an opinionated configuration for git";
+let
+  cfg = config.programs.presets.git;
+in
+{
+  options.programs.presets.git.enable = mkEnableOption "Provide an opinionated configuration for git";
 
   config = mkIf cfg.enable {
     home.shellAliases = {
@@ -26,8 +26,7 @@ in {
         a = "add --all";
         d = "diff";
         b = "branch";
-        l =
-          "log -1000 --format='%Cgreen%h%Creset: %an (%C(yellow)%ar%Creset)%n%s%n%n%b'";
+        l = "log -1000 --format='%Cgreen%h%Creset: %an (%C(yellow)%ar%Creset)%n%s%n%n%b'";
         f = "fetch origin";
         r = "reset";
         rr = "reset --hard HEAD";

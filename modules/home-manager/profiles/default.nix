@@ -1,1 +1,6 @@
-{ imports = [ ./full.nix ./linux-desktop.nix ]; }
+{
+  imports = [
+    ./full.nix
+    ./linux-desktop.nix
+  ];
+}

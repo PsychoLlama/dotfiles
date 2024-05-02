@@ -1,14 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
 let
   cfg = config.programs.presets.alacritty;
   inherit (config.theme) palette;
-
-in {
-  options.programs.presets.alacritty.enable =
-    mkEnableOption "Use the Alacritty terminal emulator";
+in
+{
+  options.programs.presets.alacritty.enable = mkEnableOption "Use the Alacritty terminal emulator";
 
   config = mkIf cfg.enable {
     programs.rofi.terminal = "alacritty";

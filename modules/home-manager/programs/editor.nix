@@ -1,14 +1,22 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.programs.editor;
-
-in {
+let
+  cfg = config.programs.editor;
+in
+{
   options.programs.editor = mkOption {
     type = types.submoduleWith {
       modules = [ ../../editor ];
-      specialArgs = { inherit pkgs; };
+      specialArgs = {
+        inherit pkgs;
+      };
     };
 
     description = "Configure and install the Neovim editor";

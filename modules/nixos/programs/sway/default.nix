@@ -2,9 +2,10 @@
 
 with lib;
 
-let cfg = config.programs.sway;
-
-in {
+let
+  cfg = config.programs.sway;
+in
+{
   imports = [ ./input.nix ];
 
   options.programs.sway = {

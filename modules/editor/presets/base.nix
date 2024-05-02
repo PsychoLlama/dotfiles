@@ -1,12 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
 let
   trueByDefault = mkDefault true;
   cfg = config.presets.base;
-
-in {
+in
+{
   options.presets.base.enable = mkEnableOption "Create an opinionated editor";
 
   config = mkIf cfg.enable {
@@ -28,8 +33,10 @@ in {
               command = "${nil}/bin/nil";
               filetypes = [ "nix" ];
               rootPatterns = [ "flake.nix" ];
-              settings.nil.formatting.command =
-                [ "${nixfmt-rfc-style}/bin/nixfmt" "--quiet" ];
+              settings.nil.formatting.command = [
+                "${nixfmt-rfc-style}/bin/nixfmt"
+                "--quiet"
+              ];
             };
 
             nushell = {
@@ -116,7 +123,10 @@ in {
 
         patterns = rec {
           python = {
-            file_naming_conventions = [ "test_{name}.{ext}" "{name}.{ext}" ];
+            file_naming_conventions = [
+              "test_{name}.{ext}"
+              "{name}.{ext}"
+            ];
             directory_naming_conventions = [ "tests" ];
             file_extensions = [ "py" ];
           };
@@ -131,17 +141,26 @@ in {
           "typescript.tsx" = typescript;
           "typescriptreact" = typescript;
           typescript = {
-            file_naming_conventions =
-              [ "{name}.test.{ext}" "{name}.test.unit.{ext}" ];
+            file_naming_conventions = [
+              "{name}.test.{ext}"
+              "{name}.test.unit.{ext}"
+            ];
             directory_naming_conventions = [ "__tests__" ];
-            file_extensions = [ "ts" "tsx" "js" ];
+            file_extensions = [
+              "ts"
+              "tsx"
+              "js"
+            ];
           };
 
           vader = vim;
           vim = {
             file_naming_conventions = [ "{name}.{ext}" ];
             directory_naming_conventions = [ "tests" ];
-            file_extensions = [ "vim" "vader" ];
+            file_extensions = [
+              "vim"
+              "vader"
+            ];
           };
         };
       };
@@ -150,14 +169,16 @@ in {
       nvim-treesitter-textobjects.enable = trueByDefault;
     };
 
-    extraPlugins = with pkgs.vimPlugins;
-      [
-        (nvim-treesitter.withPlugins (_:
-          nvim-treesitter.allGrammars ++ [
-            pkgs.tree-sitter.builtGrammars.tree-sitter-remix
-            pkgs.tree-sitter.builtGrammars.tree-sitter-nu
-          ]))
-      ];
+    extraPlugins = with pkgs.vimPlugins; [
+      (nvim-treesitter.withPlugins (
+        _:
+        nvim-treesitter.allGrammars
+        ++ [
+          pkgs.tree-sitter.builtGrammars.tree-sitter-remix
+          pkgs.tree-sitter.builtGrammars.tree-sitter-nu
+        ]
+      ))
+    ];
 
     extraPackages = with pkgs.unstable; [
       nodejs-18_x

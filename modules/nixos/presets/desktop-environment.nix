@@ -2,11 +2,11 @@
 
 with lib;
 
-let cfg = config.dotfiles.presets.desktop-environment;
-
-in {
-  options.dotfiles.presets.desktop-environment.enable =
-    mkEnableOption "Configure a desktop environment";
+let
+  cfg = config.dotfiles.presets.desktop-environment;
+in
+{
+  options.dotfiles.presets.desktop-environment.enable = mkEnableOption "Configure a desktop environment";
 
   config = mkIf cfg.enable {
     services.printing.enable = mkDefault true;

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -6,18 +11,19 @@ let
   cfg = config.services.presets.swayidle;
   swaylock = "${pkgs.swaylock}/bin/swaylock";
   swaymsg = "${pkgs.sway}/bin/swaymsg";
-
-in {
-  options.services.presets.swayidle.enable =
-    mkEnableOption "Automatically lock the computer when inactive";
+in
+{
+  options.services.presets.swayidle.enable = mkEnableOption "Automatically lock the computer when inactive";
 
   config.services.swayidle = mkIf cfg.enable {
     enable = true;
 
-    events = [{
-      event = "before-sleep";
-      command = swaylock;
-    }];
+    events = [
+      {
+        event = "before-sleep";
+        command = swaylock;
+      }
+    ];
 
     # Lock the screen after 15 minutes of inactivity, then turn off the
     # displays after another 2 minutes, and turn back on when resumed.

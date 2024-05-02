@@ -1,10 +1,17 @@
-{ config, lib, options, pkgs, ... }:
+{
+  config,
+  lib,
+  options,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.dotfiles.user;
-
-in {
+let
+  cfg = config.dotfiles.user;
+in
+{
   # Create a personal user profile. Other modules depend on this.
   options.dotfiles.user = mkOption {
     type = types.nullOr types.attrs;

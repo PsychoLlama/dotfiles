@@ -39,8 +39,8 @@ let
       };
     };
   };
-
-in {
+in
+{
   options.theme = {
     name = mkOption {
       type = types.enum (attrNames cfg.palettes);

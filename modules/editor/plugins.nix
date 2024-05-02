@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -7,22 +12,23 @@ let
   enabledVimPluginSet = filterAttrs (k: v: v.enable) config.plugins;
 
   # A list of the enabled plugins. [ <derivation> ]
-  enabledPluginPackages =
-    mapAttrsToList (pluginName: _: pkgs.vimPlugins.${pluginName})
-    enabledVimPluginSet;
+  enabledPluginPackages = mapAttrsToList (
+    pluginName: _: pkgs.vimPlugins.${pluginName}
+  ) enabledVimPluginSet;
 
   # Attrset of enabled plugins that define a config.
-  enabledPluginsWithConfig =
-    filterAttrs (pluginName: plugin: plugin.extraConfig != "")
-    enabledVimPluginSet;
+  enabledPluginsWithConfig = filterAttrs (
+    pluginName: plugin: plugin.extraConfig != ""
+  ) enabledVimPluginSet;
 
   # `:source` commands for every plugin that defines a config.
-  enabledPluginConfigs = concatMapStringsSep "\n" (config: "source ${config}")
-    (mapAttrsToList (pluginName: plugin:
-      pkgs.writeText "${pluginName}-config.vim" plugin.extraConfig)
-      enabledPluginsWithConfig);
-
-in {
+  enabledPluginConfigs = concatMapStringsSep "\n" (config: "source ${config}") (
+    mapAttrsToList (
+      pluginName: plugin: pkgs.writeText "${pluginName}-config.vim" plugin.extraConfig
+    ) enabledPluginsWithConfig
+  );
+in
+{
   imports = [ ./plugins ];
 
   # Generate an option for every vim plugin.

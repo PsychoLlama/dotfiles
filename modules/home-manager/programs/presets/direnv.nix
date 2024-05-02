@@ -1,17 +1,22 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.programs.presets.direnv;
-
-in {
+let
+  cfg = config.programs.presets.direnv;
+in
+{
   options.programs.presets.direnv.enable = mkEnableOption "Install and configure direnv";
   config.programs.direnv = mkIf cfg.enable {
     enable = true;
     enableNushellIntegration = false;
     nix-direnv.enable = true;
-    config.whitelist.prefix =
-      [ "${config.home.homeDirectory}/projects/psychollama" ];
+    config.whitelist.prefix = [ "${config.home.homeDirectory}/projects/psychollama" ];
   };
 
   # Forked from home-manager. Nushell removed the `let-env` command.

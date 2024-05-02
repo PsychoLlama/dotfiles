@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -7,22 +12,26 @@ let
 
   # Convert the color palette to a flat list of colors.
   # { bright-red = "<hex>"; normal-red = "<hex>"; ... }
-  colors = let
-    inherit (mapAttrs (style: colors:
-      concatMapAttrs (id: color: { ${style + "-" + id} = color; }) colors)
-      config.theme.palette)
-      bright normal;
-
-  in mergeAttrs bright normal;
+  colors =
+    let
+      inherit
+        (mapAttrs (
+          style: colors: concatMapAttrs (id: color: { ${style + "-" + id} = color; }) colors
+        ) config.theme.palette)
+        bright
+        normal
+        ;
+    in
+    mergeAttrs bright normal;
 
   # Convert the color palette to GTK CSS color definitions.
   # "@define-color bright-red <hex>;"
-  gtk-css-color-defs = concatStringsSep "\n"
-    (mapAttrsToList (name: value: "@define-color ${name} ${value};") colors);
-
-in {
-  options.programs.presets.waybar.enable =
-    mkEnableOption "Install and configure Waybar";
+  gtk-css-color-defs = concatStringsSep "\n" (
+    mapAttrsToList (name: value: "@define-color ${name} ${value};") colors
+  );
+in
+{
+  options.programs.presets.waybar.enable = mkEnableOption "Install and configure Waybar";
 
   config.programs.waybar = mkIf cfg.enable {
     enable = true;
@@ -79,7 +88,13 @@ in {
         format-charging = "{capacity}% ";
         format-plugged = "{capacity}% ";
         format-alt = "{time} {icon}";
-        format-icons = [ "" "" "" "" "" ];
+        format-icons = [
+          ""
+          ""
+          ""
+          ""
+          ""
+        ];
       };
 
       network = {
@@ -99,7 +114,11 @@ in {
         format-source-muted = "";
         format-icons = {
           headphone = "";
-          default = [ "" "" "" ];
+          default = [
+            ""
+            ""
+            ""
+          ];
         };
       };
     };

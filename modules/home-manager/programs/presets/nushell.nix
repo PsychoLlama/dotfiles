@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -6,21 +11,19 @@ let
   cfg = config.programs.presets.nushell;
   jsonFormat = pkgs.formats.json { };
 
-  zoxideCommandSetup =
-    pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
-      zoxide init nushell > "$out"
-      sed -e 's/-- $rest/-- ...$rest/' --in-place "$out"
-    '';
+  zoxideCommandSetup = pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
+    zoxide init nushell > "$out"
+    sed -e 's/-- $rest/-- ...$rest/' --in-place "$out"
+  '';
 
   # Some modules use POSIX interpolation, which Nushell obviously doesn't
   # support. Just ignore them.
-  safeSessionVariables =
-    filterAttrs (_: value: strings.hasInfix "\${" value == false)
-    config.home.sessionVariables;
-
-in {
-  options.programs.presets.nushell.enable =
-    mkEnableOption "Install and configure Nushell";
+  safeSessionVariables = filterAttrs (
+    _: value: strings.hasInfix "\${" value == false
+  ) config.home.sessionVariables;
+in
+{
+  options.programs.presets.nushell.enable = mkEnableOption "Install and configure Nushell";
 
   config.programs = mkIf cfg.enable {
     nushell = {
@@ -30,23 +33,25 @@ in {
       scripts = {
         enable = true;
         package = pkgs.unstable.nu_scripts;
-        completions = [ "cargo" "git" "nix" "npm" ];
+        completions = [
+          "cargo"
+          "git"
+          "nix"
+          "npm"
+        ];
       };
 
       # Use the default aliases, except for `ls` overrides. Nushell has
       # a great `ls` replacement.
-      shellAliases = filterAttrs (key: value: key != "l" && key != "ls")
-        config.home.shellAliases // {
-          l = "ls --all";
-        };
+      shellAliases = filterAttrs (key: value: key != "l" && key != "ls") config.home.shellAliases // {
+        l = "ls --all";
+      };
 
       extraConfig = ''
         source ${../../../../config/nushell/config.nu}
         source ${zoxideCommandSetup}
 
-        open ${
-          jsonFormat.generate "session-variables.json" safeSessionVariables
-        } | load-env
+        open ${jsonFormat.generate "session-variables.json" safeSessionVariables} | load-env
 
         ${optionalString pkgs.stdenv.isLinux ''
           def ip [...args] {

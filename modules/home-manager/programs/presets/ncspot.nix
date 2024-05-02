@@ -1,10 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
-let cfg = config.programs.presets.ncspot;
-
-in {
+let
+  cfg = config.programs.presets.ncspot;
+in
+{
   options.programs.presets.ncspot.enable = mkEnableOption "Install and configure ncspot";
 
   config.programs.ncspot = mkIf cfg.enable {
@@ -13,7 +19,13 @@ in {
 
     settings = {
       flip_status_indicator = true;
-      library_tabs = [ "playlists" "albums" "artists" "tracks" "browse" ];
+      library_tabs = [
+        "playlists"
+        "albums"
+        "artists"
+        "tracks"
+        "browse"
+      ];
       repeat = "off";
       shuffle = false;
       use_nerdfont = true;

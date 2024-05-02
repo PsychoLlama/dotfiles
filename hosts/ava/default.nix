@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -12,7 +17,10 @@
     # https://github.com/openzfs/zfs/issues/260
     #
     # Also, set a maximum size on the ZFS Adaptive Replacement Cache (1GB).
-    kernelParams = [ "nohibernate" "zfs.zfs_arc_max=1073741824" ];
+    kernelParams = [
+      "nohibernate"
+      "zfs.zfs_arc_max=1073741824"
+    ];
 
     loader = {
       # Fixes a potential issue where too many hardlinks in the nix store can
@@ -44,11 +52,13 @@
     };
   };
 
-  services.openssh.hostKeys = [{
-    type = "ed25519";
-    path = "/root/.ssh/home_lab";
-    comment = "Home Lab deploy key";
-  }];
+  services.openssh.hostKeys = [
+    {
+      type = "ed25519";
+      path = "/root/.ssh/home_lab";
+      comment = "Home Lab deploy key";
+    }
+  ];
 
   environment = {
     systemPackages = with pkgs.unstable; [ borgbackup ];
@@ -110,21 +120,22 @@
         # A general-purpose box for reliable storage.
         folders."/home/overlord/attic" = {
           id = "attic";
-          devices = [ "file-server" "phone" ];
+          devices = [
+            "file-server"
+            "phone"
+          ];
           label = "Attic";
         };
 
         devices = {
           file-server = {
             addresses = [ "tcp://rpi3-002.host.selfhosted.city" ];
-            id =
-              "MLM3RUS-6LHM76Q-OPW5UIC-EAH7EUM-ZNG6TJW-TDASURZ-GCZ2YOX-ASNI6Q4";
+            id = "MLM3RUS-6LHM76Q-OPW5UIC-EAH7EUM-ZNG6TJW-TDASURZ-GCZ2YOX-ASNI6Q4";
           };
 
           phone = {
             addresses = [ "dynamic" ];
-            id =
-              "S2U7KKV-SXJGOI3-6MSJWIT-U2JP32Y-HH7WZU5-ZDS6KAT-6CNYRAM-ZQTWZAQ";
+            id = "S2U7KKV-SXJGOI3-6MSJWIT-U2JP32Y-HH7WZU5-ZDS6KAT-6CNYRAM-ZQTWZAQ";
           };
         };
       };
@@ -160,21 +171,16 @@
         User root
       '';
 
-      knownHosts = lib.mapAttrs' (hostName: publicKey:
-        lib.nameValuePair "${hostName}.host.selfhosted.city" {
-          inherit publicKey;
-        }) {
-          rpi4-001 =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyb4vh9xDEEV+30G0UPMTSdtVq3Tyfgl9I9VRwf226v";
-          rpi4-002 =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLMZ6+HaPahE4gGIAWW/uGIl/y40p/rSfIhb5t4G+g9";
-          rpi4-003 =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFsNbo3bbm0G11GAbRwnr944AitRyqoQMN4LG7rMsvpK";
-          rpi3-001 =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2VZGgphnMAD5tLG+IHBlBWdlUPNfvYEMDK8OQCrG/A";
-          rpi3-002 =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKrGfslz9RlB2EzrTL3SfO/NZB5fPiVXWkK+aQRZrlel";
-        };
+      knownHosts =
+        lib.mapAttrs'
+          (hostName: publicKey: lib.nameValuePair "${hostName}.host.selfhosted.city" { inherit publicKey; })
+          {
+            rpi4-001 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyb4vh9xDEEV+30G0UPMTSdtVq3Tyfgl9I9VRwf226v";
+            rpi4-002 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLMZ6+HaPahE4gGIAWW/uGIl/y40p/rSfIhb5t4G+g9";
+            rpi4-003 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFsNbo3bbm0G11GAbRwnr944AitRyqoQMN4LG7rMsvpK";
+            rpi3-001 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2VZGgphnMAD5tLG+IHBlBWdlUPNfvYEMDK8OQCrG/A";
+            rpi3-002 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKrGfslz9RlB2EzrTL3SfO/NZB5fPiVXWkK+aQRZrlel";
+          };
     };
   };
 

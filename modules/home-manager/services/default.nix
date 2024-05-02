@@ -1,1 +1,7 @@
-{ imports = [ ./auth-agent.nix ./presets ./swaybg.nix ]; }
+{
+  imports = [
+    ./auth-agent.nix
+    ./presets
+    ./swaybg.nix
+  ];
+}
