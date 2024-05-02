@@ -25,10 +25,11 @@ You can enable everything, or pick out the bits you like by enabling them piecem
 
     # Or choose your own adventure.
     presets = {
-      god-mode.enable = true;
       network-management.enable = true;
+      greetd.enable = true;
     };
   };
+};
 ```
 
 It also integrates and extends the [home-manager](https://github.com/nix-community/home-manager) framework to provide cross-platform support:

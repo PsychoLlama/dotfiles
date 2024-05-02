@@ -10,7 +10,6 @@ in {
 
   config.dotfiles.presets = mkIf cfg.enable {
     desktop-environment.enable = mkDefault true;
-    god-mode.enable = mkDefault true;
     greetd.enable = mkDefault true;
     network-management.enable = mkDefault true;
   };
