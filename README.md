@@ -25,7 +25,7 @@ You can enable everything, or pick out the bits you like by enabling them piecem
 
     # Or choose your own adventure.
     presets = {
-      network-management.enable = true;
+      desktop-environment.enable = true;
       greetd.enable = true;
     };
   };

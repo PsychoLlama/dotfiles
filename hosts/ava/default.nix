@@ -5,6 +5,10 @@
   ...
 }:
 
+let
+  username = "overlord";
+in
+
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -34,6 +38,7 @@
 
   # Network configuration.
   networking = {
+    networkmanager.enable = true;
     interfaces.wlp0s20f3.useDHCP = true;
     useDHCP = false; # Deprecated option - explicitly opt out.
     hostId = "daf96cd8";
@@ -41,7 +46,7 @@
 
   nix = {
     settings = {
-      trusted-users = [ config.dotfiles.user.name ];
+      trusted-users = [ username ];
       builders-use-substitutes = true;
     };
 
@@ -67,15 +72,19 @@
 
   dotfiles = {
     presets.kitchen-sink.enable = true;
-
-    user = {
-      name = "overlord";
-      description = "Jesse Gibson";
-      extraGroups = [ "podman" ];
-    };
   };
 
-  home-manager.users.${config.dotfiles.user.name} = {
+  users.users.${username} = {
+    isNormalUser = true;
+    name = "overlord";
+    description = "Jesse Gibson";
+    extraGroups = [
+      "networkmanager"
+      "podman"
+    ];
+  };
+
+  home-manager.users.${username} = {
     home.stateVersion = "22.05";
     home.packages = [ pkgs.man-pages ];
 
