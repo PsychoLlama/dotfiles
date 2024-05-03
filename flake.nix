@@ -77,7 +77,7 @@
         darwin = ./modules/darwin;
         editor = ./nix-neovim/modules;
         home-manager = ./home-manager/modules;
-        nixos = ./modules/nixos;
+        nixos = ./nixos/modules;
       };
 
       overlays = {
