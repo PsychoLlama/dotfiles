@@ -29,6 +29,5 @@
     ./whois.nix
     ./zathura.nix
     ./zoxide.nix
-    ./zsh.nix
   ];
 }

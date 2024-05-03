@@ -189,7 +189,7 @@ in
 
     # TODO: Convert parts of the neovim config to Nix.
     extraConfig = ''
-      set shell=${pkgs.zsh}/bin/zsh
+      set shell=${pkgs.dash}/bin/dash
       source ${../../../config/neovim.lua}
     '';
   };

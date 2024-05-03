@@ -54,7 +54,6 @@ in
         wezterm.enable = mkDefault true;
         whois.enable = mkDefault true;
         zoxide.enable = mkDefault true;
-        zsh.enable = mkDefault true;
       };
     };
 
