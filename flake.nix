@@ -89,10 +89,6 @@
         ava = lib.dotfiles.defineHost.nixosSystem "x86_64-linux" ./hosts/ava;
       };
 
-      darwinConfigurations = {
-        marvin = lib.dotfiles.defineHost.darwinSystem "x86_64-darwin" ./hosts/marvin;
-      };
-
       homeConfigurations = {
         overlord = lib.dotfiles.defineHost.homeManagerConfiguration "x86_64-linux" ./hosts/tars;
       };
