@@ -1,6 +1,5 @@
 {
   imports = [
-    ../dotfiles
     ./presets
     ./programs
   ];

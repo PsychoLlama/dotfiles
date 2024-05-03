@@ -2,6 +2,8 @@
   nixpkgs,
   darwin,
   home-manager,
+  tree-sitter-remix,
+  self,
   ...
 }@inputs:
 
@@ -17,6 +19,15 @@ let
   #  ./hosts/host_abc123/default.nix -> host_abc123
   makeHostnameConfig = configPath: {
     networking.hostName = nixpkgs.lib.mkDefault (baseNameOf configPath);
+  };
+
+  # TODO: Manage these in the flake as part of nixpkgs import.
+  inject-overlays = {
+    nixpkgs.overlays = [
+      self.overlays.latest-packages
+      self.overlays.vim-plugins
+      tree-sitter-remix.overlays.custom-grammars
+    ];
   };
 
   # An opinionated module enabling Nix flakes.
@@ -35,7 +46,7 @@ let
 
         registry = {
           nixpkgs.flake = inputs.nixpkgs-unstable;
-          dotfiles.flake = inputs.self;
+          dotfiles.flake = self;
         };
       };
     };
@@ -49,7 +60,7 @@ let
         useUserPackages = lib.mkDefault true;
 
         # Add custom dotfiles modules to the HM framework.
-        sharedModules = [ inputs.self.nixosModules.home-manager ];
+        sharedModules = [ self.nixosModules.home-manager ];
       };
     };
 in
@@ -63,10 +74,11 @@ in
 
       modules = [
         inputs.home-manager.nixosModules.home-manager
-        inputs.self.nixosModules.nixos
+        self.nixosModules.nixos
 
         nix-flakes
         hm-submodule
+        inject-overlays
         (makeHostnameConfig configPath)
 
         # Host config.
@@ -83,10 +95,11 @@ in
 
       modules = [
         inputs.home-manager.darwinModules.home-manager
-        inputs.self.nixosModules.darwin
+        self.nixosModules.darwin
 
         nix-flakes
         hm-submodule
+        inject-overlays
         (makeHostnameConfig configPath)
 
         # Host config.
@@ -101,18 +114,12 @@ in
       extraSpecialArgs = makeSpecialArgs system;
 
       modules = [
-        inputs.self.nixosModules.home-manager
+        self.nixosModules.home-manager
+        inject-overlays
 
         (
           { pkgs, ... }:
           {
-            # TODO: Allow configuring the package set through home-manager.
-            # Currently it assumes a NixOS/Darwin layer.
-            nixpkgs.overlays = [
-              inputs.self.overlays.latest-packages
-              inputs.self.overlays.vim-plugins
-            ];
-
             nix = {
               package = pkgs.nixUnstable;
               settings.experimental-features = "nix-command flakes";
