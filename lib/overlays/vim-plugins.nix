@@ -21,7 +21,7 @@ let
       deja-view-vim
       ;
     inherit (inputs.tree-sitter-remix.packages.${pkgs.system}) remix-nvim;
-    personal-vim-config = ../config/editor;
+    personal-vim-config = ../../config/editor;
   };
 in
 {

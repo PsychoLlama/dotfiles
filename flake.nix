@@ -81,8 +81,8 @@
       };
 
       overlays = {
-        vim-plugins = import ./overlays/vim-plugins.nix inputs;
-        latest-packages = import ./overlays/latest-packages.nix nixpkgs-unstable;
+        vim-plugins = import ./lib/overlays/vim-plugins.nix inputs;
+        latest-packages = import ./lib/overlays/latest-packages.nix nixpkgs-unstable;
       };
 
       nixosConfigurations = {
