@@ -1,11 +1,4 @@
-{
-  config,
-  lib,
-  inputs,
-  ...
-}:
-
-with lib;
+{ config, inputs, ... }:
 
 let
   cfg = config.dotfiles;
@@ -13,28 +6,10 @@ in
 {
   imports = [ ./user.nix ];
 
-  options.dotfiles = {
-    packageSet = mkOption {
-      type = types.enum [
-        "nixpkgs"
-        "nixpkgs-unstable"
-      ];
-      description = "Change the default package set for all dotfiles";
-      default = "nixpkgs";
-    };
-  };
-
-  config.nixpkgs.overlays =
-    [
-      (
-        if cfg.packageSet == "nixpkgs-unstable" then
-          inputs.self.overlays.latest-packages
-        else
-          (self: pkgs: { unstable = pkgs; })
-      )
-    ]
-    ++ [
-      inputs.tree-sitter-remix.overlays.custom-grammars
-      inputs.self.overlays.vim-plugins
-    ];
+  # TODO: Move overlays to the flake.
+  config.nixpkgs.overlays = [
+    inputs.self.overlays.latest-packages
+    inputs.self.overlays.vim-plugins
+    inputs.tree-sitter-remix.overlays.custom-grammars
+  ];
 }

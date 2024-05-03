@@ -67,7 +67,6 @@
 
   dotfiles = {
     presets.kitchen-sink.enable = true;
-    packageSet = "nixpkgs-unstable";
 
     user = {
       name = "overlord";

@@ -34,7 +34,7 @@ let
         nixPath = [ "nixpkgs=${registry.nixpkgs.flake}" ];
 
         registry = {
-          nixpkgs.flake = inputs.${config.dotfiles.packageSet};
+          nixpkgs.flake = inputs.nixpkgs-unstable;
           dotfiles.flake = inputs.self;
         };
       };
