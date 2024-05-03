@@ -75,7 +75,7 @@
 
       nixosModules = {
         darwin = ./modules/darwin;
-        editor = ./modules/editor;
+        editor = ./nix-neovim/modules;
         home-manager = ./modules/home-manager;
         nixos = ./modules/nixos;
       };
