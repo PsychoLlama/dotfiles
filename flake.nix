@@ -93,19 +93,22 @@
         latest-packages = import ./lib/overlays/latest-packages.nix nixpkgs-unstable;
       };
 
-      nixosConfigurations = {
-        ava = lib.dotfiles.defineHost.nixosSystem {
-          system = "x86_64-linux";
-          host = ./hosts/ava;
+      nixosConfigurations = lib.dotfiles.hosts.nixos {
+        ava = {
+          pkgs = pkgsBySystem.x86_64-linux;
           modules = [
-            nixpkgs.nixosModules.notDetected
             hardware.nixosModules.lenovo-thinkpad-p1-gen3
+            nixpkgs.nixosModules.notDetected
+            ./hosts/ava
           ];
         };
       };
 
-      homeConfigurations = {
-        overlord = lib.dotfiles.defineHost.homeManagerConfiguration "x86_64-linux" ./hosts/tars;
+      homeConfigurations = lib.dotfiles.hosts.home-manager {
+        overlord = {
+          pkgs = pkgsBySystem.x86_64-linux;
+          modules = [ ./hosts/tars ];
+        };
       };
 
       templates = {
