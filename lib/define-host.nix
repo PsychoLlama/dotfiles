@@ -1,5 +1,6 @@
 {
   nixpkgs,
+  nixpkgs-unstable,
   darwin,
   home-manager,
   tree-sitter-remix,
@@ -30,29 +31,28 @@ let
     ];
   };
 
+  # Support `<channel>` syntax for the repl, but pin it to the flake.
+  nix-path = {
+    # NOTE: `nixPath` is not supported by `home-manager`.
+    nix.nixPath = [ "nixpkgs=${nixpkgs-unstable}" ];
+  };
+
   # An opinionated module enabling Nix flakes.
   nix-flakes =
+    { pkgs, ... }:
     {
-      config,
-      pkgs,
-      inputs,
-      ...
-    }:
-    {
-      nix = rec {
+      nix = {
         package = pkgs.nixUnstable;
         settings.experimental-features = "nix-command flakes";
-        nixPath = [ "nixpkgs=${registry.nixpkgs.flake}" ];
-
         registry = {
-          nixpkgs.flake = inputs.nixpkgs-unstable;
+          nixpkgs.flake = nixpkgs-unstable;
           dotfiles.flake = self;
         };
       };
     };
 
   # Set reasonable defaults for home-manager as a submodule.
-  hm-submodule =
+  hm-substrate =
     { lib, ... }:
     {
       home-manager = {
@@ -66,23 +66,26 @@ let
 in
 {
   nixosSystem =
-    system: configPath:
+    {
+      system,
+      host,
+      modules,
+    }:
     nixpkgs.lib.nixosSystem {
       inherit system;
 
-      specialArgs = makeSpecialArgs system;
-
-      modules = [
-        inputs.home-manager.nixosModules.home-manager
+      modules = modules ++ [
+        home-manager.nixosModules.home-manager
         self.nixosModules.nixos
 
+        nix-path
         nix-flakes
-        hm-submodule
+        hm-substrate
         inject-overlays
-        (makeHostnameConfig configPath)
+        (makeHostnameConfig host)
 
         # Host config.
-        configPath
+        host
       ];
     };
 
@@ -94,11 +97,12 @@ in
       specialArgs = makeSpecialArgs system;
 
       modules = [
-        inputs.home-manager.darwinModules.home-manager
+        home-manager.darwinModules.home-manager
         self.nixosModules.darwin
 
+        nix-path
         nix-flakes
-        hm-submodule
+        hm-substrate
         inject-overlays
         (makeHostnameConfig configPath)
 
@@ -110,22 +114,13 @@ in
   homeManagerConfiguration =
     system: configPath:
     home-manager.lib.homeManagerConfiguration {
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
+      pkgs = nixpkgs.legacyPackages.${system};
       extraSpecialArgs = makeSpecialArgs system;
 
       modules = [
         self.nixosModules.home-manager
         inject-overlays
-
-        (
-          { pkgs, ... }:
-          {
-            nix = {
-              package = pkgs.nixUnstable;
-              settings.experimental-features = "nix-command flakes";
-            };
-          }
-        )
+        nix-flakes
 
         # Host config.
         configPath

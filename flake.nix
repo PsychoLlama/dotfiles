@@ -43,6 +43,7 @@
   outputs =
     inputs@{
       self,
+      hardware,
       nixpkgs,
       nixpkgs-unstable,
       tree-sitter-remix,
@@ -93,7 +94,14 @@
       };
 
       nixosConfigurations = {
-        ava = lib.dotfiles.defineHost.nixosSystem "x86_64-linux" ./hosts/ava;
+        ava = lib.dotfiles.defineHost.nixosSystem {
+          system = "x86_64-linux";
+          host = ./hosts/ava;
+          modules = [
+            nixpkgs.nixosModules.notDetected
+            hardware.nixosModules.lenovo-thinkpad-p1-gen3
+          ];
+        };
       };
 
       homeConfigurations = {

@@ -1,11 +1,4 @@
-{ inputs, ... }:
-
 {
-  imports = [
-    inputs.nixpkgs.nixosModules.notDetected
-    inputs.hardware.nixosModules.lenovo-thinkpad-p1-gen3
-  ];
-
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "nvme"
