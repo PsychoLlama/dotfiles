@@ -79,7 +79,10 @@
     in
 
     {
-      lib = lib.dotfiles;
+      nixpkgs = pkgsBySystem;
+      lib = lib.dotfiles // {
+        inherit eachSystem;
+      };
 
       nixosModules = {
         editor = ./nix-neovim/modules;
