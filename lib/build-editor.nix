@@ -6,8 +6,8 @@
   ...
 }:
 {
-  system,
-  config ? { },
+  pkgs,
+  modules ? { },
 }:
 
 # This utility exposes the Neovim module outside the typical module system.
@@ -18,23 +18,10 @@
 # You can still configure it declaratively in NixOS, but you can share it on
 # other hosts that only have the Nix command installed.
 
-with nixpkgs.lib;
-
 let
-  mod = modules.evalModules {
-    modules = [
-      self.nixosModules.editor
-      { inherit config; }
-    ];
-
-    specialArgs.pkgs = import nixpkgs {
-      inherit system;
-      overlays = [
-        tree-sitter-remix.overlays.custom-grammars
-        self.overlays.latest-packages
-        self.overlays.vim-plugins
-      ];
-    };
+  mod = pkgs.lib.modules.evalModules {
+    modules = modules ++ [ self.nixosModules.editor ];
+    specialArgs.pkgs = pkgs;
   };
 in
 mod.config.neovim

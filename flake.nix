@@ -45,6 +45,7 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
+      tree-sitter-remix,
       ...
     }:
     let
@@ -58,18 +59,24 @@
         "x86_64-linux"
       ];
 
-      loadPkgs =
+      importPkgs =
         system:
-        import nixpkgs-unstable {
+        import nixpkgs {
           inherit system;
           overlays = [
-            inputs.tree-sitter-remix.overlays.custom-grammars
+            tree-sitter-remix.overlays.custom-grammars
+            self.overlays.latest-packages
             self.overlays.vim-plugins
           ];
         };
 
-      eachSystem = lib.flip lib.mapAttrs (lib.genAttrs defaultSystems loadPkgs);
+      # { system -> pkgs }
+      pkgsBySystem = lib.genAttrs defaultSystems importPkgs;
+
+      # (system: pkgs: a) -> { system -> a }
+      eachSystem = lib.flip lib.mapAttrs pkgsBySystem;
     in
+
     {
       lib = lib.dotfiles;
 
@@ -113,8 +120,8 @@
       packages = eachSystem (
         system: pkgs: {
           editor = lib.dotfiles.buildEditor {
-            inherit system;
-            config.presets.base.enable = true;
+            inherit pkgs;
+            modules = [ { presets.base.enable = true; } ];
           };
         }
       );
