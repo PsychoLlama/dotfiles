@@ -1,8 +1,8 @@
 {
+  home-manager,
+  nix-darwin,
   nixpkgs,
   nixpkgs-unstable,
-  darwin,
-  home-manager,
   self,
   ...
 }:
@@ -73,12 +73,11 @@ in
   darwin = lib.mapAttrs (
     hostName:
     { pkgs, modules }:
-    darwin.lib.darwinSystem {
+    nix-darwin.lib.darwinSystem {
       inherit pkgs;
 
       modules = modules ++ [
         home-manager.darwinModules.home-manager
-        self.nixosModules.darwin
 
         nix-path
         nix-flakes

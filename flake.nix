@@ -1,22 +1,21 @@
 {
-  description = "NixOS modules supporting my development environment";
+  description = "NixOS modules supporting my development environments";
 
   inputs = {
+    nixos-hardware.url = "github:nixos/nixos-hardware";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-    hardware.url = "github:nixos/nixos-hardware";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    darwin = {
+    nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # TODO: Put these vim plugins in nixpkgs.
     alternaut-vim = {
       url = "github:PsychoLlama/alternaut.vim";
       flake = false;
@@ -43,7 +42,8 @@
   outputs =
     inputs@{
       self,
-      hardware,
+
+      nixos-hardware,
       nixpkgs,
       nixpkgs-unstable,
       tree-sitter-remix,
@@ -82,22 +82,21 @@
       lib = lib.dotfiles;
 
       nixosModules = {
-        darwin = ./modules/darwin;
         editor = ./nix-neovim/modules;
         home-manager = ./home-manager/modules;
         nixos = ./nixos/modules;
       };
 
       overlays = {
-        vim-plugins = import ./lib/overlays/vim-plugins.nix inputs;
         latest-packages = import ./lib/overlays/latest-packages.nix nixpkgs-unstable;
+        vim-plugins = import ./lib/overlays/vim-plugins.nix inputs;
       };
 
       nixosConfigurations = lib.dotfiles.hosts.nixos {
         ava = {
           pkgs = pkgsBySystem.x86_64-linux;
           modules = [
-            hardware.nixosModules.lenovo-thinkpad-p1-gen3
+            nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
             nixpkgs.nixosModules.notDetected
             ./hosts/ava
           ];
