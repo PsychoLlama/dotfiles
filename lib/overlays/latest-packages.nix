@@ -4,7 +4,8 @@
 nixpkgs-unstable: self: pkgs: rec {
   unstable = nixpkgs-unstable.legacyPackages.${pkgs.system};
 
-  # Some modules cannot be overridden at the module level.
+  # `programs.bat.package` is not configurable. Force it.
+  # TODO: Remove this evil when `home-manager/24.05` drops.
   inherit (unstable) bat;
 
   # Be reckless, run all vim plugins as latest.
