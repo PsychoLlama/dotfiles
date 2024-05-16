@@ -81,6 +81,7 @@ in
     extraGroups = [
       "networkmanager"
       "podman"
+      "wheel"
     ];
   };
 
