@@ -36,6 +36,11 @@
       flake = false;
     };
 
+    copilot-chat-nvim = {
+      url = "github:CopilotC-Nvim/CopilotChat.nvim";
+      flake = false;
+    };
+
     tree-sitter-remix.url = "github:PsychoLlama/tree-sitter-remix";
   };
 

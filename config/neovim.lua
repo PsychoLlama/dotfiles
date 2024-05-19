@@ -92,6 +92,11 @@ vim.api.nvim_set_keymap('n', '<leader>b', ':Telescope buffers<cr>', { noremap = 
 vim.g.copilot_no_tab_map = true
 vim.api.nvim_set_keymap('i', '<c-j>', 'copilot#Accept("\\<CR>")', { noremap = true, expr = true, silent = true })
 
+-- CopilotChat.nvim
+require('CopilotChat').setup({
+  -- Default options.
+})
+
 -- coc.nvim
 vim.keymap.set('n', 'gd', '<Plug>(coc-definition)')
 vim.keymap.set('n', 'gy', '<Plug>(coc-type-definition)')

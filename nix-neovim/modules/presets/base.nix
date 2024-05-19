@@ -95,6 +95,7 @@ in
       coc-prettier.enable = trueByDefault;
       coc-sumneko-lua.enable = trueByDefault;
       coc-tsserver.enable = trueByDefault;
+      copilot-chat-nvim.enable = trueByDefault;
       copilot-vim.enable = trueByDefault;
       fzf-vim.enable = trueByDefault;
       lualine-nvim.enable = trueByDefault;

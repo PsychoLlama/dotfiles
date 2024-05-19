@@ -15,10 +15,11 @@ let
 
   extraVimPlugins = mapToVimPlugins {
     inherit (inputs)
-      teleport-vim
       alternaut-vim
-      navitron-nvim
+      copilot-chat-nvim
       deja-view-vim
+      navitron-nvim
+      teleport-vim
       ;
     inherit (inputs.tree-sitter-remix.packages.${pkgs.system}) remix-nvim;
     personal-vim-config = ../../config/editor;
