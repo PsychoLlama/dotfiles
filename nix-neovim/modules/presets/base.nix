@@ -100,9 +100,9 @@ in
       fzf-vim.enable = trueByDefault;
       lualine-nvim.enable = trueByDefault;
       onedarkpro-nvim.enable = trueByDefault;
-      splitjoin-vim.enable = trueByDefault;
       telescope-coc-nvim.enable = trueByDefault;
       telescope-nvim.enable = trueByDefault;
+      treesj.enable = trueByDefault;
       undotree.enable = trueByDefault;
       unison.enable = trueByDefault;
       vader-vim.enable = trueByDefault;

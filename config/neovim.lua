@@ -158,6 +158,17 @@ require('nvim-treesitter.parsers').get_parser_configs().nu = {
   -- Default settings.
 }
 
+-- TreeSJ
+require('treesj').setup({
+  use_default_keymaps = false,
+})
+
+vim.keymap.set('n', '<leader>m', function()
+  require('treesj').toggle({
+    split = { recursive = true },
+  })
+end)
+
 -- Color scheme (VS Code's One Dark Pro theme)
 local onedark = require('onedarkpro')
 local colors = require('onedarkpro.helpers').get_colors('onedark')
