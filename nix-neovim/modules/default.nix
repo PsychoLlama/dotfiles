@@ -37,7 +37,7 @@ let
     if vim.env.VIM_PLUGINS then
       table.foreach(vim.split(vim.env.VIM_PLUGINS, ';'), function(_, mapping)
         local plugin_name, plugin_path = unpack(vim.split(mapping, ':'))
-        dynamic_plugins[plugin_name] = vim.fn.fnamemodify(plugin_path, ':p')
+        dynamic_plugins[plugin_name] = vim.fs.normalize(plugin_path)
       end)
     end
 
