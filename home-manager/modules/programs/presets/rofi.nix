@@ -17,6 +17,7 @@ in
   config.programs.rofi = mkIf cfg.enable {
     enable = true;
     package = pkgs.unstable.rofi;
+    terminal = mkDefault "${config.programs.wezterm.package}/bin/wezterm";
     extraConfig.modi = "drun,run";
 
     theme =

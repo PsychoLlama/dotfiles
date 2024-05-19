@@ -15,8 +15,6 @@ in
   options.programs.presets.alacritty.enable = mkEnableOption "Use the Alacritty terminal emulator";
 
   config = mkIf cfg.enable {
-    programs.rofi.terminal = "alacritty";
-
     programs.alacritty = {
       enable = true;
       package = pkgs.unstable.alacritty;
