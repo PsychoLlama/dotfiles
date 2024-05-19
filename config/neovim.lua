@@ -85,8 +85,8 @@ vim.api.nvim_set_keymap('n', '<leader>[', '', {
 
 vim.api.nvim_set_keymap('n', '<leader>p', ':call editor#open_project_root()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
-vim.api.nvim_set_keymap('n', '<leader>f', ':Files<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>b', ':Buffers<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>f', ':Telescope find_files<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>b', ':Telescope buffers<cr>', { noremap = true })
 
 -- Copilot.vim
 vim.g.copilot_no_tab_map = true
@@ -96,7 +96,7 @@ vim.api.nvim_set_keymap('i', '<c-j>', 'copilot#Accept("\\<CR>")', { noremap = tr
 vim.keymap.set('n', 'gd', '<Plug>(coc-definition)')
 vim.keymap.set('n', 'gy', '<Plug>(coc-type-definition)')
 vim.keymap.set('n', 'gi', '<Plug>(coc-implementation)')
-vim.keymap.set('n', 'gr', '<Plug>(coc-references)')
+vim.keymap.set('n', 'gr', ':Telescope coc references<cr>', { silent = true })
 vim.keymap.set('i', '<cr>', [[coc#pum#visible() ? coc#pum#confirm() : "\<c-g>u\<cr>\<c-r>=coc#on_enter()\<cr>"]], {
   expr = true,
   noremap = true,
@@ -109,6 +109,7 @@ vim.keymap.set({ 'x', 'o' }, 'af', '<Plug>(coc-funcobj-a)')
 vim.keymap.set({ 'x', 'o' }, 'ic', '<Plug>(coc-classobj-i)')
 vim.keymap.set({ 'x', 'o' }, 'ac', '<Plug>(coc-classobj-a)')
 
+vim.keymap.set('n', 'ge', ':Telescope coc diagnostics<cr>', { silent = true })
 vim.keymap.set('n', '[g', '<Plug>(coc-diagnostic-prev)')
 vim.keymap.set('n', ']g', '<Plug>(coc-diagnostic-next)')
 
@@ -124,6 +125,13 @@ end)
 vim.api.nvim_set_keymap('n', '<esc>', ':nohlsearch<cr><esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>;', ':call editor#mappings#test()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>m', ':MarkdownPreview<cr>', { noremap = true, silent = true })
+
+-- Telescope
+require('telescope').setup({
+  defaults = {
+    initial_mode = 'normal',
+  },
+})
 
 -- Tree-Sitter
 require('nvim-treesitter.configs').setup({
