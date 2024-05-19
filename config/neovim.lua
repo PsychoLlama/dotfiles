@@ -133,9 +133,7 @@ vim.api.nvim_set_keymap('n', '<leader>m', ':MarkdownPreview<cr>', { noremap = tr
 
 -- Telescope
 require('telescope').setup({
-  defaults = {
-    initial_mode = 'normal',
-  },
+  -- Default options.
 })
 
 -- Tree-Sitter
