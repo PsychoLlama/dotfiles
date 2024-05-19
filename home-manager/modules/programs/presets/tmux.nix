@@ -24,7 +24,17 @@ in
       historyLimit = 100000;
       keyMode = "vi";
       shell = "${config.programs.nushell.package}/bin/nu";
-      extraConfig = builtins.readFile ../../../../config/tmux.conf;
+      extraConfig = ''
+        ${builtins.readFile ../../../../config/tmux.conf}
+        bind-key j display-popup -E ${pkgs.writeScript "tmux-jump" ''
+          sessions="$(tmux list-sessions -F "#{session_name}")"
+          session_name="$(echo -e "$sessions" | ${pkgs.fzf}/bin/fzf)"
+
+          if [[ -n "$session_name" ]]; then
+            tmux switch-client -t "$session_name"
+          fi
+        ''}
+      '';
     };
 
     # The default session variable attempts POSIX interpolation, which
