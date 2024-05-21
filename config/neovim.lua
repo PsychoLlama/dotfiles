@@ -159,14 +159,14 @@ require('nvim-treesitter.parsers').get_parser_configs().nu = {
 }
 
 -- TreeSJ
-require('treesj').setup({
+local treesj = require('treesj')
+
+treesj.setup({
   use_default_keymaps = false,
 })
 
-vim.keymap.set('n', '<leader>m', function()
-  require('treesj').toggle({
-    split = { recursive = true },
-  })
+vim.keymap.set('n', '<leader>j', function()
+  treesj.toggle()
 end)
 
 -- Color scheme (VS Code's One Dark Pro theme)
