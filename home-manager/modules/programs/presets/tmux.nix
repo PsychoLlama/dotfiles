@@ -9,6 +9,7 @@ with lib;
 
 let
   cfg = config.programs.presets.tmux;
+  tmux = config.programs.tmux.package;
 in
 {
   options.programs.presets.tmux.enable = mkEnableOption "Use an opinionated tmux configuration";
@@ -26,12 +27,12 @@ in
       shell = "${config.programs.nushell.package}/bin/nu";
       extraConfig = ''
         ${builtins.readFile ../../../../config/tmux.conf}
-        bind-key C-j display-popup -E ${pkgs.writeScript "tmux-jump" ''
-          sessions="$(tmux list-sessions -F "#{session_name}")"
+        bind-key C-j display-popup -E ${pkgs.writers.writeBash "tmux-jump" ''
+          sessions="$(${tmux}/bin/tmux list-sessions -F "#{session_name}")"
           session_name="$(echo -e "$sessions" | ${pkgs.fzf}/bin/fzf)"
 
           if [[ -n "$session_name" ]]; then
-            tmux switch-client -t "$session_name"
+            ${tmux}/bin/tmux switch-client -t "$session_name"
           fi
         ''}
       '';
