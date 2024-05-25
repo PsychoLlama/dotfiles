@@ -83,10 +83,10 @@ vim.api.nvim_set_keymap('n', '<leader>[', '', {
   end
 })
 
-vim.api.nvim_set_keymap('n', '<leader>p', ':call editor#open_project_root()<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>p', '<cmd>call editor#open_project_root()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
-vim.api.nvim_set_keymap('n', '<leader>f', ':Telescope find_files<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>b', ':Telescope buffers<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>Telescope find_files<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>b', '<cmd>Telescope buffers<cr>', { noremap = true })
 
 -- Copilot.vim
 vim.g.copilot_no_tab_map = true
@@ -101,7 +101,7 @@ require('CopilotChat').setup({
 vim.keymap.set('n', 'gd', '<Plug>(coc-definition)')
 vim.keymap.set('n', 'gy', '<Plug>(coc-type-definition)')
 vim.keymap.set('n', 'gi', '<Plug>(coc-implementation)')
-vim.keymap.set('n', 'gr', ':Telescope coc references<cr>', { silent = true })
+vim.keymap.set('n', 'gr', '<cmd>Telescope coc references<cr>', { silent = true })
 vim.keymap.set('i', '<cr>', [[coc#pum#visible() ? coc#pum#confirm() : "\<c-g>u\<cr>\<c-r>=coc#on_enter()\<cr>"]], {
   expr = true,
   noremap = true,
@@ -114,7 +114,7 @@ vim.keymap.set({ 'x', 'o' }, 'af', '<Plug>(coc-funcobj-a)')
 vim.keymap.set({ 'x', 'o' }, 'ic', '<Plug>(coc-classobj-i)')
 vim.keymap.set({ 'x', 'o' }, 'ac', '<Plug>(coc-classobj-a)')
 
-vim.keymap.set('n', 'ge', ':Telescope coc diagnostics<cr>', { silent = true })
+vim.keymap.set('n', 'ge', '<cmd>Telescope coc diagnostics<cr>', { silent = true })
 vim.keymap.set('n', '[g', '<Plug>(coc-diagnostic-prev)')
 vim.keymap.set('n', ']g', '<Plug>(coc-diagnostic-next)')
 
@@ -127,9 +127,9 @@ vim.keymap.set('n', 'K', function()
 end)
 
 -- Misc
-vim.api.nvim_set_keymap('n', '<esc>', ':nohlsearch<cr><esc>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>;', ':call editor#mappings#test()<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>m', ':MarkdownPreview<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>;', '<cmd>call editor#mappings#test()<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>MarkdownPreview<cr>', { noremap = true, silent = true })
 
 -- Telescope
 require('telescope').setup({
