@@ -101,7 +101,7 @@ require('CopilotChat').setup({
 vim.keymap.set('n', 'gd', '<plug>(coc-definition)')
 vim.keymap.set('n', 'gy', '<plug>(coc-type-definition)')
 vim.keymap.set('n', 'gi', '<plug>(coc-implementation)')
-vim.keymap.set('n', 'gr', '<cmd>Telescope coc references<cr>', { silent = true })
+vim.keymap.set('n', 'gr', '<plug>(coc-references)')
 vim.keymap.set('i', '<cr>', [[coc#pum#visible() ? coc#pum#confirm() : "\<c-g>u\<cr>\<c-r>=coc#on_enter()\<cr>"]], {
   expr = true,
   noremap = true,
