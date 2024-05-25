@@ -98,6 +98,7 @@ in
       copilot-chat-nvim.enable = trueByDefault;
       copilot-vim.enable = trueByDefault;
       fzf-vim.enable = trueByDefault;
+      gitlinker-nvim.enable = trueByDefault;
       lualine-nvim.enable = trueByDefault;
       onedarkpro-nvim.enable = trueByDefault;
       telescope-coc-nvim.enable = trueByDefault;
