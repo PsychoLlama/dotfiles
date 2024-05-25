@@ -84,7 +84,7 @@ vim.api.nvim_set_keymap('n', '<leader>[', '', {
 })
 
 vim.api.nvim_set_keymap('n', '<leader>p', '<cmd>call editor#open_project_root()<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>a', '<Plug>(alternaut-toggle)', {})
+vim.api.nvim_set_keymap('n', '<leader>a', '<plug>(alternaut-toggle)', {})
 vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>Telescope find_files<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>b', '<cmd>Telescope buffers<cr>', { noremap = true })
 
@@ -98,25 +98,25 @@ require('CopilotChat').setup({
 })
 
 -- coc.nvim
-vim.keymap.set('n', 'gd', '<Plug>(coc-definition)')
-vim.keymap.set('n', 'gy', '<Plug>(coc-type-definition)')
-vim.keymap.set('n', 'gi', '<Plug>(coc-implementation)')
+vim.keymap.set('n', 'gd', '<plug>(coc-definition)')
+vim.keymap.set('n', 'gy', '<plug>(coc-type-definition)')
+vim.keymap.set('n', 'gi', '<plug>(coc-implementation)')
 vim.keymap.set('n', 'gr', '<cmd>Telescope coc references<cr>', { silent = true })
 vim.keymap.set('i', '<cr>', [[coc#pum#visible() ? coc#pum#confirm() : "\<c-g>u\<cr>\<c-r>=coc#on_enter()\<cr>"]], {
   expr = true,
   noremap = true,
 })
 
-vim.keymap.set('n', '<leader>rn', '<Plug>(coc-rename)')
+vim.keymap.set('n', '<leader>rn', '<plug>(coc-rename)')
 
-vim.keymap.set({ 'x', 'o' }, 'if', '<Plug>(coc-funcobj-i)')
-vim.keymap.set({ 'x', 'o' }, 'af', '<Plug>(coc-funcobj-a)')
-vim.keymap.set({ 'x', 'o' }, 'ic', '<Plug>(coc-classobj-i)')
-vim.keymap.set({ 'x', 'o' }, 'ac', '<Plug>(coc-classobj-a)')
+vim.keymap.set({ 'x', 'o' }, 'if', '<plug>(coc-funcobj-i)')
+vim.keymap.set({ 'x', 'o' }, 'af', '<plug>(coc-funcobj-a)')
+vim.keymap.set({ 'x', 'o' }, 'ic', '<plug>(coc-classobj-i)')
+vim.keymap.set({ 'x', 'o' }, 'ac', '<plug>(coc-classobj-a)')
 
 vim.keymap.set('n', 'ge', '<cmd>Telescope coc diagnostics<cr>', { silent = true })
-vim.keymap.set('n', '[g', '<Plug>(coc-diagnostic-prev)')
-vim.keymap.set('n', ']g', '<Plug>(coc-diagnostic-next)')
+vim.keymap.set('n', '[g', '<plug>(coc-diagnostic-prev)')
+vim.keymap.set('n', ']g', '<plug>(coc-diagnostic-next)')
 
 vim.keymap.set('n', 'K', function()
   if vim.fn.CocAction('hasProvider', 'hover') then
