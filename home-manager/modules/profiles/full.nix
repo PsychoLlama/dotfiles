@@ -35,7 +35,7 @@ in
         bottom.enable = mkDefault true;
         direnv.enable = mkDefault true;
         dive.enable = mkDefault true;
-        dogdns.enable = mkDefault true;
+        doggo.enable = mkDefault true;
         eza.enable = mkDefault true;
         fd.enable = mkDefault true;
         fzf.enable = mkDefault true;

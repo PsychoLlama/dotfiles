@@ -35,6 +35,7 @@ in
     (makeProgramModule "brightnessctl")
     (makeProgramModule "dive")
     (makeProgramModule "dogdns")
+    (makeProgramModule "doggo")
     (makeProgramModule "du-dust")
     (makeProgramModule "duf")
     (makeProgramModule "fd")

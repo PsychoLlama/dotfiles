@@ -5,7 +5,7 @@
     ./bottom.nix
     ./direnv.nix
     ./dive.nix
-    ./dogdns.nix
+    ./doggo.nix
     ./eza.nix
     ./fd.nix
     ./firefox.nix
