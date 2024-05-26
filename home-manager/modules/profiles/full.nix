@@ -37,7 +37,6 @@ in
         direnv.enable = mkDefault true;
         dive.enable = mkDefault true;
         doggo.enable = mkDefault true;
-        eza.enable = mkDefault true;
         fd.enable = mkDefault true;
         fzf.enable = mkDefault true;
         git.enable = mkDefault true;

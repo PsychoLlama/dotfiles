@@ -7,7 +7,6 @@
     ./direnv.nix
     ./dive.nix
     ./doggo.nix
-    ./eza.nix
     ./fd.nix
     ./firefox.nix
     ./fzf.nix
