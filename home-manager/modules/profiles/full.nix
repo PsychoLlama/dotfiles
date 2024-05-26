@@ -31,6 +31,7 @@ in
 
       presets = {
         alacritty.enable = mkDefault true;
+        ast-grep.enable = mkDefault true;
         bat.enable = mkDefault true;
         bottom.enable = mkDefault true;
         direnv.enable = mkDefault true;

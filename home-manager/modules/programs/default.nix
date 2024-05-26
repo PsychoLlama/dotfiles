@@ -31,6 +31,7 @@ in
     ./presets
 
     (makeProgramModule "acpi")
+    (makeProgramModule "ast-grep")
     (makeProgramModule "binutils")
     (makeProgramModule "brightnessctl")
     (makeProgramModule "dive")

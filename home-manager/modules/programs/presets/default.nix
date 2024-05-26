@@ -1,6 +1,7 @@
 {
   imports = [
     ./alacritty.nix
+    ./ast-grep.nix
     ./bat.nix
     ./bottom.nix
     ./direnv.nix
