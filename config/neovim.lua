@@ -133,8 +133,22 @@ vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>MarkdownPreview<cr>', { noremap 
 
 -- Telescope
 require('telescope').setup({
-  -- Default options.
+  defaults = {
+    path_display = { "filename_first" },
+    layout_strategy = 'vertical',
+    layout_config = {
+      height = { padding = 0 },
+      width = { padding = 0 },
+    },
+  },
 })
+
+-- Open all telescope actions.
+vim.keymap.set('n', '<leader>t', function()
+  require('telescope.builtin').builtin({
+    include_extensions = true,
+  })
+end)
 
 -- Tree-Sitter
 require('nvim-treesitter.configs').setup({
