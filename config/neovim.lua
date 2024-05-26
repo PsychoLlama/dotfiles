@@ -133,6 +133,7 @@ vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>MarkdownPreview<cr>', { noremap 
 
 -- Telescope
 local telescope = require('telescope')
+local actions = require('telescope.actions')
 
 telescope.setup({
   defaults = {
@@ -141,6 +142,11 @@ telescope.setup({
     layout_config = {
       height = { padding = 0 },
       width = { padding = 0 },
+    },
+    mappings = {
+      n = {
+        ["<C-c>"] = actions.close,
+      }
     },
   },
 })
