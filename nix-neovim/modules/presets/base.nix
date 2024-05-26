@@ -104,8 +104,8 @@ in
       onedarkpro-nvim.enable = trueByDefault;
       telescope-coc-nvim.enable = trueByDefault;
       telescope-nvim.enable = trueByDefault;
+      telescope-undo-nvim.enable = trueByDefault;
       treesj.enable = trueByDefault;
-      undotree.enable = trueByDefault;
       unison.enable = trueByDefault;
       vader-vim.enable = trueByDefault;
       vim-endwise.enable = trueByDefault;

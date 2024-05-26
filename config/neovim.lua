@@ -132,7 +132,9 @@ vim.api.nvim_set_keymap('n', '<leader>;', '<cmd>call editor#mappings#test()<cr>'
 vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>MarkdownPreview<cr>', { noremap = true, silent = true })
 
 -- Telescope
-require('telescope').setup({
+local telescope = require('telescope')
+
+telescope.setup({
   defaults = {
     path_display = { "filename_first" },
     layout_strategy = 'vertical',
@@ -142,6 +144,8 @@ require('telescope').setup({
     },
   },
 })
+
+telescope.load_extension('undo')
 
 -- Open all telescope actions.
 vim.keymap.set('n', '<leader>t', function()
