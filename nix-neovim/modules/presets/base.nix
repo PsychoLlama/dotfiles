@@ -100,6 +100,7 @@ in
       fzf-vim.enable = trueByDefault;
       gitlinker-nvim.enable = trueByDefault;
       lualine-nvim.enable = trueByDefault;
+      nvim-luapad.enable = trueByDefault;
       onedarkpro-nvim.enable = trueByDefault;
       telescope-coc-nvim.enable = trueByDefault;
       telescope-nvim.enable = trueByDefault;
