@@ -212,6 +212,7 @@ end)
 -- Color scheme (VS Code's One Dark Pro theme)
 local onedark = require('onedarkpro')
 local colors = require('onedarkpro.helpers').get_colors('onedark')
+local bg_color = '#1e1e1e'
 
 onedark.setup({
   options = {
@@ -219,7 +220,7 @@ onedark.setup({
   },
   colors = {
     onedark = {
-      bg = "#1e1e1e",
+      bg = bg_color,
     },
   },
   highlights = {
@@ -246,6 +247,37 @@ onedark.load()
 
 -- Clear the cursor line. I only use it for the cursor line number.
 vim.api.nvim_set_hl(0, 'CursorLine', {})
+
+-- LSP Config
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+  vim.lsp.handlers.hover,
+  { border = "rounded" }
+)
+
+local lsp = require('lspconfig')
+lsp.lua_ls.setup {}
+lsp.nushell.setup {}
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('lsp_settings', {}),
+  callback = function()
+    local function bufmap(mode, lhs, rhs)
+      vim.keymap.set(mode, lhs, rhs, { buffer = true })
+    end
+
+    bufmap('n', 'K', vim.lsp.buf.hover)
+    bufmap('n', 'gd', vim.lsp.buf.definition)
+    bufmap('n', 'gD', vim.lsp.buf.declaration)
+    bufmap('n', 'gi', vim.lsp.buf.implementation)
+    bufmap('n', 'gy', vim.lsp.buf.type_definition)
+    bufmap('n', 'gs', vim.lsp.buf.signature_help)
+    bufmap('n', '<leader>rn', vim.lsp.buf.rename)
+    bufmap('n', 'go', vim.lsp.buf.code_action)
+    bufmap('n', 'gl', vim.diagnostic.open_float)
+    bufmap('n', '[d', vim.diagnostic.goto_prev)
+    bufmap('n', ']d', vim.diagnostic.goto_next)
+  end,
+})
 
 -- lualine.nvim
 local lualine_theme = require('lualine.themes.onedark')
@@ -308,4 +340,20 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   group = vim.api.nvim_create_augroup('settings', {}),
   pattern = { "help", "man" },
   command = "wincmd _",
+})
+
+vim.api.nvim_set_hl(0, 'FloatBorder', {
+  bg = bg_color,
+  fg = colors.black,
+  blend = 20,
+})
+
+vim.api.nvim_set_hl(0, 'FloatTitle', {
+  fg = colors.black,
+  blend = 20,
+})
+
+vim.api.nvim_set_hl(0, 'NormalFloat', {
+  bg = bg_color,
+  blend = 20,
 })

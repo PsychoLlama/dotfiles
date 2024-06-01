@@ -38,12 +38,6 @@ in
                 "--quiet"
               ];
             };
-
-            nushell = {
-              command = "nu";
-              args = [ "--lsp" ];
-              filetypes = [ "nu" ];
-            };
           };
 
           "coc.preferences.formatOnSave" = true;
@@ -53,7 +47,6 @@ in
           "outline.autoPreview" = true;
           "suggest.noselect" = true;
           "tsserver.useLocalTsdk" = true;
-          "sumneko-lua.serverDir" = lua-language-server;
           "Lua.diagnostics.globals" = [ "vim" ];
         };
 
@@ -93,7 +86,6 @@ in
       coc-json.enable = trueByDefault;
       coc-pairs.enable = trueByDefault;
       coc-prettier.enable = trueByDefault;
-      coc-sumneko-lua.enable = trueByDefault;
       coc-tsserver.enable = trueByDefault;
       copilot-chat-nvim.enable = trueByDefault;
       copilot-vim.enable = trueByDefault;
@@ -101,6 +93,7 @@ in
       gitlinker-nvim.enable = trueByDefault;
       lualine-nvim.enable = trueByDefault;
       nvim-luapad.enable = trueByDefault;
+      nvim-lspconfig.enable = trueByDefault;
       onedarkpro-nvim.enable = trueByDefault;
       telescope-coc-nvim.enable = trueByDefault;
       telescope-nvim.enable = trueByDefault;
@@ -185,6 +178,7 @@ in
     ];
 
     extraPackages = with pkgs.unstable; [
+      lua-language-server
       nodejs-18_x
       rustup
       unzip # For source-diving Plug'n'Play dependencies.
