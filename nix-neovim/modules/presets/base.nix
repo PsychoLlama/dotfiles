@@ -179,7 +179,6 @@ in
 
     extraPackages = with pkgs.unstable; [
       lua-language-server
-      nodejs-18_x
       rustup
       unzip # For source-diving Plug'n'Play dependencies.
       yarn
