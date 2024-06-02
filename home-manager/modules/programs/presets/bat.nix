@@ -18,6 +18,7 @@ in
 
     programs.bat = {
       enable = true;
+      package = pkgs.unstable.bat;
       config = {
         theme = "TwoDark";
         style = "changes";

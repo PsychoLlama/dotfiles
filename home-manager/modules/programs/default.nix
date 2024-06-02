@@ -24,7 +24,6 @@ let
 in
 {
   imports = [
-    ./alacritty.nix
     ./editor.nix
     ./glow.nix
     ./nushell
@@ -39,7 +38,6 @@ in
     (makeProgramModule "doggo")
     (makeProgramModule "du-dust")
     (makeProgramModule "duf")
-    (makeProgramModule "fd")
     (makeProgramModule "grim")
     (makeProgramModule "hexyl")
     (makeProgramModule "ipfs")

@@ -19,10 +19,13 @@ let
     networking.hostName = lib.mkDefault hostName;
   };
 
-  # Support `<channel>` syntax for the repl, but pin it to the flake.
+  # Pin `<nixpkgs>` and `flake:nixpkgs` to match system packages. This is the
+  # default on NixOS 24.05.
   nix-path = {
-    # NOTE: `nixPath` is not supported by `home-manager`.
-    nix.nixPath = [ "nixpkgs=${nixpkgs-unstable}" ];
+    nix = {
+      nixPath = [ "nixpkgs=${nixpkgs-unstable}" ];
+      registry.nixpkgs.flake = nixpkgs-unstable;
+    };
   };
 
   # An opinionated module enabling Nix flakes.
@@ -30,12 +33,9 @@ let
     { pkgs, ... }:
     {
       nix = {
-        package = pkgs.nixUnstable;
+        package = pkgs.nixVersions.latest;
         settings.experimental-features = "nix-command flakes";
-        registry = {
-          nixpkgs.flake = nixpkgs-unstable;
-          dotfiles.flake = self;
-        };
+        registry.dotfiles.flake = self;
       };
     };
 
@@ -61,7 +61,6 @@ in
         home-manager.nixosModules.home-manager
         self.nixosModules.nixos
 
-        nix-path
         nix-flakes
         hm-substrate
 
