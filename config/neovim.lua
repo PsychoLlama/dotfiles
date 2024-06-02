@@ -154,7 +154,7 @@ telescope.setup({
 telescope.load_extension('undo')
 
 -- Open all telescope actions.
-vim.keymap.set('n', '<leader>t', function()
+vim.keymap.set('n', '<c-space>', function()
   require('telescope.builtin').builtin({
     include_extensions = true,
   })
