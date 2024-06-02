@@ -43,10 +43,10 @@ in
         glow.enable = mkDefault true;
         jq.enable = mkDefault true;
         miniserve.enable = mkDefault true;
-        ncspot.enable = mkDefault true;
         neovim.enable = mkDefault true;
         nmap.enable = mkDefault true;
         nushell.enable = mkDefault true;
+        spotify-player.enable = mkDefault true;
         sshfs.enable = mkDefault pkgs.stdenv.isLinux;
         starship.enable = mkDefault true;
         termshark.enable = mkDefault true;

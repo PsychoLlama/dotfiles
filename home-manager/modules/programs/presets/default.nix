@@ -14,11 +14,11 @@
     ./glow.nix
     ./jq.nix
     ./miniserve.nix
-    ./ncspot.nix
     ./neovim.nix
     ./nmap.nix
     ./nushell.nix
     ./rofi.nix
+    ./spotify-player.nix
     ./sshfs.nix
     ./starship.nix
     ./swaylock.nix
