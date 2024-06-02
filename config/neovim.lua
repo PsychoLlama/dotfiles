@@ -228,15 +228,6 @@ onedark.setup({
     CursorLineNr = {
       fg = colors.blue,
     },
-    GitGutterAdd = {
-      fg = colors.green,
-    },
-    GitGutterChange = {
-      fg = colors.yellow,
-    },
-    GitGutterDelete = {
-      fg = colors.red,
-    },
   },
   styles = {
     comments = "italic",
@@ -244,6 +235,22 @@ onedark.setup({
 })
 
 onedark.load()
+
+-- Git gutter
+local gitsigns = require('gitsigns')
+
+gitsigns.setup({
+  -- Default options.
+})
+
+vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk)
+vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk)
+vim.keymap.set('n', '<leader>hu', gitsigns.undo_stage_hunk)
+
+vim.keymap.set('n', '<leader>hS', gitsigns.stage_buffer)
+vim.keymap.set('n', '<leader>hR', gitsigns.reset_buffer)
+
+vim.keymap.set('n', '<leader>hb', gitsigns.blame_line)
 
 -- Clear the cursor line. I only use it for the cursor line number.
 vim.api.nvim_set_hl(0, 'CursorLine', {})

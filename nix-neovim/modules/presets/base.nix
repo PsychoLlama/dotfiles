@@ -103,7 +103,7 @@ in
       vader-vim.enable = trueByDefault;
       vim-endwise.enable = trueByDefault;
       vim-fugitive.enable = trueByDefault;
-      vim-gitgutter.enable = trueByDefault;
+      gitsigns-nvim.enable = trueByDefault;
       vim-plug.enable = trueByDefault;
       vim-repeat.enable = trueByDefault;
       vim-surround.enable = trueByDefault;
