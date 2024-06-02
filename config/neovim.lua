@@ -267,9 +267,19 @@ lsp.nushell.setup {}
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('lsp_settings', {}),
-  callback = function()
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+    -- Copilot doesn't count. It doesn't have normal LSP mappings.
+    if client.name == "GitHub Copilot" then
+      return
+    end
+
     local function bufmap(mode, lhs, rhs)
-      vim.keymap.set(mode, lhs, rhs, { buffer = true })
+      vim.keymap.set(mode, lhs, rhs, {
+        buffer = args.buf,
+        desc = 'LSP (client: ' .. client.name .. ')',
+      })
     end
 
     bufmap('n', 'K', vim.lsp.buf.hover)
