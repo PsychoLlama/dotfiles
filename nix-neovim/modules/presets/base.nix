@@ -11,6 +11,13 @@ let
   trueByDefault = mkDefault true;
   efm = config.plugins.coc-nvim.efm;
   cfg = config.presets.base;
+
+  # TODO: Pull this from `node_modules` instead.
+  prettier = parser: {
+    format-command = "${u.nodePackages.prettier}/bin/prettier --parser ${parser}";
+    format-stdin = true;
+  };
+
   lua = lib.generators.toLua { };
   u = pkgs.unstable;
 
@@ -109,7 +116,7 @@ in
 
     plugins = {
       coc-nvim = {
-        enable = true;
+        enable = false;
 
         settings = {
           "coc.preferences.formatOnSave" = true;
@@ -149,6 +156,28 @@ in
               format-command = "${nixfmt-rfc-style}/bin/nixfmt --quiet";
               format-stdin = true;
             };
+
+            typescript = (prettier "typescript") // {
+              lint-command = "${eslint}/bin/eslint --stdin --stdin-filename ${INPUT}";
+              lint-source = "eslint";
+              lint-stdin = true;
+              lint-formats = [ "%f:%l:%c: %m" ];
+            };
+
+            javascript = typescript;
+            javascriptreact = typescript;
+            typescriptreact = typescript;
+
+            css = prettier "css";
+            graphql = prettier "graphql";
+            html = prettier "html";
+            json = prettier "json";
+            json5 = prettier "json5";
+            jsonc = prettier "jsonc";
+            less = prettier "less";
+            markdown = prettier "markdown";
+            vue = prettier "vue";
+            yaml = prettier "yaml";
           };
         };
       };
@@ -160,7 +189,6 @@ in
 
       coc-eslint.enable = trueByDefault;
       coc-pairs.enable = trueByDefault;
-      coc-prettier.enable = trueByDefault;
       copilot-chat-nvim.enable = trueByDefault;
       copilot-vim.enable = trueByDefault;
       fzf-vim.enable = trueByDefault;
