@@ -9,7 +9,59 @@ with lib;
 
 let
   trueByDefault = mkDefault true;
+  efm = config.plugins.coc-nvim.efm;
   cfg = config.presets.base;
+  lua = lib.generators.toLua { };
+
+  # TODO: Move this to a Nix module.
+  luaLspSettings = lua {
+    rust-analyzer = {
+      name = "rust-analyzer";
+      command = [ "${pkgs.rust-analyzer}/bin/rust-analyzer" ];
+      filetypes = [ "rust" ];
+      root.patterns = [ "Cargo.toml" ];
+    };
+
+    nil = {
+      name = "nil";
+      command = [ "${pkgs.nil}/bin/nil" ];
+      filetypes = [ "nix" ];
+      root.patterns = [ "flake.nix" ];
+    };
+
+    nushell = {
+      name = "nushell";
+      command = [
+        "nu"
+        "--lsp"
+      ];
+
+      filetypes = [ "nu" ];
+      root.patterns = [ ".git/" ];
+    };
+
+    lua-language-server = {
+      name = "lua-language-server";
+      command = [ "${pkgs.lua-language-server}/bin/lua-language-server" ];
+      filetypes = [ "lua" ];
+      root.patterns = [
+        ".git/"
+        "lua/"
+      ];
+    };
+
+    efm-langserver = {
+      name = "efm-langserver";
+      command = [
+        "${pkgs.efm-langserver}/bin/efm-langserver"
+        "-c"
+        efm.configFile
+      ];
+
+      filetypes = efm.filetypes;
+      root.patterns = [ ".git/" ];
+    };
+  };
 in
 {
   options.presets.base.enable = mkEnableOption "Create an opinionated editor";
@@ -21,25 +73,7 @@ in
       coc-nvim = {
         enable = trueByDefault;
 
-        settings = with pkgs.unstable; {
-          languageserver = {
-            rust = {
-              command = "${rust-analyzer}/bin/rust-analyzer";
-              filetypes = [ "rust" ];
-              rootPatterns = [ "Cargo.toml" ];
-            };
-
-            nix = {
-              command = "${nil}/bin/nil";
-              filetypes = [ "nix" ];
-              rootPatterns = [ "flake.nix" ];
-              settings.nil.formatting.command = [
-                "${nixfmt-rfc-style}/bin/nixfmt"
-                "--quiet"
-              ];
-            };
-          };
-
+        settings = {
           "coc.preferences.formatOnSave" = true;
           "diagnostic.virtualText" = true;
           "diagnostic.virtualTextCurrentLineOnly" = false;
@@ -47,11 +81,10 @@ in
           "outline.autoPreview" = true;
           "suggest.noselect" = true;
           "tsserver.useLocalTsdk" = true;
-          "Lua.diagnostics.globals" = [ "vim" ];
         };
 
         efm = with pkgs.unstable; {
-          enable = trueByDefault;
+          enable = false; # TODO: Finish migrating to native LSP.
 
           settings.languages = rec {
             vim = {
@@ -73,6 +106,11 @@ in
             };
 
             sh = bash;
+
+            nix = {
+              format-command = "${nixfmt-rfc-style}/bin/nixfmt --quiet";
+              format-stdin = true;
+            };
           };
         };
       };
@@ -93,7 +131,6 @@ in
       gitlinker-nvim.enable = trueByDefault;
       lualine-nvim.enable = trueByDefault;
       nvim-luapad.enable = trueByDefault;
-      nvim-lspconfig.enable = trueByDefault;
       onedarkpro-nvim.enable = trueByDefault;
       telescope-coc-nvim.enable = trueByDefault;
       telescope-nvim.enable = trueByDefault;
@@ -178,7 +215,6 @@ in
     ];
 
     extraPackages = with pkgs.unstable; [
-      lua-language-server
       rustup
       unzip # For source-diving Plug'n'Play dependencies.
       yarn
@@ -188,6 +224,9 @@ in
     extraConfig = ''
       set shell=${pkgs.dash}/bin/dash
       source ${../../../config/neovim.lua}
+      source ${pkgs.writeText "lsp.lua" ''
+        require('editor.lsp').setup(${luaLspSettings})
+      ''}
     '';
   };
 }

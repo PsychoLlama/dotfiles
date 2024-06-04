@@ -20,14 +20,28 @@ in
       description = "EFM language server configuration";
       default = { };
     };
+
+    configFile = mkOption {
+      type = types.path;
+      description = "Generated configuration file";
+      default = yamlFormat.generate "efm-config.yaml" cfg.settings;
+      readOnly = true;
+    };
+
+    filetypes = mkOption {
+      type = types.listOf types.str;
+      description = "List of filetypes to enable EFM for";
+      default = attrNames cfg.settings.languages;
+      readOnly = true;
+    };
   };
 
   config.plugins.coc-nvim.settings.languageserver.efm = mkIf cfg.enable {
     command = "${cfg.package}/bin/efm-langserver";
+    filetypes = cfg.filetypes;
     args = [
       "-c"
-      (yamlFormat.generate "efm-config.yaml" cfg.settings)
+      cfg.configFile
     ];
-    filetypes = attrNames cfg.settings.languages;
   };
 }

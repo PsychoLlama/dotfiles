@@ -261,9 +261,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   { border = "rounded" }
 )
 
-local lsp = require('lspconfig')
-lsp.lua_ls.setup {}
-lsp.nushell.setup {}
+local lsp_autoformat_group = vim.api.nvim_create_augroup('lsp_autoformat', {})
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('lsp_settings', {}),
@@ -287,12 +285,23 @@ vim.api.nvim_create_autocmd('LspAttach', {
     bufmap('n', 'gD', vim.lsp.buf.declaration)
     bufmap('n', 'gi', vim.lsp.buf.implementation)
     bufmap('n', 'gy', vim.lsp.buf.type_definition)
+    bufmap('n', 'gr', vim.lsp.buf.references)
     bufmap('n', 'gs', vim.lsp.buf.signature_help)
     bufmap('n', '<leader>rn', vim.lsp.buf.rename)
     bufmap('n', 'go', vim.lsp.buf.code_action)
     bufmap('n', 'gl', vim.diagnostic.open_float)
     bufmap('n', '[d', vim.diagnostic.goto_prev)
     bufmap('n', ']d', vim.diagnostic.goto_next)
+
+    -- Format on save.
+    -- TODO: Add a way to disable this.
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      group = lsp_autoformat_group,
+      buffer = args.buf,
+      callback = function()
+        vim.lsp.buf.format()
+      end,
+    })
   end,
 })
 
