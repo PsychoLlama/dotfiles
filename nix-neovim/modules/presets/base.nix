@@ -18,6 +18,18 @@ let
     format-stdin = true;
   };
 
+  # TODO: Pull this from `node_modules` instead.
+  eslint = {
+    lint-command = "${u.nodePackages.eslint}/bin/eslint --format visualstudio --stdin";
+    lint-source = "eslint";
+    lint-stdin = true;
+    lint-ignore-exit-code = true;
+    lint-formats = [
+      "%f(%l,%c): %tarning %m"
+      "%f(%l,%c): %rror %m"
+    ];
+  };
+
   lua = lib.generators.toLua { };
   u = pkgs.unstable;
 
@@ -118,29 +130,19 @@ in
       coc-nvim = {
         enable = false;
 
-        settings = {
-          "coc.preferences.formatOnSave" = true;
-          "diagnostic.virtualText" = true;
-          "diagnostic.virtualTextCurrentLineOnly" = false;
-          "eslint.autoFixOnSave" = true;
-          "outline.autoPreview" = true;
-          "suggest.noselect" = true;
-          "tsserver.useLocalTsdk" = true;
-        };
-
-        efm = with pkgs.unstable; {
+        efm = {
           enable = false; # TODO: Finish migrating to native LSP.
 
           settings.languages = rec {
             vim = {
-              lint-command = "${vim-vint}/bin/vint -";
+              lint-command = "${u.vim-vint}/bin/vint -";
               lint-source = "vint";
               lint-stdin = true;
               lint-formats = [ "%f:%l:%c: %m" ];
             };
 
             bash = {
-              lint-command = "${shellcheck}/bin/shellcheck -f gcc -x -";
+              lint-command = "${u.shellcheck}/bin/shellcheck -f gcc -x -";
               lint-source = "shellcheck";
               lint-stdin = true;
               lint-formats = [
@@ -153,16 +155,11 @@ in
             sh = bash;
 
             nix = {
-              format-command = "${nixfmt-rfc-style}/bin/nixfmt --quiet";
+              format-command = "${u.nixfmt-rfc-style}/bin/nixfmt --quiet";
               format-stdin = true;
             };
 
-            typescript = (prettier "typescript") // {
-              lint-command = "${eslint}/bin/eslint --stdin --stdin-filename ${INPUT}";
-              lint-source = "eslint";
-              lint-stdin = true;
-              lint-formats = [ "%f:%l:%c: %m" ];
-            };
+            typescript = (prettier "typescript") // eslint;
 
             javascript = typescript;
             javascriptreact = typescript;
@@ -187,8 +184,6 @@ in
         browser = mkDefault "firefox";
       };
 
-      coc-eslint.enable = trueByDefault;
-      coc-pairs.enable = trueByDefault;
       copilot-chat-nvim.enable = trueByDefault;
       copilot-vim.enable = trueByDefault;
       fzf-vim.enable = trueByDefault;

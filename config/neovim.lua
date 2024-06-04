@@ -9,19 +9,6 @@ vim.o.tabstop = 2
 vim.o.shiftwidth = 0
 vim.o.shiftround = true
 
--- Support <tab> completion
-vim.api.nvim_set_keymap('i', '<tab>', 'editor#mappings#tab_completion(v:false)', {
-  noremap = true,
-  silent = true,
-  expr = true,
-})
-
-vim.api.nvim_set_keymap('i', '<s-tab>', 'editor#mappings#tab_completion(v:true)', {
-  noremap = true,
-  silent = true,
-  expr = true,
-})
-
 -- Interaction settings
 vim.o.wildmenu = true
 vim.o.wildmode = 'longest,list,full'
@@ -96,35 +83,6 @@ vim.api.nvim_set_keymap('i', '<c-j>', 'copilot#Accept("\\<CR>")', { noremap = tr
 require('CopilotChat').setup({
   -- Default options.
 })
-
--- coc.nvim
-vim.keymap.set('n', 'gd', '<plug>(coc-definition)')
-vim.keymap.set('n', 'gy', '<plug>(coc-type-definition)')
-vim.keymap.set('n', 'gi', '<plug>(coc-implementation)')
-vim.keymap.set('n', 'gr', '<plug>(coc-references)')
-vim.keymap.set('i', '<cr>', [[coc#pum#visible() ? coc#pum#confirm() : "\<c-g>u\<cr>\<c-r>=coc#on_enter()\<cr>"]], {
-  expr = true,
-  noremap = true,
-})
-
-vim.keymap.set('n', '<leader>rn', '<plug>(coc-rename)')
-
-vim.keymap.set({ 'x', 'o' }, 'if', '<plug>(coc-funcobj-i)')
-vim.keymap.set({ 'x', 'o' }, 'af', '<plug>(coc-funcobj-a)')
-vim.keymap.set({ 'x', 'o' }, 'ic', '<plug>(coc-classobj-i)')
-vim.keymap.set({ 'x', 'o' }, 'ac', '<plug>(coc-classobj-a)')
-
-vim.keymap.set('n', 'ge', '<cmd>Telescope coc diagnostics<cr>', { silent = true })
-vim.keymap.set('n', '[g', '<plug>(coc-diagnostic-prev)')
-vim.keymap.set('n', ']g', '<plug>(coc-diagnostic-next)')
-
-vim.keymap.set('n', 'K', function()
-  if vim.fn.CocAction('hasProvider', 'hover') then
-    vim.fn.CocActionAsync('doHover')
-  else
-    vim.fn.feedkeys('K', 'in')
-  end
-end)
 
 -- Misc
 vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', { noremap = true, silent = true })
@@ -269,14 +227,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local client = vim.lsp.get_client_by_id(args.data.client_id)
 
     -- Copilot doesn't count. It doesn't have normal LSP mappings.
-    if client.name == "GitHub Copilot" then
+    if client.name == 'GitHub Copilot' or vim.b.lsp_initialized then
       return
     end
 
     local function bufmap(mode, lhs, rhs)
       vim.keymap.set(mode, lhs, rhs, {
         buffer = args.buf,
-        desc = 'LSP (client: ' .. client.name .. ')',
+        desc = 'LSP',
       })
     end
 
@@ -302,6 +260,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.lsp.buf.format()
       end,
     })
+
+    vim.b.lsp_initialized = true
   end,
 })
 
@@ -326,13 +286,7 @@ require('lualine').setup({
   sections = {
     lualine_a = {},
     lualine_b = { 'branch' },
-    lualine_c = {
-      'filename',
-      {
-        'diagnostics',
-        sources = { 'coc' },
-      },
-    },
+    lualine_c = { 'filename', 'diagnostics' },
     lualine_x = { 'filetype' },
     lualine_y = { 'progress' },
     lualine_z = { 'location' },
