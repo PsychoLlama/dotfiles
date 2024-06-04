@@ -17,8 +17,6 @@ function M.setup(settings)
     :totable()
   )
 
-  -- TODO: Figure out how to deal with dynamic LSP configs, such as `tsserver` and `coc-settings.json`.
-
   vim.api.nvim_create_autocmd('FileType', {
     pattern = filetypes,
     group = vim.api.nvim_create_augroup('lsp_client_setup', {}),

@@ -12,19 +12,20 @@ let
   efm = config.plugins.coc-nvim.efm;
   cfg = config.presets.base;
   lua = lib.generators.toLua { };
+  u = pkgs.unstable;
 
   # TODO: Move this to a Nix module.
   luaLspSettings = lua {
     rust-analyzer = {
       name = "rust-analyzer";
-      command = [ "${pkgs.rust-analyzer}/bin/rust-analyzer" ];
+      command = [ "${u.rust-analyzer}/bin/rust-analyzer" ];
       filetypes = [ "rust" ];
       root.patterns = [ "Cargo.toml" ];
     };
 
     nil = {
       name = "nil";
-      command = [ "${pkgs.nil}/bin/nil" ];
+      command = [ "${u.nil}/bin/nil" ];
       filetypes = [ "nix" ];
       root.patterns = [ "flake.nix" ];
     };
@@ -42,7 +43,7 @@ let
 
     lua-language-server = {
       name = "lua-language-server";
-      command = [ "${pkgs.lua-language-server}/bin/lua-language-server" ];
+      command = [ "${u.lua-language-server}/bin/lua-language-server" ];
       filetypes = [ "lua" ];
       root.patterns = [
         ".git/"
@@ -53,13 +54,34 @@ let
     efm-langserver = {
       name = "efm-langserver";
       command = [
-        "${pkgs.efm-langserver}/bin/efm-langserver"
+        "${u.efm-langserver}/bin/efm-langserver"
         "-c"
         efm.configFile
       ];
 
       filetypes = efm.filetypes;
       root.patterns = [ ".git/" ];
+    };
+
+    typescript-language-server = {
+      name = "typescript-language-server";
+      command = [
+        "${u.nodePackages.typescript-language-server}/bin/typescript-language-server"
+        "--stdio"
+      ];
+
+      filetypes = [
+        "typescript"
+        "typescriptreact"
+        "javascript"
+        "javascriptreact"
+      ];
+
+      root.patterns = [
+        "package.json"
+        "tsconfig.json"
+        ".git/"
+      ];
     };
   };
 in
@@ -71,7 +93,7 @@ in
 
     plugins = {
       coc-nvim = {
-        enable = trueByDefault;
+        enable = true;
 
         settings = {
           "coc.preferences.formatOnSave" = true;
@@ -124,7 +146,6 @@ in
       coc-json.enable = trueByDefault;
       coc-pairs.enable = trueByDefault;
       coc-prettier.enable = trueByDefault;
-      coc-tsserver.enable = trueByDefault;
       copilot-chat-nvim.enable = trueByDefault;
       copilot-vim.enable = trueByDefault;
       fzf-vim.enable = trueByDefault;
@@ -132,7 +153,6 @@ in
       lualine-nvim.enable = trueByDefault;
       nvim-luapad.enable = trueByDefault;
       onedarkpro-nvim.enable = trueByDefault;
-      telescope-coc-nvim.enable = trueByDefault;
       telescope-nvim.enable = trueByDefault;
       telescope-undo-nvim.enable = trueByDefault;
       treesj.enable = trueByDefault;
