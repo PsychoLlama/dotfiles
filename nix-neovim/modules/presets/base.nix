@@ -83,6 +83,22 @@ let
         ".git/"
       ];
     };
+
+    jsonls = {
+      name = "jsonls";
+      command = [
+        "${u.nodePackages.vscode-json-languageserver-bin}/bin/json-languageserver"
+        "--stdio"
+      ];
+
+      filetypes = [
+        "json"
+        "jsonc"
+        "json5"
+      ];
+
+      root.patterns = [ ".git/" ];
+    };
   };
 in
 {
@@ -143,7 +159,6 @@ in
       };
 
       coc-eslint.enable = trueByDefault;
-      coc-json.enable = trueByDefault;
       coc-pairs.enable = trueByDefault;
       coc-prettier.enable = trueByDefault;
       copilot-chat-nvim.enable = trueByDefault;
