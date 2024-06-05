@@ -265,6 +265,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- Completion
+local cmp = require('cmp')
+
+cmp.setup({
+  mapping = cmp.mapping.preset.insert({}),
+  sources = cmp.config.sources({
+    { name = "nvim_lsp" },
+    { name = "path" },
+    { name = "buffer" },
+  }),
+})
+
 -- lualine.nvim
 local lualine_theme = require('lualine.themes.onedark')
 

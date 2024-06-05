@@ -186,11 +186,16 @@ in
         browser = mkDefault "firefox";
       };
 
+      cmp-buffer.enable = trueByDefault;
+      cmp-nvim-lsp.enable = trueByDefault;
+      cmp-path.enable = trueByDefault;
       copilot-chat-nvim.enable = trueByDefault;
       copilot-vim.enable = trueByDefault;
       fzf-vim.enable = trueByDefault;
       gitlinker-nvim.enable = trueByDefault;
+      gitsigns-nvim.enable = trueByDefault;
       lualine-nvim.enable = trueByDefault;
+      nvim-cmp.enable = trueByDefault;
       nvim-luapad.enable = trueByDefault;
       onedarkpro-nvim.enable = trueByDefault;
       telescope-nvim.enable = trueByDefault;
@@ -200,7 +205,6 @@ in
       vader-vim.enable = trueByDefault;
       vim-endwise.enable = trueByDefault;
       vim-fugitive.enable = trueByDefault;
-      gitsigns-nvim.enable = trueByDefault;
       vim-plug.enable = trueByDefault;
       vim-repeat.enable = trueByDefault;
       vim-surround.enable = trueByDefault;
