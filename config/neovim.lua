@@ -300,6 +300,11 @@ cmp.setup({
   }),
 })
 
+-- nvim-autopairs
+require('nvim-autopairs').setup({
+  check_ts = true,
+})
+
 -- lualine.nvim
 local lualine_theme = require('lualine.themes.onedark')
 

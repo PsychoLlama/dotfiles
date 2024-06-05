@@ -195,6 +195,7 @@ in
       gitlinker-nvim.enable = trueByDefault;
       gitsigns-nvim.enable = trueByDefault;
       lualine-nvim.enable = trueByDefault;
+      nvim-autopairs.enable = trueByDefault;
       nvim-cmp.enable = trueByDefault;
       nvim-luapad.enable = trueByDefault;
       onedarkpro-nvim.enable = trueByDefault;
