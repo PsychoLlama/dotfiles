@@ -47,6 +47,13 @@ let
       command = [ "${u.nil}/bin/nil" ];
       filetypes = [ "nix" ];
       root.patterns = [ "flake.nix" ];
+      settings.nil = {
+        nix.flake.autoArchive = true;
+        formatting.command = [
+          "${u.nixfmt-rfc-style}/bin/nixfmt"
+          "--quiet"
+        ];
+      };
     };
 
     nushell = {
@@ -153,11 +160,6 @@ in
             };
 
             sh = bash;
-
-            nix = {
-              format-command = "${u.nixfmt-rfc-style}/bin/nixfmt --quiet";
-              format-stdin = true;
-            };
 
             typescript = (prettier "typescript") // eslint;
 

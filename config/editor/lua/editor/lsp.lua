@@ -30,6 +30,7 @@ function M.setup(settings)
           name = server.name,
           cmd = server.command,
           root_dir = vim.fs.root(0, server.root.patterns),
+          settings = server.settings,
         })
       end)
     end,
