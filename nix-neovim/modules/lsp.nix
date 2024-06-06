@@ -24,7 +24,7 @@ in
 
       type = types.attrsOf (
         types.submodule (
-          { name, ... }:
+          { name, config, ... }:
           {
             options.enabled = lib.mkOption {
               type = types.bool;
@@ -43,11 +43,28 @@ in
               '';
             };
 
-            options.command = lib.mkOption {
+            options.server = lib.mkOption {
+              type = types.str;
+              description = ''
+                Binary that starts the language server.
+              '';
+            };
+
+            options.args = lib.mkOption {
               type = types.listOf (types.either types.str types.path);
               default = [ ];
               description = ''
-                Command to start the language server.
+                Arguments to pass to the language server. It must listen on
+                stdin.
+              '';
+            };
+
+            options.command = lib.mkOption {
+              type = types.listOf (types.either types.str types.path);
+              default = [ config.server ] ++ config.args;
+              readOnly = true;
+              description = ''
+                Generated command that executes the language server.
               '';
             };
 
@@ -60,8 +77,8 @@ in
             };
 
             options.settings = lib.mkOption {
-              type = types.attrsOf types.anything;
-              default = { };
+              type = types.nullOr (types.attrsOf types.anything);
+              default = null;
               description = ''
                 Settings to pass to the language server.
               '';

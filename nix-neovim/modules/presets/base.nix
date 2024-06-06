@@ -43,13 +43,13 @@ in
 
       servers = {
         rust-analyzer = {
-          command = [ "${u.rust-analyzer}/bin/rust-analyzer" ];
+          server = "${u.rust-analyzer}/bin/rust-analyzer";
           filetypes = [ "rust" ];
           root.patterns = [ "Cargo.toml" ];
         };
 
         nil = {
-          command = [ "${u.nil}/bin/nil" ];
+          server = "${u.nil}/bin/nil";
           filetypes = [ "nix" ];
           root.patterns = [ "flake.nix" ];
           settings.nil = {
@@ -62,17 +62,14 @@ in
         };
 
         nushell = {
-          command = [
-            "nu"
-            "--lsp"
-          ];
-
+          server = "nu";
+          args = [ "--lsp" ];
           filetypes = [ "nu" ];
           root.patterns = [ ".git/" ];
         };
 
         lua-language-server = {
-          command = [ "${u.lua-language-server}/bin/lua-language-server" ];
+          server = "${u.lua-language-server}/bin/lua-language-server";
           filetypes = [ "lua" ];
           root.patterns = [
             ".git/"
@@ -81,8 +78,8 @@ in
         };
 
         efm-langserver = {
-          command = [
-            "${u.efm-langserver}/bin/efm-langserver"
+          server = "${u.efm-langserver}/bin/efm-langserver";
+          args = [
             "-c"
             efm.configFile
           ];
@@ -92,11 +89,8 @@ in
         };
 
         typescript-language-server = {
-          command = [
-            "${u.nodePackages.typescript-language-server}/bin/typescript-language-server"
-            "--stdio"
-          ];
-
+          server = "${u.nodePackages.typescript-language-server}/bin/typescript-language-server";
+          args = [ "--stdio" ];
           filetypes = [
             "typescript"
             "typescriptreact"
@@ -112,11 +106,8 @@ in
         };
 
         jsonls = {
-          command = [
-            "${u.nodePackages.vscode-json-languageserver-bin}/bin/json-languageserver"
-            "--stdio"
-          ];
-
+          server = "${u.nodePackages.vscode-json-languageserver-bin}/bin/json-languageserver";
+          args = [ "--stdio" ];
           filetypes = [
             "json"
             "jsonc"
