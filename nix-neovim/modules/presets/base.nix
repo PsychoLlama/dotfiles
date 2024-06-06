@@ -9,7 +9,6 @@ with lib;
 
 let
   trueByDefault = mkDefault true;
-  efm = config.plugins.coc-nvim.efm;
   cfg = config.presets.base;
 
   # TODO: Pull this from `node_modules` instead.
@@ -77,17 +76,6 @@ in
           ];
         };
 
-        efm-langserver = {
-          server = "${u.efm-langserver}/bin/efm-langserver";
-          args = [
-            "-c"
-            efm.configFile
-          ];
-
-          filetypes = efm.filetypes;
-          root.patterns = [ ".git/" ];
-        };
-
         typescript-language-server = {
           server = "${u.nodePackages.typescript-language-server}/bin/typescript-language-server";
           args = [ "--stdio" ];
@@ -117,56 +105,51 @@ in
           root.patterns = [ ".git/" ];
         };
       };
+
+      efm = {
+        enable = true;
+        settings.languages = rec {
+          vim = {
+            lint-command = "${u.vim-vint}/bin/vint -";
+            lint-source = "vint";
+            lint-stdin = true;
+            lint-formats = [ "%f:%l:%c: %m" ];
+          };
+
+          bash = {
+            lint-command = "${u.shellcheck}/bin/shellcheck -f gcc -x -";
+            lint-source = "shellcheck";
+            lint-stdin = true;
+            lint-formats = [
+              "%f:%l:%c: %trror: %m"
+              "%f:%l:%c: %tarning: %m"
+              "%f:%l:%c: %tote: %m"
+            ];
+          };
+
+          sh = bash;
+
+          typescript = (prettier "typescript") // eslint;
+
+          javascript = typescript;
+          javascriptreact = typescript;
+          typescriptreact = typescript;
+
+          css = prettier "css";
+          graphql = prettier "graphql";
+          html = prettier "html";
+          json = prettier "json";
+          json5 = prettier "json5";
+          jsonc = prettier "jsonc";
+          less = prettier "less";
+          markdown = prettier "markdown";
+          vue = prettier "vue";
+          yaml = prettier "yaml";
+        };
+      };
     };
 
     plugins = {
-      coc-nvim = {
-        enable = false;
-
-        efm = {
-          enable = false; # TODO: Finish migrating to native LSP.
-
-          settings.languages = rec {
-            vim = {
-              lint-command = "${u.vim-vint}/bin/vint -";
-              lint-source = "vint";
-              lint-stdin = true;
-              lint-formats = [ "%f:%l:%c: %m" ];
-            };
-
-            bash = {
-              lint-command = "${u.shellcheck}/bin/shellcheck -f gcc -x -";
-              lint-source = "shellcheck";
-              lint-stdin = true;
-              lint-formats = [
-                "%f:%l:%c: %trror: %m"
-                "%f:%l:%c: %tarning: %m"
-                "%f:%l:%c: %tote: %m"
-              ];
-            };
-
-            sh = bash;
-
-            typescript = (prettier "typescript") // eslint;
-
-            javascript = typescript;
-            javascriptreact = typescript;
-            typescriptreact = typescript;
-
-            css = prettier "css";
-            graphql = prettier "graphql";
-            html = prettier "html";
-            json = prettier "json";
-            json5 = prettier "json5";
-            jsonc = prettier "jsonc";
-            less = prettier "less";
-            markdown = prettier "markdown";
-            vue = prettier "vue";
-            yaml = prettier "yaml";
-          };
-        };
-      };
-
       markdown-preview-nvim = {
         enable = trueByDefault;
         browser = mkDefault "firefox";

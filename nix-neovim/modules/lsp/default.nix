@@ -13,6 +13,8 @@ let
 in
 
 {
+  imports = [ ./efm.nix ];
+
   options.lsp = {
     enable = lib.mkEnableOption "Manage LSP clients declaratively";
 

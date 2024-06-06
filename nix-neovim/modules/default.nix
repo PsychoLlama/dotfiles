@@ -72,7 +72,7 @@ let
 in
 {
   imports = [
-    ./lsp.nix
+    ./lsp
     ./plugins.nix
     ./presets
   ];

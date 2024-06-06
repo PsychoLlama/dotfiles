@@ -8,24 +8,17 @@
 with lib;
 
 let
-  cfg = config.plugins.coc-nvim.efm;
-  yamlFormat = pkgs.formats.yaml { };
+  cfg = config.lsp.efm;
+  yaml = pkgs.formats.yaml { };
 in
 {
-  options.plugins.coc-nvim.efm = {
+  options.lsp.efm = {
     enable = mkEnableOption "Enable the EFM language server";
     package = mkPackageOption pkgs "efm-langserver" { };
     settings = mkOption {
-      type = yamlFormat.type;
+      type = yaml.type;
       description = "EFM language server configuration";
       default = { };
-    };
-
-    configFile = mkOption {
-      type = types.path;
-      description = "Generated configuration file";
-      default = yamlFormat.generate "efm-config.yaml" cfg.settings;
-      readOnly = true;
     };
 
     filetypes = mkOption {
@@ -36,12 +29,13 @@ in
     };
   };
 
-  config.plugins.coc-nvim.settings.languageserver.efm = mkIf cfg.enable {
-    command = "${cfg.package}/bin/efm-langserver";
+  config.lsp.servers.efm-langserver = mkIf cfg.enable {
+    server = "${cfg.package}/bin/efm-langserver";
     filetypes = cfg.filetypes;
+    root.patterns = [ ".git/" ];
     args = [
       "-c"
-      cfg.configFile
+      (yaml.generate "efm-config.yaml" cfg.settings)
     ];
   };
 }
