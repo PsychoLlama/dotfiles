@@ -30,108 +30,103 @@ let
     ];
   };
 
-  lua = lib.generators.toLua { };
   u = pkgs.unstable;
-
-  # TODO: Move this to a Nix module.
-  luaLspSettings = lua {
-    rust-analyzer = {
-      name = "rust-analyzer";
-      command = [ "${u.rust-analyzer}/bin/rust-analyzer" ];
-      filetypes = [ "rust" ];
-      root.patterns = [ "Cargo.toml" ];
-    };
-
-    nil = {
-      name = "nil";
-      command = [ "${u.nil}/bin/nil" ];
-      filetypes = [ "nix" ];
-      root.patterns = [ "flake.nix" ];
-      settings.nil = {
-        nix.flake.autoArchive = true;
-        formatting.command = [
-          "${u.nixfmt-rfc-style}/bin/nixfmt"
-          "--quiet"
-        ];
-      };
-    };
-
-    nushell = {
-      name = "nushell";
-      command = [
-        "nu"
-        "--lsp"
-      ];
-
-      filetypes = [ "nu" ];
-      root.patterns = [ ".git/" ];
-    };
-
-    lua-language-server = {
-      name = "lua-language-server";
-      command = [ "${u.lua-language-server}/bin/lua-language-server" ];
-      filetypes = [ "lua" ];
-      root.patterns = [
-        ".git/"
-        "lua/"
-      ];
-    };
-
-    efm-langserver = {
-      name = "efm-langserver";
-      command = [
-        "${u.efm-langserver}/bin/efm-langserver"
-        "-c"
-        efm.configFile
-      ];
-
-      filetypes = efm.filetypes;
-      root.patterns = [ ".git/" ];
-    };
-
-    typescript-language-server = {
-      name = "typescript-language-server";
-      command = [
-        "${u.nodePackages.typescript-language-server}/bin/typescript-language-server"
-        "--stdio"
-      ];
-
-      filetypes = [
-        "typescript"
-        "typescriptreact"
-        "javascript"
-        "javascriptreact"
-      ];
-
-      root.patterns = [
-        "package.json"
-        "tsconfig.json"
-        ".git/"
-      ];
-    };
-
-    jsonls = {
-      name = "jsonls";
-      command = [
-        "${u.nodePackages.vscode-json-languageserver-bin}/bin/json-languageserver"
-        "--stdio"
-      ];
-
-      filetypes = [
-        "json"
-        "jsonc"
-        "json5"
-      ];
-
-      root.patterns = [ ".git/" ];
-    };
-  };
 in
 {
   options.presets.base.enable = mkEnableOption "Create an opinionated editor";
 
   config = mkIf cfg.enable {
     package = pkgs.unstable.neovim;
+
+    lsp = {
+      enable = true;
+
+      servers = {
+        rust-analyzer = {
+          command = [ "${u.rust-analyzer}/bin/rust-analyzer" ];
+          filetypes = [ "rust" ];
+          root.patterns = [ "Cargo.toml" ];
+        };
+
+        nil = {
+          command = [ "${u.nil}/bin/nil" ];
+          filetypes = [ "nix" ];
+          root.patterns = [ "flake.nix" ];
+          settings.nil = {
+            nix.flake.autoArchive = true;
+            formatting.command = [
+              "${u.nixfmt-rfc-style}/bin/nixfmt"
+              "--quiet"
+            ];
+          };
+        };
+
+        nushell = {
+          command = [
+            "nu"
+            "--lsp"
+          ];
+
+          filetypes = [ "nu" ];
+          root.patterns = [ ".git/" ];
+        };
+
+        lua-language-server = {
+          command = [ "${u.lua-language-server}/bin/lua-language-server" ];
+          filetypes = [ "lua" ];
+          root.patterns = [
+            ".git/"
+            "lua/"
+          ];
+        };
+
+        efm-langserver = {
+          command = [
+            "${u.efm-langserver}/bin/efm-langserver"
+            "-c"
+            efm.configFile
+          ];
+
+          filetypes = efm.filetypes;
+          root.patterns = [ ".git/" ];
+        };
+
+        typescript-language-server = {
+          command = [
+            "${u.nodePackages.typescript-language-server}/bin/typescript-language-server"
+            "--stdio"
+          ];
+
+          filetypes = [
+            "typescript"
+            "typescriptreact"
+            "javascript"
+            "javascriptreact"
+          ];
+
+          root.patterns = [
+            "package.json"
+            "tsconfig.json"
+            ".git/"
+          ];
+        };
+
+        jsonls = {
+          command = [
+            "${u.nodePackages.vscode-json-languageserver-bin}/bin/json-languageserver"
+            "--stdio"
+          ];
+
+          filetypes = [
+            "json"
+            "jsonc"
+            "json5"
+          ];
+
+          root.patterns = [ ".git/" ];
+        };
+      };
+    };
 
     plugins = {
       coc-nvim = {
@@ -289,9 +284,6 @@ in
     extraConfig = ''
       set shell=${pkgs.dash}/bin/dash
       source ${../../../config/neovim.lua}
-      source ${pkgs.writeText "lsp.lua" ''
-        require('editor.lsp').setup(${luaLspSettings})
-      ''}
     '';
   };
 }
