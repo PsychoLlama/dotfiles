@@ -152,22 +152,80 @@ in
         browser = lib.mkDefault "firefox";
       };
 
+      copilot-chat-nvim = {
+        enable = enabled;
+        extraConfig = ''
+          require('CopilotChat').setup({
+            -- Default options
+          })
+        '';
+      };
+
+      telescope-nvim = {
+        enable = enabled;
+        extraConfig = ./plugins/telescope.lua;
+      };
+
+      telescope-undo-nvim = {
+        enable = enabled;
+        extraConfig = ''
+          require('telescope').load_extension('undo')
+        '';
+      };
+
+      nvim-treesitter = {
+        enable = enabled;
+        extraConfig = ./plugins/nvim-treesitter.lua;
+      };
+
+      gitlinker-nvim = {
+        enable = enabled;
+        extraConfig = ./plugins/gitlinker.lua;
+      };
+
+      gitsigns-nvim = {
+        enable = enabled;
+        extraConfig = ./plugins/gitsigns.lua;
+      };
+
+      treesj = {
+        enable = enabled;
+        extraConfig = ./plugins/treesj.lua;
+      };
+
+      nvim-cmp = {
+        enable = enabled;
+        extraConfig = ./plugins/nvim-cmp.lua;
+      };
+
+      nvim-autopairs = {
+        enable = enabled;
+        extraConfig = ''
+          require('nvim-autopairs').setup({
+            check_ts = true,
+          })
+        '';
+      };
+
+      copilot-vim = {
+        enable = enabled;
+        extraConfig = ''
+          vim.g.copilot_no_tab_map = true
+          vim.api.nvim_set_keymap('i', '<c-j>', 'copilot#Accept("\\<CR>")', { noremap = true, expr = true, silent = true })
+        '';
+      };
+
+      lualine-nvim = {
+        enable = enabled;
+        extraConfig = ./plugins/lualine.lua;
+      };
+
       cmp-buffer.enable = enabled;
       cmp-nvim-lsp.enable = enabled;
       cmp-path.enable = enabled;
-      copilot-chat-nvim.enable = enabled;
-      copilot-vim.enable = enabled;
       fzf-vim.enable = enabled;
-      gitlinker-nvim.enable = enabled;
-      gitsigns-nvim.enable = enabled;
-      lualine-nvim.enable = enabled;
-      nvim-autopairs.enable = enabled;
-      nvim-cmp.enable = enabled;
       nvim-luapad.enable = enabled;
       onedarkpro-nvim.enable = enabled;
-      telescope-nvim.enable = enabled;
-      telescope-undo-nvim.enable = enabled;
-      treesj.enable = enabled;
       unison.enable = enabled;
       vader-vim.enable = enabled;
       vim-endwise.enable = enabled;
@@ -177,8 +235,16 @@ in
       vim-surround.enable = enabled;
 
       # 3rd party
+      navitron-nvim = {
+        enable = enabled;
+        extraConfig = ''
+          require('navitron').setup({
+            -- Default options
+          })
+        '';
+      };
+
       deja-view-vim.enable = enabled;
-      navitron-nvim.enable = enabled;
       remix-nvim.enable = enabled;
       teleport-vim.enable = enabled;
       personal-vim-config.enable = enabled;

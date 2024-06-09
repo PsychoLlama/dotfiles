@@ -76,97 +76,10 @@ vim.api.nvim_set_keymap('n', '<leader>a', '<plug>(alternaut-toggle)', {})
 vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>Telescope find_files<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>b', '<cmd>Telescope buffers<cr>', { noremap = true })
 
--- Copilot.vim
-vim.g.copilot_no_tab_map = true
-vim.api.nvim_set_keymap('i', '<c-j>', 'copilot#Accept("\\<CR>")', { noremap = true, expr = true, silent = true })
-
--- CopilotChat.nvim
-require('CopilotChat').setup({
-  -- Default options.
-})
-
 -- Misc
 vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>;', '<cmd>call editor#mappings#test()<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>MarkdownPreview<cr>', { noremap = true, silent = true })
-
--- Telescope
-local telescope = require('telescope')
-local actions = require('telescope.actions')
-
-telescope.setup({
-  defaults = {
-    path_display = { "filename_first" },
-    layout_strategy = 'vertical',
-    layout_config = {
-      height = { padding = 0 },
-      width = { padding = 0 },
-    },
-    mappings = {
-      n = {
-        ["<C-c>"] = actions.close,
-      }
-    },
-  },
-})
-
-telescope.load_extension('undo')
-
--- Open all telescope actions.
-vim.keymap.set('n', '<c-space>', function()
-  require('telescope.builtin').builtin({
-    include_extensions = true,
-  })
-end)
-
--- Tree-Sitter
-require('nvim-treesitter.configs').setup({
-  highlight = { enable = true },
-  indent = { enable = true },
-  textobjects = {
-    swap = {
-      enable = true,
-      swap_next = {
-        ['g>'] = '@parameter.inner',
-      },
-      swap_previous = {
-        ['g<'] = '@parameter.inner',
-      },
-    },
-  },
-})
-
--- gitlinker.nvim
-local gitlinker = require('gitlinker')
-
-gitlinker.setup({
-  -- mappings = nil,
-})
-
-vim.keymap.set('n', '<leader>l', function()
-  gitlinker.get_buf_range_url(vim.fn.mode())
-end)
-
--- TODO: Figure out why this doesn't work with `keymap.set(...)`.
-vim.api.nvim_set_keymap('v', '<leader>l', "<cmd>lua require'gitlinker'.get_buf_range_url('v')<cr>", {
-  noremap = true,
-})
-
----@see https://github.com/nvim-treesitter/nvim-treesitter#adding-parsers
-require('nvim-treesitter.parsers').get_parser_configs().nu = {
-  -- Default settings.
-}
-
--- TreeSJ
-local treesj = require('treesj')
-
-treesj.setup({
-  use_default_keymaps = false,
-})
-
-vim.keymap.set('n', '<leader>j', function()
-  treesj.toggle()
-end)
 
 -- Color scheme (VS Code's One Dark Pro theme)
 local onedark = require('onedarkpro')
@@ -194,22 +107,6 @@ onedark.setup({
 })
 
 onedark.load()
-
--- Git gutter
-local gitsigns = require('gitsigns')
-
-gitsigns.setup({
-  -- Default options.
-})
-
-vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk)
-vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk)
-vim.keymap.set('n', '<leader>hu', gitsigns.undo_stage_hunk)
-
-vim.keymap.set('n', '<leader>hS', gitsigns.stage_buffer)
-vim.keymap.set('n', '<leader>hR', gitsigns.reset_buffer)
-
-vim.keymap.set('n', '<leader>hb', gitsigns.blame_line)
 
 -- Clear the cursor line. I only use it for the cursor line number.
 vim.api.nvim_set_hl(0, 'CursorLine', {})
@@ -266,89 +163,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- Completion
-local cmp = require('cmp')
-
-local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
-
-cmp.setup({
-  mapping = cmp.mapping.preset.insert({
-    ['<tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif has_words_before() then
-        cmp.complete()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-
-    ['<s-tab>'] = cmp.mapping(function()
-      if cmp.visible() then
-        cmp.select_prev_item()
-      end
-    end, { 'i', 's' }),
-  }),
-
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'path' },
-    { name = 'buffer' },
-  }),
-})
-
--- nvim-autopairs
-require('nvim-autopairs').setup({
-  check_ts = true,
-})
-
--- lualine.nvim
-local lualine_theme = require('lualine.themes.onedark')
-
-lualine_theme.normal.c.bg = nil
-
-pcall(function()
-  -- Disable fg mode colors for the branch name.
-  -- Unknown why, but sometimes these objects don't exist yet.
-  lualine_theme.normal.b.fg = nil
-  lualine_theme.insert.b.fg = nil
-  lualine_theme.visual.b.fg = nil
-  lualine_theme.command.b.fg = nil
-end)
-
-require('lualine').setup({
-  options = {
-    theme = lualine_theme,
-  },
-  sections = {
-    lualine_a = {},
-    lualine_b = { 'branch' },
-    lualine_c = { 'filename', 'diagnostics' },
-    lualine_x = { 'filetype' },
-    lualine_y = { 'progress' },
-    lualine_z = { 'location' },
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = { 'filename' },
-    lualine_x = { 'location' },
-    lualine_y = {},
-    lualine_z = {},
-  },
-})
-
 -- Zettelkaesten
 require('regal').setup({
   slip_box = "~/attic/slip-box",
-})
-
--- Navitron
-require('navitron').setup({
-  -- Default options.
 })
 
 -- Misc

@@ -24,7 +24,11 @@ let
   # `:source` commands for every plugin that defines a config.
   enabledPluginConfigs = concatMapStringsSep "\n" (config: "vim.cmd.source('${config}')") (
     mapAttrsToList (
-      pluginName: plugin: pkgs.writeText "${pluginName}-config.lua" plugin.extraConfig
+      pluginName: plugin:
+      if lib.isPath plugin.extraConfig then
+        plugin.extraConfig
+      else
+        pkgs.writeText "${pluginName}-config.lua" plugin.extraConfig
     ) enabledPluginsWithConfig
   );
 in
@@ -37,7 +41,7 @@ in
     value = {
       enable = mkEnableOption "Add ${pluginName}";
       extraConfig = mkOption {
-        type = types.lines;
+        type = types.either types.path types.lines;
         description = "Extra lines for the vim config file";
         default = "";
       };
