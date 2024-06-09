@@ -41,6 +41,7 @@ in
     (makeProgramModule "grim")
     (makeProgramModule "hexyl")
     (makeProgramModule "ipfs")
+    (makeProgramModule "llm")
     (makeProgramModule "miniserve")
     (makeProgramModule "nmap")
     (makeProgramModule "onefetch")

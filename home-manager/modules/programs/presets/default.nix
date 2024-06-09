@@ -13,6 +13,7 @@
     ./git.nix
     ./glow.nix
     ./jq.nix
+    ./llm.nix
     ./miniserve.nix
     ./neovim.nix
     ./nmap.nix
