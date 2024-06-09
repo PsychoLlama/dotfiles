@@ -5,10 +5,8 @@
   ...
 }:
 
-with lib;
-
 let
-  trueByDefault = mkDefault true;
+  enabled = lib.mkDefault true;
   cfg = config.presets.base;
 
   # TODO: Pull this from `node_modules` instead.
@@ -31,10 +29,11 @@ let
 
   u = pkgs.unstable;
 in
-{
-  options.presets.base.enable = mkEnableOption "Create an opinionated editor";
 
-  config = mkIf cfg.enable {
+{
+  options.presets.base.enable = lib.mkEnableOption "Create an opinionated editor";
+
+  config = lib.mkIf cfg.enable {
     package = pkgs.unstable.neovim;
 
     lsp = {
@@ -116,6 +115,7 @@ in
             lint-formats = [ "%f:%l:%c: %m" ];
           };
 
+          sh = bash;
           bash = {
             lint-command = "${u.shellcheck}/bin/shellcheck -f gcc -x -";
             lint-source = "shellcheck";
@@ -127,10 +127,7 @@ in
             ];
           };
 
-          sh = bash;
-
           typescript = (prettier "typescript") // eslint;
-
           javascript = typescript;
           javascriptreact = typescript;
           typescriptreact = typescript;
@@ -151,43 +148,43 @@ in
 
     plugins = {
       markdown-preview-nvim = {
-        enable = trueByDefault;
-        browser = mkDefault "firefox";
+        enable = enabled;
+        browser = lib.mkDefault "firefox";
       };
 
-      cmp-buffer.enable = trueByDefault;
-      cmp-nvim-lsp.enable = trueByDefault;
-      cmp-path.enable = trueByDefault;
-      copilot-chat-nvim.enable = trueByDefault;
-      copilot-vim.enable = trueByDefault;
-      fzf-vim.enable = trueByDefault;
-      gitlinker-nvim.enable = trueByDefault;
-      gitsigns-nvim.enable = trueByDefault;
-      lualine-nvim.enable = trueByDefault;
-      nvim-autopairs.enable = trueByDefault;
-      nvim-cmp.enable = trueByDefault;
-      nvim-luapad.enable = trueByDefault;
-      onedarkpro-nvim.enable = trueByDefault;
-      telescope-nvim.enable = trueByDefault;
-      telescope-undo-nvim.enable = trueByDefault;
-      treesj.enable = trueByDefault;
-      unison.enable = trueByDefault;
-      vader-vim.enable = trueByDefault;
-      vim-endwise.enable = trueByDefault;
-      vim-fugitive.enable = trueByDefault;
-      vim-plug.enable = trueByDefault;
-      vim-repeat.enable = trueByDefault;
-      vim-surround.enable = trueByDefault;
+      cmp-buffer.enable = enabled;
+      cmp-nvim-lsp.enable = enabled;
+      cmp-path.enable = enabled;
+      copilot-chat-nvim.enable = enabled;
+      copilot-vim.enable = enabled;
+      fzf-vim.enable = enabled;
+      gitlinker-nvim.enable = enabled;
+      gitsigns-nvim.enable = enabled;
+      lualine-nvim.enable = enabled;
+      nvim-autopairs.enable = enabled;
+      nvim-cmp.enable = enabled;
+      nvim-luapad.enable = enabled;
+      onedarkpro-nvim.enable = enabled;
+      telescope-nvim.enable = enabled;
+      telescope-undo-nvim.enable = enabled;
+      treesj.enable = enabled;
+      unison.enable = enabled;
+      vader-vim.enable = enabled;
+      vim-endwise.enable = enabled;
+      vim-fugitive.enable = enabled;
+      vim-plug.enable = enabled;
+      vim-repeat.enable = enabled;
+      vim-surround.enable = enabled;
 
       # 3rd party
-      deja-view-vim.enable = trueByDefault;
-      navitron-nvim.enable = trueByDefault;
-      remix-nvim.enable = trueByDefault;
-      teleport-vim.enable = trueByDefault;
-      personal-vim-config.enable = trueByDefault;
+      deja-view-vim.enable = enabled;
+      navitron-nvim.enable = enabled;
+      remix-nvim.enable = enabled;
+      teleport-vim.enable = enabled;
+      personal-vim-config.enable = enabled;
 
       alternaut-vim = {
-        enable = trueByDefault;
+        enable = enabled;
 
         patterns = rec {
           python = {
@@ -234,7 +231,7 @@ in
       };
 
       # Treesitter integrations.
-      nvim-treesitter-textobjects.enable = trueByDefault;
+      nvim-treesitter-textobjects.enable = enabled;
     };
 
     extraPlugins = with pkgs.vimPlugins; [
@@ -256,8 +253,8 @@ in
 
     # TODO: Convert parts of the neovim config to Nix.
     extraConfig = ''
-      set shell=${pkgs.dash}/bin/dash
-      source ${../../../config/neovim.lua}
+      vim.o.shell = "${pkgs.dash}/bin/dash"
+      vim.cmd.source('${../../../config/neovim.lua}')
     '';
   };
 }

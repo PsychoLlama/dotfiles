@@ -22,9 +22,9 @@ let
   ) enabledVimPluginSet;
 
   # `:source` commands for every plugin that defines a config.
-  enabledPluginConfigs = concatMapStringsSep "\n" (config: "source ${config}") (
+  enabledPluginConfigs = concatMapStringsSep "\n" (config: "vim.cmd.source('${config}')") (
     mapAttrsToList (
-      pluginName: plugin: pkgs.writeText "${pluginName}-config.vim" plugin.extraConfig
+      pluginName: plugin: pkgs.writeText "${pluginName}-config.lua" plugin.extraConfig
     ) enabledPluginsWithConfig
   );
 in

@@ -8,7 +8,7 @@
 with lib;
 
 let
-  vimrc = pkgs.writeText "user-config.vim" config.extraConfig;
+  initrc = pkgs.writeText "init.lua" config.extraConfig;
 
   # This is the generated `&packpath` directory for all plugins.
   packdir = pkgs.vimUtils.packDir { managed-by-nix.opt = config.extraPlugins; };
@@ -63,13 +63,14 @@ let
     table.foreach(dynamic_plugins, export_plugin)
     table.foreach(static_plugins, export_plugin)
 
-    vim.cmd.source(${generators.toLua { } vimrc.outPath})
+    vim.cmd.source(${generators.toLua { } initrc.outPath})
 
     table.foreach(static_plugins, function(plugin_name)
       vim.cmd.packadd(plugin_name)
     end)
   '';
 in
+
 {
   imports = [
     ./lsp
@@ -97,10 +98,7 @@ in
           })
         ];
 
-        configure = {
-          # packages.plugins.opt = config.extraPlugins;
-          customRC = "source ${startupFile}";
-        };
+        configure.customRC = "source ${startupFile}";
       };
     };
 
@@ -130,7 +128,7 @@ in
 
     extraConfig = mkOption {
       type = types.lines;
-      description = "Extra vimrc config";
+      description = "Extra init.lua config";
       default = "";
     };
   };

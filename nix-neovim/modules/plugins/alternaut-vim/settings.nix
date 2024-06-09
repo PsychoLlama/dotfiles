@@ -1,25 +1,18 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}:
-
-with lib;
+{ lib, config, ... }:
 
 let
   cfg = config.plugins.alternaut-vim;
-  jsonFormat = pkgs.formats.json { };
-  patternsFile = jsonFormat.generate "alternaut-patterns.json" cfg.patterns;
+  lua = lib.generators.toLua { };
 in
+
 {
-  options.plugins.alternaut-vim.patterns = mkOption {
-    type = jsonFormat.type;
+  options.plugins.alternaut-vim.patterns = lib.mkOption {
+    type = lib.types.anything;
     description = "File naming conventions and patterns";
     default = { };
   };
 
-  config.plugins.alternaut-vim.extraConfig = mkIf (cfg.patterns != { }) ''
-    let g:alternaut#conventions = json_decode(readfile("${patternsFile}"))
+  config.plugins.alternaut-vim.extraConfig = lib.mkIf (cfg.patterns != { }) ''
+    vim.g['alternaut#conventions'] = ${lua cfg.patterns}
   '';
 }

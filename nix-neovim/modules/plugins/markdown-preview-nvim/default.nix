@@ -4,7 +4,9 @@ with lib;
 
 let
   cfg = config.plugins.markdown-preview-nvim;
+  lua = lib.generators.toLua { };
 in
+
 {
   options.plugins.markdown-preview-nvim.browser = mkOption {
     type = types.nullOr types.str;
@@ -13,6 +15,6 @@ in
   };
 
   config.plugins.markdown-preview-nvim.extraConfig = mkIf (cfg.browser != null) ''
-    let g:mkdp_browser = "${cfg.browser}"
+    vim.g.mkdp_browser = ${lua cfg.browser};
   '';
 }

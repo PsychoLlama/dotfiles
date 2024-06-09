@@ -1,9 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
+{ lib, config, ... }:
 
 let
   inherit (lib) types;
@@ -103,8 +98,6 @@ in
 
   # TODO: Integrate `editor.lsp` into Nix+Neovim framework.
   config.extraConfig = lib.mkIf cfg.enable ''
-    source ${pkgs.writeText "lsp.lua" ''
-      require('editor.lsp').setup(${lua servers})
-    ''}
+    require('editor.lsp').setup(${lua servers})
   '';
 }
