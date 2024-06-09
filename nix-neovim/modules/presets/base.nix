@@ -9,9 +9,8 @@ let
   enabled = lib.mkDefault true;
   cfg = config.presets.base;
 
-  # TODO: Pull this from `node_modules` instead.
-  prettier = parser: {
-    format-command = "${u.nodePackages.prettier}/bin/prettier --parser ${parser}";
+  prettier = {
+    format-command = "${u.prettierd}/bin/prettierd \"\${INPUT}\"";
     format-stdin = true;
   };
 
@@ -127,21 +126,21 @@ in
             ];
           };
 
-          typescript = (prettier "typescript") // eslint;
+          typescript = prettier // eslint;
           javascript = typescript;
           javascriptreact = typescript;
           typescriptreact = typescript;
 
-          css = prettier "css";
-          graphql = prettier "graphql";
-          html = prettier "html";
-          json = prettier "json";
-          json5 = prettier "json5";
-          jsonc = prettier "jsonc";
-          less = prettier "less";
-          markdown = prettier "markdown";
-          vue = prettier "vue";
-          yaml = prettier "yaml";
+          css = prettier;
+          graphql = prettier;
+          html = prettier;
+          json = prettier;
+          json5 = prettier;
+          jsonc = prettier;
+          less = prettier;
+          markdown = prettier;
+          vue = prettier;
+          yaml = prettier;
         };
       };
     };
