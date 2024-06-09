@@ -8,25 +8,25 @@
 let
   enabled = lib.mkDefault true;
   cfg = config.presets.base;
+  u = pkgs.unstable;
 
   prettier = {
     format-command = "${u.prettierd}/bin/prettierd \"\${INPUT}\"";
     format-stdin = true;
   };
 
-  # TODO: Pull this from `node_modules` instead.
   eslint = {
-    lint-command = "${u.nodePackages.eslint}/bin/eslint --format visualstudio --stdin";
+    lint-command = "${u.eslint_d}/bin/eslint_d --format visualstudio --stdin";
     lint-source = "eslint";
     lint-stdin = true;
-    lint-ignore-exit-code = true;
     lint-formats = [
       "%f(%l,%c): %tarning %m"
       "%f(%l,%c): %rror %m"
     ];
-  };
 
-  u = pkgs.unstable;
+    format-command = "${u.eslint_d}/bin/eslint_d --stdin --fix-to-stdout";
+    format-stdin = true;
+  };
 in
 
 {
@@ -107,40 +107,47 @@ in
       efm = {
         enable = true;
         settings.languages = rec {
-          vim = {
-            lint-command = "${u.vim-vint}/bin/vint -";
-            lint-source = "vint";
-            lint-stdin = true;
-            lint-formats = [ "%f:%l:%c: %m" ];
-          };
+          vim = [
+            {
+              lint-command = "${u.vim-vint}/bin/vint -";
+              lint-source = "vint";
+              lint-stdin = true;
+              lint-formats = [ "%f:%l:%c: %m" ];
+            }
+          ];
 
           sh = bash;
-          bash = {
-            lint-command = "${u.shellcheck}/bin/shellcheck -f gcc -x -";
-            lint-source = "shellcheck";
-            lint-stdin = true;
-            lint-formats = [
-              "%f:%l:%c: %trror: %m"
-              "%f:%l:%c: %tarning: %m"
-              "%f:%l:%c: %tote: %m"
-            ];
-          };
+          bash = [
+            {
+              lint-command = "${u.shellcheck}/bin/shellcheck -f gcc -x -";
+              lint-source = "shellcheck";
+              lint-stdin = true;
+              lint-formats = [
+                "%f:%l:%c: %trror: %m"
+                "%f:%l:%c: %tarning: %m"
+                "%f:%l:%c: %tote: %m"
+              ];
+            }
+          ];
 
-          typescript = prettier // eslint;
           javascript = typescript;
           javascriptreact = typescript;
           typescriptreact = typescript;
+          typescript = [
+            prettier
+            eslint
+          ];
 
-          css = prettier;
-          graphql = prettier;
-          html = prettier;
-          json = prettier;
-          json5 = prettier;
-          jsonc = prettier;
-          less = prettier;
-          markdown = prettier;
-          vue = prettier;
-          yaml = prettier;
+          css = [ prettier ];
+          graphql = [ prettier ];
+          html = [ prettier ];
+          json = [ prettier ];
+          json5 = [ prettier ];
+          jsonc = [ prettier ];
+          less = [ prettier ];
+          markdown = [ prettier ];
+          vue = [ prettier ];
+          yaml = [ prettier ];
         };
       };
     };
