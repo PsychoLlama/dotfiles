@@ -4,11 +4,11 @@ gitsigns.setup({
   -- Default options.
 })
 
-vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk)
-vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk)
-vim.keymap.set('n', '<leader>hu', gitsigns.undo_stage_hunk)
+vim.keymap.set('n', '<leader>ha', gitsigns.stage_hunk)      -- "hunk add"
+vim.keymap.set('n', '<leader>hr', gitsigns.undo_stage_hunk) -- "hunk remove"
+vim.keymap.set('n', '<leader>hd', gitsigns.reset_hunk)      -- "hunk delete"
 
-vim.keymap.set('n', '<leader>hS', gitsigns.stage_buffer)
-vim.keymap.set('n', '<leader>hR', gitsigns.reset_buffer)
+vim.keymap.set('n', '<leader>hA', gitsigns.stage_buffer)
+vim.keymap.set('n', '<leader>hD', gitsigns.reset_buffer)
 
 vim.keymap.set('n', '<leader>hb', gitsigns.blame_line)
