@@ -28,7 +28,7 @@ in
   config.programs = mkIf cfg.enable {
     nushell = {
       enable = true;
-      package = pkgs.unstable.nushellFull;
+      package = pkgs.unstable.nushell;
 
       scripts = {
         enable = true;
