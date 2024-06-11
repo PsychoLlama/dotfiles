@@ -85,7 +85,6 @@ in
           ];
 
           root.patterns = [
-            "package.json"
             "tsconfig.json"
             ".git/"
           ];
