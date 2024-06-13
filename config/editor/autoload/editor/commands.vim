@@ -1,29 +1,3 @@
-" :Node repl
-func! editor#commands#node() abort
-  if !executable('node')
-    echohl Error
-    echon 'Error:'
-    echohl Clear
-    echon ' No node executable.'
-    return v:null
-  endif
-
-  let l:project = editor#js#find_package_root()
-
-  if l:project is# v:null
-    let l:project = editor#util#resolve_directory()
-  endif
-
-  new Node Repl
-  wincmd J
-  resize 10
-  execute 'lcd ' . fnameescape(l:project)
-  setlocal nonumber signcolumn=no
-  call termopen('yarn node')
-  normal! A
-endfunc
-
-
 " :Nix
 func! editor#commands#nix() abort
   new Nix Repl
