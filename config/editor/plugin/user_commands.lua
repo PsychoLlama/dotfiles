@@ -9,3 +9,9 @@ vim.api.nvim_create_user_command(
   require('editor.repl.nix').open,
   { desc = "Open a Nix repl", force = true }
 )
+
+vim.api.nvim_create_user_command(
+  'Permissions',
+  require('editor.perms').command,
+  { desc = "Manage file permissions", force = true, nargs = '?' }
+)
