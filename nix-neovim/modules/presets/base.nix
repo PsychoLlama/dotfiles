@@ -16,7 +16,7 @@ let
   };
 
   eslint = {
-    lint-command = "${u.eslint_d}/bin/eslint_d --format visualstudio --stdin";
+    lint-command = "${u.eslint_d}/bin/eslint_d --format visualstudio --stdin --stdin-filename \"\${INPUT}\"";
     lint-source = "eslint";
     lint-stdin = true;
     lint-formats = [
@@ -24,7 +24,7 @@ let
       "%f(%l,%c): %rror %m"
     ];
 
-    format-command = "${u.eslint_d}/bin/eslint_d --stdin --fix-to-stdout";
+    format-command = "${u.eslint_d}/bin/eslint_d --stdin-filename \"\${INPUT}\" --stdin --fix-to-stdout";
     format-stdin = true;
   };
 in
