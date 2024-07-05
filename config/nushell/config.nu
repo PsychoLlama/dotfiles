@@ -1,6 +1,5 @@
 $env.config = {
   edit_mode: vi
-  shell_integration: true
   show_banner: false
   footer_mode: 20
   history: {
@@ -20,6 +19,16 @@ $env.config = {
     external: {
       enable: true
     }
+  }
+
+  #  Pulled from `config nu --default`
+  shell_integration: {
+    osc2: true
+    osc7: true
+    osc8: true
+    osc9_9: true
+    osc133: true
+    reset_application_mode: true
   }
 }
 

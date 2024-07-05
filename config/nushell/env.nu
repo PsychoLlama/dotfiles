@@ -4,7 +4,7 @@ use std "path add"
 # the RC. I have to add them manually.
 #
 # Adapted from `$PATH` variables set downstream of `/etc/bashrc`.
-if (sys | get host.name | $in != "Darwin") {
+if (sys host | get name | $in != "Darwin") {
   # NixOS system binaries.
   path add /run/current-system/sw/bin
   path add /nix/var/nix/profiles/default/bin
