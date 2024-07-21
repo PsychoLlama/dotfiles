@@ -101,6 +101,21 @@ in
 
           root.patterns = [ ".git/" ];
         };
+
+        clangd = {
+          # Uses `pkgs.clang-tools` on NixOS and XCode/Visual Studio on other
+          # platforms.
+          server = "clangd";
+
+          filetypes = [
+            "c"
+            "cpp"
+            "objc"
+            "objcpp"
+          ];
+
+          root.patterns = [ "compile_commands.json" ];
+        };
       };
 
       efm = {
@@ -316,11 +331,14 @@ in
       ))
     ];
 
-    extraPackages = with pkgs.unstable; [
-      rustup
-      unzip # For source-diving Plug'n'Play dependencies.
-      yarn
-    ];
+    extraPackages =
+      with pkgs.unstable;
+      [
+        rustup
+        unzip # For source-diving Plug'n'Play dependencies.
+        yarn
+      ]
+      ++ lib.optionals pkgs.stdenv.isLinux [ pkgs.unstable.clang-tools ];
 
     # TODO: Convert parts of the neovim config to Nix.
     extraConfig = ''
