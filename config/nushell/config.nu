@@ -6,7 +6,8 @@ $env.config = {
     max_size: 100_000_000_000
   }
   table: {
-    mode: psql
+    mode: rounded
+    header_on_separator: true
   }
   cursor_shape: {
     vi_normal: block
