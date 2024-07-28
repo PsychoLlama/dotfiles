@@ -64,8 +64,11 @@ in
         rebase.autoStash = true;
         commit.verbose = true;
 
-        # TODO: Move to the editor module, when it exists.
-        core.editor = "nvim";
+        core = {
+          editor = "nvim";
+          untrackedCache = true;
+          fsmonitor = true;
+        };
       };
     };
   };
