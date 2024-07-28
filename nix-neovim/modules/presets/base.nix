@@ -174,11 +174,7 @@ in
 
       copilot-chat-nvim = {
         enable = enabled;
-        extraConfig = ''
-          require('CopilotChat').setup({
-            -- Default options
-          })
-        '';
+        extraConfig = ./plugins/copilot-chat.lua;
       };
 
       telescope-nvim = {
