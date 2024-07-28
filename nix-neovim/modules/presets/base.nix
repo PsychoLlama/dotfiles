@@ -91,7 +91,7 @@ in
         };
 
         jsonls = {
-          server = "${u.nodePackages.vscode-json-languageserver-bin}/bin/json-languageserver";
+          server = "${u.nodePackages.vscode-langservers-extracted}/bin/vscode-json-language-server";
           args = [ "--stdio" ];
           filetypes = [
             "json"

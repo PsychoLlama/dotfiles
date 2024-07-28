@@ -57,6 +57,9 @@
     let
       lib = import ./lib inputs;
 
+      # Packages with unfree licenses. To be replaced with libre alternatives.
+      evilPackages = [ "copilot.vim" ];
+
       # The list of systems supported by nixpkgs and hydra.
       defaultSystems = [
         "aarch64-linux"
@@ -74,6 +77,10 @@
             self.overlays.latest-packages
             self.overlays.vim-plugins
           ];
+
+          config = {
+            allowUnfreePredicate = pkg: lib.elem (lib.getName pkg) evilPackages;
+          };
         };
 
       # { system -> pkgs }
