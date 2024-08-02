@@ -290,13 +290,14 @@ in
           typescript = {
             file_naming_conventions = [
               "{name}.test.{ext}"
-              "{name}.test.unit.{ext}"
+              "{name}.unit.{ext}"
             ];
             directory_naming_conventions = [ "__tests__" ];
             file_extensions = [
               "ts"
               "tsx"
               "js"
+              "jsx"
             ];
           };
 
