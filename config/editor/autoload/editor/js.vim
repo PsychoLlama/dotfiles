@@ -151,12 +151,12 @@ func! editor#js#get_test_command_for_path(...) abort
 
   " Try to detect the test runner so we can put it in watch mode.
   if l:runner.command =~# '\C\Vjest'
-    let l:runner.command = 'yarn run ' . l:runner.command
+    let l:runner.command = 'npm exec --no ' . l:runner.command
     let l:runner.command .= ' --watch --collectCoverage=false ' . shellescape(l:test_path)
   elseif l:runner.command =~# '\C\Vvitest'
-    let l:runner.command = 'yarn run vitest' " Watch mode is the default.
+    let l:runner.command = 'npm exec --no vitest' " Watch mode is the default.
   else
-    let l:runner.command = 'yarn run ' . l:runner.command
+    let l:runner.command = 'npm exec --no -- ' . l:runner.command
     let l:runner.command .= ' --watch ' . shellescape(l:test_path)
   endif
 
