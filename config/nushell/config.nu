@@ -71,6 +71,11 @@ def --env cf [] {
   })
 }
 
+# Open an LLM chat session.
+def chat [] {
+  nvim -c 'execute "CopilotChat" | wincmd l | quit'
+}
+
 # Show information about a nix package.
 def gist [
   # Any attribute of `pkgs`
