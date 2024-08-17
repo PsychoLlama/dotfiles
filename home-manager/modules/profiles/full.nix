@@ -20,6 +20,7 @@ in
       duf.enable = mkDefault true;
       hexyl.enable = mkDefault true;
       ipfs.enable = mkDefault pkgs.stdenv.isLinux;
+      mods.enable = mkDefault true;
       onefetch.enable = mkDefault true;
       parted.enable = mkDefault pkgs.stdenv.isLinux;
       pv.enable = mkDefault true;
