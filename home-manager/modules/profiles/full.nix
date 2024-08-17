@@ -31,6 +31,7 @@ in
       viu.enable = mkDefault true;
 
       presets = {
+        aider-chat.enable = mkDefault true;
         alacritty.enable = mkDefault true;
         ast-grep.enable = mkDefault true;
         bat.enable = mkDefault true;

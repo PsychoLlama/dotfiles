@@ -30,6 +30,7 @@ in
     ./presets
 
     (makeProgramModule "acpi")
+    (makeProgramModule "aider-chat")
     (makeProgramModule "ast-grep")
     (makeProgramModule "binutils")
     (makeProgramModule "brightnessctl")
