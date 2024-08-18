@@ -155,7 +155,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
       group = lsp_autoformat_group,
       buffer = args.buf,
       callback = function()
-        vim.lsp.buf.format()
+        vim.lsp.buf.format({
+          filter = function(client)
+            -- TypeScript LS bundles its own formatter. And it's useless.
+            return client.name ~= 'typescript-language-server'
+          end,
+        })
       end,
     })
 
