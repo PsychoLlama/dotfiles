@@ -76,7 +76,7 @@ in
 
   config.programs.wezterm = mkIf cfg.enable {
     enable = true;
-    package = pkgs.unstable.wezterm;
+    package = pkgs.wezterm;
 
     colorSchemes.OneDarkPro = {
       ansi = [
