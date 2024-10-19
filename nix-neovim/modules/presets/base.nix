@@ -72,6 +72,14 @@ in
             ".git/"
             "lua/"
           ];
+
+          # Reference: https://luals.github.io/wiki/settings/
+          settings.Lua = {
+            workspace.library = [
+              # Provides type definitions for `vim.*`.
+              "${config.package}/share/nvim/runtime/lua"
+            ];
+          };
         };
 
         typescript-language-server = {

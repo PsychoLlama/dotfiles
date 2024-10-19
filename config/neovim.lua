@@ -124,6 +124,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
 
+    if not client then
+      vim.notify(
+        'Failed to initialize LSP mappings. Client not found.',
+        vim.log.levels.ERROR
+      )
+
+      return
+    end
+
     -- Copilot doesn't count. It doesn't have normal LSP mappings.
     if client.name == 'GitHub Copilot' or vim.b.lsp_initialized then
       return
@@ -156,9 +165,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
       buffer = args.buf,
       callback = function()
         vim.lsp.buf.format({
-          filter = function(client)
+          filter = function(formatter)
             -- TypeScript LS bundles its own formatter. And it's useless.
-            return client.name ~= 'typescript-language-server'
+            return formatter.name ~= 'typescript-language-server'
           end,
         })
       end,
