@@ -96,8 +96,8 @@ in
     };
   };
 
-  # TODO: Integrate `editor.lsp` into Nix+Neovim framework.
+  # TODO: Integrate `core.lsp` into Nix+Neovim framework.
   config.extraConfig = lib.mkIf cfg.enable ''
-    require('editor.lsp').setup(${lua servers})
+    require('core.lsp').setup(${lua servers})
   '';
 }
