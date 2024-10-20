@@ -244,6 +244,17 @@ in
         extraConfig = ./plugins/lualine.lua;
       };
 
+      dressing-nvim = {
+        enable = enabled;
+        extraConfig = ''
+          require('dressing').setup({
+            input = {
+              relative = "editor",
+            },
+          })
+        '';
+      };
+
       cmp-buffer.enable = enabled;
       cmp-nvim-lsp.enable = enabled;
       cmp-path.enable = enabled;

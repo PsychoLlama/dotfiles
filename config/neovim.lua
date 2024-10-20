@@ -100,6 +100,11 @@ onedark.setup({
     CursorLineNr = {
       fg = colors.blue,
     },
+
+    FloatTitle = {
+      bg = bg_color,
+      fg = colors.blue,
+    },
   },
   styles = {
     comments = "italic",
@@ -200,7 +205,8 @@ vim.api.nvim_set_hl(0, 'FloatBorder', {
 })
 
 vim.api.nvim_set_hl(0, 'FloatTitle', {
-  fg = colors.black,
+  fg = colors.blue,
+  bg = bg_color,
   blend = 20,
 })
 
