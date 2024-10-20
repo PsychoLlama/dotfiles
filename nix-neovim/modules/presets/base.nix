@@ -256,6 +256,7 @@ in
       };
 
       cmp-buffer.enable = enabled;
+      cmp-cmdline.enable = enabled;
       cmp-nvim-lsp.enable = enabled;
       cmp-path.enable = enabled;
       fzf-vim.enable = enabled;
