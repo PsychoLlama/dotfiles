@@ -180,9 +180,9 @@ in
         browser = lib.mkDefault "firefox";
       };
 
-      copilot-chat-nvim = {
+      codecompanion-nvim = {
         enable = enabled;
-        extraConfig = ./plugins/copilot-chat.lua;
+        extraConfig = ./plugins/codecompanion.lua;
       };
 
       telescope-nvim = {

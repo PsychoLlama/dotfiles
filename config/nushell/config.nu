@@ -73,7 +73,7 @@ def --env cf [] {
 
 # Open an LLM chat session.
 def chat [] {
-  nvim -c 'execute "CopilotChat" | wincmd l | quit'
+  nvim -c 'execute "CodeCompanionChat" | wincmd l | quit'
 }
 
 # Show information about a nix package.

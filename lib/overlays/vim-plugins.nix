@@ -16,7 +16,7 @@ let
   extraVimPlugins = mapToVimPlugins {
     inherit (inputs)
       alternaut-vim
-      copilot-chat-nvim
+      codecompanion-nvim
       deja-view-vim
       navitron-nvim
       teleport-vim

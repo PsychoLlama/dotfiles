@@ -36,8 +36,8 @@
       flake = false;
     };
 
-    copilot-chat-nvim = {
-      url = "github:CopilotC-Nvim/CopilotChat.nvim";
+    codecompanion-nvim = {
+      url = "github:olimorris/codecompanion.nvim";
       flake = false;
     };
 

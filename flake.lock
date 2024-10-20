@@ -16,19 +16,19 @@
         "type": "github"
       }
     },
-    "copilot-chat-nvim": {
+    "codecompanion-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1727262716,
-        "narHash": "sha256-b78JSwWhbWRq0Thc9BNJIaziwSrb5Gzym8MXCn4v9bU=",
-        "owner": "CopilotC-Nvim",
-        "repo": "CopilotChat.nvim",
-        "rev": "9333944fde3c65868818e245c73aa29eef826e9b",
+        "lastModified": 1729374181,
+        "narHash": "sha256-Sa57Y3DIZYjm5XcS9++dFKvidhm4/dxoqZFdb633LyU=",
+        "owner": "olimorris",
+        "repo": "codecompanion.nvim",
+        "rev": "18aa8aec501badf2ca288ec1ff02927c315926f3",
         "type": "github"
       },
       "original": {
-        "owner": "CopilotC-Nvim",
-        "repo": "CopilotChat.nvim",
+        "owner": "olimorris",
+        "repo": "codecompanion.nvim",
         "type": "github"
       }
     },
@@ -202,7 +202,7 @@
     "root": {
       "inputs": {
         "alternaut-vim": "alternaut-vim",
-        "copilot-chat-nvim": "copilot-chat-nvim",
+        "codecompanion-nvim": "codecompanion-nvim",
         "deja-view-vim": "deja-view-vim",
         "home-manager": "home-manager",
         "navitron-nvim": "navitron-nvim",
