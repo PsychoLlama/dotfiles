@@ -11,7 +11,17 @@ local function get_visible_buffers()
       :totable()
 end
 
+-- Use system popup theme.
+local custom_popup_menu = cmp.config.window.bordered({
+  winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel',
+})
+
 cmp.setup({
+  window = {
+    completion = custom_popup_menu,
+    documentation = custom_popup_menu,
+  },
+
   mapping = cmp.mapping.preset.insert({
     ['<tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then

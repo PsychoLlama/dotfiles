@@ -83,7 +83,8 @@ vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>MarkdownPreview<cr>', { noremap 
 
 -- Color scheme (VS Code's One Dark Pro theme)
 local onedark = require('onedarkpro')
-local colors = require('onedarkpro.helpers').get_colors('onedark')
+local odp_helpers = require('onedarkpro.helpers')
+local colors = odp_helpers.get_colors('onedark')
 local bg_color = '#1e1e1e'
 
 onedark.setup({
@@ -213,4 +214,10 @@ vim.api.nvim_set_hl(0, 'FloatTitle', {
 vim.api.nvim_set_hl(0, 'NormalFloat', {
   bg = bg_color,
   blend = 20,
+})
+
+-- nvim-cmp selected option.
+vim.api.nvim_set_hl(0, 'PmenuSel', {
+  bg = odp_helpers.lighten('bg', 10, 'onedark'),
+  fg = 'NONE',
 })
