@@ -40,6 +40,8 @@ cmp.setup({
         cmp.select_prev_item()
       end
     end, { 'i', 's' }),
+
+    ['<enter>'] = cmp.mapping.confirm({ select = false }),
   }),
 
   sources = cmp.config.sources({
