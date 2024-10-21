@@ -19,6 +19,9 @@ local custom_popup_menu = cmp.config.window.bordered({
 })
 
 cmp.setup({
+  -- Ignore server suggestions to auto-select completions.
+  preselect = cmp.PreselectMode.None,
+
   window = {
     completion = custom_popup_menu,
     documentation = custom_popup_menu,
