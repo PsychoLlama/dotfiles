@@ -193,7 +193,7 @@ vim.g['teleport#update_cwd'] = true
 vim.g.jsx_ext_required = 0
 vim.g.splitjoin_trailing_comma = true
 
-vim.api.nvim_create_autocmd({ "FileType" }, {
+vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('settings', {}),
   pattern = { "help", "man" },
   command = "wincmd _",
