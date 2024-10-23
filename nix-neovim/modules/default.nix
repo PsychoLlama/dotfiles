@@ -26,20 +26,6 @@ let
       opt = config.extraPlugins;
     };
   };
-
-  startupFile = pkgs.writeText "package-loader.lua" ''
-    require('core.pkg._manifest').set(${
-      generators.toLua { } (
-        lib.sortOn (plugin: plugin.name) (
-          lib.forEach config.extraPlugins (plugin: {
-            name = plugin.pname;
-          })
-        )
-      )
-    })
-
-    vim.cmd.source(${generators.toLua { } initrc.outPath})
-  '';
 in
 
 {
@@ -69,7 +55,21 @@ in
           })
         ];
 
-        configure.customRC = "source ${startupFile}";
+        configure.customRC = ''
+          lua << CORE_FRAMEWORK
+          require('core.pkg._manifest').set(${
+            generators.toLua { } (
+              lib.sortOn (plugin: plugin.name) (
+                lib.forEach config.extraPlugins (plugin: {
+                  name = plugin.pname;
+                })
+              )
+            )
+          })
+          CORE_FRAMEWORK
+
+          source ${initrc}
+        '';
       };
     };
 
