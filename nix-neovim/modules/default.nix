@@ -8,7 +8,8 @@
 with lib;
 
 let
-  initrc = pkgs.writeText "init.lua" config.extraConfig;
+  lua = lib.generators.toLua { };
+  configFile = pkgs.writeText "user-config.lua" config.extraConfig;
 
   # This is the generated `&packpath` directory for all plugins.
   packdir = pkgs.vimUtils.packDir {
@@ -58,10 +59,11 @@ in
 
         configure.customRC = ''
           lua << CORE_FRAMEWORK
-          require('core.pkg._manifest').set(${generators.toLua { } (config.core.manifest)})
+          require('core.pkg._manifest').set(${lua config.core.manifest})
+          require('core.lsp').setup(${lua config.core.lsp.servers})
           CORE_FRAMEWORK
 
-          source ${initrc}
+          source ${configFile}
         '';
       };
     };
