@@ -42,7 +42,7 @@ function M.get_all()
 end
 
 --- Get all plugins that have been loaded.
-function M.get_activeget_active()
+function M.get_active()
   return loaded_plugins
 end
 

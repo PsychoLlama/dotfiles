@@ -1,5 +1,3 @@
-require('core.pkg').load()
-
 -- Editing settings
 vim.o.backspace = 'indent,eol,start'
 vim.o.formatoptions = 'qc1orj'
@@ -52,11 +50,15 @@ vim.o.history = 1000
 vim.o.clipboard = 'unnamedplus'
 vim.o.grepprg = 'rg --vimgrep'
 
-
 -- Use <space> as the leader key.
 vim.g.mapleader = ' '
 vim.api.nvim_set_keymap('n', '<space>', '<nop>', {})
 vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
+
+
+-- NOTE: Some plugin-specific configs expect `mapleader` to already be set.
+require('core.pkg').load()
+
 
 -- Quick navigation
 vim.api.nvim_set_keymap('n', '<leader>[', '', {
