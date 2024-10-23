@@ -9,37 +9,43 @@ with lib;
 
 let
   # An attrset of only the enabled plugins. { vim-fugitive = <derivation>; }
-  enabledVimPluginSet = filterAttrs (k: v: v.enable) config.plugins;
+  enabledVimPlugins = filterAttrs (k: v: v.enable) config.plugins;
 
   # A list of the enabled plugins. [ <derivation> ]
-  enabledPluginPackages = mapAttrsToList (
-    pluginName: _: pkgs.vimPlugins.${pluginName}
-  ) enabledVimPluginSet;
+  managedPackages = mapAttrsToList (_: plugin: plugin.package) enabledVimPlugins;
 
-  # Attrset of enabled plugins that define a config.
-  enabledPluginsWithConfig = filterAttrs (
-    pluginName: plugin: plugin.extraConfig != ""
-  ) enabledVimPluginSet;
-
-  # `:source` commands for every plugin that defines a config.
-  enabledPluginConfigs = concatMapStringsSep "\n" (config: "vim.cmd.source('${config}')") (
-    mapAttrsToList (
-      pluginName: plugin:
+  # Managed plugins have more features, such as an associated config file.
+  managedManifest = lib.mapAttrsToList (_: plugin: {
+    name = plugin.package.pname;
+    source = plugin.package.outPath;
+    config = (
       if lib.isPath plugin.extraConfig then
-        plugin.extraConfig
+        toString plugin.extraConfig
+      else if plugin.extraConfig != "" then
+        toString (pkgs.writeText "${plugin.package.pname}-config.lua" plugin.extraConfig)
       else
-        pkgs.writeText "${pluginName}-config.lua" plugin.extraConfig
-    ) enabledPluginsWithConfig
-  );
+        null
+    );
+  }) enabledVimPlugins;
+
+  # Unmanaged plugins have less information. They are any derivation that
+  # (hopefully) evaluates to a vim plugin.
+  unmanagedManifest = lib.forEach config.extraPlugins (pkg: {
+    name = pkg.pname;
+    source = pkg.outPath;
+  });
 in
 {
   imports = [ ./plugins ];
 
-  # Generate an option for every vim plugin.
+  # Generate an option for every vim plugin. Not using a submodule because
+  # plugins can be extended with custom Nix options and submodules require
+  # uniform types.
   options.plugins = mapAttrs' (pluginName: plugin: {
     name = pluginName;
     value = {
       enable = mkEnableOption "Add ${pluginName}";
+      package = mkPackageOption pkgs.vimPlugins pluginName { };
       extraConfig = mkOption {
         type = types.either types.path types.lines;
         description = "Extra lines for the vim config file";
@@ -48,8 +54,19 @@ in
     };
   }) pkgs.vimPlugins;
 
-  config = {
-    extraPlugins = enabledPluginPackages;
-    extraConfig = enabledPluginConfigs;
+  options.core.manifest = mkOption {
+    type = types.anything;
+    readOnly = true;
+    internal = true;
+    description = "Plugin manifest generated for the core framework";
+    default = lib.sortOn (plugin: plugin.name) (managedManifest ++ unmanagedManifest);
+  };
+
+  options.core.packages = mkOption {
+    type = types.listOf types.package;
+    readOnly = true;
+    internal = true;
+    description = "Set of all packages to install as optionals in &packpath";
+    default = managedPackages ++ config.extraPlugins;
   };
 }

@@ -2,7 +2,7 @@ local M = {}
 
 --- @class core.pkg.Plugin
 --- @field name string Unique plugin name
-
+--- @field config nil | string Optional config file
 --- @type core.pkg.Plugin[]
 local plugin_manifest = {}
 

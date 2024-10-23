@@ -23,7 +23,8 @@ let
         })
       ];
 
-      opt = config.extraPlugins;
+      # Provide access to all plugins but don't load them immediately.
+      opt = config.core.packages;
     };
   };
 in
@@ -57,15 +58,7 @@ in
 
         configure.customRC = ''
           lua << CORE_FRAMEWORK
-          require('core.pkg._manifest').set(${
-            generators.toLua { } (
-              lib.sortOn (plugin: plugin.name) (
-                lib.forEach config.extraPlugins (plugin: {
-                  name = plugin.pname;
-                })
-              )
-            )
-          })
+          require('core.pkg._manifest').set(${generators.toLua { } (config.core.manifest)})
           CORE_FRAMEWORK
 
           source ${initrc}

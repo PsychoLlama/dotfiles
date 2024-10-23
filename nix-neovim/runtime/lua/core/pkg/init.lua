@@ -25,6 +25,14 @@ function M.load(override)
     table.insert(loaded_plugins, plugin)
   end
 
+  -- Load plugin-specific configs. Runs after all plugins load to avoid
+  -- issues with load order.
+  for _, plugin in ipairs(loaded_plugins) do
+    if plugin.config then
+      vim.cmd.source(plugin.config)
+    end
+  end
+
   return loaded_plugins
 end
 
