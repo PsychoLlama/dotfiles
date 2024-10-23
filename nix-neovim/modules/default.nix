@@ -27,16 +27,18 @@ let
     };
   };
 
-  # The `opt/` directory contains a list of symlinks: {pluginName} -> {plugin}
-  # Those plugin names are what we use to load them: `:packadd {pluginName}`
-  bundlePath = "${packdir}/pack/managed-by-nix/opt";
   startupFile = pkgs.writeText "package-loader.lua" ''
-    require('core.pkg').startup(${
-      generators.toLua { } {
-        bundle_path = bundlePath;
-        initrc = initrc.outPath;
-      }
+    require('core.pkg._manifest').set(${
+      generators.toLua { } (
+        lib.sortOn (plugin: plugin.name) (
+          lib.forEach config.extraPlugins (plugin: {
+            name = plugin.pname;
+          })
+        )
+      )
     })
+
+    vim.cmd.source(${generators.toLua { } initrc.outPath})
   '';
 in
 

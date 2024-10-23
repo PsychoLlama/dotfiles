@@ -1,3 +1,5 @@
+require('core.pkg').load()
+
 -- Editing settings
 vim.o.backspace = 'indent,eol,start'
 vim.o.formatoptions = 'qc1orj'
