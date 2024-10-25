@@ -155,6 +155,6 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = { "help", "man" },
   desc = 'Auto-expand documentation windows',
   callback = function()
-    vim.cmd.wimcmd('_')
+    vim.cmd.wincmd('_')
   end,
 })
