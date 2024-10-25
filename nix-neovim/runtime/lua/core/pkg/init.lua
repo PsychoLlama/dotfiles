@@ -5,6 +5,20 @@
 
 local manifest = require('core.pkg._manifest')
 
+--- @param plugin core.pkg.Plugin
+local function load_plugin(plugin)
+  if plugin.type == 'pack' then
+    vim.cmd.packadd(plugin.name)
+  else
+    vim.opt.runtimepath:prepend(plugin.source)
+    local after = vim.fs.joinpath(plugin.source, 'after')
+
+    if vim.fn.isdirectory(after) == 1 then
+      vim.opt.runtimepath:append(after)
+    end
+  end
+end
+
 --- @type core.pkg.Plugin[]
 local loaded_plugins = {}
 
@@ -21,7 +35,7 @@ function M.load(override)
   end
 
   for _, plugin in ipairs(plugins) do
-    vim.cmd.packadd(plugin.name)
+    load_plugin(plugin)
     table.insert(loaded_plugins, plugin)
   end
 
@@ -40,13 +54,14 @@ function M.load(override)
   return loaded_plugins
 end
 
---- Get all plugins from the manifest, even if they are not loaded.
-function M.get_all()
+--- Get all plugins from the manifest. Includes inactive plugins. Does not
+--- include custom plugins provided by the optional override callback.
+function M.list_available()
   return manifest.get()
 end
 
---- Get all plugins that have been loaded.
-function M.get_active()
+--- Get all plugins that have been loaded, including any custom plugins.
+function M.list_active()
   return loaded_plugins
 end
 

@@ -19,6 +19,7 @@ let
     name = plugin.package.pname;
     source = plugin.package.outPath;
     opts = plugin.opts;
+    type = "pack";
     config = (
       if lib.isPath plugin.extraConfig then
         toString plugin.extraConfig
@@ -34,6 +35,7 @@ let
   unmanagedManifest = lib.forEach config.extraPlugins (pkg: {
     name = pkg.pname;
     source = pkg.outPath;
+    type = "pack";
     opts = { };
   });
 in
