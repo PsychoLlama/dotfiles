@@ -39,13 +39,10 @@ in
         amend = "commit --amend";
       };
 
-      delta = {
+      difftastic = {
         enable = true;
-
-        options = {
-          dark = true;
-          syntax-theme = "OneHalfDark";
-        };
+        background = "dark";
+        display = "inline";
       };
 
       extraConfig = {
