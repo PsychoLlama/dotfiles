@@ -36,8 +36,6 @@ let
   });
 in
 {
-  imports = [ ./plugins ];
-
   # Generate an option for every vim plugin. Not using a submodule because
   # plugins can be extended with custom Nix options and submodules require
   # uniform types.

@@ -177,7 +177,7 @@ in
     plugins = {
       markdown-preview-nvim = {
         enable = enabled;
-        browser = lib.mkDefault "firefox";
+        extraConfig = ./plugins/markdown-preview.lua;
       };
 
       codecompanion-nvim = {
@@ -255,13 +255,38 @@ in
         '';
       };
 
+      navitron-nvim = {
+        enable = enabled;
+        extraConfig = ./plugins/navitron.lua;
+      };
+
+      teleport-vim = {
+        enable = enabled;
+        extraConfig = ''
+          vim.g['teleport#update_cwd'] = true
+        '';
+      };
+
+      alternaut-vim = {
+        enable = enabled;
+        extraConfig = ./plugins/alternaut.lua;
+      };
+
+      onedarkpro-nvim = {
+        enable = enabled;
+        extraConfig = ./plugins/onedarkpro.lua;
+      };
+
       cmp-buffer.enable = enabled;
       cmp-cmdline.enable = enabled;
       cmp-nvim-lsp.enable = enabled;
       cmp-path.enable = enabled;
+      deja-view-vim.enable = enabled;
       fzf-vim.enable = enabled;
       nvim-luapad.enable = enabled;
-      onedarkpro-nvim.enable = enabled;
+      nvim-treesitter-textobjects.enable = enabled;
+      personal-vim-config.enable = enabled;
+      remix-nvim.enable = enabled;
       unison.enable = enabled;
       vader-vim.enable = enabled;
       vim-endwise.enable = enabled;
@@ -269,72 +294,6 @@ in
       vim-plug.enable = enabled;
       vim-repeat.enable = enabled;
       vim-surround.enable = enabled;
-
-      # 3rd party
-      navitron-nvim = {
-        enable = enabled;
-        extraConfig = ''
-          require('navitron').setup({
-            -- Default options
-          })
-        '';
-      };
-
-      deja-view-vim.enable = enabled;
-      remix-nvim.enable = enabled;
-      teleport-vim.enable = enabled;
-      personal-vim-config.enable = enabled;
-
-      alternaut-vim = {
-        enable = enabled;
-
-        patterns = rec {
-          python = {
-            file_naming_conventions = [
-              "test_{name}.{ext}"
-              "{name}.{ext}"
-            ];
-            directory_naming_conventions = [ "tests" ];
-            file_extensions = [ "py" ];
-          };
-
-          "javascript.jsx" = javascript;
-          javascript = {
-            file_naming_conventions = [ "{name}.test.{ext}" ];
-            directory_naming_conventions = [ "__tests__" ];
-            file_extensions = [ "js" ];
-          };
-
-          "typescript.tsx" = typescript;
-          "typescriptreact" = typescript;
-          typescript = {
-            file_naming_conventions = [
-              "{name}.test.{ext}"
-              "{name}.unit.{ext}"
-            ];
-            directory_naming_conventions = [ "__tests__" ];
-            file_extensions = [
-              "ts"
-              "tsx"
-              "js"
-              "jsx"
-            ];
-          };
-
-          vader = vim;
-          vim = {
-            file_naming_conventions = [ "{name}.{ext}" ];
-            directory_naming_conventions = [ "tests" ];
-            file_extensions = [
-              "vim"
-              "vader"
-            ];
-          };
-        };
-      };
-
-      # Treesitter integrations.
-      nvim-treesitter-textobjects.enable = enabled;
     };
 
     extraPlugins = with pkgs.vimPlugins; [

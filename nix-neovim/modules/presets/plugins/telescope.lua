@@ -22,3 +22,11 @@ vim.keymap.set('n', '<c-space>', function()
     include_extensions = true,
   })
 end)
+
+vim.keymap.set('n', '<leader>f', function()
+  require('telescope.builtin').find_files()
+end)
+
+vim.keymap.set('n', '<leader>b', function()
+  require('telescope.builtin').buffers()
+end)

@@ -1,8 +1,8 @@
 -- Editing settings
-vim.o.backspace = 'indent,eol,start'
+vim.opt.backspace = { 'indent', 'eol', 'start' }
 vim.o.formatoptions = 'qc1orj'
 vim.o.fileformat = 'unix'
-vim.o.fileformats = 'unix,dos,mac'
+vim.opt.fileformats = { 'unix', 'dos', 'mac' }
 vim.o.textwidth = 78
 vim.o.expandtab = true
 vim.o.tabstop = 2
@@ -11,7 +11,7 @@ vim.o.shiftround = true
 
 -- Interaction settings
 vim.o.wildmenu = true
-vim.o.wildmode = 'longest,list,full'
+vim.opt.wildmode = { 'longest', 'list', 'full' }
 vim.o.inccommand = 'nosplit'
 vim.o.wrapscan = false
 vim.o.pumheight = 10
@@ -27,7 +27,7 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" }
 vim.o.incsearch = true
 vim.o.showcmd = true
 vim.o.termguicolors = true
-vim.o.shortmess = vim.go.shortmess .. 'I'
+vim.opt.shortmess:append('I')
 vim.o.signcolumn = 'yes'
 vim.o.number = true
 vim.o.numberwidth = 3
@@ -43,8 +43,8 @@ vim.o.backupcopy = 'yes'
 vim.o.backup = true
 vim.o.backupdir = '/tmp'
 vim.o.undofile = true
-vim.o.undodir = os.getenv('HOME') .. '/.vim/undo'
-vim.o.history = 1000
+vim.o.undodir = vim.fs.normalize('~/.vim/undo')
+vim.o.history = 10000
 
 -- Integrations
 vim.o.clipboard = 'unnamedplus'
@@ -60,69 +60,27 @@ vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 require('core.pkg').load()
 
 
--- Quick navigation
-vim.api.nvim_set_keymap('n', '<leader>[', '', {
+-- Misc mappings
+vim.api.nvim_set_keymap('n', '<leader>p', '<cmd>call editor#open_project_root()<cr>', {
   noremap = true,
   silent = true,
-  callback = function()
-    if vim.tbl_contains({ 'navitron', 'netrw' }, vim.o.filetype) then
-      return
-    end
-
-    local current_file = vim.fn.expand('%:p')
-    local parent_directory = vim.fn.fnamemodify(current_file, ':p:h')
-    require('navitron').open(parent_directory)
-  end
+  desc = 'Open project root',
 })
 
-vim.api.nvim_set_keymap('n', '<leader>p', '<cmd>call editor#open_project_root()<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>a', '<plug>(alternaut-toggle)', {})
-vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>Telescope find_files<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>b', '<cmd>Telescope buffers<cr>', { noremap = true })
-
--- Misc
-vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>;', '<cmd>call editor#mappings#test()<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>MarkdownPreview<cr>', { noremap = true, silent = true })
-
--- Color scheme (VS Code's One Dark Pro theme)
-local onedark = require('onedarkpro')
-local odp_helpers = require('onedarkpro.helpers')
-local colors = odp_helpers.get_colors('onedark')
-local bg_color = '#1e1e1e'
-
-onedark.setup({
-  options = {
-    transparency = true,
-  },
-  colors = {
-    onedark = {
-      bg = bg_color,
-    },
-  },
-  highlights = {
-    -- Editor built-ins. See `:h highlight-groups` for details.
-    CursorLineNr = {
-      fg = colors.blue,
-    },
-
-    FloatTitle = {
-      bg = bg_color,
-      fg = colors.blue,
-    },
-  },
-  styles = {
-    comments = "italic",
-  },
+vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
+  noremap = true,
+  silent = true,
+  desc = 'Clear search highlights',
 })
 
-onedark.load()
-
--- Clear the cursor line. I only use it for the cursor line number.
-vim.api.nvim_set_hl(0, 'CursorLine', {})
+vim.api.nvim_set_keymap('n', '<leader>;', '<cmd>call editor#mappings#test()<cr>', {
+  noremap = true,
+  silent = true,
+  desc = 'Run unit tests',
+})
 
 -- LSP Config
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+vim.lsp.handlers[vim.lsp.protocol.Methods.textDocument_hover] = vim.lsp.with(
   vim.lsp.handlers.hover,
   { border = "rounded" }
 )
@@ -187,41 +145,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- Zettelkaesten
+-- Zettelkaesten (hasn't graduated to a real plugin yet)
 require('regal').setup({
   slip_box = "~/attic/slip-box",
 })
 
--- Misc
-vim.g['teleport#update_cwd'] = true
-vim.g.jsx_ext_required = 0
-vim.g.splitjoin_trailing_comma = true
-
 vim.api.nvim_create_autocmd('FileType', {
-  group = vim.api.nvim_create_augroup('settings', {}),
+  group = vim.api.nvim_create_augroup('docs-page-settings', {}),
   pattern = { "help", "man" },
-  command = "wincmd _",
-})
-
-vim.api.nvim_set_hl(0, 'FloatBorder', {
-  bg = bg_color,
-  fg = colors.black,
-  blend = 20,
-})
-
-vim.api.nvim_set_hl(0, 'FloatTitle', {
-  fg = colors.blue,
-  bg = bg_color,
-  blend = 20,
-})
-
-vim.api.nvim_set_hl(0, 'NormalFloat', {
-  bg = bg_color,
-  blend = 20,
-})
-
--- nvim-cmp selected option.
-vim.api.nvim_set_hl(0, 'PmenuSel', {
-  bg = odp_helpers.lighten('bg', 10, 'onedark'),
-  fg = 'NONE',
+  desc = 'Auto-expand documentation windows',
+  callback = function()
+    vim.cmd.wimcmd('_')
+  end,
 })
