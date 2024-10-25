@@ -18,6 +18,7 @@ let
   managedManifest = lib.mapAttrsToList (_: plugin: {
     name = plugin.package.pname;
     source = plugin.package.outPath;
+    opts = plugin.opts;
     config = (
       if lib.isPath plugin.extraConfig then
         toString plugin.extraConfig
@@ -33,24 +34,44 @@ let
   unmanagedManifest = lib.forEach config.extraPlugins (pkg: {
     name = pkg.pname;
     source = pkg.outPath;
+    opts = { };
   });
 in
 {
-  # Generate an option for every vim plugin. Not using a submodule because
-  # plugins can be extended with custom Nix options and submodules require
-  # uniform types.
-  options.plugins = mapAttrs' (pluginName: plugin: {
-    name = pluginName;
-    value = {
-      enable = mkEnableOption "Add ${pluginName}";
-      package = mkPackageOption pkgs.vimPlugins pluginName { };
-      extraConfig = mkOption {
-        type = types.either types.path types.lines;
-        description = "Extra lines for the vim config file";
-        default = "";
-      };
-    };
-  }) pkgs.vimPlugins;
+  options.plugins = mkOption {
+    description = "Plugins to install indexed by name";
+    type = types.attrsOf (
+      types.submodule (
+        { name, ... }:
+        {
+          options = {
+            name = mkOption {
+              type = types.str;
+              description = "Plugin name. Defaults to a member of `vimPlugins`.";
+              default = name;
+            };
+
+            enable = mkEnableOption "Install ${name}";
+            package = mkPackageOption pkgs.vimPlugins name { };
+            extraConfig = mkOption {
+              type = types.either types.path types.lines;
+              default = "";
+              description = ''
+                Plugin specific config file.
+                Only runs if the plugin is enabled and after it loads.
+              '';
+            };
+
+            opts = mkOption {
+              type = types.attrsOf types.anything;
+              default = { };
+              description = "Options passed to the config if it returns a function";
+            };
+          };
+        }
+      )
+    );
+  };
 
   options.core.manifest = mkOption {
     type = types.anything;

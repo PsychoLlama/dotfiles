@@ -29,7 +29,11 @@ function M.load(override)
   -- issues with load order.
   for _, plugin in ipairs(loaded_plugins) do
     if plugin.config then
-      vim.cmd.source(plugin.config)
+      local callback = dofile(plugin.config)
+
+      if type(callback) == 'function' then
+        callback(plugin.opts)
+      end
     end
   end
 
