@@ -3,7 +3,7 @@
 --- to exist in `&packpath` as optional dependencies. This module decides if,
 --- when, and how to load them.
 
-local manifest = require('core.pkg._manifest')
+local loader = require('core.pkg._loader')
 
 --- @param plugin core.pkg.Plugin
 local function load_plugin(plugin)
@@ -28,7 +28,7 @@ local M = {}
 --- plugins before loading.
 --- @param override nil | fun(manifest: core.pkg.Plugin[]): core.pkg.Plugin[]
 function M.load(override)
-  local plugins = manifest.get()
+  local plugins = loader.get_manifest()
 
   if override then
     plugins = override(plugins)
@@ -39,25 +39,13 @@ function M.load(override)
     table.insert(loaded_plugins, plugin)
   end
 
-  -- Load plugin-specific configs. Runs after all plugins load to avoid
-  -- issues with load order.
-  for _, plugin in ipairs(loaded_plugins) do
-    if plugin.config then
-      local callback = dofile(plugin.config)
-
-      if type(callback) == 'function' then
-        callback(plugin.opts)
-      end
-    end
-  end
-
   return loaded_plugins
 end
 
 --- Get all plugins from the manifest. Includes inactive plugins. Does not
 --- include custom plugins provided by the optional override callback.
 function M.list_available()
-  return manifest.get()
+  return loader.get_manifest()
 end
 
 --- Get all plugins that have been loaded, including any custom plugins.

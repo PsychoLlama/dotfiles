@@ -59,11 +59,14 @@ in
 
         configure.customRC = ''
           lua << CORE_FRAMEWORK
-          require('core.pkg._manifest').set(${lua config.core.manifest})
+          require('core.pkg._loader').set_manifest(${lua config.core.manifest})
           require('core.lsp').setup(${lua config.core.lsp.servers})
           CORE_FRAMEWORK
 
           source ${configFile}
+
+          " Run per-plugin configs after the vimrc finishes.
+          lua require('core.pkg._loader').eval_configs()
         '';
       };
     };
