@@ -7,8 +7,8 @@ function M.open()
   end
 
   require('editor.repl').open({
-    title = "Node Repl",
-    command = "yarn node",
+    title = 'Node Repl',
+    command = 'yarn node',
     cwd = vim.fs.root(0, { 'package.json' }) or vim.env.PWD,
   })
 end

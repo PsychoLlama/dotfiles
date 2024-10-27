@@ -3,7 +3,7 @@ local actions = require('telescope.actions')
 
 telescope.setup({
   defaults = {
-    path_display = { "filename_first" },
+    path_display = { 'filename_first' },
     layout_strategy = 'vertical',
     layout_config = {
       height = { padding = 0 },
@@ -11,8 +11,8 @@ telescope.setup({
     },
     mappings = {
       n = {
-        ["<c-c>"] = actions.close,
-      }
+        ['<c-c>'] = actions.close,
+      },
     },
   },
 })

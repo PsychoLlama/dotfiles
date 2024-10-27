@@ -2,7 +2,6 @@
 --- A Lua plugin for managing LSP clients. This is similar to `lspconfig` but
 --- leans on newer Neovim features to simplify stuff.
 
-
 --- Defines a language server and binds it to certain events.
 --- @class core.lsp.Server
 --- @field name string Identifies the server.
@@ -13,7 +12,6 @@
 ---
 --- The full set of all supported language servers.
 --- @alias core.lsp.Config table<string, core.lsp.Server>
-
 
 --- @type core.lsp.Config | nil
 local global_config = nil
@@ -29,11 +27,12 @@ local M = {}
 function M.setup(settings)
   global_config = settings
 
-  local filetypes = vim.fn.flatten(
-    vim.iter(settings)
-    :map(function(_, server) return server.filetypes end)
-    :totable()
-  )
+  local filetypes = vim.fn.flatten(vim
+    .iter(settings)
+    :map(function(_, server)
+      return server.filetypes
+    end)
+    :totable())
 
   vim.api.nvim_create_autocmd('FileType', {
     pattern = filetypes,

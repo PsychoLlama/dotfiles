@@ -22,20 +22,20 @@ local function create()
       local timestamp = vim.fn.localtime()
       local iso_8601 = vim.fn.strftime('%Y-%m-%dT%H:%M:%SZ', timestamp)
 
-      local filename = timestamp .. '-' .. utils.normalize_title(title) .. '.md'
+      local filename = timestamp
+        .. '-'
+        .. utils.normalize_title(title)
+        .. '.md'
       local filepath = config.slip_box .. '/' .. filename
 
-      vim.fn.writefile(
-        {
-          '---',
-          'title: ' .. title,
-          'createdAt: ' .. iso_8601,
-          '---',
-          '',
-          '',
-        },
-        filepath
-      )
+      vim.fn.writefile({
+        '---',
+        'title: ' .. title,
+        'createdAt: ' .. iso_8601,
+        '---',
+        '',
+        '',
+      }, filepath)
 
       vim.cmd.edit(filepath)
       utils.go_to_last_line()

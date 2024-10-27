@@ -4,13 +4,19 @@ local nvim_lsp = require('cmp_nvim_lsp')
 
 local function has_words_before()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+  return col ~= 0
+    and vim.api
+        .nvim_buf_get_lines(0, line - 1, line, true)[1]
+        :sub(col, col)
+        :match('%s')
+      == nil
 end
 
 local function get_visible_buffers()
-  return vim.iter(vim.api.nvim_tabpage_list_wins(0))
-      :map(vim.api.nvim_win_get_buf)
-      :totable()
+  return vim
+    .iter(vim.api.nvim_tabpage_list_wins(0))
+    :map(vim.api.nvim_win_get_buf)
+    :totable()
 end
 
 -- Use system popup theme.
@@ -67,7 +73,7 @@ cmp.setup.cmdline({ '/', '?' }, {
       option = { get_bufnrs = get_visible_buffers },
     },
   }),
-  matching = { disallow_symbol_nonprefix_matching = false }
+  matching = { disallow_symbol_nonprefix_matching = false },
 })
 
 -- Ex mode completions. Breaks completion in VimL but improves Lua.

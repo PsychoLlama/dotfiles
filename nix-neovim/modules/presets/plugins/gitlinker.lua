@@ -9,6 +9,11 @@ vim.keymap.set('n', '<leader>l', function()
 end)
 
 -- TODO: Figure out why this doesn't work with `keymap.set(...)`.
-vim.api.nvim_set_keymap('v', '<leader>l', "<cmd>lua require'gitlinker'.get_buf_range_url('v')<cr>", {
-  noremap = true,
-})
+vim.api.nvim_set_keymap(
+  'v',
+  '<leader>l',
+  "<cmd>lua require'gitlinker'.get_buf_range_url('v')<cr>",
+  {
+    noremap = true,
+  }
+)

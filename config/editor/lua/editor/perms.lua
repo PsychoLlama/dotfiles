@@ -23,10 +23,9 @@ function M.set(file_path, perms)
   end
 
   -- Using `chmod` because it supports named permissions.
-  local job = vim.system(
-    { 'chmod', perms, vim.fn.fnameescape(file_path) },
-    { text = true }
-  ):wait()
+  local job = vim
+    .system({ 'chmod', perms, vim.fn.fnameescape(file_path) }, { text = true })
+    :wait()
 
   if job.code ~= 0 then
     vim.notify('Failed: ' .. job.stderr, vim.log.levels.ERROR)

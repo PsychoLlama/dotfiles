@@ -1,7 +1,6 @@
 require('core.env').source_direnv_vimrc()
 require('core.pkg').load()
 
-
 -- Editing settings
 vim.opt.backspace = { 'indent', 'eol', 'start' }
 vim.o.formatoptions = 'qc1orj'
@@ -25,7 +24,7 @@ vim.o.autoread = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.mouse = ''
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
 -- Display settings
 vim.o.incsearch = true
@@ -59,13 +58,17 @@ vim.g.mapleader = ' '
 vim.api.nvim_set_keymap('n', '<space>', '<nop>', {})
 vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 
-
 -- Misc mappings
-vim.api.nvim_set_keymap('n', '<leader>p', '<cmd>call editor#open_project_root()<cr>', {
-  noremap = true,
-  silent = true,
-  desc = 'Open project root',
-})
+vim.api.nvim_set_keymap(
+  'n',
+  '<leader>p',
+  '<cmd>call editor#open_project_root()<cr>',
+  {
+    noremap = true,
+    silent = true,
+    desc = 'Open project root',
+  }
+)
 
 vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
   noremap = true,
@@ -73,17 +76,20 @@ vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
   desc = 'Clear search highlights',
 })
 
-vim.api.nvim_set_keymap('n', '<leader>;', '<cmd>call editor#mappings#test()<cr>', {
-  noremap = true,
-  silent = true,
-  desc = 'Run unit tests',
-})
+vim.api.nvim_set_keymap(
+  'n',
+  '<leader>;',
+  '<cmd>call editor#mappings#test()<cr>',
+  {
+    noremap = true,
+    silent = true,
+    desc = 'Run unit tests',
+  }
+)
 
 -- LSP Config
-vim.lsp.handlers[vim.lsp.protocol.Methods.textDocument_hover] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  { border = "rounded" }
-)
+vim.lsp.handlers[vim.lsp.protocol.Methods.textDocument_hover] =
+  vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 
 local lsp_autoformat_group = vim.api.nvim_create_augroup('lsp_autoformat', {})
 
@@ -132,12 +138,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Zettelkaesten (hasn't graduated to a real plugin yet)
 require('regal').setup({
-  slip_box = "~/attic/slip-box",
+  slip_box = '~/attic/slip-box',
 })
 
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('docs-page-settings', {}),
-  pattern = { "help", "man" },
+  pattern = { 'help', 'man' },
   desc = 'Auto-expand documentation windows',
   callback = function()
     vim.cmd.wincmd('_')

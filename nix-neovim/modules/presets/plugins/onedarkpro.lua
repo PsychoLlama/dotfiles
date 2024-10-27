@@ -25,7 +25,7 @@ odp.setup({
     },
   },
   styles = {
-    comments = "italic",
+    comments = 'italic',
   },
 })
 

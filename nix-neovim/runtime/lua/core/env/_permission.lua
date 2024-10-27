@@ -36,7 +36,7 @@ function M.ask(file_path, opts)
   local selection = vim.fn.inputlist({
     opts.prompt,
     ('1: Allow: %s'):format(vim.fn.fnamemodify(file_path, ':~:.')),
-    ('2: Block'),
+    '2: Block',
   })
 
   if selection == 1 then

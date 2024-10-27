@@ -10,7 +10,7 @@ function M.open(opts)
   vim.cmd.wincmd('J')
   vim.cmd.resize(10)
   vim.opt_local.number = false
-  vim.opt_local.signcolumn = "no"
+  vim.opt_local.signcolumn = 'no'
   vim.fn.termopen(opts.command)
   vim.cmd.normal('A')
 end
