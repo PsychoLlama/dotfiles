@@ -359,6 +359,12 @@ in
         };
       };
 
+      neotest-vitest.enable = enabled;
+      neotest = {
+        enable = enabled;
+        extraConfig = ./plugins/neotest.lua;
+      };
+
       cmp-buffer.enable = enabled;
       cmp-cmdline.enable = enabled;
       cmp-nvim-lsp.enable = enabled;
