@@ -9,16 +9,6 @@ let
   enabled = lib.mkDefault true;
   cfg = config.presets.base;
   u = pkgs.unstable;
-
-  eslint = {
-    lint-command = "${u.eslint_d}/bin/eslint_d --format visualstudio --stdin --stdin-filename \"\${INPUT}\"";
-    lint-source = "eslint";
-    lint-stdin = true;
-    lint-formats = [
-      "%f(%l,%c): %tarning %m"
-      "%f(%l,%c): %rror %m"
-    ];
-  };
 in
 
 {
@@ -111,39 +101,6 @@ in
           ];
 
           root.patterns = [ "compile_commands.json" ];
-        };
-      };
-
-      efm = {
-        enable = true;
-        settings.languages = rec {
-          vim = [
-            {
-              lint-command = "${u.vim-vint}/bin/vint -";
-              lint-source = "vint";
-              lint-stdin = true;
-              lint-formats = [ "%f:%l:%c: %m" ];
-            }
-          ];
-
-          sh = bash;
-          bash = [
-            {
-              lint-command = "${u.shellcheck}/bin/shellcheck -f gcc -x -";
-              lint-source = "shellcheck";
-              lint-stdin = true;
-              lint-formats = [
-                "%f:%l:%c: %trror: %m"
-                "%f:%l:%c: %tarning: %m"
-                "%f:%l:%c: %tote: %m"
-              ];
-            }
-          ];
-
-          javascript = typescript;
-          javascriptreact = typescript;
-          typescriptreact = typescript;
-          typescript = [ eslint ];
         };
       };
     };
@@ -293,6 +250,40 @@ in
       onedarkpro-nvim = {
         enable = enabled;
         extraConfig = ./plugins/onedarkpro.lua;
+      };
+
+      nvim-lint = {
+        enable = enabled;
+        extraConfig = ./plugins/lint.lua;
+        opts = {
+          linters = {
+            eslint_d.cmd = "${u.eslint_d}/bin/eslint_d";
+            shellcheck.cmd = "${u.shellcheck}/bin/shellcheck";
+
+            # Built-in vint config does not support stdin.
+            vint = {
+              cmd = "${u.vim-vint}/bin/vint";
+              stdin = true;
+              args = [
+                "--enable-neovim"
+                "--style-problem"
+                "--json"
+                "-"
+              ];
+            };
+          };
+
+          linters_by_ft = rec {
+            sh = bash;
+            bash = [ "shellcheck" ];
+            vim = [ "vint" ];
+
+            javascript = typescript;
+            javascriptreact = typescript;
+            typescriptreact = typescript;
+            typescript = [ "eslint_d" ];
+          };
+        };
       };
 
       conform-nvim = {

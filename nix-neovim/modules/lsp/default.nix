@@ -6,8 +6,6 @@ let
 in
 
 {
-  imports = [ ./efm.nix ];
-
   options = {
     core.lsp.servers = lib.mkOption {
       type = types.anything;
