@@ -1,6 +1,6 @@
 require('core.pkg').on_load(function(plugins)
   return vim.iter(plugins):map(function(plugin)
-    if plugin.name ~= 'personal-vim-config' then
+    if plugin.name ~= 'ext.nvim' then
       return plugin
     end
 

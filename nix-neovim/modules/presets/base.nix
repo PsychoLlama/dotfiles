@@ -326,10 +326,10 @@ in
       cmp-nvim-lsp.enable = enabled;
       cmp-path.enable = enabled;
       deja-view-vim.enable = enabled;
+      ext-nvim.enable = enabled;
       fzf-vim.enable = enabled;
       nvim-luapad.enable = enabled;
       nvim-treesitter-textobjects.enable = enabled;
-      personal-vim-config.enable = enabled;
       remix-nvim.enable = enabled;
       unison.enable = enabled;
       vader-vim.enable = enabled;
