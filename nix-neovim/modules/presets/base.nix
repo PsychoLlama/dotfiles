@@ -297,18 +297,15 @@ in
             nixfmt = {
               command = "${u.nixfmt-rfc-style}/bin/nixfmt";
               args = [ "--quiet" ];
-              stdin = true;
             };
 
             prettier = {
               command = "${u.prettierd}/bin/prettierd";
               args = [ "$FILENAME" ];
-              stdin = true;
             };
 
             eslint = {
               command = "${u.eslint_d}/bin/eslint_d";
-              stdin = true;
               args = [
                 "--stdin-filename"
                 "$FILENAME"
@@ -319,7 +316,6 @@ in
 
             stylua = {
               command = "${u.stylua}/bin/stylua";
-              indent = true;
               args = [
                 "--search-parent-directories"
                 "--allow-hidden"
@@ -327,6 +323,13 @@ in
                 "$FILENAME"
                 "-"
               ];
+            };
+
+            # Dynamic dependency. Assumes `rustfmt` is provided by direnv and
+            # so will only work if neovim was spawned from the project.
+            rustfmt = {
+              command = "rustfmt";
+              args = [ "--emit=stdout" ];
             };
           };
 
@@ -349,6 +352,7 @@ in
             lua = [ "stylua" ];
             markdown = [ "prettier" ];
             nix = [ "nixfmt" ];
+            rust = [ "rustfmt" ];
             vue = [ "prettier" ];
             yaml = [ "prettier" ];
           };
