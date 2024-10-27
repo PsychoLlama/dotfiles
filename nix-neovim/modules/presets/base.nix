@@ -323,6 +323,18 @@ in
                 "--fix-to-stdout"
               ];
             };
+
+            stylua = {
+              command = "${u.stylua}/bin/stylua";
+              indent = true;
+              args = [
+                "--search-parent-directories"
+                "--allow-hidden"
+                "--stdin-filepath"
+                "$FILENAME"
+                "-"
+              ];
+            };
           };
 
           formatters_by_ft = rec {
@@ -341,6 +353,7 @@ in
             json5 = [ "prettier" ];
             jsonc = [ "prettier" ];
             less = [ "prettier" ];
+            lua = [ "stylua" ];
             markdown = [ "prettier" ];
             nix = [ "nixfmt" ];
             vue = [ "prettier" ];
