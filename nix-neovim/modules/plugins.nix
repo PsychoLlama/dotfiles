@@ -8,6 +8,26 @@
 with lib;
 
 let
+  # Type accepted by `generators.toLua`. Similar to `pkgs.formats.*`.
+  luaValueType =
+    let
+      valueType =
+        types.nullOr (
+          types.oneOf [
+            types.bool
+            types.int
+            types.float
+            types.str
+            (types.attrsOf valueType)
+            (types.listOf valueType)
+          ]
+        )
+        // {
+          description = "Lua value";
+        };
+    in
+    valueType;
+
   # An attrset of only the enabled plugins. { vim-fugitive = <derivation>; }
   enabledVimPlugins = filterAttrs (k: v: v.enable) config.plugins;
 
@@ -65,7 +85,7 @@ in
             };
 
             opts = mkOption {
-              type = types.attrsOf types.anything;
+              type = luaValueType;
               default = { };
               description = "Options passed to the config if it returns a function";
             };
