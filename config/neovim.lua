@@ -87,6 +87,11 @@ vim.api.nvim_set_keymap(
   }
 )
 
+-- Diagnostics are sourced from both standalone linters and language servers.
+vim.keymap.set('n', 'gl', vim.diagnostic.open_float)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+
 -- LSP Config
 vim.lsp.handlers[vim.lsp.protocol.Methods.textDocument_hover] =
   vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
@@ -105,32 +110,42 @@ vim.api.nvim_create_autocmd('LspAttach', {
       return
     end
 
-    -- Copilot doesn't count. It doesn't have normal LSP mappings.
-    if client.name == 'GitHub Copilot' or vim.b.lsp_initialized then
-      return
-    end
+    -- Only create mappings once per buffer per LSP method.
+    local has_mapping = {}
 
-    local function bufmap(mode, lhs, rhs)
-      vim.keymap.set(mode, lhs, rhs, {
+    --- Create a keybinding for an LSP method, but only if the server supports
+    --- the action. This prevents overriding default mappings like `K` if the
+    --- server doesn't support it. A good example is Copilot which supports
+    --- almost nothing but is attached to most buffers.
+    local function lspmap(binding, lsp_method, callback, opts)
+      if has_mapping[lsp_method] then
+        return
+      end
+
+      if not client.supports_method(lsp_method) then
+        return
+      end
+
+      opts = opts or {}
+      opts.mode = opts.mode or 'n'
+
+      has_mapping[lsp_method] = true
+      vim.keymap.set(opts.mode, binding, callback, {
         buffer = args.buf,
-        desc = 'LSP',
+        desc = lsp_method,
       })
     end
 
-    bufmap('n', 'K', vim.lsp.buf.hover)
-    bufmap('n', 'gd', vim.lsp.buf.definition)
-    bufmap('n', 'gD', vim.lsp.buf.declaration)
-    bufmap('n', 'gi', vim.lsp.buf.implementation)
-    bufmap('n', 'gy', vim.lsp.buf.type_definition)
-    bufmap('n', 'gr', vim.lsp.buf.references)
-    bufmap('n', 'gs', vim.lsp.buf.signature_help)
-    bufmap('n', '<leader>rn', vim.lsp.buf.rename)
-    bufmap('n', 'go', vim.lsp.buf.code_action)
-    bufmap('n', 'gl', vim.diagnostic.open_float)
-    bufmap('n', '[d', vim.diagnostic.goto_prev)
-    bufmap('n', ']d', vim.diagnostic.goto_next)
+    local P = vim.lsp.protocol.Methods
 
-    vim.b.lsp_initialized = true
+    lspmap('K', P.textDocument_hover, vim.lsp.buf.hover)
+    lspmap('<c-k>', P.textDocument_signatureHelp, vim.lsp.buf.signature_help)
+    lspmap('gd', P.textDocument_definition, vim.lsp.buf.definition)
+    lspmap('gi', P.textDocument_implementation, vim.lsp.buf.implementation)
+    lspmap('gr', P.textDocument_references, vim.lsp.buf.references)
+    lspmap('gy', P.textDocument_typeDefinition, vim.lsp.buf.type_definition)
+    lspmap('<leader>rn', P.textDocument_rename, vim.lsp.buf.rename)
+    lspmap('go', P.textDocument_codeAction, vim.lsp.buf.code_action)
   end,
 })
 
