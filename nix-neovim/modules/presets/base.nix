@@ -331,11 +331,8 @@ in
       nvim-luapad.enable = enabled;
       nvim-treesitter-textobjects.enable = enabled;
       remix-nvim.enable = enabled;
-      unison.enable = enabled;
-      vader-vim.enable = enabled;
       vim-endwise.enable = enabled;
       vim-fugitive.enable = enabled;
-      vim-plug.enable = enabled;
       vim-repeat.enable = enabled;
       vim-surround.enable = enabled;
     };
