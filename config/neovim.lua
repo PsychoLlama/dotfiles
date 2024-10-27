@@ -1,3 +1,4 @@
+require('core.env').load_from_env('DIRENV_EXTRA_VIMRC')
 require('core.pkg').load(function(plugins)
   local pkg_overrides = vim.env.VIM_PLUGINS
   if pkg_overrides == nil then
