@@ -56,15 +56,17 @@ in
           filetypes = [ "lua" ];
           root.patterns = [
             ".git/"
-            "lua/"
+            ".luarc.json"
           ];
 
           # Reference: https://luals.github.io/wiki/settings/
           settings.Lua = {
-            workspace.library = [
-              # Provides type definitions for `vim.*`.
-              "${config.package}/share/nvim/runtime/lua"
-            ];
+            # Using stylua instead.
+            format.enable = false;
+
+            # Don't try to dynamically manage library type defs.
+            workspace.checkThirdParty = false;
+            addonManager.enable = false;
           };
         };
 
