@@ -1,33 +1,5 @@
 require('core.env').load_from_env('DIRENV_EXTRA_VIMRC')
-require('core.pkg').load(function(plugins)
-  local pkg_overrides = vim.env.VIM_PLUGINS
-  if pkg_overrides == nil then
-    return plugins
-  end
-
-  --- @type table<string, string> Package name to package path
-  local custom = vim.iter(vim.split(pkg_overrides, ';'))
-      :fold({}, function(acc, override)
-        local kv_pair = vim.split(override, ':')
-        acc[kv_pair[1]] = kv_pair[2]
-
-        return acc
-      end)
-
-  -- TODO: Replace the `VIM_PLUGINS` hack with something less horrible.
-  return vim.iter(plugins)
-      :map(function(plugin)
-        if custom[plugin.name] then
-          return vim.tbl_extend('force', plugin, {
-            type = 'path',
-            source = custom[plugin.name],
-          })
-        end
-
-        return plugin
-      end)
-      :totable()
-end)
+require('core.pkg').load()
 
 
 -- Editing settings

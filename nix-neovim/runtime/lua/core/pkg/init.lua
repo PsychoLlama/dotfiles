@@ -22,16 +22,19 @@ end
 --- @type core.pkg.Plugin[]
 local loaded_plugins = {}
 
+--- @alias core.pkg.Hook fun(plugins: core.pkg.Plugin[]): core.pkg.Plugin[]
+--- @type core.pkg.Hook[]
+local hooks = {}
+
 local M = {}
 
 --- Load all plugins. Optionally, pass a callback to change the list of
 --- plugins before loading.
---- @param override nil | fun(manifest: core.pkg.Plugin[]): core.pkg.Plugin[]
-function M.load(override)
+function M.load()
   local plugins = loader.get_manifest()
 
-  if override then
-    plugins = override(plugins)
+  for _, plugin_look in ipairs(hooks) do
+    plugins = plugin_look(plugins)
   end
 
   for _, plugin in ipairs(plugins) do
@@ -40,6 +43,12 @@ function M.load(override)
   end
 
   return loaded_plugins
+end
+
+--- Register a hook to preprocess the list of plugins before loading. Useful
+--- for dynamically adding, replacing, or removing plugins from the manifest.
+function M.on_load(override)
+  table.insert(hooks, override)
 end
 
 --- Get all plugins from the manifest. Includes inactive plugins. Does not
@@ -51,6 +60,11 @@ end
 --- Get all plugins that have been loaded, including any custom plugins.
 function M.list_active()
   return loaded_plugins
+end
+
+--- Get all hooks that have been registered.
+function M.list_hooks()
+  return vim.deepcopy(hooks)
 end
 
 return M
