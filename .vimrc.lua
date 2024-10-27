@@ -1,15 +1,17 @@
-require('core.pkg').on_load(function(plugins)
-  return vim.iter(plugins):map(function(plugin)
-    if plugin.name ~= 'ext.nvim' then
-      return plugin
-    end
+local repo = vim.fn.expand('<sfile>:h')
 
-    return vim.tbl_extend('force', plugin, {
-      type = 'path',
-      source = vim.fs.joinpath(
-        vim.fs.root(0, { '.git' }),
-        'config/editor'
-      ),
-    })
-  end):totable()
+require('core.pkg').on_load(function(plugins)
+  return vim
+    .iter(plugins)
+    :map(function(plugin)
+      if plugin.name ~= 'ext.nvim' then
+        return plugin
+      end
+
+      return vim.tbl_extend('force', plugin, {
+        type = 'path',
+        source = vim.fs.joinpath(repo, 'config/editor'),
+      })
+    end)
+    :totable()
 end)
