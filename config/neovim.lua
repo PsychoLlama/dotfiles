@@ -126,21 +126,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     bufmap('n', '[d', vim.diagnostic.goto_prev)
     bufmap('n', ']d', vim.diagnostic.goto_next)
 
-    -- Format on save.
-    -- TODO: Add a way to disable this.
-    vim.api.nvim_create_autocmd('BufWritePre', {
-      group = lsp_autoformat_group,
-      buffer = args.buf,
-      callback = function()
-        vim.lsp.buf.format({
-          filter = function(formatter)
-            -- TypeScript LS bundles its own formatter. And it's useless.
-            return formatter.name ~= 'typescript-language-server'
-          end,
-        })
-      end,
-    })
-
     vim.b.lsp_initialized = true
   end,
 })

@@ -10,11 +10,6 @@ let
   cfg = config.presets.base;
   u = pkgs.unstable;
 
-  prettier = {
-    format-command = "${u.prettierd}/bin/prettierd \"\${INPUT}\"";
-    format-stdin = true;
-  };
-
   eslint = {
     lint-command = "${u.eslint_d}/bin/eslint_d --format visualstudio --stdin --stdin-filename \"\${INPUT}\"";
     lint-source = "eslint";
@@ -23,9 +18,6 @@ let
       "%f(%l,%c): %tarning %m"
       "%f(%l,%c): %rror %m"
     ];
-
-    format-command = "${u.eslint_d}/bin/eslint_d --stdin-filename \"\${INPUT}\" --stdin --fix-to-stdout";
-    format-stdin = true;
   };
 in
 
@@ -49,13 +41,7 @@ in
           server = "${u.nil}/bin/nil";
           filetypes = [ "nix" ];
           root.patterns = [ "flake.nix" ];
-          settings.nil = {
-            nix.flake.autoArchive = true;
-            formatting.command = [
-              "${u.nixfmt-rfc-style}/bin/nixfmt"
-              "--quiet"
-            ];
-          };
+          settings.nil.nix.flake.autoArchive = true;
         };
 
         nushell = {
@@ -155,21 +141,7 @@ in
           javascript = typescript;
           javascriptreact = typescript;
           typescriptreact = typescript;
-          typescript = [
-            prettier
-            eslint
-          ];
-
-          css = [ prettier ];
-          graphql = [ prettier ];
-          html = [ prettier ];
-          json = [ prettier ];
-          json5 = [ prettier ];
-          jsonc = [ prettier ];
-          less = [ prettier ];
-          markdown = [ prettier ];
-          vue = [ prettier ];
-          yaml = [ prettier ];
+          typescript = [ eslint ];
         };
       };
     };
@@ -319,6 +291,62 @@ in
       onedarkpro-nvim = {
         enable = enabled;
         extraConfig = ./plugins/onedarkpro.lua;
+      };
+
+      conform-nvim = {
+        enable = enabled;
+        extraConfig = ./plugins/conform.lua;
+        opts = {
+          format_on_save = true;
+          default_format_opts.undojoin = true;
+
+          formatters = {
+            nixfmt = {
+              command = "${u.nixfmt-rfc-style}/bin/nixfmt";
+              args = [ "--quiet" ];
+              stdin = true;
+            };
+
+            prettier = {
+              command = "${u.prettierd}/bin/prettierd";
+              args = [ "$FILENAME" ];
+              stdin = true;
+            };
+
+            eslint = {
+              command = "${u.eslint_d}/bin/eslint_d";
+              stdin = true;
+              args = [
+                "--stdin-filename"
+                "$FILENAME"
+                "--stdin"
+                "--fix-to-stdout"
+              ];
+            };
+          };
+
+          formatters_by_ft = rec {
+            javascript = typescript;
+            javascriptreact = typescript;
+            typescriptreact = typescript;
+            typescript = [
+              "eslint"
+              "prettier"
+            ];
+
+            css = [ "prettier" ];
+            graphql = [ "prettier" ];
+            html = [ "prettier" ];
+            json = [ "prettier" ];
+            json5 = [ "prettier" ];
+            jsonc = [ "prettier" ];
+            less = [ "prettier" ];
+            markdown = [ "prettier" ];
+            nix = [ "nixfmt" ];
+            vue = [ "prettier" ];
+            yaml = [ "prettier" ];
+          };
+        };
       };
 
       cmp-buffer.enable = enabled;
