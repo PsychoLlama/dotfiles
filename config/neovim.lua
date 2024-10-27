@@ -91,8 +91,6 @@ vim.api.nvim_set_keymap(
 vim.lsp.handlers[vim.lsp.protocol.Methods.textDocument_hover] =
   vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 
-local lsp_autoformat_group = vim.api.nvim_create_augroup('lsp_autoformat', {})
-
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('lsp_settings', {}),
   callback = function(args)
