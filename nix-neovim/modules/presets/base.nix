@@ -171,6 +171,7 @@ in
         '';
       };
 
+      lualine-lsp-progress.enable = enabled;
       lualine-nvim = {
         enable = enabled;
         extraConfig = ./plugins/lualine.lua;

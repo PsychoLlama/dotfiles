@@ -1,15 +1,13 @@
 local lualine_theme = require('lualine.themes.onedark')
 
 lualine_theme.normal.c.bg = nil
+lualine_theme.inactive.c.bg = nil
 
-pcall(function()
-  -- Disable fg mode colors for the branch name.
-  -- Unknown why, but sometimes these objects don't exist yet.
-  lualine_theme.normal.b.fg = nil
-  lualine_theme.insert.b.fg = nil
-  lualine_theme.visual.b.fg = nil
-  lualine_theme.command.b.fg = nil
-end)
+-- Disable branch name mode colors.
+lualine_theme.normal.b.fg = nil
+lualine_theme.insert.b.fg = nil
+lualine_theme.visual.b.fg = nil
+lualine_theme.command.b.fg = nil
 
 require('lualine').setup({
   options = {
@@ -19,7 +17,7 @@ require('lualine').setup({
     lualine_a = {},
     lualine_b = { 'branch' },
     lualine_c = { 'filename', 'diagnostics' },
-    lualine_x = { 'filetype' },
+    lualine_x = { 'lsp_progress', 'filetype' },
     lualine_y = { 'progress' },
     lualine_z = { 'location' },
   },
