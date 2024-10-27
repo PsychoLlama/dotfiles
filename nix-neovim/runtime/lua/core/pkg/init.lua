@@ -33,8 +33,8 @@ local M = {}
 function M.load()
   local plugins = loader.get_manifest()
 
-  for _, plugin_look in ipairs(hooks) do
-    plugins = plugin_look(plugins)
+  for _, plugin_hook in ipairs(hooks) do
+    plugins = plugin_hook(plugins)
   end
 
   for _, plugin in ipairs(plugins) do
