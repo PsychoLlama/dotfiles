@@ -30,7 +30,7 @@ end
 --- @param opts core.env.PromptOptions
 function M.ask(file_path, opts)
   opts = opts or {}
-  opts.prompt = opts.prompt or 'Load extra vimrc?'
+  opts.prompt = opts.prompt or 'Trust extra vimrc?'
 
   -- Load order is important. Must be a blocking operation.
   local selection = vim.fn.inputlist({

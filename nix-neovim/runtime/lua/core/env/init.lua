@@ -9,21 +9,24 @@ local permission = require('core.env._permission')
 
 local M = {}
 
---- Check for an environment variable and if it exists, source the file it
---- points to.
----
---- @param env_var string Env var of the custom vimrc filepath.
-function M.load_from_env(env_var)
-  local project_vimrc = os.getenv(env_var)
+--- Check for a direnv vimrc and if it exists, source the file it points to.
+function M.source_direnv_vimrc()
+  local env_var = 'DIRENV_EXTRA_VIMRC'
+  local vimrc_paths = os.getenv(env_var)
 
-  -- No vimrc defined.
-  if not project_vimrc then
+  -- No direnv vimrc defined.
+  if not vimrc_paths then
     return
   end
 
-  return M.load(project_vimrc, {
-    prompt = ('Load extra vimrc? ($%s)'):format(env_var),
-  })
+  -- Check permission to load each. RC files can be specified multiple times
+  -- by using a colon as a separator. This might happen if you're using
+  -- `source_env` or `source_up` from the stdlib.
+  for _, path in ipairs(vim.split(vimrc_paths, ':')) do
+    M.load(path, {
+      prompt = ('Trust extra vimrc? ($%s)'):format(env_var),
+    })
+  end
 end
 
 --- Load a file and ask for permission if it's not already allowed.

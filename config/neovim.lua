@@ -1,4 +1,4 @@
-require('core.env').load_from_env('DIRENV_EXTRA_VIMRC')
+require('core.env').source_direnv_vimrc()
 require('core.pkg').load()
 
 
