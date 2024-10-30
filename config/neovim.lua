@@ -58,6 +58,9 @@ vim.g.mapleader = ' '
 vim.api.nvim_set_keymap('n', '<space>', '<nop>', {})
 vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 
+-- Disable dumb markdown indents from `$VIMRUNTIME`.
+vim.g.markdown_recommended_style = false
+
 -- Misc mappings
 vim.api.nvim_set_keymap(
   'n',
