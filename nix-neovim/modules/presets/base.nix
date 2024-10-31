@@ -115,6 +115,16 @@ in
       codecompanion-nvim = {
         enable = enabled;
         extraConfig = ./plugins/codecompanion.lua;
+
+        # Reference:
+        # codecompanion.nvim/lua/codecompanion/config.lua
+        opts.strategies.chat = {
+          adapter = "openai";
+          roles = {
+            llm = "Computer";
+            user = "User";
+          };
+        };
       };
 
       telescope-nvim = {
