@@ -3,7 +3,7 @@ return function(opts)
 
   companion.setup(opts)
 
-  vim.cmd.cabbrev('cc', 'CodeCompanion')
+  vim.cmd.cabbrev('CC', 'CodeCompanion')
   vim.keymap.set('n', '<leader>c', companion.toggle, {
     desc = 'Toggle CodeCompanion',
   })
