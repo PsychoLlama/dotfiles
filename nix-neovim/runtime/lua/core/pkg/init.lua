@@ -5,6 +5,18 @@
 
 local loader = require('core.pkg._loader')
 
+--- Neovim standard library. It's safe to assume this is always loaded, but
+--- the order of `packadd` and `runtimepath` is important. The standard
+--- library must always appear first.
+---
+--- @type core.pkg.Plugin
+local stdlib = {
+  type = 'path',
+  source = vim.env.VIMRUNTIME,
+  name = 'VIMRUNTIME',
+  opts = {},
+}
+
 --- @param plugin core.pkg.Plugin
 local function load_plugin(plugin)
   if plugin.type == 'pack' then
@@ -41,6 +53,9 @@ function M.load()
     load_plugin(plugin)
     table.insert(loaded_plugins, plugin)
   end
+
+  -- Idempotent operation. This ensures the standard libary evaluates first.
+  load_plugin(stdlib)
 
   return loaded_plugins
 end
