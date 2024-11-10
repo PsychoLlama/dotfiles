@@ -76,6 +76,15 @@ cmp.setup.cmdline({ '/', '?' }, {
   matching = { disallow_symbol_nonprefix_matching = false },
 })
 
+-- Ex mode completions. Breaks completion in VimL but improves Lua.
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' },
+    { name = 'cmdline' },
+  }),
+})
+
 -- Advertise extended completion capabilities.
 core_lsp.on_start(function(client)
   client.capabilities = nvim_lsp.default_capabilities(client.capabilities)
