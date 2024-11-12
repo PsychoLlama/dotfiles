@@ -165,3 +165,11 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.cmd.wincmd('_')
   end,
 })
+
+vim.treesitter.query.add_predicate('is-not?', function()
+  -- Many TS grammars ship queries that use `#is-not?` to detect locals. The
+  -- errors make the buffer unusable. This is a stub to fail more gracefully.
+  -- If Neovim adds support later, `add_predicate` will throw on startup.
+  --
+  -- See: https://github.com/neovim/neovim/issues/27521
+end, {})
