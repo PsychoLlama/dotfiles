@@ -52,12 +52,6 @@ in
         source ${zoxideCommandSetup}
 
         open ${jsonFormat.generate "session-variables.json" safeSessionVariables} | load-env
-
-        ${optionalString pkgs.stdenv.isLinux ''
-          def ip [...args] {
-            ^ip --json ...$args | from json
-          }
-        ''}
       '';
 
       extraEnv = ''
