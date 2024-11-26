@@ -150,7 +150,7 @@
         system: pkgs: {
           editor = lib.dotfiles.buildEditor {
             inherit pkgs;
-            modules = [ { presets.base.enable = true; } ];
+            modules = [ { profiles.full.enable = true; } ];
           };
         }
       );

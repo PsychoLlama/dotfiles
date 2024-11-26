@@ -7,12 +7,12 @@
 
 let
   enabled = lib.mkDefault true;
-  cfg = config.presets.base;
+  cfg = config.profiles.full;
   u = pkgs.unstable;
 in
 
 {
-  options.presets.base.enable = lib.mkEnableOption "Create an opinionated editor";
+  options.profiles.full.enable = lib.mkEnableOption "Create an opinionated editor";
 
   config = lib.mkIf cfg.enable {
     package = pkgs.unstable.neovim;
