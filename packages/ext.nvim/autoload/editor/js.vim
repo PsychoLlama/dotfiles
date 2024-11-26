@@ -4,28 +4,6 @@ func! s:resolve_path(args) abort
   return fnamemodify(l:path, ':p')
 endfunc
 
-" Locate the directory defining package.json.
-func! editor#js#find_package_root(...) abort
-  let l:containing_dir = s:resolve_path(a:000)
-
-  " Make sure it's a directory.
-  if !isdirectory(l:containing_dir)
-    let l:containing_dir = fnamemodify(l:containing_dir, ':p:h')
-  endif
-
-  " Search upwards for a package.json file.
-  call execute('lcd ' . l:containing_dir)
-  let l:pkg_path = findfile('package.json', ';')
-  silent lcd -
-
-  " Resolve an absolute path to the directory.
-  if strlen(l:pkg_path)
-    return fnamemodify(l:pkg_path, ':p:h')
-  endif
-
-  return v:null
-endfunc
-
 func! s:submatch(string, regex) abort
   let l:results = matchlist(a:string, a:regex)
 
@@ -161,20 +139,4 @@ func! editor#js#get_test_command_for_path(...) abort
   endif
 
   return l:runner
-endfunc
-
-func! editor#js#open_package_root() abort
-  let l:root = editor#js#find_package_root()
-
-  if l:root is# v:null
-    echo "It doesn't look like you're in a package."
-    return
-  endif
-
-  execute 'edit ' . fnameescape(l:root)
-  lcd %:p
-endfunc
-
-func! editor#js#is_javascript() abort
-  return &filetype =~# '\v\C(javascript|typescript)'
 endfunc

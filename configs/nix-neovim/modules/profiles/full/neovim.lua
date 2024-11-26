@@ -62,15 +62,11 @@ vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 vim.g.markdown_recommended_style = false
 
 -- Misc mappings
-vim.api.nvim_set_keymap(
+vim.keymap.set(
   'n',
   '<leader>p',
-  '<cmd>call editor#open_project_root()<cr>',
-  {
-    noremap = true,
-    silent = true,
-    desc = 'Open project root',
-  }
+  require('editor.navigation').open_project_root,
+  { desc = 'Open project root', silent = true }
 )
 
 vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
