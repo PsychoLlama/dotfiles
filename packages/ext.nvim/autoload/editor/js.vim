@@ -67,24 +67,6 @@ func! s:read_packages(package_list) abort
   return l:packages
 endfunc
 
-" Infer the test framework from the package's test script.
-" Only supports Jest because Jest is Best.
-func! s:extract_test_command(test_script) abort
-  let l:jest_scripts = ['freighter-scripts']
-
-  for l:jest_script in l:jest_scripts
-    if stridx(a:test_script, l:jest_script) > -1
-      return 'jest'
-    endif
-  endfor
-
-  if stridx(a:test_script, 'react-scripts') > -1
-    return 'react-scripts test'
-  endif
-
-  return a:test_script
-endfunc
-
 " Find the test script that controls the given project.
 " Searches upwards to support monorepos.
 func! s:get_test_runner(...) abort

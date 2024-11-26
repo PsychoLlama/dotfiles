@@ -75,17 +75,6 @@ vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
   desc = 'Clear search highlights',
 })
 
-vim.api.nvim_set_keymap(
-  'n',
-  '<leader>;',
-  '<cmd>call editor#mappings#test()<cr>',
-  {
-    noremap = true,
-    silent = true,
-    desc = 'Run unit tests',
-  }
-)
-
 -- Diagnostics are sourced from both standalone linters and language servers.
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
