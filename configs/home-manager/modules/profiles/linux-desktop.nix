@@ -9,14 +9,6 @@ in
   options.profiles.linux-desktop.enable = mkEnableOption "Use an opinionated Linux desktop environment";
 
   config = mkIf cfg.enable {
-    services.presets = {
-      dunst.enable = mkDefault true;
-      gammastep.enable = mkDefault true;
-      sway.enable = mkDefault true;
-      swaybg.enable = mkDefault true;
-      swayidle.enable = mkDefault true;
-    };
-
     programs = {
       acpi.enable = mkDefault true;
       brightnessctl.enable = mkDefault true;
@@ -29,12 +21,22 @@ in
       wl-clipboard.enable = mkDefault true;
     };
 
-    presets.programs = {
-      firefox.enable = mkDefault true;
-      rofi.enable = mkDefault true;
-      swaylock.enable = mkDefault true;
-      waybar.enable = mkDefault true;
-      zathura.enable = mkDefault true;
+    presets = {
+      services = {
+        dunst.enable = mkDefault true;
+        gammastep.enable = mkDefault true;
+        sway.enable = mkDefault true;
+        swaybg.enable = mkDefault true;
+        swayidle.enable = mkDefault true;
+      };
+
+      programs = {
+        firefox.enable = mkDefault true;
+        rofi.enable = mkDefault true;
+        swaylock.enable = mkDefault true;
+        waybar.enable = mkDefault true;
+        zathura.enable = mkDefault true;
+      };
     };
   };
 }

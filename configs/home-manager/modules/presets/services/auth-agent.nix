@@ -8,11 +8,11 @@
 with lib;
 
 let
-  cfg = config.services.presets.auth-agent;
+  cfg = config.presets.services.auth-agent;
   socketName = config.services.auth-agent.socket;
 in
 {
-  options.services.presets.auth-agent.enable = mkEnableOption "Cross platform ssh-agent";
+  options.presets.services.auth-agent.enable = mkEnableOption "Cross platform ssh-agent";
 
   config = mkIf cfg.enable {
     services.auth-agent = {

@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.services.presets.gammastep;
+  cfg = config.presets.services.gammastep;
 in
 {
-  options.services.presets.gammastep.enable = mkEnableOption "Use the gammastep blue light filter";
+  options.presets.services.gammastep.enable = mkEnableOption "Use the gammastep blue light filter";
 
   config.services.gammastep = mkIf cfg.enable {
     enable = true;

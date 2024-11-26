@@ -8,12 +8,12 @@
 with lib;
 
 let
-  cfg = config.services.presets.swayidle;
+  cfg = config.presets.services.swayidle;
   swaylock = "${pkgs.swaylock}/bin/swaylock";
   swaymsg = "${pkgs.sway}/bin/swaymsg";
 in
 {
-  options.services.presets.swayidle.enable = mkEnableOption "Automatically lock the computer when inactive";
+  options.presets.services.swayidle.enable = mkEnableOption "Automatically lock the computer when inactive";
 
   config.services.swayidle = mkIf cfg.enable {
     enable = true;

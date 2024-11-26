@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.services.presets.dunst;
+  cfg = config.presets.services.dunst;
 in
 {
-  options.services.presets.dunst.enable = mkEnableOption "Use the dunst notification daemon";
+  options.presets.services.dunst.enable = mkEnableOption "Use the dunst notification daemon";
 
   config.services.dunst = mkIf cfg.enable {
     enable = true;

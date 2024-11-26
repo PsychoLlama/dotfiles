@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.services.presets.swaybg;
+  cfg = config.presets.services.swaybg;
 in
 {
-  options.services.presets.swaybg.enable = mkEnableOption "Manage wallpapers with swaybg";
+  options.presets.services.swaybg.enable = mkEnableOption "Manage wallpapers with swaybg";
 
   config.services.swaybg = mkIf cfg.enable {
     enable = true;
