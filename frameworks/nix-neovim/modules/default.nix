@@ -34,7 +34,6 @@ in
   imports = [
     ./lsp
     ./plugins.nix
-    ./presets
   ];
 
   options = {

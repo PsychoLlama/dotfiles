@@ -27,7 +27,6 @@ in
     ./editor.nix
     ./glow.nix
     ./nushell
-    ./presets
 
     (makeProgramModule "acpi")
     (makeProgramModule "aider-chat")

@@ -48,14 +48,14 @@ in
       };
 
       extraConfig = ''
-        source ${../../../../config/nushell/config.nu}
+        source ${../../../../../config/nushell/config.nu}
         source ${zoxideCommandSetup}
 
         open ${jsonFormat.generate "session-variables.json" safeSessionVariables} | load-env
       '';
 
       extraEnv = ''
-        source ${../../../../config/nushell/env.nu};
+        source ${../../../../../config/nushell/env.nu};
       '';
     };
 

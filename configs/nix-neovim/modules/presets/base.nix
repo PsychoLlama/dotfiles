@@ -415,7 +415,7 @@ in
     # TODO: Convert parts of the neovim config to Nix.
     extraConfig = ''
       vim.o.shell = "${pkgs.dash}/bin/dash"
-      vim.cmd.source('${../../../config/neovim.lua}')
+      vim.cmd.source('${../../../../config/neovim.lua}')
     '';
   };
 }

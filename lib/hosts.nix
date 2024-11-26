@@ -46,7 +46,10 @@ let
       useUserPackages = lib.mkDefault true;
 
       # Add custom dotfiles modules to the HM framework.
-      sharedModules = [ self.nixosModules.home-manager ];
+      sharedModules = [
+        self.nixosModules.home-manager-extensions
+        self.nixosModules.home-manager-configs
+      ];
     };
   };
 in
@@ -59,7 +62,8 @@ in
 
       modules = modules ++ [
         home-manager.nixosModules.home-manager
-        self.nixosModules.nixos
+        self.nixosModules.nixos-extensions
+        self.nixosModules.nixos-configs
 
         nix-flakes
         hm-substrate
@@ -94,7 +98,8 @@ in
       inherit pkgs;
 
       modules = modules ++ [
-        self.nixosModules.home-manager
+        self.nixosModules.home-manager-extensions
+        self.nixosModules.home-manager-configs
         nix-flakes
       ];
     }

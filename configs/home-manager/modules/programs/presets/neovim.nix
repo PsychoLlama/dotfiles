@@ -19,6 +19,7 @@ in
       };
 
     programs.editor = {
+      imports = [ ../../../../nix-neovim/modules ];
       enable = true;
       presets.base.enable = true;
     };

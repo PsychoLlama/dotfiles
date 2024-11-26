@@ -27,7 +27,7 @@ in
         keyMode = "vi";
         shell = "${config.programs.nushell.package}/bin/nu";
         extraConfig = ''
-          ${builtins.readFile ../../../../config/tmux.conf}
+          ${builtins.readFile ../../../../../config/tmux.conf}
 
           bind-key C-s display-popup -E ${pkgs.writers.writeBash "tmux-jump" ''
             sessions="$(${tmux}/bin/tmux list-sessions -F "#{session_name}")"

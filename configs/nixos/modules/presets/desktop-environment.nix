@@ -26,7 +26,7 @@ in
 
     programs.sway = {
       enable = mkDefault true;
-      extraConfig = builtins.readFile ../../../config/sway.conf;
+      extraConfig = builtins.readFile ../../../../config/sway.conf;
 
       input = {
         "type:touchpad" = {
