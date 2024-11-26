@@ -210,7 +210,7 @@ in
         '';
       };
 
-      alternaut-vim = {
+      alternaut-nvim = {
         enable = enabled;
         extraConfig = ../plugins/alternaut.lua;
         opts = rec {
