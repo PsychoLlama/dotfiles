@@ -70,8 +70,8 @@ in
     variables.BORG_REPO = "/mnt/borg";
   };
 
-  dotfiles = {
-    presets.kitchen-sink.enable = true;
+  profiles = {
+    full.enable = true;
   };
 
   users.users.${username} = {

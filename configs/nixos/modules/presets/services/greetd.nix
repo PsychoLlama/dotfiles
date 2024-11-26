@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.dotfiles.presets.greetd;
+  cfg = config.presets.services.greetd;
 in
 {
-  options.dotfiles.presets.greetd.enable = mkEnableOption "Use recommended fonts";
+  options.presets.services.greetd.enable = mkEnableOption "Use TUI greeter";
 
   config = mkIf cfg.enable {
     services.greetd = {

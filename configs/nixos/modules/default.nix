@@ -1,1 +1,6 @@
-{ imports = [ ./presets ]; }
+{
+  imports = [
+    ./presets
+    ./profiles
+  ];
+}
