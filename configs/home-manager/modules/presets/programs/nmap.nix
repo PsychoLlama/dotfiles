@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.nmap;
+  cfg = config.presets.programs.nmap;
 in
 {
-  options.programs.presets.nmap.enable = mkEnableOption "Install and configure nmap";
+  options.presets.programs.nmap.enable = mkEnableOption "Install and configure nmap";
 
   config.programs.nmap = mkIf cfg.enable {
     enable = true;

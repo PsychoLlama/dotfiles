@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.programs.presets.llm;
+  cfg = config.presets.programs.llm;
 in
 
 {
-  options.programs.presets.llm = {
+  options.presets.programs.llm = {
     enable = lib.mkEnableOption "Interact with LLMs through the command line";
   };
 

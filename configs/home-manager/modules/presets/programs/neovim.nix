@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.neovim;
+  cfg = config.presets.programs.neovim;
 in
 {
-  options.programs.presets.neovim.enable = mkEnableOption "Configure Neovim as the one true editor";
+  options.presets.programs.neovim.enable = mkEnableOption "Configure Neovim as the one true editor";
 
   config = mkIf cfg.enable {
     home.sessionVariables =

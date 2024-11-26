@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.viddy;
+  cfg = config.presets.programs.viddy;
 in
 {
-  options.programs.presets.viddy.enable = mkEnableOption "Install Viddy";
+  options.presets.programs.viddy.enable = mkEnableOption "Install Viddy";
 
   config.programs.viddy = mkIf cfg.enable {
     enable = true;

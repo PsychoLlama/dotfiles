@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.dive;
+  cfg = config.presets.programs.dive;
 in
 {
-  options.programs.presets.dive.enable = mkEnableOption "Install and configure dive";
+  options.presets.programs.dive.enable = mkEnableOption "Install and configure dive";
 
   config.programs.dive = mkIf cfg.enable {
     enable = true;

@@ -8,7 +8,7 @@
 with lib;
 
 let
-  cfg = config.programs.presets.nushell;
+  cfg = config.presets.programs.nushell;
   jsonFormat = pkgs.formats.json { };
 
   zoxideCommandSetup = pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
@@ -23,7 +23,7 @@ let
   ) config.home.sessionVariables;
 in
 {
-  options.programs.presets.nushell.enable = mkEnableOption "Install and configure Nushell";
+  options.presets.programs.nushell.enable = mkEnableOption "Install and configure Nushell";
 
   config.programs = mkIf cfg.enable {
     nushell = {

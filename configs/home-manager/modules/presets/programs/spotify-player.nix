@@ -6,10 +6,10 @@
 }:
 
 let
-  cfg = config.programs.presets.spotify-player;
+  cfg = config.presets.programs.spotify-player;
 in
 {
-  options.programs.presets.spotify-player.enable = lib.mkEnableOption "Install and configure spotify-player";
+  options.presets.programs.spotify-player.enable = lib.mkEnableOption "Install and configure spotify-player";
 
   config.programs.spotify-player = lib.mkIf cfg.enable {
     enable = true;

@@ -14,6 +14,35 @@ in
   options.profiles.full.enable = mkEnableOption "Enable all dotfiles programs and services";
 
   config = mkIf cfg.enable {
+    presets.programs = {
+      aider-chat.enable = mkDefault true;
+      alacritty.enable = mkDefault true;
+      ast-grep.enable = mkDefault true;
+      bat.enable = mkDefault true;
+      bottom.enable = mkDefault true;
+      direnv.enable = mkDefault true;
+      dive.enable = mkDefault true;
+      doggo.enable = mkDefault true;
+      fd.enable = mkDefault true;
+      fzf.enable = mkDefault true;
+      git.enable = mkDefault true;
+      glow.enable = mkDefault true;
+      jq.enable = mkDefault true;
+      miniserve.enable = mkDefault true;
+      neovim.enable = mkDefault true;
+      nmap.enable = mkDefault true;
+      nushell.enable = mkDefault true;
+      spotify-player.enable = mkDefault true;
+      sshfs.enable = mkDefault pkgs.stdenv.isLinux;
+      starship.enable = mkDefault true;
+      termshark.enable = mkDefault true;
+      tmux.enable = mkDefault true;
+      viddy.enable = mkDefault true;
+      wezterm.enable = mkDefault true;
+      whois.enable = mkDefault true;
+      zoxide.enable = mkDefault true;
+    };
+
     programs = {
       binutils.enable = mkDefault true;
       du-dust.enable = mkDefault true;
@@ -29,35 +58,6 @@ in
       ripgrep.enable = mkDefault true;
       tokei.enable = mkDefault true;
       viu.enable = mkDefault true;
-
-      presets = {
-        aider-chat.enable = mkDefault true;
-        alacritty.enable = mkDefault true;
-        ast-grep.enable = mkDefault true;
-        bat.enable = mkDefault true;
-        bottom.enable = mkDefault true;
-        direnv.enable = mkDefault true;
-        dive.enable = mkDefault true;
-        doggo.enable = mkDefault true;
-        fd.enable = mkDefault true;
-        fzf.enable = mkDefault true;
-        git.enable = mkDefault true;
-        glow.enable = mkDefault true;
-        jq.enable = mkDefault true;
-        miniserve.enable = mkDefault true;
-        neovim.enable = mkDefault true;
-        nmap.enable = mkDefault true;
-        nushell.enable = mkDefault true;
-        spotify-player.enable = mkDefault true;
-        sshfs.enable = mkDefault pkgs.stdenv.isLinux;
-        starship.enable = mkDefault true;
-        termshark.enable = mkDefault true;
-        tmux.enable = mkDefault true;
-        viddy.enable = mkDefault true;
-        wezterm.enable = mkDefault true;
-        whois.enable = mkDefault true;
-        zoxide.enable = mkDefault true;
-      };
     };
 
     services.presets.auth-agent.enable = mkDefault true;

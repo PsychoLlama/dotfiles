@@ -9,11 +9,11 @@ let
       ...
     }:
     let
-      cfg = config.programs.presets.${programName};
+      cfg = config.presets.programs.${programName};
 
     in
     {
-      options.programs.presets.${programName}.enable = lib.mkEnableOption "Install the latest version of ${programName}";
+      options.presets.programs.${programName}.enable = lib.mkEnableOption "Install the latest version of ${programName}";
 
       config.programs.${programName} = lib.mkIf cfg.enable {
         enable = true;

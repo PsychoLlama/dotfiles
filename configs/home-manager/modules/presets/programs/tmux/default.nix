@@ -8,11 +8,11 @@
 with lib;
 
 let
-  cfg = config.programs.presets.tmux;
+  cfg = config.presets.programs.tmux;
   tmux = config.programs.tmux.package;
 in
 {
-  options.programs.presets.tmux.enable = mkEnableOption "Use an opinionated tmux configuration";
+  options.presets.programs.tmux.enable = mkEnableOption "Use an opinionated tmux configuration";
 
   config = mkMerge [
     (mkIf cfg.enable {

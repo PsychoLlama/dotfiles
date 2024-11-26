@@ -9,10 +9,10 @@ with lib;
 
 let
   inherit (config.theme) palette;
-  cfg = config.programs.presets.zathura;
+  cfg = config.presets.programs.zathura;
 in
 {
-  options.programs.presets.zathura.enable = mkEnableOption "Install and configure Zathura";
+  options.presets.programs.zathura.enable = mkEnableOption "Install and configure Zathura";
 
   config = mkIf cfg.enable {
     programs.zathura = {

@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.fd;
+  cfg = config.presets.programs.fd;
 in
 {
-  options.programs.presets.fd.enable = mkEnableOption "Whether to enable fd-find";
+  options.presets.programs.fd.enable = mkEnableOption "Whether to enable fd-find";
 
   config = mkIf cfg.enable {
     programs.fd = {

@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.bat;
+  cfg = config.presets.programs.bat;
 in
 {
-  options.programs.presets.bat.enable = mkEnableOption "Replace cat with bat";
+  options.presets.programs.bat.enable = mkEnableOption "Replace cat with bat";
 
   config = mkIf cfg.enable {
     home.shellAliases.cat = "bat";

@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.firefox;
+  cfg = config.presets.programs.firefox;
 in
 {
-  options.programs.presets.firefox.enable = mkEnableOption "Install and configure Firefox";
+  options.presets.programs.firefox.enable = mkEnableOption "Install and configure Firefox";
 
   config.programs.firefox = mkIf cfg.enable {
     enable = true;

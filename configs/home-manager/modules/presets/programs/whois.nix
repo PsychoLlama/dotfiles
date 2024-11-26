@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.whois;
+  cfg = config.presets.programs.whois;
 in
 {
-  options.programs.presets.whois.enable = mkEnableOption "Install and configure whois";
+  options.presets.programs.whois.enable = mkEnableOption "Install and configure whois";
 
   config.programs.whois = mkIf cfg.enable {
     enable = true;

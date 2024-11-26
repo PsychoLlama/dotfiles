@@ -9,7 +9,7 @@ with lib;
 
 let
   inherit (config.theme) palette;
-  cfg = config.programs.presets.wezterm;
+  cfg = config.presets.programs.wezterm;
   inline = generators.mkLuaInline;
   toLua = generators.toLua { };
   settings = {
@@ -72,7 +72,7 @@ let
   };
 in
 {
-  options.programs.presets.wezterm.enable = mkEnableOption "Install and configure wezterm";
+  options.presets.programs.wezterm.enable = mkEnableOption "Install and configure wezterm";
 
   config.programs.wezterm = mkIf cfg.enable {
     enable = true;

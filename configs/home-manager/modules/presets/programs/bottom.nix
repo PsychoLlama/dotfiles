@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.bottom;
+  cfg = config.presets.programs.bottom;
 in
 {
-  options.programs.presets.bottom.enable = mkEnableOption "Use and configure the bottom process monitor";
+  options.presets.programs.bottom.enable = mkEnableOption "Use and configure the bottom process monitor";
 
   config.programs.bottom = mkIf cfg.enable {
     enable = true;

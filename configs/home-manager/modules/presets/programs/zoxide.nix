@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.zoxide;
+  cfg = config.presets.programs.zoxide;
 in
 {
-  options.programs.presets.zoxide.enable = mkEnableOption "Use Zoxide to jump around directories";
+  options.presets.programs.zoxide.enable = mkEnableOption "Use Zoxide to jump around directories";
 
   config.programs.zoxide = mkIf cfg.enable {
     enable = true;

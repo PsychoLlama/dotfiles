@@ -95,7 +95,7 @@ in
     };
 
     # 2024-10-19: Package refuses to build. Skiping for upgrade.
-    programs.presets.aider-chat.enable = false;
+    presets.programs.aider-chat.enable = false;
 
     profiles = {
       full.enable = true;

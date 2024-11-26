@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.git;
+  cfg = config.presets.programs.git;
 in
 {
-  options.programs.presets.git.enable = mkEnableOption "Provide an opinionated configuration for git";
+  options.presets.programs.git.enable = mkEnableOption "Provide an opinionated configuration for git";
 
   config = mkIf cfg.enable {
     home.shellAliases = {

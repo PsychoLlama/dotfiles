@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.ast-grep;
+  cfg = config.presets.programs.ast-grep;
 in
 {
-  options.programs.presets.ast-grep.enable = mkEnableOption "Install and configure ast-grep";
+  options.presets.programs.ast-grep.enable = mkEnableOption "Install and configure ast-grep";
 
   config.programs.ast-grep = mkIf cfg.enable {
     enable = true;

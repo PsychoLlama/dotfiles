@@ -27,14 +27,14 @@ in
       slurp.enable = mkDefault true;
       wf-recorder.enable = mkDefault true;
       wl-clipboard.enable = mkDefault true;
+    };
 
-      presets = {
-        firefox.enable = mkDefault true;
-        rofi.enable = mkDefault true;
-        swaylock.enable = mkDefault true;
-        waybar.enable = mkDefault true;
-        zathura.enable = mkDefault true;
-      };
+    presets.programs = {
+      firefox.enable = mkDefault true;
+      rofi.enable = mkDefault true;
+      swaylock.enable = mkDefault true;
+      waybar.enable = mkDefault true;
+      zathura.enable = mkDefault true;
     };
   };
 }

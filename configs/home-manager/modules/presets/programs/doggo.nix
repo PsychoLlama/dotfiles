@@ -8,10 +8,10 @@
 with lib;
 
 let
-  cfg = config.programs.presets.doggo;
+  cfg = config.presets.programs.doggo;
 in
 {
-  options.programs.presets.doggo.enable = mkEnableOption "Install and configure doggo, a DNS client";
+  options.presets.programs.doggo.enable = mkEnableOption "Install and configure doggo, a DNS client";
 
   config.programs.doggo = mkIf cfg.enable {
     enable = true;

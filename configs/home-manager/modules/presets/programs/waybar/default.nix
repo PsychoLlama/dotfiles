@@ -8,7 +8,7 @@
 with lib;
 
 let
-  cfg = config.programs.presets.waybar;
+  cfg = config.presets.programs.waybar;
 
   # Convert the color palette to a flat list of colors.
   # { bright-red = "<hex>"; normal-red = "<hex>"; ... }
@@ -31,7 +31,7 @@ let
   );
 in
 {
-  options.programs.presets.waybar.enable = mkEnableOption "Install and configure Waybar";
+  options.presets.programs.waybar.enable = mkEnableOption "Install and configure Waybar";
 
   config.programs.waybar = mkIf cfg.enable {
     enable = true;

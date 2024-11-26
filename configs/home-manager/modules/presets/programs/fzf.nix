@@ -3,9 +3,9 @@
 with lib;
 
 let
-  cfg = config.programs.presets.fzf;
+  cfg = config.presets.programs.fzf;
 in
 {
-  options.programs.presets.fzf.enable = mkEnableOption "Whether to use fzf";
+  options.presets.programs.fzf.enable = mkEnableOption "Whether to use fzf";
   config.programs.fzf.enable = cfg.enable;
 }
