@@ -97,9 +97,9 @@
       };
 
       nixosModules = {
-        editor = ./nix-neovim/modules;
-        home-manager = ./home-manager/modules;
-        nixos = ./nixos/modules;
+        editor = ./frameworks/nix-neovim/modules;
+        home-manager = ./frameworks/home-manager/modules;
+        nixos = ./frameworks/nixos/modules;
       };
 
       overlays = {
