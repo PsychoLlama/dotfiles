@@ -7,8 +7,8 @@
     "library": [
       "$VIMRUNTIME/lua",
       "${3rd}/luv/library",
-      "nix-neovim/runtime",
-      "config/editor"
+      "frameworks/nix-neovim/runtime",
+      "packages/ext.nvim"
     ]
   }
 }

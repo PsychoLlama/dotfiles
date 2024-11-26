@@ -20,12 +20,16 @@ let
     "alternaut.vim" = inputs.alternaut-vim;
     "codecompanion.nvim" = inputs.codecompanion-nvim;
     "deja-view.vim" = inputs.deja-view-vim;
-    "ext.nvim" = ../../config/editor;
     "navitron.nvim" = inputs.navitron-nvim;
     "remix.nvim" = inputs.tree-sitter-remix.packages.${pkgs.system}.remix-nvim;
     "teleport.vim" = inputs.teleport-vim;
   };
 in
 {
-  vimPlugins = pkgs.vimPlugins // extraVimPlugins;
+  vimPlugins =
+    pkgs.vimPlugins
+    // extraVimPlugins
+    // {
+      "ext-nvim" = pkgs.unstable.callPackage ../../packages/ext.nvim { };
+    };
 }
