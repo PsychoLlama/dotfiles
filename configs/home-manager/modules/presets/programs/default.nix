@@ -56,6 +56,15 @@ in
     ./zathura.nix
     ./zoxide.nix
 
+    (mkUnstablePreset "acpi")
     (mkUnstablePreset "aider-chat")
+    (mkUnstablePreset "brightnessctl")
+    (mkUnstablePreset "grim")
+    (mkUnstablePreset "pamixer")
+    (mkUnstablePreset "parted")
+    (mkUnstablePreset "playerctl")
+    (mkUnstablePreset "slurp")
+    (mkUnstablePreset "wf-recorder")
+    (mkUnstablePreset "wl-clipboard")
   ];
 }
