@@ -108,13 +108,13 @@ in
     plugins = {
       markdown-preview-nvim = {
         enable = enabled;
-        extraConfig = ./plugins/markdown-preview.lua;
+        extraConfig = ../plugins/markdown-preview.lua;
         opts.browser = lib.mkDefault "firefox";
       };
 
       codecompanion-nvim = {
         enable = enabled;
-        extraConfig = ./plugins/codecompanion.lua;
+        extraConfig = ../plugins/codecompanion.lua;
 
         # Reference:
         # codecompanion.nvim/lua/codecompanion/config.lua
@@ -129,7 +129,7 @@ in
 
       telescope-nvim = {
         enable = enabled;
-        extraConfig = ./plugins/telescope.lua;
+        extraConfig = ../plugins/telescope.lua;
       };
 
       telescope-undo-nvim = {
@@ -141,27 +141,27 @@ in
 
       nvim-treesitter = {
         enable = enabled;
-        extraConfig = ./plugins/nvim-treesitter.lua;
+        extraConfig = ../plugins/nvim-treesitter.lua;
       };
 
       gitlinker-nvim = {
         enable = enabled;
-        extraConfig = ./plugins/gitlinker.lua;
+        extraConfig = ../plugins/gitlinker.lua;
       };
 
       gitsigns-nvim = {
         enable = enabled;
-        extraConfig = ./plugins/gitsigns.lua;
+        extraConfig = ../plugins/gitsigns.lua;
       };
 
       treesj = {
         enable = enabled;
-        extraConfig = ./plugins/treesj.lua;
+        extraConfig = ../plugins/treesj.lua;
       };
 
       nvim-cmp = {
         enable = enabled;
-        extraConfig = ./plugins/nvim-cmp.lua;
+        extraConfig = ../plugins/nvim-cmp.lua;
       };
 
       nvim-autopairs = {
@@ -184,7 +184,7 @@ in
       lualine-lsp-progress.enable = enabled;
       lualine-nvim = {
         enable = enabled;
-        extraConfig = ./plugins/lualine.lua;
+        extraConfig = ../plugins/lualine.lua;
       };
 
       dressing-nvim = {
@@ -200,7 +200,7 @@ in
 
       navitron-nvim = {
         enable = enabled;
-        extraConfig = ./plugins/navitron.lua;
+        extraConfig = ../plugins/navitron.lua;
       };
 
       teleport-vim = {
@@ -212,7 +212,7 @@ in
 
       alternaut-vim = {
         enable = enabled;
-        extraConfig = ./plugins/alternaut.lua;
+        extraConfig = ../plugins/alternaut.lua;
         opts = rec {
           python = {
             file_naming_conventions = [
@@ -260,12 +260,12 @@ in
 
       onedarkpro-nvim = {
         enable = enabled;
-        extraConfig = ./plugins/onedarkpro.lua;
+        extraConfig = ../plugins/onedarkpro.lua;
       };
 
       nvim-lint = {
         enable = enabled;
-        extraConfig = ./plugins/lint.lua;
+        extraConfig = ../plugins/lint.lua;
         opts = {
           linters = {
             eslint_d.cmd = "${u.eslint_d}/bin/eslint_d";
@@ -299,7 +299,7 @@ in
 
       conform-nvim = {
         enable = enabled;
-        extraConfig = ./plugins/conform.lua;
+        extraConfig = ../plugins/conform.lua;
         opts = {
           format_on_save = true;
           default_format_opts.undojoin = true;
@@ -373,7 +373,7 @@ in
       neotest-vitest.enable = enabled;
       neotest = {
         enable = enabled;
-        extraConfig = ./plugins/neotest.lua;
+        extraConfig = ../plugins/neotest.lua;
       };
 
       cmp-buffer.enable = enabled;
@@ -415,7 +415,7 @@ in
     # TODO: Convert parts of the neovim config to Nix.
     extraConfig = ''
       vim.o.shell = "${pkgs.dash}/bin/dash"
-      vim.cmd.source('${../../../../config/neovim.lua}')
+      vim.cmd.source('${./neovim.lua}')
     '';
   };
 }

@@ -1,1 +1,1 @@
-{ imports = [ ./base.nix ]; }
+{ imports = [ ./base ]; }

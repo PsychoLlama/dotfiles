@@ -39,7 +39,7 @@ in
     style = ''
       ${gtk-css-color-defs}
 
-      @import url("${../../../../../config/waybar.css}");
+      @import url("${./waybar.css}");
     '';
 
     settings.main-bar = {

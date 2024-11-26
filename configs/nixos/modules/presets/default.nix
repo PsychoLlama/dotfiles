@@ -1,6 +1,6 @@
 {
   imports = [
-    ./desktop-environment.nix
+    ./desktop-environment
     ./greetd.nix
     ./kitchen-sink.nix
   ];

@@ -41,16 +41,16 @@ in
     ./miniserve.nix
     ./neovim.nix
     ./nmap.nix
-    ./nushell.nix
+    ./nushell
     ./rofi.nix
     ./spotify-player.nix
     ./sshfs.nix
     ./starship.nix
     ./swaylock.nix
     ./termshark.nix
-    ./tmux.nix
+    ./tmux
     ./viddy.nix
-    ./waybar.nix
+    ./waybar
     ./wezterm.nix
     ./whois.nix
     ./zathura.nix
