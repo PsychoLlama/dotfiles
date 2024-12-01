@@ -15,7 +15,7 @@ in
   boot = {
     initrd.supportedFilesystems = [ "zfs" ];
     supportedFilesystems = [ "zfs" ];
-    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+    kernelPackages = pkgs.linuxPackages_6_6; # Latest compatible with ZFS.
 
     # ZFS doesn't support freeze/thaw APIs. Hibernation could corrupt files.
     # https://github.com/openzfs/zfs/issues/260

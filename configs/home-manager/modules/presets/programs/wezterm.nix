@@ -17,7 +17,10 @@ let
     window_background_opacity = 0.85;
     hide_tab_bar_if_only_one_tab = true;
 
-    font = inline "wezterm.font('Fira Code', { weight = 'Light' })";
+    # Fixes: https://github.com/wez/wezterm/issues/6079
+    front_end = "WebGpu";
+
+    font = inline "wezterm.font('FiraCode Nerd Font', { weight = 'Light' })";
     font_size = 14;
 
     # Disable ligatures.
@@ -76,7 +79,7 @@ in
 
   config.programs.wezterm = mkIf cfg.enable {
     enable = true;
-    package = pkgs.wezterm;
+    package = pkgs.unstable.wezterm;
 
     colorSchemes.OneDarkPro = {
       ansi = [
