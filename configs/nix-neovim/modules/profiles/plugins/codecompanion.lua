@@ -1,6 +1,12 @@
 return function(opts)
   local companion = require('codecompanion')
 
+  -- Merge adapter overrides with the defaults.
+  for adapter, config in pairs(opts.adapters or {}) do
+    opts.adapters[adapter] =
+      require('codecompanion.adapters').extend(adapter, config)
+  end
+
   companion.setup(opts)
 
   vim.cmd.cabbrev('CC', 'CodeCompanion')
