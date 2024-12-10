@@ -3,6 +3,7 @@ $env.config = {
   show_banner: false
   footer_mode: 20
   history: {
+    file_format: sqlite,
     max_size: 100_000_000_000
   }
   table: {
