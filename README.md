@@ -4,7 +4,7 @@ A set of [NixOS](https://nixos.org/) modules that manage my machines. It's like 
 
 ## Linux Environment
 
-- WM: [Sway](https://swaywm.org/) + [Waybar](https://github.com/Alexays/Waybar/)
+- WM: [Hyprland](https://hyprland.org/) + [Waybar](https://github.com/Alexays/Waybar/)
 - Launcher: [Rofi](https://github.com/davatorium/rofi)
 - Notifications: [Dunst](https://github.com/dunst-project/dunst)
 - Terminal: [Wezterm](https://wezfurlong.org/wezterm)
