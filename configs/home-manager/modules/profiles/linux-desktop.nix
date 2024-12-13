@@ -25,6 +25,7 @@ in
         brightnessctl.enable = mkDefault true;
         firefox.enable = mkDefault true;
         grim.enable = mkDefault true;
+        hyprland.enable = mkDefault true;
         pamixer.enable = mkDefault true;
         parted.enable = mkDefault true;
         playerctl.enable = mkDefault true;

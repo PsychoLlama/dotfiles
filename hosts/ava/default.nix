@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, lib, ... }:
 
 let
   username = "overlord";

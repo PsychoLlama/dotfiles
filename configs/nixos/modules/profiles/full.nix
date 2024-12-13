@@ -14,6 +14,7 @@ in
       };
 
       programs = {
+        hyprland.enable = lib.mkDefault true;
         sway.enable = lib.mkDefault true;
       };
     };
