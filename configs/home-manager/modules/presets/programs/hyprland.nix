@@ -41,8 +41,8 @@ in
           "$mod, SPACE, exec, rofi -show drun -display-drun 'Start: '"
           ", Print, exec, grim -g \"$(slurp)\" ~/screenshots/\"$(date --iso-8601=seconds).png\""
 
-          "$mod SHIFT, TAB, workspace, previous"
-          "$mod, TAB, workspace, next"
+          "$mod SHIFT, TAB, workspace, m-1"
+          "$mod, TAB, workspace, m+1"
 
           "$mod CTRL, Q, exec, hyprlock"
         ]
