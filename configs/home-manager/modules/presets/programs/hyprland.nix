@@ -8,6 +8,7 @@
 let
   cfg = config.presets.programs.hyprland;
 in
+
 {
   options.presets.programs.hyprland = {
     enable = lib.mkEnableOption "Opinionated Hyprland config";
@@ -19,6 +20,18 @@ in
 
     settings = {
       "$mod" = "SUPER";
+
+      # The default scaled my display to 1.5. Not sure why. Overriding.
+      monitor = ",preferred,auto,1";
+
+      # Fast and crisp.
+      animations.enabled = false;
+      decoration.blur.enabled = false;
+
+      exec-once =
+        [ ]
+        ++ (lib.optional config.programs.waybar.enable "waybar")
+        ++ (lib.optional config.services.swaybg.enable "systemctl start --user swaybg");
 
       bind =
         [
@@ -49,6 +62,18 @@ in
         kb_options = "caps:escape";
         repeat_delay = "200";
         touchpad.natural_scroll = "yes";
+      };
+
+      general = {
+        gaps_in = 0;
+        gaps_out = 0;
+        border_size = 0;
+        no_border_on_floating = true;
+      };
+
+      misc = {
+        disable_hyprland_logo = true;
+        disable_splash_rendering = true;
       };
     };
   };
