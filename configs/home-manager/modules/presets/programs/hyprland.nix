@@ -20,12 +20,36 @@ in
     settings = {
       "$mod" = "SUPER";
 
-      bind = [
-        "$mod, Return, exec, wezterm"
-        "$mod, Q, killactive,"
-        "$mod SHIFT, Q, exit,"
-        "$mod SHIFT, R, exec, hyprctl reload"
-      ];
+      bind =
+        [
+          "$mod, Return, exec, wezterm"
+          "$mod, Q, killactive,"
+          "$mod SHIFT, Q, exit,"
+          "$mod, SPACE, exec, rofi -show drun -display-drun 'Start: '"
+          ", Print, exec, grim -g \"$(slurp)\" ~/screenshots/\"$(date --iso-8601=seconds).png\""
+
+          "$mod SHIFT, TAB, workspace, previous"
+          "$mod, TAB, workspace, next"
+        ]
+        ++ lib.pipe (lib.range 1 9) [
+          (map toString)
+          (map (numkey: [
+            # Jump to workspace
+            "$mod, ${numkey}, workspace, ${numkey}"
+
+            # Move current window to another workspace
+            "$mod SHIFT, ${numkey}, movetoworkspace, ${numkey}"
+          ]))
+
+          (lib.flatten)
+        ];
+
+      input = {
+        kb_layout = "us";
+        kb_options = "caps:escape";
+        repeat_delay = "200";
+        touchpad.natural_scroll = "yes";
+      };
     };
   };
 }
