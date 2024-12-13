@@ -43,6 +43,8 @@ in
 
           "$mod SHIFT, TAB, workspace, previous"
           "$mod, TAB, workspace, next"
+
+          "$mod CTRL, Q, exec, hyprlock"
         ]
         ++ lib.pipe (lib.range 1 9) [
           (map toString)

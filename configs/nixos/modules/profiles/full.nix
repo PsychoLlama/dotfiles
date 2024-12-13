@@ -7,6 +7,8 @@ in
   options.profiles.full.enable = lib.mkEnableOption "Enable all NixOS presets";
 
   config = lib.mkIf cfg.enable {
+    security.pam.services.hyprlock = lib.mkDefault { };
+
     presets = {
       services = {
         pipewire.enable = lib.mkDefault true;

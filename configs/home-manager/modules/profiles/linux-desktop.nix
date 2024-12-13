@@ -26,6 +26,7 @@ in
         firefox.enable = mkDefault true;
         grim.enable = mkDefault true;
         hyprland.enable = mkDefault true;
+        hyprlock.enable = mkDefault true;
         pamixer.enable = mkDefault true;
         parted.enable = mkDefault true;
         playerctl.enable = mkDefault true;

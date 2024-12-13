@@ -37,6 +37,7 @@ in
     ./git.nix
     ./glow.nix
     ./hyprland.nix
+    ./hyprlock.nix
     ./jq.nix
     ./llm.nix
     ./miniserve.nix
