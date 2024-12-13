@@ -23,6 +23,9 @@ let
     font = inline "wezterm.font('FiraCode Nerd Font', { weight = 'Light' })";
     font_size = 14;
 
+    # Fixes: https://github.com/wez/wezterm/issues/5604
+    enable_wayland = false;
+
     # Disable ligatures.
     harfbuzz_features = [
       "calt=0"
