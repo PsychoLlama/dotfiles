@@ -21,14 +21,14 @@ in
     settings = {
       general = {
         disable_loading_bar = true;
-        grace = 0;
+        grace = 3; # seconds
         hide_cursor = true;
         no_fade_in = false;
       };
 
       background = [
         {
-          path = "attic/images/wallpapers/current";
+          path = "${config.home.homeDirectory}/attic/images/wallpapers/current";
           blur_passes = 1;
           blur_size = 8;
         }

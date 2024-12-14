@@ -44,7 +44,7 @@ in
           "$mod SHIFT, TAB, workspace, m-1"
           "$mod, TAB, workspace, m+1"
 
-          "$mod CTRL, Q, exec, hyprlock"
+          "$mod CTRL, Q, exec, hyprlock --no-fade-in --immediate"
         ]
         ++ lib.pipe (lib.range 1 9) [
           (map toString)
