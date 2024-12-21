@@ -19,7 +19,7 @@ in
       };
 
     programs.editor = {
-      imports = [ ../../../../nix-neovim/modules ];
+      imports = [ ../../../../nix-neovim/modules/profiles ];
       enable = true;
       profiles.full.enable = true;
     };

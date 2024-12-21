@@ -101,9 +101,25 @@
         home-manager-extensions = ./frameworks/home-manager/modules;
         nixos-extensions = ./frameworks/nixos/modules;
 
-        editor-configs = ./configs/nix-neovim/modules;
-        home-manager-configs = ./configs/home-manager/modules;
-        nixos-configs = ./configs/nixos/modules;
+        editor-configs = {
+          imports = [
+            ./frameworks/nix-neovim/modules/profiles
+          ];
+        };
+
+        home-manager-configs = {
+          imports = [
+            ./frameworks/home-manager/modules/presets
+            ./frameworks/home-manager/modules/profiles
+          ];
+        };
+
+        nixos-configs = {
+          imports = [
+            ./frameworks/nixos/modules/presets
+            ./frameworks/nixos/modules/profiles
+          ];
+        };
       };
 
       overlays = {
