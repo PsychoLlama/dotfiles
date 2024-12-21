@@ -1,3 +1,4 @@
+; extends
 (val_record) @indent.begin
 (decl_def (block) @indent.begin)
 (ctrl_if (block) @indent.begin)
