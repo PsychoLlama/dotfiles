@@ -22,7 +22,7 @@ let
   mod = pkgs.lib.modules.evalModules {
     specialArgs.pkgs = pkgs;
     modules = modules ++ [
-      self.nixosModules.editor-framework
+      self.nixosModules.editor-platform
       self.nixosModules.editor-configs
     ];
   };

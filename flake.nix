@@ -97,27 +97,26 @@
       };
 
       nixosModules = {
-        editor-framework = ./frameworks/nix-neovim/modules;
-        home-manager-extensions = ./frameworks/home-manager/modules;
-        nixos-extensions = ./frameworks/nixos/modules;
-
+        editor-platform = ./platforms/nix-neovim/modules;
         editor-configs = {
           imports = [
-            ./frameworks/nix-neovim/modules/profiles
+            ./platforms/nix-neovim/modules/profiles
           ];
         };
 
+        home-manager-platform = ./platforms/home-manager/modules;
         home-manager-configs = {
           imports = [
-            ./frameworks/home-manager/modules/presets
-            ./frameworks/home-manager/modules/profiles
+            ./platforms/home-manager/modules/presets
+            ./platforms/home-manager/modules/profiles
           ];
         };
 
+        nixos-platform = ./platforms/nixos/modules;
         nixos-configs = {
           imports = [
-            ./frameworks/nixos/modules/presets
-            ./frameworks/nixos/modules/profiles
+            ./platforms/nixos/modules/presets
+            ./platforms/nixos/modules/profiles
           ];
         };
       };

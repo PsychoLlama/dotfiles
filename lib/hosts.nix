@@ -47,7 +47,7 @@ let
 
       # Add custom dotfiles modules to the HM framework.
       sharedModules = [
-        self.nixosModules.home-manager-extensions
+        self.nixosModules.home-manager-platform
         self.nixosModules.home-manager-configs
       ];
     };
@@ -62,7 +62,7 @@ in
 
       modules = modules ++ [
         home-manager.nixosModules.home-manager
-        self.nixosModules.nixos-extensions
+        self.nixosModules.nixos-platform
         self.nixosModules.nixos-configs
 
         nix-flakes
@@ -98,7 +98,7 @@ in
       inherit pkgs;
 
       modules = modules ++ [
-        self.nixosModules.home-manager-extensions
+        self.nixosModules.home-manager-platform
         self.nixosModules.home-manager-configs
         nix-flakes
       ];
