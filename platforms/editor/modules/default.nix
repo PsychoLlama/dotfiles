@@ -18,7 +18,7 @@ let
         # Core framework, automatically loaded. Provides package loading and
         # language server support.
         (pkgs.vimUtils.buildVimPlugin {
-          pname = "nix-neovim";
+          pname = "neovim-core";
           version = "latest";
           src = ../runtime;
         })

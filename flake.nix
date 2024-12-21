@@ -97,10 +97,10 @@
       };
 
       nixosModules = {
-        editor-platform = ./platforms/nix-neovim/modules;
+        editor-platform = ./platforms/editor/modules;
         editor-configs = {
           imports = [
-            ./platforms/nix-neovim/modules/profiles
+            ./platforms/editor/modules/profiles
           ];
         };
 

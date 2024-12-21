@@ -13,7 +13,7 @@ in
 {
   options.programs.editor = mkOption {
     type = types.submoduleWith {
-      modules = [ ../../../nix-neovim/modules ];
+      modules = [ ../../../editor/modules ];
       specialArgs = {
         inherit pkgs;
       };

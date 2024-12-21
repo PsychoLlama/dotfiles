@@ -19,7 +19,7 @@ A set of [NixOS](https://nixos.org/) modules that manage my machines. It's like 
   - `presets/`: Opinionated configurations for a specific service or program.
   - `profiles/`: Groupings of presets.
 - `platforms/`: Modules extending other platforms with new programs and settings. Many of these could be upstreamed.
-  - `nix-neovim/`: My equivalent of [nixvim](https://nix-community.github.io/nixvim/).
+  - `editor/`: My equivalent of [nixvim](https://nix-community.github.io/nixvim/).
 
 ## Other Projects
 
