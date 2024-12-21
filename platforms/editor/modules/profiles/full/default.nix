@@ -139,6 +139,13 @@ in
         '';
       };
 
+      telescope-fzf-native-nvim = {
+        enable = enabled;
+        extraConfig = ''
+          require('telescope').load_extension('fzf')
+        '';
+      };
+
       nvim-treesitter = {
         enable = enabled;
         extraConfig = ../plugins/nvim-treesitter.lua;
