@@ -16,7 +16,10 @@ in
     enable = true;
     enableNushellIntegration = false;
     nix-direnv.enable = true;
-    config.whitelist.prefix = [ "${config.home.homeDirectory}/projects/psychollama" ];
+    config = {
+      whitelist.prefix = [ "${config.home.homeDirectory}/projects/psychollama" ];
+      global.hide_env_diff = true;
+    };
   };
 
   # Forked from home-manager. Nushell removed the `let-env` command.
