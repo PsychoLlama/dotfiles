@@ -43,7 +43,7 @@ let
     config = (
       if lib.isPath plugin.extraConfig then
         toString plugin.extraConfig
-      else if plugin.extraConfig != "" then
+      else if plugin.extraConfig != null then
         toString (pkgs.writeText "${plugin.package.pname}-config.lua" plugin.extraConfig)
       else
         null
@@ -76,8 +76,8 @@ in
             enable = mkEnableOption "Install ${name}";
             package = mkPackageOption pkgs.vimPlugins name { };
             extraConfig = mkOption {
-              type = types.either types.path types.lines;
-              default = "";
+              type = types.nullOr (types.either types.path types.lines);
+              default = null;
               description = ''
                 Plugin specific config file.
                 Only runs if the plugin is enabled and after it loads.

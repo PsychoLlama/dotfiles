@@ -100,6 +100,7 @@
         editor-platform = ./platforms/editor/modules;
         editor-configs = {
           imports = [
+            ./platforms/editor/modules/presets
             ./platforms/editor/modules/profiles
           ];
         };
@@ -122,7 +123,7 @@
       };
 
       overlays = {
-        latest-packages = import ./lib/overlays/latest-packages.nix nixpkgs-unstable;
+        latest-packages = import ./lib/overlays/latest-packages.nix inputs;
         vim-plugins = import ./lib/overlays/vim-plugins.nix inputs;
       };
 

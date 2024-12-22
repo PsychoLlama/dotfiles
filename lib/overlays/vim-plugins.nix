@@ -30,6 +30,6 @@ in
     pkgs.vimPlugins
     // extraVimPlugins
     // {
-      "ext-nvim" = pkgs.unstable.callPackage ../../packages/ext.nvim { };
+      "ext-nvim" = pkgs.callPackage ../../packages/ext.nvim { };
     };
 }
