@@ -25,7 +25,6 @@ let
 in
 {
   imports = [
-    ./editor.nix
     ./glow.nix
     ./hyprland.nix
     ./nushell

@@ -39,6 +39,38 @@ let
       };
     };
 
+  # Provides `programs.editor` (Neovim config).
+  editor-program =
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
+
+    let
+      cfg = config.programs.editor;
+    in
+
+    {
+      options.programs.editor = lib.mkOption {
+        description = "Configure and install Neovim";
+        default = { };
+        type = lib.types.submoduleWith {
+          specialArgs = {
+            inherit pkgs;
+          };
+
+          modules = [
+            self.nixosModules.editor-platform
+            self.nixosModules.editor-configs
+          ];
+        };
+      };
+
+      config.home.packages = lib.mkIf cfg.enable [ cfg.neovim ];
+    };
+
   # Set reasonable defaults for home-manager as a submodule.
   hm-substrate = {
     home-manager = {
@@ -49,10 +81,13 @@ let
       sharedModules = [
         self.nixosModules.home-manager-platform
         self.nixosModules.home-manager-configs
+        editor-program
       ];
     };
   };
+
 in
+
 {
   nixos = lib.mapAttrs (
     hostName:
