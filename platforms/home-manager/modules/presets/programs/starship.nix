@@ -1,26 +1,15 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-with lib;
+{ config, lib, ... }:
 
 let
   cfg = config.presets.programs.starship;
 in
+
 {
-  options.presets.programs.starship.enable = mkEnableOption "Use an opinionated Starship prompt";
-
-  config.programs.starship = mkIf cfg.enable {
-    enable = true;
-    package = pkgs.unstable.starship;
-
+  config.programs.starship = lib.mkIf cfg.enable {
     settings = {
       add_newline = false;
 
-      format = concatStrings [
+      format = lib.concatStrings [
         "$directory"
         "$git_branch"
         "$git_status"

@@ -5,13 +5,11 @@
   ...
 }:
 
-with lib;
-
 let
   inherit (config.theme) palette;
   cfg = config.presets.programs.wezterm;
-  inline = generators.mkLuaInline;
-  toLua = generators.toLua { };
+  inline = lib.generators.mkLuaInline;
+  toLua = lib.generators.toLua { };
   settings = {
     color_scheme = "OneDarkPro";
     window_background_opacity = 0.85;
@@ -77,13 +75,9 @@ let
     ];
   };
 in
+
 {
-  options.presets.programs.wezterm.enable = mkEnableOption "Install and configure wezterm";
-
-  config.programs.wezterm = mkIf cfg.enable {
-    enable = true;
-    package = pkgs.unstable.wezterm;
-
+  config.programs.wezterm = lib.mkIf cfg.enable {
     colorSchemes.OneDarkPro = {
       ansi = [
         palette.normal.black

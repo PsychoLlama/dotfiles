@@ -5,21 +5,16 @@
   ...
 }:
 
-with lib;
-
 let
   cfg = config.presets.programs.tmux;
   tmux = config.programs.tmux.package;
 in
-{
-  options.presets.programs.tmux.enable = mkEnableOption "Use an opinionated tmux configuration";
 
-  config = mkIf cfg.enable {
+{
+  config = lib.mkIf cfg.enable {
     home.shellAliases.t = "tmux";
 
     programs.tmux = {
-      enable = true;
-      package = pkgs.unstable.tmux;
       customPaneNavigationAndResize = true;
       escapeTime = 0;
       historyLimit = 100000;
@@ -28,14 +23,14 @@ in
       extraConfig = ''
         ${builtins.readFile ./tmux.conf}
 
-            bind-key C-s display-popup -E ${pkgs.writers.writeBash "tmux-jump" ''
-              sessions="$(${tmux}/bin/tmux list-sessions -F "#{session_name}")"
-              session_name="$(echo -e "$sessions" | ${pkgs.fzf}/bin/fzf)"
+        bind-key C-s display-popup -E ${pkgs.writers.writeBash "tmux-jump" ''
+          sessions="$(${tmux}/bin/tmux list-sessions -F "#{session_name}")"
+          session_name="$(echo -e "$sessions" | ${pkgs.fzf}/bin/fzf)"
 
-              if [[ -n "$session_name" ]]; then
-              ${tmux}/bin/tmux switch-client -t "$session_name"
-              fi
-            ''}
+          if [[ -n "$session_name" ]]; then
+            ${tmux}/bin/tmux switch-client -t "$session_name"
+          fi
+        ''}
       '';
     };
 

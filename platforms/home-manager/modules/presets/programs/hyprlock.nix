@@ -1,23 +1,11 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
+{ lib, config, ... }:
 
 let
   cfg = config.presets.programs.hyprlock;
 in
 
 {
-  options.presets.programs.hyprlock = {
-    enable = lib.mkEnableOption "Opinionated hyprlock config";
-  };
-
   config.programs.hyprlock = lib.mkIf cfg.enable {
-    enable = true;
-    package = pkgs.unstable.hyprlock;
-
     settings = {
       general = {
         disable_loading_bar = true;

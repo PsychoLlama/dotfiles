@@ -1,24 +1,11 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-with lib;
+{ config, lib, ... }:
 
 let
   cfg = config.presets.programs.fd;
 in
+
 {
-  options.presets.programs.fd.enable = mkEnableOption "Whether to enable fd-find";
-
-  config = mkIf cfg.enable {
-    programs.fd = {
-      enable = true;
-      package = pkgs.unstable.fd;
-    };
-
+  config = lib.mkIf cfg.enable {
     programs.fzf.defaultCommand = "fd --type f";
   };
 }

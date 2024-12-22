@@ -1,11 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-with lib;
+{ config, lib, ... }:
 
 let
   cfg = config.presets.programs.waybar;
@@ -15,27 +8,24 @@ let
   colors =
     let
       inherit
-        (mapAttrs (
-          style: colors: concatMapAttrs (id: color: { ${style + "-" + id} = color; }) colors
+        (lib.mapAttrs (
+          style: colors: lib.concatMapAttrs (id: color: { ${style + "-" + id} = color; }) colors
         ) config.theme.palette)
         bright
         normal
         ;
     in
-    mergeAttrs bright normal;
+    lib.mergeAttrs bright normal;
 
   # Convert the color palette to GTK CSS color definitions.
   # "@define-color bright-red <hex>;"
-  gtk-css-color-defs = concatStringsSep "\n" (
-    mapAttrsToList (name: value: "@define-color ${name} ${value};") colors
+  gtk-css-color-defs = lib.concatStringsSep "\n" (
+    lib.mapAttrsToList (name: value: "@define-color ${name} ${value};") colors
   );
 in
-{
-  options.presets.programs.waybar.enable = mkEnableOption "Install and configure Waybar";
 
-  config.programs.waybar = mkIf cfg.enable {
-    enable = true;
-    package = pkgs.unstable.waybar;
+{
+  config.programs.waybar = lib.mkIf cfg.enable {
     style = ''
       ${gtk-css-color-defs}
 

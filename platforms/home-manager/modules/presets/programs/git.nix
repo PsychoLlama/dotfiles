@@ -1,14 +1,11 @@
 { config, lib, ... }:
 
-with lib;
-
 let
   cfg = config.presets.programs.git;
 in
-{
-  options.presets.programs.git.enable = mkEnableOption "Provide an opinionated configuration for git";
 
-  config = mkIf cfg.enable {
+{
+  config = lib.mkIf cfg.enable {
     home.shellAliases = {
       g = "git";
       c = "git commit";
@@ -20,8 +17,6 @@ in
     };
 
     programs.git = {
-      enable = true;
-
       aliases = {
         a = "add --all";
         d = "diff";

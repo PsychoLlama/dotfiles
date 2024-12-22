@@ -1,23 +1,17 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
-
-with lib;
 
 let
   inherit (config.theme) palette;
   cfg = config.presets.programs.rofi;
 in
-{
-  options.presets.programs.rofi.enable = mkEnableOption "Use the rofi launcher";
 
-  config.programs.rofi = mkIf cfg.enable {
-    enable = true;
-    package = pkgs.unstable.rofi;
-    terminal = mkDefault "${config.programs.wezterm.package}/bin/wezterm";
+{
+  config.programs.rofi = lib.mkIf cfg.enable {
+    terminal = lib.mkDefault "${config.programs.wezterm.package}/bin/wezterm";
     extraConfig.modi = "drun,run";
 
     theme =

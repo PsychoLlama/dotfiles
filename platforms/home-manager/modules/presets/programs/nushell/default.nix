@@ -5,8 +5,6 @@
   ...
 }:
 
-with lib;
-
 let
   cfg = config.presets.programs.nushell;
   jsonFormat = pkgs.formats.json { };
@@ -18,18 +16,14 @@ let
 
   # Some modules use POSIX interpolation, which Nushell obviously doesn't
   # support. Just ignore them.
-  safeSessionVariables = filterAttrs (
-    _: value: strings.hasInfix "\${" value == false
+  safeSessionVariables = lib.filterAttrs (
+    _: value: lib.strings.hasInfix "\${" value == false
   ) config.home.sessionVariables;
 in
+
 {
-  options.presets.programs.nushell.enable = mkEnableOption "Install and configure Nushell";
-
-  config.programs = mkIf cfg.enable {
+  config.programs = lib.mkIf cfg.enable {
     nushell = {
-      enable = true;
-      package = pkgs.unstable.nushell;
-
       scripts = {
         enable = true;
         package = pkgs.unstable.nu_scripts;
@@ -43,7 +37,7 @@ in
 
       # Use the default aliases, except for `ls` overrides. Nushell has
       # a great `ls` replacement.
-      shellAliases = filterAttrs (key: value: key != "l" && key != "ls") config.home.shellAliases // {
+      shellAliases = lib.filterAttrs (key: value: key != "l" && key != "ls") config.home.shellAliases // {
         l = "ls --all";
       };
 

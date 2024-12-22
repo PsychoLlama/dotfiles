@@ -1,21 +1,11 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-with lib;
+{ config, lib, ... }:
 
 let
   cfg = config.presets.programs.bottom;
 in
-{
-  options.presets.programs.bottom.enable = mkEnableOption "Use and configure the bottom process monitor";
 
-  config.programs.bottom = mkIf cfg.enable {
-    enable = true;
-    package = pkgs.unstable.bottom;
+{
+  config.programs.bottom = lib.mkIf cfg.enable {
     settings.flags.temperature_type = "f";
   };
 }

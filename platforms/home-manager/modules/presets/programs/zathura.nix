@@ -1,24 +1,13 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-with lib;
+{ config, lib, ... }:
 
 let
   inherit (config.theme) palette;
   cfg = config.presets.programs.zathura;
 in
+
 {
-  options.presets.programs.zathura.enable = mkEnableOption "Install and configure Zathura";
-
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.zathura = {
-      enable = true;
-      package = pkgs.unstable.zathura;
-
       # Adapted from taylor1791/dotfiles. Thanks Taylor.
       options = {
         # A configuration file for zathura. See `man zathurarc` for more details.
