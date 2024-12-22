@@ -44,8 +44,16 @@ in
 
     settings.main-bar = {
       layer = "top";
-      modules-left = [ "sway/workspaces" ];
-      modules-center = [ "sway/window" ];
+      modules-left = [
+        "sway/workspaces"
+        "hyprland/workspaces"
+      ];
+
+      modules-center = [
+        "sway/window"
+        "hyprland/window"
+      ];
+
       modules-right = [
         "network"
         "pulseaudio"
@@ -75,7 +83,7 @@ in
 
       backlight = {
         format = "{percent}% {icon}";
-        format-icons = [ "" ];
+        format-icons = [ "" ];
       };
 
       battery = {
@@ -85,7 +93,7 @@ in
         };
 
         format = "{capacity}% {icon}";
-        format-charging = "{capacity}% ";
+        format-charging = "{capacity}% 󰂄";
         format-plugged = "{capacity}% ";
         format-alt = "{time} {icon}";
         format-icons = [
@@ -108,8 +116,8 @@ in
       pulseaudio = {
         format = "{volume}% {icon} {format_source}";
         format-bluetooth = "{volume}% {icon} {format_source}";
-        format-bluetooth-muted = " {icon} {format_source}";
-        format-muted = " {format_source}";
+        format-bluetooth-muted = " {icon} {format_source}";
+        format-muted = " {format_source}";
         format-source = "{volume}% ";
         format-source-muted = "";
         format-icons = {

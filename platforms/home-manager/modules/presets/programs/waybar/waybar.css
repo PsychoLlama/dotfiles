@@ -1,5 +1,6 @@
 * {
-  font-size: 15px;
+  font-size: 16px;
+  font-family: "Fira Code";
 }
 
 window {
@@ -16,10 +17,13 @@ window {
 
   border-width: 0;
   border-bottom: 2px solid alpha(@bright-white, 0.2);
-  transition: background-color 200ms, border-bottom-color 200ms;
+  transition:
+    background-color 200ms,
+    border-bottom-color 200ms;
 }
 
-#workspaces button.focused {
+#workspaces button.focused,
+#workspaces button.active {
   border-bottom-color: alpha(@bright-white, 0.8);
 }
 
