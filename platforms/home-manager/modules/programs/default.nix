@@ -9,23 +9,25 @@ let
       pkgs,
       ...
     }:
+
     let
       cfg = config.programs.${pkgName};
     in
-    with lib;
+
     {
       options.programs.${pkgName} = {
-        enable = mkEnableOption "Whether to install ${pkgName}";
-        package = mkPackageOption pkgs pkgName { };
+        enable = lib.mkEnableOption "Whether to install ${pkgName}";
+        package = lib.mkPackageOption pkgs pkgName { };
       };
 
-      config.home.packages = mkIf cfg.enable [ cfg.package ];
+      config.home.packages = lib.mkIf cfg.enable [ cfg.package ];
     };
 in
 {
   imports = [
     ./editor.nix
     ./glow.nix
+    ./hyprland.nix
     ./nushell
 
     (makeProgramModule "acpi")

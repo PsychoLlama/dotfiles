@@ -18,6 +18,98 @@ in
     enable = true;
     package = pkgs.unstable.hyprland;
 
+    bindings =
+      [
+        {
+          modifiers = [ "$mod" ];
+          key = "Return";
+          action = "wezterm";
+        }
+        {
+          modifiers = [ "$mod" ];
+          dispatcher = "killactive";
+          key = "Q";
+        }
+        {
+          modifiers = [
+            "$mod"
+            "SHIFT"
+          ];
+          dispatcher = "exit";
+          key = "Q";
+        }
+        {
+          modifiers = [ "$mod" ];
+          key = "SPACE";
+          action = "rofi -show drun -display-drun 'Start: '";
+        }
+        {
+          key = "Print";
+          action = pkgs.writers.writeDash "take-screenshot.sh" ''
+            set -eu
+
+            grim="${config.programs.grim.package}/bin/grim"
+            slurp="${config.programs.slurp.package}/bin/slurp"
+            screenshots="${config.home.homeDirectory}/screenshots"
+
+            # Ensure this is the only screenshot instance running.
+            pkill slurp || true
+
+            region="$($slurp)" # <- Other instances terminate here.
+
+            $grim -g "$region" "$screenshots/$(date --iso-8601=seconds).png"
+          '';
+        }
+        {
+          modifiers = [
+            "$mod"
+            "SHIFT"
+          ];
+          dispatcher = "workspace";
+          key = "TAB";
+          action = "m-1";
+        }
+        {
+          modifiers = [ "$mod" ];
+          dispatcher = "workspace";
+          key = "TAB";
+          action = "m+1";
+        }
+        {
+          modifiers = [
+            "$mod"
+            "CTRL"
+          ];
+          key = "Q";
+          action = "hyprlock --no-fade-in --immediate";
+        }
+      ]
+      ++ lib.pipe (lib.range 1 9) [
+        (map toString)
+        (map (numkey: [
+          # Jump to workspace
+          {
+            modifiers = [ "$mod" ];
+            dispatcher = "workspace";
+            key = toString numkey;
+            action = toString numkey;
+          }
+
+          # Move current window to another workspace
+          {
+            modifiers = [
+              "$mod"
+              "SHIFT"
+            ];
+            dispatcher = "movetoworkspace";
+            key = toString numkey;
+            action = toString numkey;
+          }
+        ]))
+
+        (lib.flatten)
+      ];
+
     settings = {
       "$mod" = "SUPER";
 
@@ -32,32 +124,6 @@ in
         [ ]
         ++ (lib.optional config.programs.waybar.enable "waybar")
         ++ (lib.optional config.services.swaybg.enable "systemctl start --user swaybg");
-
-      bind =
-        [
-          "$mod, Return, exec, wezterm"
-          "$mod, Q, killactive,"
-          "$mod SHIFT, Q, exit,"
-          "$mod, SPACE, exec, rofi -show drun -display-drun 'Start: '"
-          ", Print, exec, grim -g \"$(slurp)\" ~/screenshots/\"$(date --iso-8601=seconds).png\""
-
-          "$mod SHIFT, TAB, workspace, m-1"
-          "$mod, TAB, workspace, m+1"
-
-          "$mod CTRL, Q, exec, hyprlock --no-fade-in --immediate"
-        ]
-        ++ lib.pipe (lib.range 1 9) [
-          (map toString)
-          (map (numkey: [
-            # Jump to workspace
-            "$mod, ${numkey}, workspace, ${numkey}"
-
-            # Move current window to another workspace
-            "$mod SHIFT, ${numkey}, movetoworkspace, ${numkey}"
-          ]))
-
-          (lib.flatten)
-        ];
 
       input = {
         kb_layout = "us";
