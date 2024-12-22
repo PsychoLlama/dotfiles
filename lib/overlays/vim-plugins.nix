@@ -13,7 +13,6 @@ let
           src = plugin;
         };
       }
-
     );
 
   extraVimPlugins = mapToVimPlugins {

@@ -7,7 +7,6 @@
 
 let
   cfg = config.profiles.full;
-  u = pkgs.unstable;
 in
 
 {
@@ -15,8 +14,19 @@ in
 
   config = lib.mkIf cfg.enable {
     package = pkgs.unstable.neovim;
+    lsp.enable = lib.mkDefault true;
 
     presets = {
+      lsp.servers = {
+        clangd.enable = lib.mkDefault true;
+        jsonls.enable = lib.mkDefault true;
+        luals.enable = lib.mkDefault true;
+        nil.enable = lib.mkDefault true;
+        nushell.enable = lib.mkDefault true;
+        rust-analyzer.enable = lib.mkDefault true;
+        typescript.enable = lib.mkDefault true;
+      };
+
       plugins = {
         alternaut-nvim.enable = lib.mkDefault true;
         cmp-buffer.enable = lib.mkDefault true;
@@ -58,94 +68,6 @@ in
       };
     };
 
-    lsp = {
-      enable = true;
-
-      servers = {
-        rust-analyzer = {
-          server = "${u.rust-analyzer}/bin/rust-analyzer";
-          filetypes = [ "rust" ];
-          root.patterns = [ "Cargo.toml" ];
-        };
-
-        nil = {
-          server = "${u.nil}/bin/nil";
-          filetypes = [ "nix" ];
-          root.patterns = [ "flake.nix" ];
-          settings.nil.nix.flake.autoArchive = true;
-        };
-
-        nushell = {
-          server = "nu";
-          args = [ "--lsp" ];
-          filetypes = [ "nu" ];
-          root.patterns = [ ".git/" ];
-        };
-
-        lua-language-server = {
-          server = "${u.lua-language-server}/bin/lua-language-server";
-          filetypes = [ "lua" ];
-          root.patterns = [
-            ".git/"
-            ".luarc.json"
-          ];
-
-          # Reference: https://luals.github.io/wiki/settings/
-          settings.Lua = {
-            # Using stylua instead.
-            format.enable = false;
-
-            # Don't try to dynamically manage library type defs.
-            workspace.checkThirdParty = false;
-            addonManager.enable = false;
-          };
-        };
-
-        typescript-language-server = {
-          server = "${u.nodePackages.typescript-language-server}/bin/typescript-language-server";
-          args = [ "--stdio" ];
-          filetypes = [
-            "typescript"
-            "typescriptreact"
-            "javascript"
-            "javascriptreact"
-          ];
-
-          root.patterns = [
-            "tsconfig.json"
-            ".git/"
-          ];
-        };
-
-        jsonls = {
-          server = "${u.nodePackages.vscode-langservers-extracted}/bin/vscode-json-language-server";
-          args = [ "--stdio" ];
-          filetypes = [
-            "json"
-            "jsonc"
-            "json5"
-          ];
-
-          root.patterns = [ ".git/" ];
-        };
-
-        clangd = {
-          # Uses `pkgs.clang-tools` on NixOS and XCode/Visual Studio on other
-          # platforms.
-          server = "clangd";
-
-          filetypes = [
-            "c"
-            "cpp"
-            "objc"
-            "objcpp"
-          ];
-
-          root.patterns = [ "compile_commands.json" ];
-        };
-      };
-    };
-
     extraPlugins = with pkgs.vimPlugins; [
       (nvim-treesitter.withPlugins (
         _:
@@ -156,15 +78,6 @@ in
         ]
       ))
     ];
-
-    extraPackages =
-      with pkgs.unstable;
-      [
-        rustup
-        unzip # For source-diving Plug'n'Play dependencies.
-        yarn
-      ]
-      ++ lib.optionals pkgs.stdenv.isLinux [ pkgs.unstable.clang-tools ];
 
     # TODO: Convert parts of the neovim config to Nix.
     extraConfig = ''
