@@ -10,7 +10,9 @@ let
 in
 
 {
-  options.profiles.full.enable = lib.mkEnableOption "Create an opinionated editor";
+  options.profiles.full = {
+    enable = lib.mkEnableOption "Create an opinionated editor";
+  };
 
   config = lib.mkIf cfg.enable {
     package = pkgs.unstable.neovim;
@@ -78,6 +80,74 @@ in
         ]
       ))
     ];
+
+    options = {
+      # Editing settings
+      backspace = [
+        "indent"
+        "eol"
+        "start"
+      ];
+      formatoptions = "qc1orj";
+      fileformat = "unix";
+      fileformats = [
+        "unix"
+        "dos"
+        "mac"
+      ];
+      textwidth = 78;
+      expandtab = true;
+      tabstop = 2;
+      shiftwidth = 0;
+      shiftround = true;
+
+      # Interaction settings
+      wildmenu = true;
+      wildmode = [
+        "longest"
+        "list"
+        "full"
+      ];
+      inccommand = "nosplit";
+      wrapscan = false;
+      pumheight = 10;
+      pumblend = 20;
+      winblend = 0;
+      autoread = true;
+      ignorecase = true;
+      smartcase = true;
+      mouse = "";
+      completeopt = [
+        "menu"
+        "menuone"
+        "noselect"
+      ];
+
+      # Display settings
+      incsearch = true;
+      showcmd = true;
+      termguicolors = true;
+      signcolumn = "yes";
+      number = true;
+      numberwidth = 3;
+      list = true;
+      listchars = "tab:) ,trail:.";
+      foldenable = false;
+      updatetime = 100;
+      linebreak = true;
+      cursorline = true;
+
+      # Storage settings
+      backupcopy = "yes";
+      backup = true;
+      backupdir = "/tmp";
+      undofile = true;
+      history = 10000;
+
+      # Integrations
+      clipboard = "unnamedplus";
+      grepprg = "rg --vimgrep";
+    };
 
     # TODO: Convert parts of the neovim config to Nix.
     extraConfig = ''

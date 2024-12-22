@@ -1,57 +1,9 @@
 require('core.env').source_direnv_vimrc()
 require('core.pkg').load()
 
--- Editing settings
-vim.opt.backspace = { 'indent', 'eol', 'start' }
-vim.o.formatoptions = 'qc1orj'
-vim.o.fileformat = 'unix'
-vim.opt.fileformats = { 'unix', 'dos', 'mac' }
-vim.o.textwidth = 78
-vim.o.expandtab = true
-vim.o.tabstop = 2
-vim.o.shiftwidth = 0
-vim.o.shiftround = true
-
--- Interaction settings
-vim.o.wildmenu = true
-vim.opt.wildmode = { 'longest', 'list', 'full' }
-vim.o.inccommand = 'nosplit'
-vim.o.wrapscan = false
-vim.o.pumheight = 10
-vim.o.pumblend = 20
-vim.o.winblend = 0
-vim.o.autoread = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.mouse = ''
-vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
-
--- Display settings
-vim.o.incsearch = true
-vim.o.showcmd = true
-vim.o.termguicolors = true
+-- Operations not yet supported by the Nix binding.
 vim.opt.shortmess:append('I')
-vim.o.signcolumn = 'yes'
-vim.o.number = true
-vim.o.numberwidth = 3
-vim.o.list = true
-vim.o.listchars = 'tab:) ,trail:.'
-vim.o.foldenable = false
-vim.o.updatetime = 100
-vim.o.linebreak = true
-vim.o.cursorline = true
-
--- Storage settings
-vim.o.backupcopy = 'yes'
-vim.o.backup = true
-vim.o.backupdir = '/tmp'
-vim.o.undofile = true
-vim.o.undodir = vim.fs.normalize('~/.vim/undo')
-vim.o.history = 10000
-
--- Integrations
-vim.o.clipboard = 'unnamedplus'
-vim.o.grepprg = 'rg --vimgrep'
+vim.opt.undodir = vim.fs.normalize('~/.vim/undo')
 
 -- Use <space> as the leader key.
 vim.g.mapleader = ' '
