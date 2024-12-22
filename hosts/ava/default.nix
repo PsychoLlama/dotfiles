@@ -61,7 +61,7 @@ in
   ];
 
   environment = {
-    systemPackages = with pkgs.unstable; [ borgbackup ];
+    systemPackages = [ pkgs.unstable.borgbackup ];
     variables.BORG_REPO = "/mnt/borg";
   };
 

@@ -5,15 +5,15 @@
   ...
 }:
 
-with lib;
-
 let
+  inherit (lib) mkDefault;
   cfg = config.profiles.full;
 in
-{
-  options.profiles.full.enable = mkEnableOption "Enable all dotfiles programs and services";
 
-  config = mkIf cfg.enable {
+{
+  options.profiles.full.enable = lib.mkEnableOption "Enable all dotfiles programs and services";
+
+  config = lib.mkIf cfg.enable {
     presets = {
       programs = {
         aider-chat.enable = mkDefault true;

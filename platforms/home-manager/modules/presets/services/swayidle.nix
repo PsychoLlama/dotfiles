@@ -5,17 +5,16 @@
   ...
 }:
 
-with lib;
-
 let
   cfg = config.presets.services.swayidle;
   swaylock = "${pkgs.swaylock}/bin/swaylock";
   swaymsg = "${pkgs.sway}/bin/swaymsg";
 in
-{
-  options.presets.services.swayidle.enable = mkEnableOption "Automatically lock the computer when inactive";
 
-  config.services.swayidle = mkIf cfg.enable {
+{
+  options.presets.services.swayidle.enable = lib.mkEnableOption "Automatically lock the computer when inactive";
+
+  config.services.swayidle = lib.mkIf cfg.enable {
     enable = true;
 
     events = [

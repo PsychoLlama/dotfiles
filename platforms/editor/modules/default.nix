@@ -5,9 +5,8 @@
   ...
 }:
 
-with lib;
-
 let
+  inherit (lib) mkOption types;
   lua = lib.generators.toLua { };
   configFile = pkgs.writeText "user-config.lua" config.extraConfig;
 
@@ -37,7 +36,7 @@ in
   ];
 
   options = {
-    enable = mkEnableOption "Whether to enable Neovim";
+    enable = lib.mkEnableOption "Whether to enable Neovim";
 
     neovim = mkOption {
       type = types.package;
@@ -46,7 +45,7 @@ in
       default = config.package.override {
         inherit (config) withNodeJs;
 
-        extraMakeWrapperArgs = concatStringsSep " " [
+        extraMakeWrapperArgs = lib.concatStringsSep " " [
           "--suffix PATH : ${lib.makeBinPath config.extraPackages}"
           (lib.cli.toGNUCommandLineShell { } {
             add-flags = [

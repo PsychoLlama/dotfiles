@@ -1,35 +1,30 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-
-with lib;
+{ config, lib, ... }:
 
 let
+  inherit (lib) types;
   cfg = config.programs.sway;
   generateSwayInputsConfig =
     inputs:
     let
-      inputDefinitions = mapAttrsToList (
+      inputDefinitions = lib.mapAttrsToList (
         inputName: inputs:
         let
-          fieldDefinitions = mapAttrsToList (
+          fieldDefinitions = lib.mapAttrsToList (
             fieldName: field: "${fieldName} ${builtins.toString field}"
           ) inputs;
         in
         ''
           input "${inputName}" {
-            ${concatStringsSep "\n  " fieldDefinitions}
+            ${lib.concatStringsSep "\n  " fieldDefinitions}
           }
         ''
       ) inputs;
     in
-    concatStringsSep "\n" inputDefinitions;
+    lib.concatStringsSep "\n" inputDefinitions;
 in
+
 {
-  options.programs.sway.input = mkOption {
+  options.programs.sway.input = lib.mkOption {
     type = types.attrsOf (
       types.attrsOf (
         types.oneOf [
@@ -39,7 +34,7 @@ in
       )
     );
     description = "Settings for Sway input devices";
-    example = literalExpression ''
+    example = lib.literalExpression ''
       sway.input."AT_Keyboard" = {
         repeat_delay = 250;
       };

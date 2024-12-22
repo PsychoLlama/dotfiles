@@ -2,18 +2,16 @@ inputs: self: pkgs:
 
 let
   # Non-standard vim plugins. Mostly my own.
-  mapToVimPlugins =
-    with pkgs.lib;
-    mapAttrs' (
-      pluginName: plugin: {
-        name = replaceStrings [ "." ] [ "-" ] pluginName;
-        value = pkgs.vimUtils.buildVimPlugin {
-          pname = pluginName;
-          version = plugin.shortRev or "latest";
-          src = plugin;
-        };
-      }
-    );
+  mapToVimPlugins = pkgs.lib.mapAttrs' (
+    pluginName: plugin: {
+      name = pkgs.lib.replaceStrings [ "." ] [ "-" ] pluginName;
+      value = pkgs.vimUtils.buildVimPlugin {
+        pname = pluginName;
+        version = plugin.shortRev or "latest";
+        src = plugin;
+      };
+    }
+  );
 
   extraVimPlugins = mapToVimPlugins {
     "alternaut.nvim" = inputs.alternaut-vim;

@@ -1,16 +1,16 @@
 { config, lib, ... }:
 
-with lib;
-
 let
+  inherit (lib) mkDefault;
   cfg = config.profiles.linux-desktop;
 in
+
 {
   options.profiles.linux-desktop = {
-    enable = mkEnableOption "Enable all Linux desktop presets";
+    enable = lib.mkEnableOption "Enable all Linux desktop presets";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     presets = {
       services = {
         dunst.enable = mkDefault true;

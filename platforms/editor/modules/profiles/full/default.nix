@@ -68,10 +68,10 @@ in
       };
     };
 
-    extraPlugins = with pkgs.vimPlugins; [
-      (nvim-treesitter.withPlugins (
+    extraPlugins = [
+      (pkgs.unstable.vimPlugins.nvim-treesitter.withPlugins (
         _:
-        nvim-treesitter.allGrammars
+        pkgs.unstable.vimPlugins.nvim-treesitter.allGrammars
         ++ [
           pkgs.tree-sitter.builtGrammars.tree-sitter-remix
           pkgs.tree-sitter.builtGrammars.tree-sitter-nu

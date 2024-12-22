@@ -8,9 +8,8 @@
 # - https://github.com/Misterio77/nix-colors
 # - https://github.com/danth/stylix
 
-with lib;
-
 let
+  inherit (lib) types mkOption mkDefault;
   cfg = config.theme;
 
   colors-type = types.submodule {
@@ -43,7 +42,7 @@ in
 {
   options.theme = {
     name = mkOption {
-      type = types.enum (attrNames cfg.palettes);
+      type = types.enum (lib.attrNames cfg.palettes);
       default = "one-dark";
       description = "Name of the color palette to use.";
     };

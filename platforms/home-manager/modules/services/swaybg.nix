@@ -5,23 +5,23 @@
   ...
 }:
 
-with lib;
-
 let
+  inherit (lib) types;
   cfg = config.services.swaybg;
 in
+
 {
   options.services.swaybg = {
-    enable = mkEnableOption "Enable the swaybg wallpaper daemon";
-    package = mkPackageOption pkgs "swaybg" { };
+    enable = lib.mkEnableOption "Enable the swaybg wallpaper daemon";
+    package = lib.mkPackageOption pkgs "swaybg" { };
 
-    output = mkOption {
+    output = lib.mkOption {
       type = types.str;
       default = "*";
       description = "Sway output to set the background on.";
     };
 
-    mode = mkOption {
+    mode = lib.mkOption {
       type = types.enum [
         "fill"
         "stretch"
@@ -34,14 +34,14 @@ in
       description = "How to fit the background image.";
     };
 
-    color = mkOption {
+    color = lib.mkOption {
       type = types.nullOr types.str;
       default = null;
       description = "Set a solid background color.";
       example = "#663399";
     };
 
-    image = mkOption {
+    image = lib.mkOption {
       type = types.nullOr (
         types.oneOf [
           types.path
@@ -54,7 +54,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     systemd.user.services.swaybg = {
       Install.WantedBy = [ "sway-session.target" ];
 
@@ -67,8 +67,8 @@ in
       Service = {
         Type = "simple";
         ExecStart = "${cfg.package}/bin/swaybg ${
-          concatStringsSep " " (
-            cli.toGNUCommandLine { } {
+          lib.concatStringsSep " " (
+            lib.cli.toGNUCommandLine { } {
               image = cfg.image;
               output = cfg.output;
               mode = cfg.mode;

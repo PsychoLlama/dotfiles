@@ -5,15 +5,13 @@
   ...
 }:
 
-with lib;
-
 let
   cfg = config.presets.services.dunst;
 in
 {
-  options.presets.services.dunst.enable = mkEnableOption "Use the dunst notification daemon";
+  options.presets.services.dunst.enable = lib.mkEnableOption "Use the dunst notification daemon";
 
-  config.services.dunst = mkIf cfg.enable {
+  config.services.dunst = lib.mkIf cfg.enable {
     enable = true;
     package = pkgs.unstable.dunst;
 

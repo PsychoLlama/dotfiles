@@ -5,9 +5,9 @@
   ...
 }:
 
-with lib;
-
 let
+  inherit (lib) types mkOption mkEnableOption;
+
   # Type accepted by `generators.toLua`. Similar to `pkgs.formats.*`.
   luaValueType =
     let
@@ -29,10 +29,10 @@ let
     valueType;
 
   # An attrset of only the enabled plugins. { vim-fugitive = <derivation>; }
-  enabledVimPlugins = filterAttrs (k: v: v.enable) config.plugins;
+  enabledVimPlugins = lib.filterAttrs (k: v: v.enable) config.plugins;
 
   # A list of the enabled plugins. [ <derivation> ]
-  managedPackages = mapAttrsToList (_: plugin: plugin.package) enabledVimPlugins;
+  managedPackages = lib.mapAttrsToList (_: plugin: plugin.package) enabledVimPlugins;
 
   # Managed plugins have more features, such as an associated config file.
   managedManifest = lib.mapAttrsToList (_: plugin: {
@@ -74,7 +74,7 @@ in
             };
 
             enable = mkEnableOption "Install ${name}";
-            package = mkPackageOption pkgs.vimPlugins name { };
+            package = lib.mkPackageOption pkgs.vimPlugins name { };
             extraConfig = mkOption {
               type = types.nullOr (types.either types.path types.lines);
               default = null;
