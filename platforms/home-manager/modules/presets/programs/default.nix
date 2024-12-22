@@ -67,6 +67,7 @@ in
     (mkUnstablePreset "playerctl")
     (mkUnstablePreset "slurp")
     (mkUnstablePreset "wf-recorder")
+    (mkUnstablePreset "wireplumber")
     (mkUnstablePreset "wl-clipboard")
   ];
 }

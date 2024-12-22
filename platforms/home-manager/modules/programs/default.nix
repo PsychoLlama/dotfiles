@@ -62,6 +62,7 @@ in
     (makeProgramModule "viu")
     (makeProgramModule "wf-recorder")
     (makeProgramModule "whois")
+    (makeProgramModule "wireplumber")
     (makeProgramModule "wl-clipboard")
   ];
 }

@@ -7,6 +7,10 @@
 
 let
   cfg = config.presets.programs.hyprland;
+  wireplumber = config.programs.wireplumber.package;
+  playerctl = config.programs.playerctl.package;
+  brightnessctl = config.programs.brightnessctl.package;
+  rofi = config.programs.rofi.package;
 in
 
 {
@@ -41,7 +45,9 @@ in
         {
           modifiers = [ "$mod" ];
           key = "SPACE";
-          action = "rofi -show drun -display-drun 'Start: '";
+          action = pkgs.writers.writeDash "launch-rofi.sh" ''
+            ${rofi}/bin/rofi -show drun -display-drun 'Start: '
+          '';
         }
         {
           key = "Print";
@@ -83,6 +89,30 @@ in
           key = "Q";
           action = "hyprlock --no-fade-in --immediate";
         }
+
+        # Audio control
+        {
+          key = "XF86AudioLowerVolume";
+          action = "${wireplumber}/bin/wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 10%-";
+        }
+        {
+          key = "XF86AudioRaiseVolume";
+          action = "${wireplumber}/bin/wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 10%+";
+        }
+        {
+          key = "XF86AudioMute";
+          action = "${wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        }
+
+        # Display control
+        {
+          key = "XF86MonBrightnessDown";
+          action = "${brightnessctl}/bin/brightnessctl s 10%-";
+        }
+        {
+          key = "XF86MonBrightnessUp";
+          action = "${brightnessctl}/bin/brightnessctl s 10%+";
+        }
       ]
       ++ lib.pipe (lib.range 1 9) [
         (map toString)
@@ -108,7 +138,46 @@ in
         ]))
 
         (lib.flatten)
+      ]
+      ++ lib.flatten [
+        (lib.forEach
+          # Wish my thinkpad had real media keys.
+          [
+            "Insert"
+            "XF86AudioPlay"
+          ]
+          (key: {
+            inherit key;
+            action = "${playerctl}/bin/playerctl play-pause";
+          })
+        )
+
+        (lib.forEach
+          [
+            "Home"
+            "XF86AudioPrev"
+          ]
+          (key: {
+            inherit key;
+            action = "${playerctl}/bin/playerctl previous";
+          })
+        )
+
+        (lib.forEach
+          [
+            "End"
+            "XF86AudioNext"
+          ]
+          (key: {
+            inherit key;
+            action = "${playerctl}/bin/playerctl next";
+          })
+        )
       ];
+
+    extraConfig = ''
+      # vim: ft=hyprlang
+    '';
 
     settings = {
       "$mod" = "SUPER";
