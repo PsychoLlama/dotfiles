@@ -9,7 +9,7 @@ in
     # Reference:
     # codecompanion.nvim/lua/codecompanion/config.lua
     opts.strategies.chat = {
-      adapter = "openai";
+      adapter = "anthropic";
       roles = {
         llm = "Computer";
         user = "User";
