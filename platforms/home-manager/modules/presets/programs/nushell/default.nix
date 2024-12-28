@@ -7,11 +7,9 @@
 
 let
   cfg = config.presets.programs.nushell;
-  jsonFormat = pkgs.formats.json { };
 
   zoxideCommandSetup = pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
     zoxide init nushell > "$out"
-    sed -e 's/-- $rest/-- ...$rest/' --in-place "$out"
   '';
 
   # Some modules use POSIX interpolation, which Nushell obviously doesn't
@@ -45,7 +43,7 @@ in
         source ${./config.nu}
         source ${zoxideCommandSetup}
 
-        open ${jsonFormat.generate "session-variables.json" safeSessionVariables} | load-env
+        load-env ${lib.hm.nushell.toNushell { } safeSessionVariables}
       '';
 
       extraEnv = ''
