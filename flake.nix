@@ -36,11 +36,6 @@
       flake = false;
     };
 
-    codecompanion-nvim = {
-      url = "github:olimorris/codecompanion.nvim";
-      flake = false;
-    };
-
     tree-sitter-remix.url = "github:PsychoLlama/tree-sitter-remix";
   };
 
