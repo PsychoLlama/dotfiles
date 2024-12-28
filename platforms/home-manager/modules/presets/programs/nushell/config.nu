@@ -1,37 +1,28 @@
-$env.config = {
-  edit_mode: vi
-  show_banner: false
-  footer_mode: 20
-  history: {
-    file_format: sqlite,
-    max_size: 100_000_000_000
-    isolation: true
-  }
-  table: {
-    mode: rounded
-    header_on_separator: true
-  }
-  cursor_shape: {
-    vi_normal: block
-    vi_insert: line
-  }
-  completions: {
-    case_sensitive: false
-    partial: false
-    quick: true
-    external: {
-      enable: true
-    }
-  }
+$env.config.edit_mode = 'vi'
+$env.config.show_banner = false
+$env.config.footer_mode = 20
+$env.config.history = {
+  file_format: 'sqlite'
+  max_size: 100_000_000_000
+  isolation: true
+}
 
-  #  Pulled from `config nu --default`
-  shell_integration: {
-    osc2: true
-    osc7: true
-    osc8: true
-    osc9_9: true
-    osc133: true
-    reset_application_mode: true
+$env.config.table = {
+  mode: 'rounded'
+  header_on_separator: true
+}
+
+$env.config.cursor_shape = {
+  vi_normal: 'block'
+  vi_insert: 'line'
+}
+
+$env.config.completions = {
+  case_sensitive: false
+  partial: false
+  quick: true
+  external: {
+    enable: true
   }
 }
 
@@ -183,7 +174,7 @@ def --env p [
   --user: string = PsychoLlama # Your GitHub username.
 ] {
   let resource = (
-    [$"($user)/($project)"] ++ $project
+    [$"($user)/($project)"] ++ [$project]
     | parse '{user}/{repo}'
     | last
     | upsert user ($in.user | str downcase)
