@@ -22,7 +22,7 @@
     };
 
     navitron-nvim = {
-      url = "github:PsychoLlama/navitron.vim";
+      url = "github:PsychoLlama/navitron.nvim";
       flake = false;
     };
 

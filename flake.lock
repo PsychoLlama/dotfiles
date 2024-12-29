@@ -74,16 +74,16 @@
     "navitron-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1734862077,
-        "narHash": "sha256-12k+KwFrGaVMSRbrXaoOgnCPdqCRlFt9JTq43bwHAPI=",
+        "lastModified": 1735431511,
+        "narHash": "sha256-IS9mgnZy2qrBOdWqrGySI1L7TvImQz1v+WaVbTBs1N0=",
         "owner": "PsychoLlama",
-        "repo": "navitron.vim",
-        "rev": "d6b2290e600925716e5ad6fc6c9dad6567e28202",
+        "repo": "navitron.nvim",
+        "rev": "761f902fb4e65adc68d0659c55581a3273a25057",
         "type": "github"
       },
       "original": {
         "owner": "PsychoLlama",
-        "repo": "navitron.vim",
+        "repo": "navitron.nvim",
         "type": "github"
       }
     },
