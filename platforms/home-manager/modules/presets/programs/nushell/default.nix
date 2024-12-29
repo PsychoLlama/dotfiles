@@ -47,7 +47,14 @@ in
       '';
 
       extraEnv = ''
-        source ${./env.nu};
+        # Add custom libraries (`use my-lib`)
+        $env.NU_LIB_DIRS ++= ${
+          lib.hm.nushell.toNushell { } [
+            (toString ./libraries)
+          ]
+        }
+
+        source ${./env.nu}
       '';
     };
 

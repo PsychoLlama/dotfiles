@@ -167,31 +167,11 @@ def decrypt [] {
   rage --decrypt --identity ~/.ssh/id_ed25519 -
 }
 
-# Manage git (p)rojects.
-def --env p [
-  project: string # A GitHub user/project shorthand.
-  --root: string = ~/projects # Where to store all the repositories.
-  --user: string = PsychoLlama # Your GitHub username.
-] {
-  let resource = (
-    [$"($user)/($project)"] ++ [$project]
-    | parse '{user}/{repo}'
-    | last
-    | upsert user ($in.user | str downcase)
-    | upsert repo ($in.repo | str replace '\b\.git$' '')
-  )
-
-  let clone_destination = [($root | path expand) $resource.user $resource.repo] | path join
-
-  if not ($clone_destination | path exists) {
-    git clone $"git@github.com:($resource.user)/($resource.repo)" $clone_destination
-  }
-
-  cd $clone_destination
-}
-
 # Change the desktop wallpaper.
 def 'wallpaper set' [image: path] {
   ln -sf $image ~/attic/images/wallpapers/current
   systemctl --user restart swaybg.service
 }
+
+# Custom libraries
+use repo
