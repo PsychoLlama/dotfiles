@@ -1,5 +1,7 @@
 use std "path add"
 use std formats *
+use std/util repeat
+use std/iter
 
 # NixOS does not manage nushell and will not automatically add system paths to
 # the RC. I have to add them manually.
