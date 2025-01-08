@@ -1,1 +1,6 @@
-{ imports = [ ./scripts.nix ]; }
+{
+  imports = [
+    ./nu_scripts.nix
+    ./scripts.nix
+  ];
+}

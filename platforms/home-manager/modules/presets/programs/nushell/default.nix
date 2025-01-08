@@ -22,6 +22,8 @@ in
 {
   config.programs = lib.mkIf cfg.enable {
     nushell = {
+      nu_scripts.enable = true;
+
       scripts = {
         enable = true;
         package = pkgs.unstable.nu_scripts;
@@ -30,10 +32,6 @@ in
           "git"
           "nix"
           "npm"
-        ];
-
-        modules = [
-          "nu-hooks/nu-hooks/nuenv/hook.nu" # TODO: Inject this in the `env_change` hook.
         ];
       };
 

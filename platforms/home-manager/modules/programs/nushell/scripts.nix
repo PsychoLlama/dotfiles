@@ -5,11 +5,10 @@
   ...
 }:
 
+# TODO: Merge this with `nu_scripts` config.
+
 let
   cfg = config.programs.nushell.scripts;
-  completions = lib.map (
-    completion: "custom-completions/${completion}/${completion}-completions.nu"
-  ) cfg.completions;
 in
 
 {
@@ -21,20 +20,14 @@ in
       description = "Completion modules to auto-import";
       default = [ ];
     };
-
-    modules = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      description = "Modules to auto-import";
-      default = [ ];
-    };
   };
 
-  config.programs.nushell = lib.mkIf (cfg.enable && cfg.modules != [ ]) {
+  config.programs.nushell = lib.mkIf (cfg.enable && cfg.completions != [ ]) {
     extraConfig = ''
-      ### Modules from nu_scripts ###
-      ${lib.concatMapStringsSep "\n" (moduleName: ''
-        use ${cfg.package}/share/nu_scripts/${moduleName} *
-      '') (cfg.modules ++ completions)}
+      ### 3rd party completions ###
+      ${lib.concatMapStringsSep "\n" (cmdName: ''
+        use custom-completions/${cmdName}/${cmdName}-completions.nu *
+      '') cfg.completions}
     '';
   };
 }
