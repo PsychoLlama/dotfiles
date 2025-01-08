@@ -1,3 +1,9 @@
+# Set up `nuenv` to execute trusted local `.env.nu` files if they exist.
+use nu-hooks/nu-hooks/nuenv/hook.nu [
+  "nuenv allow"
+  "nuenv disallow"
+]
+
 $env.config.edit_mode = 'vi'
 $env.config.show_banner = false
 $env.config.footer_mode = 20
@@ -24,6 +30,12 @@ $env.config.completions = {
   external: {
     enable: true
   }
+}
+
+$env.config.hooks.env_change = {
+  PWD: [
+    (use nu-hooks/nu-hooks/nuenv/hook.nu; hook setup)
+  ]
 }
 
 # Open the editor.
