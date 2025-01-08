@@ -81,7 +81,7 @@ in
       ))
     ];
 
-    options = {
+    settings = {
       # Editing settings
       backspace = [
         "indent"

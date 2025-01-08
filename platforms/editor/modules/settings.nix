@@ -6,7 +6,7 @@ let
 in
 
 {
-  options.options = lib.mkOption {
+  options.settings = lib.mkOption {
     default = { };
     type = types.attrsOf json.type;
 

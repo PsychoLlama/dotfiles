@@ -32,8 +32,8 @@ in
 {
   imports = [
     ./lsp
-    ./options.nix
     ./plugins.nix
+    ./settings.nix
   ];
 
   options = {
@@ -58,7 +58,7 @@ in
 
         configure.customRC = ''
           lua << CORE_FRAMEWORK
-          require('core.options').set(${lua config.options})
+          require('core.settings').apply(${lua config.settings})
           require('core.pkg._loader').set_manifest(${lua config.core.manifest})
           require('core.lsp').setup(${lua config.core.lsp.servers})
           CORE_FRAMEWORK
