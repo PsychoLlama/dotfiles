@@ -31,6 +31,10 @@ in
           "nix"
           "npm"
         ];
+
+        modules = [
+          "nu-hooks/nu-hooks/nuenv/hook.nu" # TODO: Inject this in the `env_change` hook.
+        ];
       };
 
       # Use the default aliases, except for `ls` overrides. Nushell has

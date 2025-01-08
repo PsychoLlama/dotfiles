@@ -7,7 +7,9 @@
 
 let
   cfg = config.programs.nushell.scripts;
-  completions = "${cfg.package}/share/nu_scripts/custom-completions";
+  completions = lib.map (
+    completion: "custom-completions/${completion}/${completion}-completions.nu"
+  ) cfg.completions;
 in
 
 {
@@ -19,12 +21,20 @@ in
       description = "Completion modules to auto-import";
       default = [ ];
     };
+
+    modules = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      description = "Modules to auto-import";
+      default = [ ];
+    };
   };
 
-  config.programs.nushell.extraConfig = lib.mkIf (cfg.enable && cfg.completions != [ ]) ''
-    ### Completions ###
-    ${lib.concatMapStringsSep "\n" (moduleName: ''
-      use ${completions}/${moduleName}/${moduleName}-completions.nu *
-    '') cfg.completions}
-  '';
+  config.programs.nushell = lib.mkIf (cfg.enable && cfg.modules != [ ]) {
+    extraConfig = ''
+      ### Modules from nu_scripts ###
+      ${lib.concatMapStringsSep "\n" (moduleName: ''
+        use ${cfg.package}/share/nu_scripts/${moduleName} *
+      '') (cfg.modules ++ completions)}
+    '';
+  };
 }
