@@ -22,22 +22,20 @@ in
 {
   config.programs = lib.mkIf cfg.enable {
     nushell = {
-      nu_scripts.enable = true;
-
       libraries = {
         enable = true;
         path = [ ./libraries ];
-      };
 
-      scripts = {
-        enable = true;
-        package = pkgs.unstable.nu_scripts;
-        completions = [
-          "cargo"
-          "git"
-          "nix"
-          "npm"
-        ];
+        nu_scripts = {
+          enable = true;
+          package = pkgs.unstable.nu_scripts;
+          completions = [
+            "cargo"
+            "git"
+            "nix"
+            "npm"
+          ];
+        };
       };
 
       # Use the default aliases, except for `ls` overrides. Nushell has
