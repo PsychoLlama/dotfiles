@@ -29,11 +29,17 @@ in
         nu_scripts = {
           enable = true;
           package = pkgs.unstable.nu_scripts;
+
           completions = [
             "cargo"
             "git"
+            "glow"
             "nix"
             "npm"
+            "rg"
+            "rustup"
+            "ssh"
+            "tar"
           ];
         };
       };
