@@ -24,6 +24,11 @@ in
     nushell = {
       nu_scripts.enable = true;
 
+      libraries = {
+        enable = true;
+        path = [ ./libraries ];
+      };
+
       scripts = {
         enable = true;
         package = pkgs.unstable.nu_scripts;
@@ -49,13 +54,6 @@ in
       '';
 
       extraEnv = ''
-        # Add custom libraries (`use my-lib`)
-        $env.NU_LIB_DIRS ++= ${
-          lib.hm.nushell.toNushell { } [
-            (toString ./libraries)
-          ]
-        }
-
         source ${./env.nu}
       '';
     };

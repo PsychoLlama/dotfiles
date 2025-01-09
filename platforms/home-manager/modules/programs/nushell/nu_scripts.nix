@@ -16,13 +16,8 @@ in
   };
 
   config.programs.nushell = lib.mkIf cfg.enable {
-    extraEnv = ''
-      ### Add `nu_scripts` to the library path ###
-      $env.NU_LIB_DIRS ++= ${
-        lib.hm.nushell.toNushell { } [
-          "${cfg.package}/share/nu_scripts"
-        ]
-      }
-    '';
+    libraries.path = [
+      "${cfg.package}/share/nu_scripts"
+    ];
   };
 }
