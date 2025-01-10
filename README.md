@@ -1,10 +1,10 @@
 ## About
 
-A set of [NixOS](https://nixos.org/) modules that manage my machines. It's like Configuration as Code for your dotfiles, but taken to an extreme. This repo manages my primary dev machine (NixOS/Linux), a few macOS devices with [nix-darwin](https://github.com/LnL7/nix-darwin/), some WSL2 environments, and a tremendous amount of cross-platform configuration between them with [home-manager](https://github.com/nix-community/home-manager).
+All configs for my Linux, macOS, and WSL environments. I use [NixOS](https://nixos.org/) modules to manage everything as configuration-as-code. Most of it is cross platform via [home-manager](https://github.com/nix-community/home-manager). Platform bindings (NixOS, [nix-darwin](https://github.com/LnL7/nix-darwin/)) handle the rest.
 
 This repo only manages my workstations. Servers live in [home-lab](https://github.com/PsychoLlama/home-lab/).
 
-## Linux Environment
+## Stack
 
 - WM: [Hyprland](https://hyprland.org/) + [Waybar](https://github.com/Alexays/Waybar/)
 - Launcher: [Rofi](https://github.com/davatorium/rofi)
