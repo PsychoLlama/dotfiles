@@ -186,4 +186,4 @@ def 'wallpaper set' [image: path] {
 }
 
 # Custom libraries
-use repo
+use dotfiles/repo
