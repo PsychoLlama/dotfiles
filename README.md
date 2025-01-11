@@ -46,13 +46,13 @@ config.psychollama.presets.starship.enable = true;
 
 ## Editor (neovim)
 
-If you want to try my editor it's exported as a package:
+You can try my editor without installing it because it's built as a standalone package:
 
 ```nushell
 nix run 'github:PsychoLlama/dotfiles#editor' ./
 ```
 
-You can also build your own variant:
+You can also build your own variant. It have access to all options from `nixosModules.editor-platform`.
 
 ```nix
 flake.lib.dotfiles.buildEditor {
@@ -61,4 +61,4 @@ flake.lib.dotfiles.buildEditor {
 }
 ```
 
-The modularity is mostly for my own experiments. I break stuff often.
+I don't expect anyone to use these. I break stuff often. It's mostly for my own experiments.
