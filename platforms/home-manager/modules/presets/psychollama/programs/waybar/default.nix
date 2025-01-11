@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  cfg = config.presets.programs.waybar;
+  cfg = config.psychollama.presets.programs.waybar;
 
   # Convert the color palette to a flat list of colors.
   # { bright-red = "<hex>"; normal-red = "<hex>"; ... }

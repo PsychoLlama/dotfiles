@@ -6,7 +6,7 @@
 
 let
   inherit (config.theme) palette;
-  cfg = config.presets.programs.rofi;
+  cfg = config.psychollama.presets.programs.rofi;
 in
 
 {

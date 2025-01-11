@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.presets.plugins.nvim-lint;
+  cfg = config.psychollama.presets.plugins.nvim-lint;
 in
 
 {

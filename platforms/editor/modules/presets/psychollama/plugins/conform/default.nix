@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.presets.plugins.conform-nvim;
+  cfg = config.psychollama.presets.plugins.conform-nvim;
 in
 
 {

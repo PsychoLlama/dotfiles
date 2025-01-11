@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  cfg = config.presets.programs.bat;
+  cfg = config.psychollama.presets.programs.bat;
 in
 
 {

@@ -10,12 +10,12 @@ let
     name: extraConfig:
 
     let
-      cfg = config.presets.plugins.${name};
+      cfg = config.psychollama.presets.plugins.${name};
     in
 
     {
       # Install the latest version of a vim plugin.
-      options.presets.plugins.${name} = {
+      options.psychollama.presets.plugins.${name} = {
         enable = lib.mkEnableOption "Install vimPlugins.${name}";
         package = lib.mkPackageOption pkgs.unstable.vimPlugins name { };
       };

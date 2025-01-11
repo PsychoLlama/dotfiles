@@ -7,14 +7,14 @@
 
 let
   inherit (lib) mkDefault;
-  cfg = config.profiles.full;
+  cfg = config.psychollama.profiles.full;
 in
 
 {
-  options.profiles.full.enable = lib.mkEnableOption "Enable all dotfiles programs and services";
+  options.psychollama.profiles.full.enable = lib.mkEnableOption "Enable all dotfiles programs and services";
 
   config = lib.mkIf cfg.enable {
-    presets = {
+    psychollama.presets = {
       programs = {
         aider-chat.enable = mkDefault true;
         ast-grep.enable = mkDefault true;

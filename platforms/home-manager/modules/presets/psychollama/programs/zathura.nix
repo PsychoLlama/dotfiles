@@ -2,7 +2,7 @@
 
 let
   inherit (config.theme) palette;
-  cfg = config.presets.programs.zathura;
+  cfg = config.psychollama.presets.programs.zathura;
 in
 
 {

@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.lsp.servers.luals;
+  cfg = config.psychollama.presets.lsp.servers.luals;
 in
 
 {
-  options.presets.lsp.servers.luals = {
+  options.psychollama.presets.lsp.servers.luals = {
     enable = lib.mkEnableOption "Use JSON language server";
     package = lib.mkPackageOption pkgs.unstable "lua-language-server" { };
   };

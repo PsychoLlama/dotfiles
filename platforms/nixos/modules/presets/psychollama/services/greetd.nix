@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.services.greetd;
+  cfg = config.psychollama.presets.services.greetd;
 in
 
 {
-  options.presets.services.greetd.enable = lib.mkEnableOption "Use TUI greeter";
+  options.psychollama.presets.services.greetd.enable = lib.mkEnableOption "Use TUI greeter";
 
   config = lib.mkIf cfg.enable {
     services.greetd = {

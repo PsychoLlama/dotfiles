@@ -65,7 +65,7 @@ in
     variables.BORG_REPO = "/mnt/borg";
   };
 
-  profiles = {
+  psychollama.profiles = {
     full.enable = true;
   };
 
@@ -89,12 +89,14 @@ in
       userEmail = "JesseTheGibson@gmail.com";
     };
 
-    profiles = {
-      full.enable = true;
-      linux-desktop.enable = true;
-    };
+    psychollama = {
+      presets.fonts.enable = true;
 
-    presets.fonts.enable = true;
+      profiles = {
+        full.enable = true;
+        linux-desktop.enable = true;
+      };
+    };
   };
 
   services = {

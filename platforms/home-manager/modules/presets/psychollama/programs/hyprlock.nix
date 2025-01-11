@@ -1,7 +1,7 @@
 { lib, config, ... }:
 
 let
-  cfg = config.presets.programs.hyprlock;
+  cfg = config.psychollama.presets.programs.hyprlock;
 in
 
 {

@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  cfg = config.presets.programs.firefox;
+  cfg = config.psychollama.presets.programs.firefox;
 in
 
 {

@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.programs.zoxide;
+  cfg = config.psychollama.presets.programs.zoxide;
 in
 
 {
-  options.presets.programs.zoxide.enable = lib.mkEnableOption "Use Zoxide to jump around directories";
+  options.psychollama.presets.programs.zoxide.enable = lib.mkEnableOption "Use Zoxide to jump around directories";
 
   config.programs.zoxide = lib.mkIf cfg.enable {
     enable = true;

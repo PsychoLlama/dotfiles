@@ -1,10 +1,10 @@
 { config, lib, ... }:
 
 let
-  cfg = config.presets.services.pipewire;
+  cfg = config.psychollama.presets.services.pipewire;
 in
 {
-  options.presets.services.pipewire = {
+  options.psychollama.presets.services.pipewire = {
     enable = lib.mkEnableOption "Use pipewire for audio";
   };
 

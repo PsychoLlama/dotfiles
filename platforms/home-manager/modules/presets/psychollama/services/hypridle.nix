@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.services.hypridle;
+  cfg = config.psychollama.presets.services.hypridle;
 in
 
 {
-  options.presets.services.hypridle = {
+  options.psychollama.presets.services.hypridle = {
     enable = lib.mkEnableOption "Configure the Hypridle service";
   };
 

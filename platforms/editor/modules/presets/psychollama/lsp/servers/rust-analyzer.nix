@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.lsp.servers.rust-analyzer;
+  cfg = config.psychollama.presets.lsp.servers.rust-analyzer;
 in
 
 {
-  options.presets.lsp.servers.rust-analyzer = {
+  options.psychollama.presets.lsp.servers.rust-analyzer = {
     enable = lib.mkEnableOption "Use the Rust language server";
     package = lib.mkPackageOption pkgs.unstable "rust-analyzer" { };
   };

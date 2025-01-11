@@ -1,7 +1,7 @@
 { lib, config, ... }:
 
 let
-  cfg = config.presets.plugins.codecompanion-nvim;
+  cfg = config.psychollama.presets.plugins.codecompanion-nvim;
 in
 
 {

@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.presets.programs.tmux;
+  cfg = config.psychollama.presets.programs.tmux;
   tmux = config.programs.tmux.package;
 in
 

@@ -1,7 +1,7 @@
 { lib, config, ... }:
 
 let
-  cfg = config.presets.plugins.alternaut-nvim;
+  cfg = config.psychollama.presets.plugins.alternaut-nvim;
 in
 
 {

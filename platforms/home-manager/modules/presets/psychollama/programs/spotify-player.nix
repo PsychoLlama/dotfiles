@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  cfg = config.presets.programs.spotify-player;
+  cfg = config.psychollama.presets.programs.spotify-player;
 in
 
 {

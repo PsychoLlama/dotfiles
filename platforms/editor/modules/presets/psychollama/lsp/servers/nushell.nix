@@ -1,11 +1,11 @@
 { lib, config, ... }:
 
 let
-  cfg = config.presets.lsp.servers.nushell;
+  cfg = config.psychollama.presets.lsp.servers.nushell;
 in
 
 {
-  options.presets.lsp.servers.nushell = {
+  options.psychollama.presets.lsp.servers.nushell = {
     enable = lib.mkEnableOption "Use nushell language server";
   };
 

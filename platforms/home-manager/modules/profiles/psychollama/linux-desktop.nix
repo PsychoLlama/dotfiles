@@ -2,16 +2,16 @@
 
 let
   inherit (lib) mkDefault;
-  cfg = config.profiles.linux-desktop;
+  cfg = config.psychollama.profiles.linux-desktop;
 in
 
 {
-  options.profiles.linux-desktop = {
+  options.psychollama.profiles.linux-desktop = {
     enable = lib.mkEnableOption "Enable all Linux desktop presets";
   };
 
   config = lib.mkIf cfg.enable {
-    presets = {
+    psychollama.presets = {
       services = {
         dunst.enable = mkDefault true;
         gammastep.enable = mkDefault true;

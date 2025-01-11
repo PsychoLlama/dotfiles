@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.lsp.servers.nil;
+  cfg = config.psychollama.presets.lsp.servers.nil;
 in
 
 {
-  options.presets.lsp.servers.nil = {
+  options.psychollama.presets.lsp.servers.nil = {
     enable = lib.mkEnableOption "Use Nil (nix) language server";
     package = lib.mkPackageOption pkgs.unstable "nil" { };
   };

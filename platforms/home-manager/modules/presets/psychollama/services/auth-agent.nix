@@ -6,12 +6,12 @@
 }:
 
 let
-  cfg = config.presets.services.auth-agent;
+  cfg = config.psychollama.presets.services.auth-agent;
   socketName = config.services.auth-agent.socket;
 in
 
 {
-  options.presets.services.auth-agent.enable = lib.mkEnableOption "Cross platform ssh-agent";
+  options.psychollama.presets.services.auth-agent.enable = lib.mkEnableOption "Cross platform ssh-agent";
 
   config = lib.mkIf cfg.enable {
     services.auth-agent = {

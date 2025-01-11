@@ -1,15 +1,15 @@
 { config, lib, ... }:
 
 let
-  cfg = config.profiles.full;
+  cfg = config.psychollama.profiles.full;
 in
 {
-  options.profiles.full.enable = lib.mkEnableOption "Enable all NixOS presets";
+  options.psychollama.profiles.full.enable = lib.mkEnableOption "Enable all NixOS presets";
 
   config = lib.mkIf cfg.enable {
     security.pam.services.hyprlock = lib.mkDefault { };
 
-    presets = {
+    psychollama.presets = {
       services = {
         pipewire.enable = lib.mkDefault true;
         greetd.enable = lib.mkDefault true;

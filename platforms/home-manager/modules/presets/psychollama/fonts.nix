@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.fonts;
+  cfg = config.psychollama.presets.fonts;
 in
 
 {
-  options.presets.fonts.enable = lib.mkEnableOption "Use recommended fonts";
+  options.psychollama.presets.fonts.enable = lib.mkEnableOption "Use recommended fonts";
 
   config = lib.mkIf cfg.enable {
     fonts.fontconfig.enable = true;

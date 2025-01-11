@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.services.swaybg;
+  cfg = config.psychollama.presets.services.swaybg;
 in
 
 {
-  options.presets.services.swaybg.enable = lib.mkEnableOption "Manage wallpapers with swaybg";
+  options.psychollama.presets.services.swaybg.enable = lib.mkEnableOption "Manage wallpapers with swaybg";
 
   config.services.swaybg = lib.mkIf cfg.enable {
     enable = true;

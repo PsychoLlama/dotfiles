@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.presets.programs.direnv;
+  cfg = config.psychollama.presets.programs.direnv;
 in
 
 {

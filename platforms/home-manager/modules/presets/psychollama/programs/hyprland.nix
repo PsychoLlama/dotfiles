@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.presets.programs.hyprland;
+  cfg = config.psychollama.presets.programs.hyprland;
   wireplumber = config.programs.wireplumber.package;
   playerctl = config.programs.playerctl.package;
   brightnessctl = config.programs.brightnessctl.package;
@@ -14,7 +14,7 @@ let
 in
 
 {
-  options.presets.programs.hyprland = {
+  options.psychollama.presets.programs.hyprland = {
     enable = lib.mkEnableOption "Opinionated Hyprland config";
   };
 

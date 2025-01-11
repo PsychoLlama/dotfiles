@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.profiles.full;
+  cfg = config.psychollama.profiles.full;
 in
 
 {
-  options.profiles.full = {
+  options.psychollama.profiles.full = {
     enable = lib.mkEnableOption "Create an opinionated editor";
   };
 
@@ -18,7 +18,7 @@ in
     package = pkgs.unstable.neovim;
     lsp.enable = lib.mkDefault true;
 
-    presets = {
+    psychollama.presets = {
       lsp.servers = {
         clangd.enable = lib.mkDefault true;
         jsonls.enable = lib.mkDefault true;

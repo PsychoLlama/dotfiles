@@ -1,7 +1,7 @@
 { lib, config, ... }:
 
 let
-  cfg = config.presets.plugins.markdown-preview-nvim;
+  cfg = config.psychollama.presets.plugins.markdown-preview-nvim;
 in
 
 {

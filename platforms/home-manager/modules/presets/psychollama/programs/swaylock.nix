@@ -2,7 +2,7 @@
 
 let
   inherit (config.theme) palette;
-  cfg = config.presets.programs.swaylock;
+  cfg = config.psychollama.presets.programs.swaylock;
   semi-black = "${palette.normal.black}d9"; # alpha(0.85)
 in
 

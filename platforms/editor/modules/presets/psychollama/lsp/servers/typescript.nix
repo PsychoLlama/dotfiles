@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.lsp.servers.typescript;
+  cfg = config.psychollama.presets.lsp.servers.typescript;
 in
 
 {
-  options.presets.lsp.servers.typescript = {
+  options.psychollama.presets.lsp.servers.typescript = {
     enable = lib.mkEnableOption "Use TypeScript language server";
     package = lib.mkPackageOption pkgs.unstable.nodePackages "typescript-language-server" { };
   };

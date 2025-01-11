@@ -6,13 +6,13 @@
 }:
 
 let
-  cfg = config.presets.services.swayidle;
+  cfg = config.psychollama.presets.services.swayidle;
   swaylock = "${pkgs.swaylock}/bin/swaylock";
   swaymsg = "${pkgs.sway}/bin/swaymsg";
 in
 
 {
-  options.presets.services.swayidle.enable = lib.mkEnableOption "Automatically lock the computer when inactive";
+  options.psychollama.presets.services.swayidle.enable = lib.mkEnableOption "Automatically lock the computer when inactive";
 
   config.services.swayidle = lib.mkIf cfg.enable {
     enable = true;

@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  cfg = config.presets.programs.fd;
+  cfg = config.psychollama.presets.programs.fd;
 in
 
 {

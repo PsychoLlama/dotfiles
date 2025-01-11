@@ -7,7 +7,7 @@
 
 let
   inherit (config.theme) palette;
-  cfg = config.presets.programs.wezterm;
+  cfg = config.psychollama.presets.programs.wezterm;
   inline = lib.generators.mkLuaInline;
   toLua = lib.generators.toLua { };
   settings = {

@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  cfg = config.presets.programs.starship;
+  cfg = config.psychollama.presets.programs.starship;
 in
 
 {

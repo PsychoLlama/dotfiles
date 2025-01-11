@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.lsp.servers.jsonls;
+  cfg = config.psychollama.presets.lsp.servers.jsonls;
 in
 
 {
-  options.presets.lsp.servers.jsonls = {
+  options.psychollama.presets.lsp.servers.jsonls = {
     enable = lib.mkEnableOption "Use JSON language server";
     package = lib.mkPackageOption pkgs.unstable "vscode-langservers-extracted" { };
   };

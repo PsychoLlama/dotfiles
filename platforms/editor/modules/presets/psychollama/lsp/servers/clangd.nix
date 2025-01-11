@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.lsp.servers.clangd;
+  cfg = config.psychollama.presets.lsp.servers.clangd;
 in
 
 {
-  options.presets.lsp.servers.clangd = {
+  options.psychollama.presets.lsp.servers.clangd = {
     enable = lib.mkEnableOption "Use clangd language server";
     package = lib.mkPackageOption pkgs.unstable "clang-tools" { };
 

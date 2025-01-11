@@ -10,11 +10,11 @@ let
     }:
 
     let
-      cfg = config.presets.programs.${name};
+      cfg = config.psychollama.presets.programs.${name};
     in
 
     {
-      options.presets.programs.${name}.enable = lib.mkEnableOption "Install the latest version of ${name}";
+      options.psychollama.presets.programs.${name}.enable = lib.mkEnableOption "Install the latest version of ${name}";
 
       config.programs.${name} = lib.mkIf cfg.enable {
         enable = lib.mkDefault true;

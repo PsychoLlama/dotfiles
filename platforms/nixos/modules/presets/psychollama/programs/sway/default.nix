@@ -1,10 +1,10 @@
 { config, lib, ... }:
 
 let
-  cfg = config.presets.programs.sway;
+  cfg = config.psychollama.presets.programs.sway;
 in
 {
-  options.presets.programs.sway = {
+  options.psychollama.presets.programs.sway = {
     enable = lib.mkEnableOption "Use SwayWM as the desktop environment";
   };
 

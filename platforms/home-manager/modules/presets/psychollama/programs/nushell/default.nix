@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.presets.programs.nushell;
+  cfg = config.psychollama.presets.programs.nushell;
 
   zoxideCommandSetup = pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
     zoxide init nushell > "$out"

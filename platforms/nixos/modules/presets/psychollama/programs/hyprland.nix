@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.presets.programs.hyprland;
+  cfg = config.psychollama.presets.programs.hyprland;
 in
 
 {
-  options.presets.programs.hyprland = {
+  options.psychollama.presets.programs.hyprland = {
     enable = lib.mkEnableOption "Use an opinionated Hyprland config";
   };
 
