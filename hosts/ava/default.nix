@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ lib, pkgs, ... }:
 
 let
   username = "overlord";
@@ -65,8 +65,9 @@ in
     variables.BORG_REPO = "/mnt/borg";
   };
 
-  psychollama.profiles = {
-    full.enable = true;
+  psychollama = {
+    presets.services.syncthing.username = username;
+    profiles.full.enable = true;
   };
 
   users.users.${username} = {
@@ -90,7 +91,7 @@ in
     };
 
     psychollama = {
-      presets.fonts.enable = true;
+      presets.fonts.enable = true; # TODO: Move to `profiles.linux-desktop`.
 
       profiles = {
         full.enable = true;
@@ -106,42 +107,6 @@ in
       autoSnapshot = {
         enable = true;
         flags = "-k -p --utc";
-      };
-    };
-
-    syncthing = {
-      enable = true;
-      package = pkgs.unstable.syncthing;
-
-      user = "overlord";
-      group = "users";
-      dataDir = "/home/overlord";
-
-      settings = {
-        options.urAccepted = 3;
-        gui.theme = "dark";
-
-        # A general-purpose box for reliable storage.
-        folders."/home/overlord/attic" = {
-          id = "attic";
-          devices = [
-            "file-server"
-            "phone"
-          ];
-          label = "Attic";
-        };
-
-        devices = {
-          file-server = {
-            addresses = [ "tcp://rpi3-002.host.selfhosted.city" ];
-            id = "MLM3RUS-6LHM76Q-OPW5UIC-EAH7EUM-ZNG6TJW-TDASURZ-GCZ2YOX-ASNI6Q4";
-          };
-
-          phone = {
-            addresses = [ "dynamic" ];
-            id = "S2U7KKV-SXJGOI3-6MSJWIT-U2JP32Y-HH7WZU5-ZDS6KAT-6CNYRAM-ZQTWZAQ";
-          };
-        };
       };
     };
 

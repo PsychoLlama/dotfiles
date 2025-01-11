@@ -3,6 +3,7 @@
 let
   cfg = config.psychollama.profiles.full;
 in
+
 {
   options.psychollama.profiles.full = {
     enable = lib.mkEnableOption "Enable all NixOS presets";
@@ -13,8 +14,9 @@ in
 
     psychollama.presets = {
       services = {
-        pipewire.enable = lib.mkDefault true;
         greetd.enable = lib.mkDefault true;
+        pipewire.enable = lib.mkDefault true;
+        syncthing.enable = lib.mkDefault true;
       };
 
       programs = {
