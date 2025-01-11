@@ -160,8 +160,9 @@
 
       packages = eachSystem (
         system: pkgs: rec {
-          nixos-configs-doc = pkgs.callPackage lib.dotfiles.generateDocs {
+          nixos-configs-doc = pkgs.callPackage lib.dotfiles.generateMarkdownDocs {
             platform = "nixos";
+            prefix = "psychollama.";
             modules = [
               home-manager.nixosModules.home-manager
               self.nixosModules.nixos-platform
@@ -169,7 +170,8 @@
             ];
           };
 
-          editor-configs-doc = pkgs.callPackage lib.dotfiles.generateDocs {
+          editor-configs-doc = pkgs.callPackage lib.dotfiles.generateMarkdownDocs {
+            prefix = "psychollama.";
             modules = [
               self.nixosModules.editor-platform
               self.nixosModules.editor-configs

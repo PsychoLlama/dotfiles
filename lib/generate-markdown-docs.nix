@@ -10,6 +10,7 @@
   lib,
   pkgs,
   modules,
+  prefix,
   platform ? null,
 }:
 
@@ -37,7 +38,7 @@ let
 
   # Only generate documentation for things under the `psychollama.*` namespace.
   filteredOptions = lib.filter (
-    opt: opt.visible && !opt.internal && (lib.hasPrefix "psychollama." opt.name)
+    opt: opt.visible && !opt.internal && (lib.hasPrefix prefix opt.name)
   ) allOptions;
 
   # Convert to the format expected by `nixos-render-docs`.
