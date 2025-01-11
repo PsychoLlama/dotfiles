@@ -90,13 +90,9 @@ in
       userEmail = "JesseTheGibson@gmail.com";
     };
 
-    psychollama = {
-      presets.fonts.enable = true; # TODO: Move to `profiles.linux-desktop`.
-
-      profiles = {
-        full.enable = true;
-        linux-desktop.enable = true;
-      };
+    psychollama.profiles = {
+      full.enable = true;
+      linux-desktop.enable = true;
     };
   };
 

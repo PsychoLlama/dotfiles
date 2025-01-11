@@ -12,6 +12,8 @@ in
 
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
+      fonts.enable = true;
+
       services = {
         dunst.enable = mkDefault true;
         gammastep.enable = mkDefault true;
