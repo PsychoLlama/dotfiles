@@ -40,17 +40,18 @@
   };
 
   outputs =
-    inputs@{
+    flake-inputs@{
       self,
 
       nixos-hardware,
       nixpkgs,
       nixpkgs-unstable,
       tree-sitter-remix,
+      home-manager,
       ...
     }:
     let
-      lib = import ./lib inputs;
+      lib = import ./lib flake-inputs;
 
       # Packages with unfree licenses. To be replaced with libre alternatives.
       evilPackages = [ "copilot.vim" ];
@@ -118,8 +119,8 @@
       };
 
       overlays = {
-        latest-packages = import ./lib/overlays/latest-packages.nix inputs;
-        vim-plugins = import ./lib/overlays/vim-plugins.nix inputs;
+        latest-packages = import ./lib/overlays/latest-packages.nix flake-inputs;
+        vim-plugins = import ./lib/overlays/vim-plugins.nix flake-inputs;
       };
 
       nixosConfigurations = lib.dotfiles.hosts.nixos {
@@ -159,6 +160,22 @@
 
       packages = eachSystem (
         system: pkgs: {
+          nixos-configs-doc = pkgs.callPackage lib.dotfiles.generateDocs {
+            platform = "nixos";
+            modules = [
+              home-manager.nixosModules.home-manager
+              self.nixosModules.nixos-platform
+              self.nixosModules.nixos-configs
+            ];
+          };
+
+          editor-configs-doc = pkgs.callPackage lib.dotfiles.generateDocs {
+            modules = [
+              self.nixosModules.editor-platform
+              self.nixosModules.editor-configs
+            ];
+          };
+
           editor = lib.dotfiles.buildEditor {
             inherit pkgs;
             modules = [
