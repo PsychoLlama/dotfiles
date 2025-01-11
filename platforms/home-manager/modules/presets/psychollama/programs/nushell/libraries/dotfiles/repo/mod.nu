@@ -4,7 +4,7 @@ export def --env main [
   --root: string = ~/projects # Where to store all the repositories.
   --user: string = PsychoLlama # Your GitHub username.
 ] {
-  let project = $project_id | parse-project-id --default-user $user
+  let project = expr $project_id --default-user $user
   let clone_destination = [($root | path expand) ($project.user | str downcase) $project.repo] | path join
 
   if not ($clone_destination | path exists) {
@@ -15,11 +15,10 @@ export def --env main [
 }
 
 # Parse a repo address and return metadata.
-export def parse-project-id [
+export def expr [
+  project_id: string
   --default-user: string # A presumed username
 ]: string -> record {
-  let project_id = $in
-
   # "https://github.com/github/docs/blob/main/file"
   if ($project_id | str starts-with "https://github.com") {
     let data = $project_id | parse --regex '^https:..github.com/(?<user>[^/]+)/(?<repo>[^/]+).*'
