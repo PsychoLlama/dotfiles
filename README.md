@@ -4,6 +4,10 @@ All configs for my Linux, macOS, and WSL environments. I use [NixOS](https://nix
 
 This repo only manages my workstations. Servers live in [home-lab](https://github.com/PsychoLlama/home-lab/).
 
+![Linux desktop screenshot](https://github.com/user-attachments/assets/f914a67e-85cf-41c9-95b3-3c418a521c4f)
+
+<p align="center"><em>Ava, my linux workstation</em></p>
+
 ## Stack
 
 - WM: [Hyprland](https://hyprland.org/) + [Waybar](https://github.com/Alexays/Waybar/)
@@ -44,7 +48,7 @@ config.psychollama.presets.starship.enable = true;
 
 If you want to try my editor it's exported as a package:
 
-```nu
+```nushell
 nix run 'github:PsychoLlama/dotfiles#editor'
 ```
 
