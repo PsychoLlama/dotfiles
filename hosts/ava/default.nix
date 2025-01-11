@@ -114,18 +114,6 @@ in
   programs = {
     wireshark.enable = true;
 
-    sway.input = {
-      "type:touchpad" = {
-        natural_scroll = "enabled";
-        pointer_accel = "0.25";
-      };
-
-      "type:keyboard" = {
-        xkb_options = "caps:escape";
-        repeat_delay = "200";
-      };
-    };
-
     ssh = {
       extraConfig = ''
         CanonicalizeHostname yes

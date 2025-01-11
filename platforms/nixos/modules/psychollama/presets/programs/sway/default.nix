@@ -3,6 +3,7 @@
 let
   cfg = config.psychollama.presets.programs.sway;
 in
+
 {
   options.psychollama.presets.programs.sway = {
     enable = lib.mkEnableOption "Use SwayWM as the desktop environment";
@@ -20,6 +21,7 @@ in
         "type:touchpad" = {
           natural_scroll = "enabled";
           tap = "disabled";
+          pointer_accel = "0.25";
         };
 
         "type:keyboard" = {
