@@ -1,6 +1,6 @@
 # Clone a GitHub project or open it if it already exists.
 export def --env go [
-  project_id: string # A GitHub user/project shorthand.
+  project_id: string # A repository owner/project shorthand. Defaults to GitHub.
 ] {
   let project = expr $project_id
   let clone_destination = dir $project
@@ -18,7 +18,7 @@ export def dir [
 ] {
   [
     (project-root | path expand)
-    ($project.user | str downcase)
+    ($project.owner | str downcase)
     $project.repo
   ] | path join
 }
@@ -27,7 +27,10 @@ export def dir [
 export def project-root [
   suggested_root?: string
 ] {
-  $suggested_root | default ($env | get -i REPO_ROOT) | default ~/projects | path expand
+  $suggested_root
+    | default ($env | get -i REPO_ROOT)
+    | default ~/projects
+    | path expand
 }
 
 # Parse a repo address and return metadata.
@@ -36,27 +39,28 @@ export def expr [
 ] {
   # "https://github.com/github/docs/blob/main/file"
   if ($project_id | str starts-with "https://github.com") {
-    let data = $project_id | parse --regex '^https:..github.com/(?<user>[^/]+)/(?<repo>[^/]+).*'
-    let user = $data.user.0
-    let repo = $data.repo.0
+    let data = $project_id
+      | parse --regex '^https:..github.com/(?<owner>[^/]+)/(?<repo>[^/]+).*'
+      | first
+
     return {
       host: 'github.com'
-      user: $user
-      repo: $repo
-      uri: $"git@github.com:($user)/($repo).git"
+      owner: $data.owner
+      repo: $data.repo
+      uri: $"git@github.com:($data.owner)/($data.repo).git"
     }
   }
 
   # "username/their-repo"
-  let data = $project_id | parse '{user}/{repo}'
+  let data = $project_id | parse '{owner}/{repo}'
   if not ($data | is-empty) {
     let data = $data | first
 
     return {
       host: 'github.com'
-      user: $data.user
+      owner: $data.owner
       repo: $data.repo
-      uri: $"git@github.com:($data.user)/($data.repo).git"
+      uri: $"git@github.com:($data.owner)/($data.repo).git"
     }
   }
 
@@ -72,6 +76,6 @@ export def list [] {
     | each {
       path split
         | last 2
-        | { user: $in.0, repo: $in.1 }
+        | { owner: $in.0, repo: $in.1 }
     }
 }
