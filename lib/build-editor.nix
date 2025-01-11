@@ -20,11 +20,11 @@
 
 let
   mod = pkgs.lib.modules.evalModules {
-    specialArgs.pkgs = pkgs;
     modules = modules ++ [
+      { _module.args.pkgs = pkgs; }
       self.nixosModules.editor-platform
-      self.nixosModules.editor-configs
     ];
   };
 in
+
 mod.config.neovim

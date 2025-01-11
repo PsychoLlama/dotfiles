@@ -49,7 +49,7 @@ config.psychollama.presets.starship.enable = true;
 If you want to try my editor it's exported as a package:
 
 ```nushell
-nix run 'github:PsychoLlama/dotfiles#editor'
+nix run 'github:PsychoLlama/dotfiles#editor' ./
 ```
 
 You can also build your own variant:

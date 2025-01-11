@@ -161,7 +161,10 @@
         system: pkgs: {
           editor = lib.dotfiles.buildEditor {
             inherit pkgs;
-            modules = [ { psychollama.profiles.full.enable = true; } ];
+            modules = [
+              self.nixosModules.editor-configs
+              { psychollama.profiles.full.enable = true; }
+            ];
           };
         }
       );
