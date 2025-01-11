@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - name: Build Documentation
-        run: nix build --print-build-logs '.#docs' --out-link docs
+        run: nix build --print-build-logs '.#docs-website' --out-link docs
       - name: Upload static files as artifact
         id: deployment
         uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action

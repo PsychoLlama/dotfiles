@@ -176,8 +176,8 @@
             ];
           };
 
-          docs =
-            pkgs.runCommand "generate-docs-page"
+          docs-website =
+            pkgs.runCommand "generate-docs-website"
               {
                 buildInputs = [ pkgs.mdbook ];
               }
