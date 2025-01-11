@@ -4,7 +4,9 @@ let
   cfg = config.psychollama.profiles.full;
 in
 {
-  options.psychollama.profiles.full.enable = lib.mkEnableOption "Enable all NixOS presets";
+  options.psychollama.profiles.full = {
+    enable = lib.mkEnableOption "Enable all NixOS presets";
+  };
 
   config = lib.mkIf cfg.enable {
     security.pam.services.hyprlock = lib.mkDefault { };
@@ -23,6 +25,7 @@ in
 
     services = {
       printing.enable = lib.mkDefault true;
+      automatic-timezoned.enable = lib.mkDefault true;
     };
   };
 }
