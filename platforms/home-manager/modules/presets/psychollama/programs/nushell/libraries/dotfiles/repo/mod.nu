@@ -1,10 +1,9 @@
 # Manage git (p)rojects.
 export def --env main [
   project_id: string # A GitHub user/project shorthand.
-  --root: string # Where to store all the repositories.
 ] {
   let project = expr $project_id
-  let clone_destination = dir $project --root (project-root $root)
+  let clone_destination = dir $project
 
   if not ($clone_destination | path exists) {
     git clone $project.uri $clone_destination
@@ -16,10 +15,9 @@ export def --env main [
 # Determine where a project should exist on disk.
 export def dir [
   project: record
-  --root: string
 ] {
   [
-    ((project-root $root) | path expand)
+    (project-root | path expand)
     ($project.user | str downcase)
     $project.repo
   ] | path join
@@ -65,4 +63,15 @@ export def expr [
   error make {
     msg: "Could not parse project ID."
   }
+}
+
+# List all projects.
+export def list [] {
+  fd . --type d --max-depth 2 --min-depth 2 (project-root)
+    | lines
+    | each {
+      path split
+        | last 2
+        | { user: $in.0, repo: $in.1 }
+    }
 }
