@@ -62,3 +62,7 @@ flake.lib.dotfiles.buildEditor {
 ```
 
 I don't expect anyone to use these. I break stuff often. It's mostly for my own experiments.
+
+## Documentation
+
+Reference documentation [generated and published here](https://psychollama.github.io/dotfiles/).
