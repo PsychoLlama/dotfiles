@@ -94,28 +94,13 @@
 
       nixosModules = {
         editor-platform = ./platforms/editor/modules;
-        editor-configs = {
-          imports = [
-            ./platforms/editor/modules/presets
-            ./platforms/editor/modules/profiles
-          ];
-        };
+        editor-configs = ./platforms/editor/modules/psychollama;
 
         home-manager-platform = ./platforms/home-manager/modules;
-        home-manager-configs = {
-          imports = [
-            ./platforms/home-manager/modules/presets
-            ./platforms/home-manager/modules/profiles
-          ];
-        };
+        home-manager-configs = ./platforms/home-manager/modules/psychollama;
 
         nixos-platform = ./platforms/nixos/modules;
-        nixos-configs = {
-          imports = [
-            ./platforms/nixos/modules/presets
-            ./platforms/nixos/modules/profiles
-          ];
-        };
+        nixos-configs = ./platforms/nixos/modules/psychollama;
       };
 
       overlays = {
