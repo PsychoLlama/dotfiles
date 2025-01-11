@@ -10,7 +10,7 @@ require('core.pkg').on_load(function(plugins)
 
       return vim.tbl_extend('force', plugin, {
         type = 'path',
-        source = vim.fs.joinpath(repo, 'packages/ext.nvim'),
+        source = vim.fs.joinpath(repo, 'pkgs/ext.nvim'),
       })
     end)
     :totable()
