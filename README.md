@@ -23,3 +23,38 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
   - `editor/` (My equivalent of [nixvim](https://nix-community.github.io/nixvim/). Self-contained, no `~/.config` files.)
 - `platforms/*/modules/presets/`: Opinionated config for a specific program or service.
 - `platforms/*/modules/profiles/`: Groupings of presets.
+
+## Composition
+
+Everything in this repo can be used piecemeal in other flakes. Modules have no side effects unless you `.enable` them.
+
+Modules are divided into **platforms** and **configs**.
+
+- `dotfiles.nixosModules.*-platform`: Extends platforms with new programs, services, and DSLs.
+- `dotfiles.nixosModules.*-config`: Opinionated configurations for programs and services.
+
+Configs are available under the `psychollama.*` namespace.
+
+```nix
+# Use my opinionated starship prompt.
+config.psychollama.presets.starship.enable = true;
+```
+
+## Editor (neovim)
+
+If you want to try my editor it's exported as a package:
+
+```nu
+nix run 'github:PsychoLlama/dotfiles#editor'
+```
+
+You can also build your own variant:
+
+```nix
+flake.lib.dotfiles.buildEditor {
+  inherit pkgs;
+  modules = [ ];
+}
+```
+
+The modularity is mostly for my own experiments. I break stuff often.

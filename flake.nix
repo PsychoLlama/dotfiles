@@ -161,7 +161,7 @@
         system: pkgs: {
           editor = lib.dotfiles.buildEditor {
             inherit pkgs;
-            modules = [ { profiles.full.enable = true; } ];
+            modules = [ { psychollama.profiles.full.enable = true; } ];
           };
         }
       );
