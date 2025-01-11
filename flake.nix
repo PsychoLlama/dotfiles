@@ -185,5 +185,15 @@
           };
         }
       );
+
+      devShells = eachSystem (
+        system: pkgs: {
+          default = pkgs.mkShell {
+            packages = [
+              pkgs.mdbook
+            ];
+          };
+        }
+      );
     };
 }
