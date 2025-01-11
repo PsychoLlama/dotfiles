@@ -1,11 +1,10 @@
 # Manage git (p)rojects.
 export def --env main [
   project_id: string # A GitHub user/project shorthand.
-  --root: string = ~/projects # Where to store all the repositories.
-  --user: string = PsychoLlama # Your GitHub username.
+  --root: string # Where to store all the repositories.
 ] {
-  let project = expr $project_id --default-user $user
-  let clone_destination = [($root | path expand) ($project.user | str downcase) $project.repo] | path join
+  let project = expr $project_id
+  let clone_destination = dir $project --root (project-root $root)
 
   if not ($clone_destination | path exists) {
     git clone $project.uri $clone_destination
@@ -14,11 +13,29 @@ export def --env main [
   cd $clone_destination
 }
 
+# Determine where a project should exist on disk.
+export def dir [
+  project: record
+  --root: string
+] {
+  [
+    ((project-root $root) | path expand)
+    ($project.user | str downcase)
+    $project.repo
+  ] | path join
+}
+
+# Get the root directory of all projects.
+export def project-root [
+  suggested_root?: string
+] {
+  $suggested_root | default ($env | get -i REPO_ROOT) | default ~/projects | path expand
+}
+
 # Parse a repo address and return metadata.
 export def expr [
   project_id: string
-  --default-user: string # A presumed username
-]: string -> record {
+] {
   # "https://github.com/github/docs/blob/main/file"
   if ($project_id | str starts-with "https://github.com") {
     let data = $project_id | parse --regex '^https:..github.com/(?<user>[^/]+)/(?<repo>[^/]+).*'
@@ -33,8 +50,10 @@ export def expr [
   }
 
   # "username/their-repo"
-  let data = $project_id | parse '{user}/{repo}' | last
+  let data = $project_id | parse '{user}/{repo}'
   if not ($data | is-empty) {
+    let data = $data | first
+
     return {
       host: 'github.com'
       user: $data.user
@@ -43,11 +62,7 @@ export def expr [
     }
   }
 
-  # "my-repo"
-  return {
-    host: 'github.com'
-    user: $default_user
-    repo: $project_id
-    uri: $"git@github.com:($default_user)/($project_id).git"
+  error make {
+    msg: "Could not parse project ID."
   }
 }
