@@ -1,7 +1,3 @@
 {
-  imports = [
-    ./fonts.nix
-    ./programs
-    ./services
-  ];
+  imports = [ ./psychollama ];
 }

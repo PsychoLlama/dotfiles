@@ -1,6 +1,3 @@
 {
-  imports = [
-    ./lsp
-    ./plugins
-  ];
+  imports = [ ./psychollama ];
 }

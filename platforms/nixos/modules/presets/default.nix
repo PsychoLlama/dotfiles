@@ -1,6 +1,3 @@
 {
-  imports = [
-    ./programs
-    ./services
-  ];
+  imports = [ ./psychollama ];
 }

@@ -1,1 +1,3 @@
-{ imports = [ ./full.nix ]; }
+{
+  imports = [ ./psychollama ];
+}
