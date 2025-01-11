@@ -1,7 +1,12 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
-  username = "overlord";
+  inherit (config.psychollama.settings) username;
 in
 
 {
@@ -30,15 +35,6 @@ in
     };
   };
 
-  psychollama = {
-    presets.services.syncthing.username = username;
-
-    profiles = {
-      home-lab-admin.enable = true;
-      full.enable = true;
-    };
-  };
-
   users.users.${username} = {
     isNormalUser = true;
     name = "overlord";
@@ -62,6 +58,15 @@ in
     psychollama.profiles = {
       full.enable = true;
       linux-desktop.enable = true;
+    };
+  };
+
+  psychollama = {
+    settings.username = "overlord";
+
+    profiles = {
+      home-lab-admin.enable = true;
+      full.enable = true;
     };
   };
 

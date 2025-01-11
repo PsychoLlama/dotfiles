@@ -6,26 +6,21 @@
 }:
 
 let
-  inherit (config.home-manager.users.${cfg.username}.home) homeDirectory;
+  inherit (config.psychollama.settings) username;
+  inherit (config.home-manager.users.${username}.home) homeDirectory;
   cfg = config.psychollama.presets.services.syncthing;
 in
 
 {
   options.psychollama.presets.services.syncthing = {
     enable = lib.mkEnableOption "Sync files with Syncthing";
-    username = lib.mkOption {
-      type = lib.types.str;
-      description = ''
-        The user under which files are created and owned
-      '';
-    };
   };
 
   config.services.syncthing = lib.mkIf cfg.enable {
     enable = true;
     package = pkgs.unstable.syncthing;
 
-    user = cfg.username;
+    user = username;
     group = "users";
     dataDir = homeDirectory;
 
@@ -36,11 +31,11 @@ in
       # A general-purpose box for reliable storage.
       folders."${homeDirectory}/attic" = {
         id = "attic";
+        label = "Attic";
         devices = [
           "file-server"
           "phone"
         ];
-        label = "Attic";
       };
 
       devices = {
