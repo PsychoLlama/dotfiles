@@ -52,7 +52,7 @@ You can try my editor without installing it because it's built as a standalone p
 nix run 'github:PsychoLlama/dotfiles#editor' ./
 ```
 
-You can also build your own variant. It have access to all options from `nixosModules.editor-platform`.
+You can also build your own variant. It has access to all options from `nixosModules.editor-platform`.
 
 ```nix
 flake.lib.dotfiles.buildEditor {
