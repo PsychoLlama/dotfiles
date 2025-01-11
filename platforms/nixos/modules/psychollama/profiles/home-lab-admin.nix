@@ -1,6 +1,7 @@
 { config, lib, ... }:
 
 let
+  inherit (config.psychollama.settings) username;
   cfg = config.psychollama.profiles.home-lab-admin;
 in
 
@@ -13,6 +14,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    nix.settings = {
+      trusted-users = [ username ]; # Needed by `colmena`.
+      builders-use-substitutes = true;
+    };
+
     psychollama.presets = {
       programs.ssh.enable = lib.mkDefault true;
     };

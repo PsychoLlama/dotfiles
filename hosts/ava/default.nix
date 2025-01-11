@@ -13,6 +13,11 @@ in
   imports = [ ./hardware-configuration.nix ];
 
   boot.loader.systemd-boot.enable = true;
+  hardware.bluetooth.enable = true;
+
+  # fprintd doesn't play well with swaylock's pam module. It effectively
+  # disables password input.
+  services.fprintd.enable = lib.mkForce false;
 
   networking = {
     networkmanager.enable = true;
@@ -22,17 +27,10 @@ in
     interfaces.wlp0s20f3.useDHCP = true;
   };
 
-  nix = {
-    settings = {
-      trusted-users = [ username ];
-      builders-use-substitutes = true;
-    };
-
-    # Prune older entries to avoid running out of space on the boot partition.
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 180d";
-    };
+  # Prune older entries to avoid running out of space on the boot partition.
+  nix.gc = {
+    automatic = true;
+    options = "--delete-older-than 180d";
   };
 
   users.users.${username} = {
@@ -70,10 +68,5 @@ in
     };
   };
 
-  # fprintd doesn't play well with swaylock's pam module. It effectively
-  # disables password input.
-  services.fprintd.enable = lib.mkForce false;
-
-  hardware.bluetooth.enable = true;
   system.stateVersion = "20.09";
 }
