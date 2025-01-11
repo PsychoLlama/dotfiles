@@ -17,6 +17,7 @@ in
         greetd.enable = lib.mkDefault true;
         pipewire.enable = lib.mkDefault true;
         syncthing.enable = lib.mkDefault true;
+        zfs.enable = lib.mkDefault true;
       };
 
       programs = {
@@ -27,8 +28,8 @@ in
     };
 
     services = {
-      printing.enable = lib.mkDefault true;
       automatic-timezoned.enable = lib.mkDefault true;
+      printing.enable = lib.mkDefault true;
     };
 
     fonts.enableDefaultPackages = lib.mkDefault true;
