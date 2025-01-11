@@ -169,11 +169,13 @@
                 buildInputs = [ pkgs.mdbook ];
               }
               ''
-                cp --no-preserve=mode --recursive "${self.outPath}/doc" doc/
-                cp "${nixos-configs-doc}/options.md" doc/src/nixos.md
-                cp "${editor-configs-doc}/options.md" doc/src/editor.md
+                cp --no-preserve=mode --recursive "${self.outPath}/docs" docs/
+                cp "${nixos-configs-doc}/options.md" docs/src/nixos.md
+                cp "${editor-configs-doc}/options.md" docs/src/editor.md
 
-                mdbook build doc --dest-dir "$out"
+                ls -lAh docs
+
+                mdbook build docs/ --dest-dir "$out"
               '';
 
           editor = lib.dotfiles.buildEditor {
