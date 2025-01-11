@@ -1,5 +1,5 @@
-# Manage git (p)rojects.
-export def --env main [
+# Clone a GitHub project or open it if it already exists.
+export def --env go [
   project_id: string # A GitHub user/project shorthand.
 ] {
   let project = expr $project_id
