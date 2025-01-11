@@ -30,5 +30,7 @@ in
       printing.enable = lib.mkDefault true;
       automatic-timezoned.enable = lib.mkDefault true;
     };
+
+    fonts.enableDefaultPackages = lib.mkDefault true;
   };
 }

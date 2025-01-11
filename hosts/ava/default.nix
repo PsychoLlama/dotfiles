@@ -135,12 +135,6 @@ in
     };
   };
 
-  virtualisation.podman = {
-    enable = true;
-    autoPrune.enable = true;
-  };
-
-  fonts.enableDefaultPackages = true;
   hardware.bluetooth.enable = true;
   system.stateVersion = "20.09";
 }
