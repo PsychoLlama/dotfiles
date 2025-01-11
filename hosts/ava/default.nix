@@ -52,11 +52,6 @@ in
     };
   };
 
-  environment = {
-    systemPackages = [ pkgs.unstable.borgbackup ];
-    variables.BORG_REPO = "/mnt/borg";
-  };
-
   psychollama = {
     presets.services.syncthing.username = username;
 
