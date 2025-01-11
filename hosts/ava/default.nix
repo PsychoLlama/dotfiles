@@ -112,8 +112,6 @@ in
   };
 
   programs = {
-    wireshark.enable = true;
-
     ssh = {
       extraConfig = ''
         CanonicalizeHostname yes
