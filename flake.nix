@@ -159,7 +159,7 @@
       };
 
       packages = eachSystem (
-        system: pkgs: {
+        system: pkgs: rec {
           nixos-configs-doc = pkgs.callPackage lib.dotfiles.generateDocs {
             platform = "nixos";
             modules = [
@@ -176,21 +176,24 @@
             ];
           };
 
+          docs =
+            pkgs.runCommand "generate-docs-page"
+              {
+                buildInputs = [ pkgs.mdbook ];
+              }
+              ''
+                cp --no-preserve=mode --recursive "${self.outPath}/doc" doc/
+                cp "${nixos-configs-doc}/options.md" doc/src/nixos.md
+                cp "${editor-configs-doc}/options.md" doc/src/editor.md
+
+                mdbook build doc --dest-dir "$out"
+              '';
+
           editor = lib.dotfiles.buildEditor {
             inherit pkgs;
             modules = [
               self.nixosModules.editor-configs
               { psychollama.profiles.full.enable = true; }
-            ];
-          };
-        }
-      );
-
-      devShells = eachSystem (
-        system: pkgs: {
-          default = pkgs.mkShell {
-            packages = [
-              pkgs.mdbook
             ];
           };
         }
