@@ -11,6 +11,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    programs = {
+      signal-desktop.enable = mkDefault true;
+    };
+
     psychollama.presets = {
       fonts.enable = true;
 

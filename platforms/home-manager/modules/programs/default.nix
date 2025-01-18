@@ -53,6 +53,7 @@ in
     (makeProgramModule "pv")
     (makeProgramModule "radare2")
     (makeProgramModule "rage")
+    (makeProgramModule "signal-desktop")
     (makeProgramModule "slurp")
     (makeProgramModule "sshfs")
     (makeProgramModule "termshark")
