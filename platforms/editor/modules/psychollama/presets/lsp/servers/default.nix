@@ -1,6 +1,7 @@
 {
   imports = [
     ./clangd.nix
+    ./gopls.nix
     ./jsonls.nix
     ./luals.nix
     ./nil.nix

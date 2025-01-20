@@ -21,6 +21,7 @@ in
     psychollama.presets = {
       lsp.servers = {
         clangd.enable = lib.mkDefault true;
+        gopls.enable = lib.mkDefault true;
         jsonls.enable = lib.mkDefault true;
         luals.enable = lib.mkDefault true;
         nil.enable = lib.mkDefault true;
