@@ -18,7 +18,11 @@ in
     boot = {
       initrd.supportedFilesystems = [ "zfs" ];
       supportedFilesystems = [ "zfs" ];
-      kernelPackages = pkgs.linuxPackages_6_6; # Latest compatible with ZFS.
+
+      # Use stable kernel. This is the default, but I'd rather be explicit.
+      # Using non-LTS kernels may corrupt the drive since ZFS has spotty
+      # support for newer kernels.
+      kernelPackages = pkgs.linuxPackages;
 
       # ZFS doesn't support freeze/thaw APIs. Hibernation could corrupt files.
       # https://github.com/openzfs/zfs/issues/260
