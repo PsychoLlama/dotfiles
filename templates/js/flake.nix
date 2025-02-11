@@ -1,23 +1,29 @@
 {
   description = "Development environment";
 
+  inputs.systems.url = "github:nix-systems/default";
+
   outputs =
-    { self, nixpkgs }:
+    {
+      self,
+      nixpkgs,
+      systems,
+    }:
+
     let
       inherit (nixpkgs) lib;
 
-      systems = [
-        "aarch64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
-
       eachSystem = lib.flip lib.mapAttrs (
-        lib.genAttrs systems (system: nixpkgs.legacyPackages.${system})
+        lib.genAttrs (import systems) (system: nixpkgs.legacyPackages.${system})
       );
     in
+
     {
-      devShell = eachSystem (system: pkgs: pkgs.mkShell { packages = [ pkgs.nodejs ]; });
+      devShell = eachSystem (
+        system: pkgs:
+        pkgs.mkShell {
+          packages = [ pkgs.nodejs ];
+        }
+      );
     };
 }

@@ -1,34 +1,42 @@
 {
   description = "Development environment";
 
-  inputs.rust-overlay.url = "github:oxalica/rust-overlay";
+  inputs = {
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    systems.url = "github:nix-systems/default";
+  };
 
   outputs =
     {
       self,
       nixpkgs,
       rust-overlay,
+      systems,
     }:
+
     let
       inherit (nixpkgs) lib;
 
       overlays = [ (import rust-overlay) ];
 
-      systems = [
-        "aarch64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
-
       eachSystem = lib.flip lib.mapAttrs (
-        lib.genAttrs systems (system: import nixpkgs { inherit system overlays; })
+        lib.genAttrs (import systems) (
+          system:
+          import nixpkgs {
+            inherit system overlays;
+          }
+        )
       );
     in
+
     {
       devShell = eachSystem (
         system: pkgs:
-        pkgs.mkShell { packages = [ (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml) ]; }
+        pkgs.mkShell {
+          packages = [
+            (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
+          ];
+        }
       );
     };
 }

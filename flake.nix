@@ -5,6 +5,7 @@
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    systems.url = "github:nix-systems/default";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
@@ -48,6 +49,7 @@
       nixpkgs-unstable,
       tree-sitter-remix,
       home-manager,
+      systems,
       ...
     }:
     let
@@ -55,14 +57,6 @@
 
       # Packages with unfree licenses. To be replaced with libre alternatives.
       evilPackages = [ "copilot.vim" ];
-
-      # The list of systems supported by nixpkgs and hydra.
-      defaultSystems = [
-        "aarch64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
 
       importPkgs =
         system:
@@ -80,7 +74,7 @@
         };
 
       # { system -> pkgs }
-      pkgsBySystem = lib.genAttrs defaultSystems importPkgs;
+      pkgsBySystem = lib.genAttrs (import systems) importPkgs;
 
       # (system: pkgs: a) -> { system -> a }
       eachSystem = lib.flip lib.mapAttrs pkgsBySystem;
