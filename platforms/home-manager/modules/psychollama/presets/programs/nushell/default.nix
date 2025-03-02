@@ -38,7 +38,7 @@ in
             "npm"
             "rg"
             "rustup"
-            "ssh"
+            # "ssh" -- Completion broken in nu v0.101
             "tar"
           ];
         };
