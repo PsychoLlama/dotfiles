@@ -32,6 +32,7 @@ in
 
       plugins = {
         alternaut-nvim.enable = lib.mkDefault true;
+        avante-nvim.enable = lib.mkDefault true;
         cmp-buffer.enable = lib.mkDefault true;
         cmp-cmdline.enable = lib.mkDefault true;
         cmp-nvim-lsp.enable = lib.mkDefault true;
@@ -45,6 +46,7 @@ in
         fzf-vim.enable = lib.mkDefault true;
         gitlinker-nvim.enable = lib.mkDefault true;
         gitsigns-nvim.enable = lib.mkDefault true;
+        img-clip-nvim.enable = lib.mkDefault config.psychollama.presets.plugins.avante-nvim.enable;
         lualine-lsp-progress.enable = lib.mkDefault true;
         lualine-nvim.enable = lib.mkDefault true;
         markdown-preview-nvim.enable = lib.mkDefault true;
