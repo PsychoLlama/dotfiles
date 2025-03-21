@@ -53,6 +53,11 @@ in
           command = "rustfmt";
           args = [ "--emit=stdout" ];
         };
+
+        # Dynamic dependency. Assumes `gofmt` is provided by direnv.
+        gofmt = {
+          command = "gofmt";
+        };
       };
 
       formatters_by_ft = rec {
@@ -77,6 +82,7 @@ in
         rust = [ "rustfmt" ];
         vue = [ "prettier" ];
         yaml = [ "prettier" ];
+        go = [ "gofmt" ];
       };
     };
   };
