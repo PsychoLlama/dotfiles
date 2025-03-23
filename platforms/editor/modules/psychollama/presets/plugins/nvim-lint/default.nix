@@ -27,12 +27,16 @@ in
             "-"
           ];
         };
+
+        # Assumes this is installed in the local dev shell.
+        luacheck.cmd = "luacheck";
       };
 
       linters_by_ft = rec {
         sh = bash;
         bash = [ "shellcheck" ];
         vim = [ "vint" ];
+        lua = [ "luacheck" ];
 
         javascript = typescript;
         javascriptreact = typescript;
