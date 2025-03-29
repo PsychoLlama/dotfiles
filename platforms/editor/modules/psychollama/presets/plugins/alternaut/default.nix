@@ -16,6 +16,12 @@ in
         file_extensions = [ "py" ];
       };
 
+      lua = {
+        file_naming_conventions = [ "{name}_spec.{ext}" ];
+        directory_naming_conventions = [ "." ];
+        file_extensions = [ "lua" ];
+      };
+
       "javascript.jsx" = javascript;
       javascript = {
         file_naming_conventions = [ "{name}.test.{ext}" ];
