@@ -1,18 +1,23 @@
 {
   "nodes": {
-    "alternaut-vim": {
-      "flake": false,
+    "alternaut-nvim": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "systems": [
+          "systems"
+        ]
+      },
       "locked": {
-        "lastModified": 1732659825,
-        "narHash": "sha256-lkCnacHaUmchO3S/zNXFB5ml4m5rOkDHb9b+6lmmP5s=",
+        "lastModified": 1743348780,
+        "narHash": "sha256-vq2GD2Ab5xe7YxNsChYe8ASVKu//HfJHpcx7wveKb/E=",
         "owner": "PsychoLlama",
-        "repo": "alternaut.vim",
-        "rev": "a8e77063af79037089253245005f42f8339df563",
+        "repo": "alternaut.nvim",
+        "rev": "7b124c0b360eff71033d9058922326825dd0d2ce",
         "type": "github"
       },
       "original": {
         "owner": "PsychoLlama",
-        "repo": "alternaut.vim",
+        "repo": "alternaut.nvim",
         "type": "github"
       }
     },
@@ -124,18 +129,14 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1742388435,
+        "lastModified": 0,
         "narHash": "sha256-GheQGRNYAhHsvPxWVOhAmg9lZKkis22UPbEHlmZMthg=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "b75693fb46bfaf09e662d09ec076c5a162efa9f6",
-        "type": "github"
+        "path": "/nix/store/xnws56qm6sg7yc7dbw62c1y24s9jhcpf-source",
+        "type": "path"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixos-24.11",
-        "repo": "nixpkgs",
-        "type": "github"
+        "id": "nixpkgs",
+        "type": "indirect"
       }
     },
     "nixpkgs-unstable": {
@@ -156,6 +157,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1742388435,
+        "narHash": "sha256-GheQGRNYAhHsvPxWVOhAmg9lZKkis22UPbEHlmZMthg=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b75693fb46bfaf09e662d09ec076c5a162efa9f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1702272962,
         "narHash": "sha256-D+zHwkwPc6oYQ4G3A1HuadopqRwUY/JkMwHz1YF7j4Q=",
         "path": "/nix/store/vf6skxhiqknlnqcxh8n4z2jldzzpb171-source",
@@ -167,7 +184,7 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1681358109,
         "narHash": "sha256-eKyxW4OohHQx9Urxi7TQlFBTDWII+F+x2hklDOQPB50=",
@@ -185,13 +202,13 @@
     },
     "root": {
       "inputs": {
-        "alternaut-vim": "alternaut-vim",
+        "alternaut-nvim": "alternaut-nvim",
         "deja-view-vim": "deja-view-vim",
         "home-manager": "home-manager",
         "navitron-nvim": "navitron-nvim",
         "nix-darwin": "nix-darwin",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "systems": "systems",
         "teleport-vim": "teleport-vim",
@@ -201,7 +218,7 @@
     "rust-overlay": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1685587239,
@@ -265,7 +282,7 @@
     },
     "tree-sitter-remix": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "rust-overlay": "rust-overlay"
       },
       "locked": {

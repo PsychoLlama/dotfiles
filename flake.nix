@@ -17,9 +17,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    alternaut-vim = {
-      url = "github:PsychoLlama/alternaut.vim";
-      flake = false;
+    alternaut-nvim = {
+      url = "github:PsychoLlama/alternaut.nvim";
+      inputs.systems.follows = "systems";
     };
 
     navitron-nvim = {
@@ -177,6 +177,17 @@
             modules = [
               self.nixosModules.editor-configs
               { psychollama.profiles.full.enable = true; }
+            ];
+          };
+        }
+      );
+
+      devShells = eachSystem (
+        system: pkgs: {
+          default = pkgs.mkShell {
+            packages = [
+              pkgs.luaPackages.luacheck
+              pkgs.stylua
             ];
           };
         }

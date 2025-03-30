@@ -6,53 +6,124 @@ in
 
 {
   config.plugins.alternaut-nvim = lib.mkIf cfg.enable {
-    opts = rec {
-      python = {
-        file_naming_conventions = [
-          "test_{name}.{ext}"
-          "{name}.{ext}"
-        ];
-        directory_naming_conventions = [ "tests" ];
-        file_extensions = [ "py" ];
-      };
+    opts = {
+      modes = {
+        test = {
+          vitest = {
+            patterns = [
+              "{name}.test.{ext}"
+              "{name}.unit.{ext}"
+            ];
+            directories = [ "__tests__" ];
+            extensions = [
+              "ts"
+              "tsx"
+              "js"
+              "jsx"
+            ];
+          };
 
-      lua = {
-        file_naming_conventions = [ "{name}_spec.{ext}" ];
-        directory_naming_conventions = [ "." ];
-        file_extensions = [ "lua" ];
-      };
+          go = {
+            patterns = [ "{name}_spec.{ext}" ];
+            directories = [ "." ];
+            extensions = [ "go" ];
+          };
 
-      "javascript.jsx" = javascript;
-      javascript = {
-        file_naming_conventions = [ "{name}.test.{ext}" ];
-        directory_naming_conventions = [ "__tests__" ];
-        file_extensions = [ "js" ];
-      };
+          busted = {
+            patterns = [ "{name}_spec.{ext}" ];
+            extensions = [ "lua" ];
+            directories = [
+              "."
+              "spec"
+            ];
+          };
 
-      "typescript.tsx" = typescript;
-      "typescriptreact" = typescript;
-      typescript = {
-        file_naming_conventions = [
-          "{name}.test.{ext}"
-          "{name}.unit.{ext}"
-        ];
-        directory_naming_conventions = [ "__tests__" ];
-        file_extensions = [
-          "ts"
-          "tsx"
-          "js"
-          "jsx"
-        ];
-      };
+          pytest = {
+            patterns = [
+              "test_{name}.{ext}"
+              "{name}_test.{ext}"
+            ];
+            extensions = [ "py" ];
+            directories = [
+              "tests"
+              "."
+            ];
+          };
 
-      vader = vim;
-      vim = {
-        file_naming_conventions = [ "{name}.{ext}" ];
-        directory_naming_conventions = [ "tests" ];
-        file_extensions = [
-          "vim"
-          "vader"
-        ];
+          vader = {
+            patterns = [ "{name}.{ext}" ];
+            extensions = {
+              target = [ "vader" ];
+              origin = [ "vim" ];
+            };
+            directories = [
+              "tests"
+              "."
+            ];
+          };
+        };
+
+        style = {
+          vanilla_extract = {
+            patterns = [ "{name}.css.{ext}" ];
+            extensions = {
+              target = [ "ts" ];
+              origin = [
+                "tsx"
+                "ts"
+              ];
+            };
+          };
+
+          css = {
+            patterns = [ "{name}.{ext}" ];
+            extensions = {
+              target = [
+                "css"
+                "less"
+              ];
+              origin = [
+                "tsx"
+                "jsx"
+                "ts"
+                "js"
+              ];
+            };
+          };
+        };
+
+        template = {
+          vue = {
+            patterns = [ "{name}.vue" ];
+            extensions = {
+              target = [ "vue" ];
+              origin = [
+                "ts"
+                "js"
+              ];
+            };
+          };
+        };
+
+        header = {
+          c = {
+            patterns = [ "{name}.{ext}" ];
+            extensions = {
+              target = [
+                "h"
+                "hpp"
+                "hh"
+              ];
+              origin = [
+                "c"
+                "cpp"
+                "cc"
+                "m"
+                "mm"
+              ];
+            };
+          };
+        };
       };
     };
   };
