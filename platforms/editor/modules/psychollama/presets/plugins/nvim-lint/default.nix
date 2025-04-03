@@ -37,6 +37,7 @@ in
         bash = [ "shellcheck" ];
         vim = [ "vint" ];
         lua = [ "luacheck" ];
+        rust = [ "clippy" ];
 
         javascript = typescript;
         javascriptreact = typescript;
