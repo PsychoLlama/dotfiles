@@ -12,3 +12,13 @@ vim.keymap.set('n', '<leader>hA', gitsigns.stage_buffer)
 vim.keymap.set('n', '<leader>hD', gitsigns.reset_buffer)
 
 vim.keymap.set('n', '<leader>hb', gitsigns.blame_line)
+vim.keymap.set('n', '<leader>B', gitsigns.blame)
+
+-- Navigating hunks
+vim.keymap.set('n', '[h', function()
+  gitsigns.nav_hunk('prev')
+end)
+
+vim.keymap.set('n', ']h', function()
+  gitsigns.nav_hunk('next')
+end)
