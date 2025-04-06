@@ -1,9 +1,8 @@
 require('core.env').source_direnv_vimrc()
 require('core.pkg').load()
 
--- Operations not yet supported by the Nix binding.
+-- Operation not yet supported by the Nix binding.
 vim.opt.shortmess:append('I')
-vim.opt.undodir = vim.fs.normalize('~/.vim/undo')
 
 -- Use <space> as the leader key.
 vim.g.mapleader = ' '
@@ -12,6 +11,10 @@ vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 
 -- Disable dumb markdown indents from `$VIMRUNTIME`.
 vim.g.markdown_recommended_style = false
+
+-- Default border style. Managing this manually instead of `&winborder` to
+-- keep settings isolated to LSP windows. Global settings affect plugins.
+local LSP_FLOAT_STYLE = { border = 'rounded' }
 
 -- Misc mappings
 vim.keymap.set(
@@ -28,14 +31,19 @@ vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
 })
 
 -- Diagnostics are sourced from both standalone linters and language servers.
-vim.keymap.set('n', 'gl', vim.diagnostic.open_float)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', 'gl', function()
+  vim.diagnostic.open_float(LSP_FLOAT_STYLE)
+end)
+
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.jump({ count = -1, float = LSP_FLOAT_STYLE })
+end)
+
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.jump({ count = 1, float = LSP_FLOAT_STYLE })
+end)
 
 -- LSP Config
-vim.lsp.handlers[vim.lsp.protocol.Methods.textDocument_hover] =
-  vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
-
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('lsp_settings', {}),
   callback = function(args)
@@ -62,7 +70,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         return
       end
 
-      if not client.supports_method(lsp_method) then
+      if not client.supports_method(lsp_method, args.buf) then
         return
       end
 
@@ -78,7 +86,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     local P = vim.lsp.protocol.Methods
 
-    lspmap('K', P.textDocument_hover, vim.lsp.buf.hover)
     lspmap('<c-k>', P.textDocument_signatureHelp, vim.lsp.buf.signature_help)
     lspmap('gd', P.textDocument_definition, vim.lsp.buf.definition)
     lspmap('gi', P.textDocument_implementation, vim.lsp.buf.implementation)
@@ -86,6 +93,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     lspmap('gy', P.textDocument_typeDefinition, vim.lsp.buf.type_definition)
     lspmap('<leader>rn', P.textDocument_rename, vim.lsp.buf.rename)
     lspmap('go', P.textDocument_codeAction, vim.lsp.buf.code_action)
+    lspmap('K', P.textDocument_hover, function()
+      vim.lsp.buf.hover(LSP_FLOAT_STYLE)
+    end)
   end,
 })
 
