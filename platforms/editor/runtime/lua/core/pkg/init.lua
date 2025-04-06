@@ -97,7 +97,7 @@ end
 --- Get all plugins from the manifest. Includes inactive plugins. Does not
 --- include custom plugins provided by the optional override callback.
 --- @return core.pkg.Plugin[]
-function M.list_available()
+function M.list_bundled()
   return loader.get_manifest()
 end
 
@@ -120,4 +120,36 @@ function M.on_load(override)
   return M.add_hook(override)
 end
 
+--- Find a plugin by some match criteria.
+--- @param query string|core.pkg.Query
+--- @param plugin_set? 'bundled'|'active' Defaults to 'active'
+--- @return core.pkg.Plugin|nil
+function M.find(query, plugin_set)
+  plugin_set = plugin_set or 'active'
+  if type(query) == 'string' then
+    query = { name = query }
+  end
+
+  local plugin_sets = {
+    bundled = M.list_bundled(),
+    active = M.list_active(),
+  }
+
+  local plugins = plugin_sets[plugin_set]
+    or error('Invalid plugin set: ' .. plugin_set)
+
+  local match = nil
+  for _, plugin in ipairs(plugins) do
+    if plugin.name == query.name then
+      match = plugin
+      break
+    end
+  end
+
+  return match
+end
+
 return M
+
+--- @class core.pkg.Query
+--- @field name string Name tested for an exact match
