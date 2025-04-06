@@ -41,7 +41,6 @@ in
         conform-nvim.enable = lib.mkDefault true;
         copilot-vim.enable = lib.mkDefault true;
         deja-view-vim.enable = lib.mkDefault true;
-        dressing-nvim.enable = lib.mkDefault true;
         ext-nvim.enable = lib.mkDefault true;
         fzf-vim.enable = lib.mkDefault true;
         gitlinker-nvim.enable = lib.mkDefault true;
@@ -61,6 +60,7 @@ in
         nvim-treesitter.enable = lib.mkDefault true;
         onedarkpro-nvim.enable = lib.mkDefault true;
         remix-nvim.enable = lib.mkDefault true;
+        snacks-nvim.enable = lib.mkDefault true;
         teleport-vim.enable = lib.mkDefault true;
         telescope-fzf-native-nvim.enable = lib.mkDefault true;
         telescope-nvim.enable = lib.mkDefault true;

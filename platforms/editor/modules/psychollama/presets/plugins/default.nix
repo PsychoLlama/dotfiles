@@ -35,6 +35,7 @@ in
     ./conform
     ./markdown-preview
     ./nvim-lint
+    ./snacks
 
     (mkPluginPreset "alternaut-nvim" ./alternaut/config.lua)
     (mkPluginPreset "avante-nvim" ./avante.lua)
@@ -46,7 +47,6 @@ in
     (mkPluginPreset "conform-nvim" ./conform/config.lua)
     (mkPluginPreset "copilot-vim" ./copilot.lua)
     (mkPluginPreset "deja-view-vim" null)
-    (mkPluginPreset "dressing-nvim" ./dressing.lua)
     (mkPluginPreset "ext-nvim" null)
     (mkPluginPreset "fzf-vim" null)
     (mkPluginPreset "gitlinker-nvim" ./gitlinker.lua)
@@ -66,6 +66,7 @@ in
     (mkPluginPreset "nvim-treesitter-textobjects" null)
     (mkPluginPreset "onedarkpro-nvim" ./onedarkpro.lua)
     (mkPluginPreset "remix-nvim" null)
+    (mkPluginPreset "snacks-nvim" ./snacks/config.lua)
     (mkPluginPreset "teleport-vim" ./teleport.lua)
     (mkPluginPreset "telescope-fzf-native-nvim" ./telescope-fzf-native.lua)
     (mkPluginPreset "telescope-nvim" ./telescope.lua)
