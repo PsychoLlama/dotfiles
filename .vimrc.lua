@@ -1,17 +1,8 @@
 local repo = vim.fn.expand('<sfile>:h')
 
-require('core.pkg').on_load(function(plugins)
-  return vim
-    .iter(plugins)
-    :map(function(plugin)
-      if plugin.name ~= 'ext.nvim' then
-        return plugin
-      end
-
-      return vim.tbl_extend('force', plugin, {
-        type = 'path',
-        source = vim.fs.joinpath(repo, 'pkgs/ext.nvim'),
-      })
-    end)
-    :totable()
+require('core.pkg').override('ext.nvim', function(plugin)
+  return vim.tbl_extend('force', plugin or {}, {
+    source = vim.fs.joinpath(repo, 'pkgs/ext.nvim'),
+    type = 'path',
+  })
 end)
