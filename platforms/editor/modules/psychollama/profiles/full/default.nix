@@ -62,9 +62,6 @@ in
         remix-nvim.enable = lib.mkDefault true;
         snacks-nvim.enable = lib.mkDefault true;
         teleport-vim.enable = lib.mkDefault true;
-        telescope-fzf-native-nvim.enable = lib.mkDefault true;
-        telescope-nvim.enable = lib.mkDefault true;
-        telescope-undo-nvim.enable = lib.mkDefault true;
         treesj.enable = lib.mkDefault true;
         vim-endwise.enable = lib.mkDefault true;
         vim-fugitive.enable = lib.mkDefault true;
