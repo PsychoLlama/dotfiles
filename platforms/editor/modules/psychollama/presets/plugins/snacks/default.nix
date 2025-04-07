@@ -8,6 +8,7 @@ in
   config.plugins.snacks-nvim = lib.mkIf cfg.enable {
     opts = {
       input.enabled = true;
+      notifier.enabled = true;
       picker = {
         enabled = true;
         layout = {
