@@ -17,7 +17,7 @@ in
       enable = true;
       settings.default_session = {
         user = "greeter";
-        command = "${lib.makeBinPath [ pkgs.unstable.greetd.tuigreet ]}/tuigreet --asterisks -trc Hyprland";
+        command = "${lib.makeBinPath [ pkgs.unstable.greetd.tuigreet ]}/tuigreet --asterisks -trc sway";
       };
     };
 
