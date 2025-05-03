@@ -14,7 +14,8 @@ let
     in
 
     {
-      options.psychollama.presets.programs.${name}.enable = lib.mkEnableOption "Install the latest version of ${name}";
+      options.psychollama.presets.programs.${name}.enable =
+        lib.mkEnableOption "Install the latest version of ${name}";
 
       config.programs.${name} = lib.mkIf cfg.enable {
         enable = lib.mkDefault true;
@@ -30,6 +31,7 @@ in
     ./bottom.nix
     ./direnv.nix
     ./editor.nix
+    ./emacs
     ./fd.nix
     ./firefox.nix
     ./git.nix

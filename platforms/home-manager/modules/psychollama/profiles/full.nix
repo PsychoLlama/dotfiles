@@ -11,7 +11,8 @@ let
 in
 
 {
-  options.psychollama.profiles.full.enable = lib.mkEnableOption "Enable all dotfiles programs and services";
+  options.psychollama.profiles.full.enable =
+    lib.mkEnableOption "Enable all dotfiles programs and services";
 
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
@@ -24,6 +25,7 @@ in
         dive.enable = mkDefault true;
         doggo.enable = mkDefault true;
         editor.enable = mkDefault true;
+        emacs.enable = mkDefault true;
         fd.enable = mkDefault true;
         fzf.enable = mkDefault true;
         git.enable = mkDefault true;
