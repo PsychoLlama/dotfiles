@@ -1,9 +1,16 @@
+# Clone and manage git repositories.
+
+# Show module help.
+export def 'main' [] {
+  help modules repo
+}
+
 # Clone a GitHub project or open it if it already exists.
-export def --env go [
+export def --env 'repo open' [
   project_id: string # A repository owner/project shorthand. Defaults to GitHub.
 ] {
-  let project = expr $project_id
-  let clone_destination = dir $project
+  let project = repo parse $project_id
+  let clone_destination = repo path $project
 
   if not ($clone_destination | path exists) {
     git clone $project.uri $clone_destination
@@ -13,18 +20,18 @@ export def --env go [
 }
 
 # Determine where a project should exist on disk.
-export def dir [
+export def 'repo path' [
   project: record
 ] {
   [
-    (project-root | path expand)
+    (repo root | path expand)
     ($project.owner | str downcase)
     $project.repo
   ] | path join
 }
 
 # Get the root directory of all projects.
-export def project-root [
+export def 'repo root' [
   suggested_root?: string
 ] {
   $suggested_root
@@ -34,7 +41,7 @@ export def project-root [
 }
 
 # Parse a repo address and return metadata.
-export def expr [
+export def 'repo parse' [
   project_id: string
 ] {
   # "https://github.com/github/docs/blob/main/file"
@@ -70,8 +77,8 @@ export def expr [
 }
 
 # List all projects.
-export def list [] {
-  fd . --type d --max-depth 2 --min-depth 2 (project-root)
+export def 'repo list' [] {
+  fd . --type d --max-depth 2 --min-depth 2 (repo root)
     | lines
     | each {
       path split
