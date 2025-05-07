@@ -24,7 +24,10 @@ in
       extraPackages = emacsPackages: [
         emacsPackages.atom-one-dark-theme
         emacsPackages.evil
+        emacsPackages.ivy
+        emacsPackages.lsp-mode
         emacsPackages.magit
+        emacsPackages.projectile
       ];
     };
   };
