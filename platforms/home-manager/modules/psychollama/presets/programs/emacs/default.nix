@@ -14,8 +14,18 @@ in
     enable = lib.mkEnableOption "Use an opinionated Emacs config";
   };
 
-  config.programs.emacs = lib.mkIf cfg.enable {
-    enable = true;
-    package = lib.mkDefault pkgs.unstable.emacs;
+  config = lib.mkIf cfg.enable {
+    home.shellAliases.e = "emacs -nw";
+
+    programs.emacs = {
+      enable = true;
+      package = lib.mkDefault pkgs.unstable.emacs;
+      extraConfig = builtins.readFile ./emacs.el;
+      extraPackages = emacsPackages: [
+        emacsPackages.atom-one-dark-theme
+        emacsPackages.evil
+        emacsPackages.magit
+      ];
+    };
   };
 }
