@@ -14,21 +14,21 @@ in
     enable = lib.mkEnableOption "Use an opinionated Emacs config";
   };
 
-  config = lib.mkIf cfg.enable {
-    home.shellAliases.e = "emacs -nw";
-
-    programs.emacs = {
-      enable = true;
-      package = lib.mkDefault pkgs.unstable.emacs;
-      extraConfig = builtins.readFile ./emacs.el;
-      extraPackages = emacsPackages: [
-        emacsPackages.atom-one-dark-theme
-        emacsPackages.evil
-        emacsPackages.ivy
-        emacsPackages.lsp-mode
-        emacsPackages.magit
-        emacsPackages.projectile
-      ];
-    };
+  config.programs.emacs = lib.mkIf cfg.enable {
+    enable = true;
+    package = lib.mkDefault pkgs.unstable.emacs;
+    extraConfig = builtins.readFile ./emacs.el;
+    extraPackages = plugins: [
+      plugins.atom-one-dark-theme
+      plugins.company
+      plugins.counsel
+      plugins.evil
+      plugins.evil-collection
+      plugins.evil-commentary
+      plugins.evil-surround
+      plugins.lsp-mode
+      plugins.magit
+      plugins.projectile
+    ];
   };
 }

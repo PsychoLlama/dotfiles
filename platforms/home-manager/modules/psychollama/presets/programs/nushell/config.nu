@@ -47,6 +47,15 @@ def n [...files: path] {
   }
 }
 
+# Open emacs.
+def e [...files: path] {
+  if ($files | length) == 0 {
+    emacs -nw $env.PWD
+  } else {
+    emacs -nw ...$files
+  }
+}
+
 # Fuzzy find and edit a file.
 def nf [] {
   let selected_file = fd --type file | fzf
