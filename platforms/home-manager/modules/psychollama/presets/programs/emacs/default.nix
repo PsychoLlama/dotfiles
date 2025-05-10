@@ -22,13 +22,20 @@ in
       plugins.atom-one-dark-theme
       plugins.company
       plugins.counsel
+      plugins.eglot
       plugins.evil
       plugins.evil-collection
       plugins.evil-commentary
       plugins.evil-surround
-      plugins.lsp-mode
       plugins.magit
       plugins.projectile
+      plugins.tree-sitter-langs
+      plugins.treesit-grammars.with-all-grammars
+      plugins.evil-terminal-cursor-changer
+
+      plugins.markdown-mode
+      plugins.nix-mode
+      plugins.lua-mode
     ];
   };
 }
