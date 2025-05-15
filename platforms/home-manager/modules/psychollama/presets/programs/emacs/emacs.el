@@ -12,6 +12,7 @@
 (global-evil-surround-mode 1)
 (evil-commentary-mode 1)
 
+(projectile-mode 1)
 (counsel-mode 1)
 (company-mode 1)
 
