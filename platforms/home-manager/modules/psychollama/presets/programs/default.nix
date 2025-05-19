@@ -27,6 +27,7 @@ in
 
 {
   imports = [
+    ./aider-chat.nix
     ./bat.nix
     ./bottom.nix
     ./direnv.nix
@@ -49,7 +50,6 @@ in
     ./zathura.nix
 
     (mkUnstablePreset "acpi")
-    (mkUnstablePreset "aider-chat")
     (mkUnstablePreset "ast-grep")
     (mkUnstablePreset "bat")
     (mkUnstablePreset "bottom")

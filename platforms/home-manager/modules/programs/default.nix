@@ -25,12 +25,12 @@ let
 in
 {
   imports = [
+    ./aider-chat.nix
     ./glow.nix
     ./hyprland.nix
     ./nushell
 
     (makeProgramModule "acpi")
-    (makeProgramModule "aider-chat")
     (makeProgramModule "ast-grep")
     (makeProgramModule "binutils")
     (makeProgramModule "brightnessctl")
