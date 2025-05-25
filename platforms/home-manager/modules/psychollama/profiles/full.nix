@@ -31,6 +31,7 @@ in
         git.enable = mkDefault true;
         glow.enable = mkDefault true;
         jq.enable = mkDefault true;
+        llm.enable = mkDefault true;
         miniserve.enable = mkDefault true;
         nmap.enable = mkDefault true;
         nushell.enable = mkDefault true;

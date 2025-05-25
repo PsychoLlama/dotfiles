@@ -39,6 +39,7 @@ in
     ./glow.nix
     ./hyprland.nix
     ./hyprlock.nix
+    ./llm.nix
     ./nushell
     ./rofi.nix
     ./spotify-player.nix
