@@ -55,6 +55,7 @@ in
     (mkUnstablePreset "bat")
     (mkUnstablePreset "bottom")
     (mkUnstablePreset "brightnessctl")
+    (mkUnstablePreset "claude-code")
     (mkUnstablePreset "direnv")
     (mkUnstablePreset "dive")
     (mkUnstablePreset "doggo")

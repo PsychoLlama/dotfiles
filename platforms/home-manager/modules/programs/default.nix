@@ -34,6 +34,7 @@ in
     (makeProgramModule "ast-grep")
     (makeProgramModule "binutils")
     (makeProgramModule "brightnessctl")
+    (makeProgramModule "claude-code")
     (makeProgramModule "dive")
     (makeProgramModule "dogdns")
     (makeProgramModule "doggo")

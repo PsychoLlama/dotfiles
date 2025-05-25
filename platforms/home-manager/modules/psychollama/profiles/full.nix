@@ -21,6 +21,7 @@ in
         ast-grep.enable = mkDefault true;
         bat.enable = mkDefault true;
         bottom.enable = mkDefault true;
+        claude-code.enable = mkDefault true;
         direnv.enable = mkDefault true;
         dive.enable = mkDefault true;
         doggo.enable = mkDefault true;
