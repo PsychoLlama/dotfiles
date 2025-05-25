@@ -7,7 +7,8 @@ export def 'main' [] {
 
 # Clone a GitHub project or open it if it already exists.
 export def --env 'repo open' [
-  project_id: string # A repository owner/project shorthand. Defaults to GitHub.
+  # A repository owner/project shorthand. Defaults to GitHub.
+  project_id: string@'nu-complete-repos'
 ] {
   let project = repo parse $project_id
   let clone_destination = repo path $project
@@ -85,4 +86,8 @@ export def 'repo list' [] {
         | last 2
         | { owner: $in.0, repo: $in.1 }
     }
+}
+
+def 'nu-complete-repos' [] {
+  repo list | each { $"($in.owner)/($in.repo)" }
 }
