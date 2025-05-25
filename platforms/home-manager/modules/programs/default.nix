@@ -44,7 +44,6 @@ in
     (makeProgramModule "ipfs")
     (makeProgramModule "llm")
     (makeProgramModule "miniserve")
-    (makeProgramModule "mods")
     (makeProgramModule "nmap")
     (makeProgramModule "onefetch")
     (makeProgramModule "pamixer")
