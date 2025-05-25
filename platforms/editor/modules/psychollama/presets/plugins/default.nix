@@ -45,7 +45,7 @@ in
     (mkPluginPreset "cmp-path" null)
     (mkPluginPreset "codecompanion-nvim" ./codecompanion/config.lua)
     (mkPluginPreset "conform-nvim" ./conform/config.lua)
-    (mkPluginPreset "copilot-vim" ./copilot.lua)
+    (mkPluginPreset "copilot-lua" ./copilot.lua)
     (mkPluginPreset "deja-view-vim" null)
     (mkPluginPreset "ext-nvim" null)
     (mkPluginPreset "fzf-vim" null)

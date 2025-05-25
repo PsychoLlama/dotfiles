@@ -56,7 +56,7 @@
       lib = import ./lib flake-inputs;
 
       # Packages with unfree licenses. To be replaced with libre alternatives.
-      evilPackages = [ "copilot.vim" ];
+      evilPackages = [ ];
 
       importPkgs =
         system:
