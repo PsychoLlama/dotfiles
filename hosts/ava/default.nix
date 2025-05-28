@@ -27,12 +27,6 @@ in
       interfaces.wlp0s20f3.useDHCP = true;
     };
 
-    # Prune older entries to avoid running out of space on the boot partition.
-    nix.gc = {
-      automatic = true;
-      options = "--delete-older-than 180d";
-    };
-
     users.users.${username} = {
       isNormalUser = true;
       name = "overlord";
