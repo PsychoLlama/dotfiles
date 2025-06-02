@@ -135,6 +135,11 @@
           description = "Flake environment for building Rust projects";
           path = ./templates/rust;
         };
+
+        lua = {
+          description = "Flake environment for building Lua/Neovim projects";
+          path = ./templates/lua;
+        };
       };
 
       packages = eachSystem (
