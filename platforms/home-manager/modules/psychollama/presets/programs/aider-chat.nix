@@ -22,7 +22,6 @@ in
       code-theme = "one-dark";
       disable-playwright = true;
       gitignore = false;
-      model = "gemini";
       restore-chat-history = true;
       vim = true;
     };
