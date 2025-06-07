@@ -15,14 +15,8 @@ let
     window_background_opacity = 0.85;
     hide_tab_bar_if_only_one_tab = true;
 
-    # Fixes: https://github.com/wez/wezterm/issues/6079
-    front_end = "WebGpu";
-
     font = inline "wezterm.font('FiraCode Nerd Font', { weight = 'Light' })";
     font_size = 14;
-
-    # Fixes: https://github.com/wez/wezterm/issues/5604
-    enable_wayland = false;
 
     # Disable ligatures.
     harfbuzz_features = [
@@ -73,6 +67,20 @@ let
         action = inline "wezterm.action.PasteFrom('Clipboard')";
       }
     ];
+
+    font_rules = [
+      {
+        # Hack: Handle dimmed text since this doesn't happen automatically.
+        # https://github.com/wezterm/wezterm/discussions/4026
+        intensity = "Half";
+        font = inline ''
+          wezterm.font('FiraCode Nerd Font', {
+            weight = 'Light',
+            foreground = "${palette.bright.black}",
+          })
+        '';
+      }
+    ];
   };
 in
 
@@ -113,8 +121,6 @@ in
     };
 
     extraConfig = ''
-      local wezterm = require('wezterm')
-
       return ${toLua settings};
     '';
   };
