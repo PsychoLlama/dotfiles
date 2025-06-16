@@ -99,6 +99,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- The default horizontal split leaves your cursor on (IMO) the wrong side.
+local function open_split()
+  vim.cmd.wincmd('v')
+  vim.cmd.wincmd('l')
+end
+
+vim.keymap.set('n', '<c-w>v', open_split)
+vim.keymap.set('n', '<c-w><c-v>', open_split)
+
 -- Zettelkaesten (hasn't graduated to a real plugin yet)
 require('regal').setup({
   slip_box = '~/attic/slip-box',
