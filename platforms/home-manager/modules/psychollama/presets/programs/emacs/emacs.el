@@ -1,5 +1,6 @@
 (setq ring-bell-function 'ignore) ; disable annoying bell
 (setq visible-cursor nil) ; don't blink the cursor
+(menu-bar-mode -1) ; disable menu bar
 
 (load-theme 'atom-one-dark t)
 (set-face-background 'default "unspecified-bg") ; transparent background
