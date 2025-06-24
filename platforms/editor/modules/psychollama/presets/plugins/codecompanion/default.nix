@@ -8,9 +8,12 @@ in
   config.plugins.codecompanion-nvim = lib.mkIf cfg.enable {
     # Reference:
     # codecompanion.nvim/lua/codecompanion/config.lua
-    opts.strategies.chat.roles = {
-      llm = "Computer";
-      user = "User";
+    opts.strategies.chat = {
+      adapter = "openai";
+      roles = {
+        llm = "Computer";
+        user = "User";
+      };
     };
   };
 }
