@@ -3,7 +3,16 @@
 (menu-bar-mode -1) ; disable menu bar
 
 (load-theme 'atom-one-dark t)
-(set-face-background 'default "unspecified-bg") ; transparent background
+
+(if (display-graphic-p)
+  ; Remove chrome from the UI
+  (progn
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1)
+    (tooltip-mode -1))
+
+  ; Use a transparent background in terminal mode
+  (set-face-background 'default "unspecified-bg"))
 
 ; yay, evil!
 (evil-mode 1)
