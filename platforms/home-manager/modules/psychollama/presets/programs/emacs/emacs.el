@@ -2,6 +2,17 @@
 (setq visible-cursor nil) ; don't blink the cursor
 (menu-bar-mode -1) ; disable menu bar
 
+; Show line numbers in source code.
+(line-number-mode 1)
+(add-hook 'prog-mode-hook (lambda ()
+                            ; Show line numbers
+                            (display-line-numbers-mode)
+
+                            ; Make the line number column's background transparent
+                            (custom-set-faces
+                              '(line-number ((t (:background nil))))
+                              '(line-number-current-line ((t (:background nil)))))))
+
 (load-theme 'atom-one-dark t)
 
 (if (display-graphic-p)
