@@ -102,9 +102,21 @@
 
 ; --- CUSTOM KEYBINDINGS ---
 
+(keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf)
+
 (defun df/search-project-files ()
   "Uses `counsel-file-jump' to fuzzy-find a file within the current project."
   (interactive)
   (counsel-file-jump "" (projectile-project-root)))
 
-(define-key evil-normal-state-map (kbd "SPC f") 'df/search-project-files)
+(keymap-set evil-normal-state-map "SPC f" 'df/search-project-files)
+
+(defun df/view-parent-directory ()
+  "Opens the buffer's parent directory in dired"
+  (interactive)
+  (let ((parent-dir (expand-file-name ".." (buffer-name))))
+    (if (file-directory-p parent-dir)
+	(dired parent-dir)
+      (message (format "Not a directory: %s" parent-dir)))))
+
+(keymap-set evil-normal-state-map "SPC [" 'df/view-parent-directory)
