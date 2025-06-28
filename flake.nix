@@ -56,7 +56,10 @@
       lib = import ./lib flake-inputs;
 
       # Packages with unfree licenses. To be replaced with libre alternatives.
-      evilPackages = [ "claude-code" ];
+      evilPackages = [
+        "claude-code"
+        "copilot-language-server"
+      ];
 
       importPkgs =
         system:

@@ -27,6 +27,7 @@ in
       # Core features
       plugins.atom-one-dark-theme
       plugins.company
+      plugins.copilot
       plugins.counsel
       plugins.eglot
       plugins.evil

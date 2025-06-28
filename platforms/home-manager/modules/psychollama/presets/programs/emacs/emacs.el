@@ -66,7 +66,7 @@
       (paredit-RET))))
 
 (with-eval-after-load 'paredit
-  (define-key paredit-mode-map (kbd "RET") #'df/paredit-RET))
+  (keymap-set paredit-mode-map "RET" #'df/paredit-RET))
 
 ; --- EVIL MODE ---
 
@@ -83,7 +83,7 @@
 
 ; yay, evil!
 (evil-mode 1)
-(define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+(keymap-set evil-normal-state-map "C-u" 'evil-scroll-up)
 (evil-terminal-cursor-changer-activate) ; fix terminal cursor modes
 
 ; evil plugins
@@ -99,6 +99,12 @@
 
 (setq company-idle-delay 0)
 (add-hook 'after-init-hook #'global-company-mode)
+
+; --- COPILOT ---
+
+(setq copilot-indent-offset-warning-disable t)
+(add-hook 'prog-mode-hook 'copilot-mode)
+(keymap-set evil-insert-state-map "C-j" #'copilot-accept-completion)
 
 ; --- CUSTOM KEYBINDINGS ---
 
