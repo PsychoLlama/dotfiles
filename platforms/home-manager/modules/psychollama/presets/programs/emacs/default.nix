@@ -25,6 +25,7 @@ in
       plugins.nix-mode
 
       # Core features
+      plugins.apheleia
       plugins.atom-one-dark-theme
       plugins.company
       plugins.copilot
