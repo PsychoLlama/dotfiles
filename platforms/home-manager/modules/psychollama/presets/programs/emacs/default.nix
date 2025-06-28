@@ -28,6 +28,7 @@ in
       plugins.evil-commentary
       plugins.evil-surround
       plugins.magit
+      plugins.paredit
       plugins.projectile
       plugins.tree-sitter-langs
       plugins.treesit-grammars.with-all-grammars
