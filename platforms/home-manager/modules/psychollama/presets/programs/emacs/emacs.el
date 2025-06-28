@@ -29,7 +29,7 @@
 
 (projectile-mode 1)
 (counsel-mode 1)
-(company-mode 1)
+(counsel-mode)
 
 ; --- S-EXPR EDITING ---
 
@@ -65,7 +65,13 @@
 (global-tree-sitter-mode 1)
 (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
+; --- COMPLETION ENGINE ---
+
+(setq company-idle-delay 0)
+(add-hook 'after-init-hook #'global-company-mode)
+
 ; --- CUSTOM KEYBINDINGS ---
+
 (defun dotfiles-search-project-files ()
   "Uses `counsel-file-jump' to fuzzy-find a file within the current project."
   (interactive)
