@@ -32,6 +32,7 @@ in
       plugins.tree-sitter-langs
       plugins.treesit-grammars.with-all-grammars
       plugins.evil-terminal-cursor-changer
+      plugins.undo-tree
 
       plugins.markdown-mode
       plugins.nix-mode

@@ -33,6 +33,9 @@
 
 ; --- EVIL MODE ---
 
+(global-undo-tree-mode)
+(setq evil-undo-system 'undo-tree)
+
 (setq evil-want-minibuffer t) ; use vim keybinds in the minibuffer
 (setq evil-want-Y-yank-to-eol t) ; mirror nvim 0.10 `Y` behavior
 
