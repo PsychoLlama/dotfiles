@@ -142,6 +142,9 @@
 (keymap-set evil-insert-state-map "C-j" #'copilot-accept-completion)
 
 
+(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescript-ts-mode)) ; --- CUSTOM FILETYPES ---
+
+
 (keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf) ; --- CUSTOM KEYBINDINGS ---
 
 (defun df/search-project-files ()
