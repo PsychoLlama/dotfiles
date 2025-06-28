@@ -117,6 +117,26 @@
 	(go-mode . (gofmt))))
 
 
+(setq eglot-server-programs ; --- LSP INTEGRATION ---
+      `((nix-mode . (,df/lsp-nil :initializationOptions
+				  (:nil (:nix (:flake (:autoArchive t))))))
+	(lua-mode . (,df/lsp-luals :initializationOptions
+				   (:Lua (:format (:enable :json-false)
+					  :workspace (:checkThirdParty :json-false)
+					  :addonManager (:enable :json-false)))))
+	(typescript-ts-mode . (,df/lsp-tsserver "--stdio"))
+	(go-ts-mode . (,df/lsp-gopls "-remote=auto"))
+	(rust-ts-mode . (,df/lsp-rust-analyzer))
+	(nushell-ts-mode . ("nu" "--lsp"))))
+
+; Apparently people usually run `M-x eglot` manually. Absurd.
+(add-hook 'typescript-ts-mode-hook #'eglot-ensure)
+(add-hook 'lua-mode-hook #'eglot-ensure)
+(add-hook 'nix-mode-hook #'eglot-ensure)
+(add-hook 'go-ts-mode-hook #'eglot-ensure)
+(add-hook 'rust-ts-mode-hook #'eglot-ensure)
+
+
 (setq copilot-indent-offset-warning-disable t) ; --- COPILOT ---
 (add-hook 'prog-mode-hook 'copilot-mode)
 (keymap-set evil-insert-state-map "C-j" #'copilot-accept-completion)

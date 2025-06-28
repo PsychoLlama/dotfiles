@@ -18,34 +18,40 @@ in
     enable = true;
     package = lib.mkDefault pkgs.unstable.emacs;
     config-file = ./emacs.el;
-    extraPackages = plugins: [
-      # Major modes
-      plugins.lua-mode
-      plugins.markdown-mode
-      plugins.nix-mode
+    extraPackages =
+      let
+        plugins = pkgs.unstable.emacsPackages;
+      in
+      _: [
+        # Major modes
+        plugins.lua-mode
+        plugins.markdown-mode
+        plugins.nix-mode
 
-      # Core features
-      plugins.apheleia
-      plugins.atom-one-dark-theme
-      plugins.company
-      plugins.copilot
-      plugins.counsel
-      plugins.eglot
-      plugins.evil
-      plugins.evil-collection
-      plugins.evil-commentary
-      plugins.evil-surround
-      plugins.evil-terminal-cursor-changer
-      plugins.magit
-      plugins.paredit
-      plugins.projectile
-      plugins.tree-sitter-langs
-      plugins.treesit-grammars.with-all-grammars
-      plugins.undo-tree
-      plugins.xclip
-    ];
+        # Core features
+        plugins.apheleia
+        plugins.atom-one-dark-theme
+        plugins.company
+        plugins.copilot
+        plugins.counsel
+        plugins.eglot
+        plugins.evil
+        plugins.evil-collection
+        plugins.evil-commentary
+        plugins.evil-surround
+        plugins.evil-terminal-cursor-changer
+        plugins.magit
+        plugins.paredit
+        plugins.projectile
+        plugins.tree-sitter-langs
+        plugins.treesit-grammars.with-all-grammars
+        plugins.undo-tree
+        plugins.xclip
+      ];
 
+    # TODO: Make these packages configurable.
     variables = {
+      # Formatters
       "df/formatter-prettier" = {
         description = "Executable for `prettierd`.";
         value = "${pkgs.unstable.prettierd}/bin/prettierd";
@@ -64,6 +70,37 @@ in
       "df/formatter-stylua" = {
         description = "Executable for `stylua`.";
         value = "${pkgs.unstable.stylua}/bin/stylua";
+      };
+
+      # Language servers
+      "df/lsp-nil" = {
+        description = "Executable for the Nil (nix) language server.";
+        value = "${pkgs.unstable.nil}/bin/nil";
+      };
+
+      "df/lsp-tsserver" = {
+        description = "Executable for the TypeScript language server.";
+        value = "${pkgs.unstable.nodePackages.typescript-language-server}/bin/typescript-language-server";
+      };
+
+      "df/lsp-clangd" = {
+        description = "Executable for the Clangd language server.";
+        value = if pkgs.stdenv.isDarwin then "clangd" else "${pkgs.unstable.clang-tools}/bin/clangd";
+      };
+
+      "df/lsp-gopls" = {
+        description = "Executable for the Go language server.";
+        value = "${pkgs.unstable.gopls}/bin/gopls";
+      };
+
+      "df/lsp-rust-analyzer" = {
+        description = "Executable for the Rust Analyzer language server.";
+        value = "${pkgs.unstable.rust-analyzer}/bin/rust-analyzer";
+      };
+
+      "df/lsp-luals" = {
+        description = "Executable for the Lua language server.";
+        value = "${pkgs.unstable.lua-language-server}/bin/lua-language-server";
       };
     };
   };
