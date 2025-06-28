@@ -17,7 +17,7 @@ in
   config.programs.emacs = lib.mkIf cfg.enable {
     enable = true;
     package = lib.mkDefault pkgs.unstable.emacs;
-    extraConfig = builtins.readFile ./emacs.el;
+    config-file = ./emacs.el;
     extraPackages = plugins: [
       # Major modes
       plugins.lua-mode

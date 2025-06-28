@@ -26,6 +26,7 @@ in
 {
   imports = [
     ./aider-chat.nix
+    ./emacs.nix
     ./glow.nix
     ./hyprland.nix
     ./nushell
