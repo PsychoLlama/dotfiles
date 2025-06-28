@@ -51,6 +51,23 @@
 (add-hook 'lisp-interaction-mode-hook            #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook                      #'enable-paredit-mode)
 
+(defun df/paredit-RET ()
+    "Wraps `paredit-RET' to restore evaluation when you press <return>."
+    (interactive)
+    (cond
+     ((minibufferp)
+      (read--expression-try-read))
+
+     ((and (eq major-mode 'inferior-emacs-lisp-mode)
+           (string-prefix-p "*ielm*" (buffer-name)))
+      (ielm-return))
+
+     (t
+      (paredit-RET))))
+
+(with-eval-after-load 'paredit
+  (define-key paredit-mode-map (kbd "RET") #'df/paredit-RET))
+
 ; --- EVIL MODE ---
 
 (defconst df/emacs-undo-tree-directory
