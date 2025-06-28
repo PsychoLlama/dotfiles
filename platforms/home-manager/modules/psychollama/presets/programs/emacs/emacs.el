@@ -32,6 +32,7 @@
 (company-mode 1)
 
 ; --- S-EXPR EDITING ---
+
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
 (add-hook 'emacs-lisp-mode-hook                  #'enable-paredit-mode)
@@ -44,6 +45,8 @@
 
 (global-undo-tree-mode)
 (setq evil-undo-system 'undo-tree)
+(setq undo-tree-history-directory-alist
+      `(("." . ,(expand-file-name "undo-tree" user-emacs-directory))))
 
 (setq evil-want-minibuffer t) ; use vim keybinds in the minibuffer
 (setq evil-want-Y-yank-to-eol t) ; mirror nvim 0.10 `Y` behavior
