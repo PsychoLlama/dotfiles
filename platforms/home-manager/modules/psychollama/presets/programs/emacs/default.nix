@@ -19,6 +19,12 @@ in
     package = lib.mkDefault pkgs.unstable.emacs;
     extraConfig = builtins.readFile ./emacs.el;
     extraPackages = plugins: [
+      # Major modes
+      plugins.lua-mode
+      plugins.markdown-mode
+      plugins.nix-mode
+
+      # Core features
       plugins.atom-one-dark-theme
       plugins.company
       plugins.counsel
@@ -27,17 +33,13 @@ in
       plugins.evil-collection
       plugins.evil-commentary
       plugins.evil-surround
+      plugins.evil-terminal-cursor-changer
       plugins.magit
       plugins.paredit
       plugins.projectile
       plugins.tree-sitter-langs
       plugins.treesit-grammars.with-all-grammars
-      plugins.evil-terminal-cursor-changer
       plugins.undo-tree
-
-      plugins.markdown-mode
-      plugins.nix-mode
-      plugins.lua-mode
     ];
   };
 }
