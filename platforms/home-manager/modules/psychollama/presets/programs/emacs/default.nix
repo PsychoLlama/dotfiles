@@ -44,5 +44,27 @@ in
       plugins.undo-tree
       plugins.xclip
     ];
+
+    variables = {
+      "df/formatter-prettier" = {
+        description = "Executable for `prettierd`.";
+        value = "${pkgs.unstable.prettierd}/bin/prettierd";
+      };
+
+      "df/formatter-eslint" = {
+        description = "Executable for `eslint_d`.";
+        value = "${pkgs.unstable.eslint_d}/bin/eslint_d";
+      };
+
+      "df/formatter-nixfmt" = {
+        description = "Executable for `nixfmt`.";
+        value = "${pkgs.unstable.nixfmt-rfc-style}/bin/nixfmt";
+      };
+
+      "df/formatter-stylua" = {
+        description = "Executable for `stylua`.";
+        value = "${pkgs.unstable.stylua}/bin/stylua";
+      };
+    };
   };
 }

@@ -85,7 +85,36 @@
 (add-hook 'after-init-hook #'global-company-mode)
 
 
-(apheleia-mode 1) ; --- AUTO-FORMATTING ---
+(apheleia-global-mode 1) ; --- AUTO-FORMATTING ---
+
+(setq apheleia-formatters ; Map names to shell commands
+      `((prettier . (,df/formatter-prettier filepath))
+	(eslint . (,df/formatter-eslint
+		   "--stdin-filename" filepath
+		   "--stdin"
+		   "--fix-to-stdout"))
+
+	(nixfmt . (,df/formatter-nixfmt "--quiet"))
+	(stylua . (,df/formatter-stylua
+		   "--stdin-filepath" filepath
+		   "--search-parent-directories"
+		   "--allow-hidden"
+		   "-"))
+
+	(rustfmt . ("rustfmt" "--emit=stdout"))
+	(gofmt . ("gofmt"))))
+
+(setq apheleia-mode-alist ; Map major modes to formatters
+      '((markdown-mode . (prettier))
+	(css-mode . (prettier))
+	(less-css-mode . (prettier))
+	(html-mode . (prettier))
+	(typescript-ts-mode . (prettier eslint))
+	(rust-ts-mode . (rustfmt))
+	(yaml-ts-mode . (prettier))
+	(nix-mode . (nixfmt))
+	(lua-mode . (stylua))
+	(go-mode . (gofmt))))
 
 
 (setq copilot-indent-offset-warning-disable t) ; --- COPILOT ---
