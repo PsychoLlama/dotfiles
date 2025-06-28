@@ -1,3 +1,5 @@
+; --- CORE BEHAVIOR ---
+
 (setq ring-bell-function 'ignore) ; disable annoying bell
 (setq visible-cursor nil) ; don't blink the cursor
 (menu-bar-mode -1) ; disable menu bar
@@ -12,6 +14,15 @@
                             (custom-set-faces
                               '(line-number ((t (:background nil))))
                               '(line-number-current-line ((t (:background nil)))))))
+
+; Don't store backup files in the same directory.
+(defconst df/emacs-auto-save-directory
+  (expand-file-name "autosave" user-emacs-directory))
+
+(setq auto-save-file-name-transforms
+      `((".*" ,(concat df/emacs-auto-save-directory "\\1") t)))
+
+; --- THEMEING ---
 
 (load-theme 'atom-one-dark t)
 
@@ -29,7 +40,6 @@
 
 (projectile-mode 1)
 (counsel-mode 1)
-(counsel-mode)
 
 ; --- S-EXPR EDITING ---
 
@@ -43,10 +53,13 @@
 
 ; --- EVIL MODE ---
 
+(defconst df/emacs-undo-tree-directory
+  (expand-file-name "undo-tree" user-emacs-directory))
+
 (global-undo-tree-mode)
 (setq evil-undo-system 'undo-tree)
 (setq undo-tree-history-directory-alist
-      `(("." . ,(expand-file-name "undo-tree" user-emacs-directory))))
+      `(("." . ,df/emacs-undo-tree-directory)))
 
 (setq evil-want-minibuffer t) ; use vim keybinds in the minibuffer
 (setq evil-want-Y-yank-to-eol t) ; mirror nvim 0.10 `Y` behavior
@@ -72,9 +85,9 @@
 
 ; --- CUSTOM KEYBINDINGS ---
 
-(defun dotfiles-search-project-files ()
+(defun df/search-project-files ()
   "Uses `counsel-file-jump' to fuzzy-find a file within the current project."
   (interactive)
   (counsel-file-jump "" (projectile-project-root)))
 
-(define-key evil-normal-state-map (kbd "SPC f") 'dotfiles-search-project-files)
+(define-key evil-normal-state-map (kbd "SPC f") 'df/search-project-files)
