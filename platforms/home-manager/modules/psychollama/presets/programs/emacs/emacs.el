@@ -61,3 +61,11 @@
 
 (global-tree-sitter-mode 1)
 (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+
+; --- CUSTOM KEYBINDINGS ---
+(defun dotfiles-search-project-files ()
+  "Uses `counsel-file-jump' to fuzzy-find a file within the current project."
+  (interactive)
+  (counsel-file-jump "" (projectile-project-root)))
+
+(define-key evil-normal-state-map (kbd "SPC f") 'dotfiles-search-project-files)
