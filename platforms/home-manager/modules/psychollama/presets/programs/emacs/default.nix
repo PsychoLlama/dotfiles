@@ -42,6 +42,7 @@ in
       plugins.tree-sitter-langs
       plugins.treesit-grammars.with-all-grammars
       plugins.undo-tree
+      plugins.xclip
     ];
   };
 }

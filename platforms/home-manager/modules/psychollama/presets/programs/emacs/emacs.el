@@ -9,7 +9,10 @@
                              '(line-number ((t (:background nil))))
                              '(line-number-current-line ((t (:background nil)))))))
 
-(defconst df/emacs-auto-save-directory 	; Don't store backup files in the same directory.
+(setq select-enable-clipboard nil) ; Prefer xclip to sync the kill ring with the system clipboard.
+(xclip-mode 1)
+
+(defconst df/emacs-auto-save-directory ; Don't store backup files in the same directory.
   (expand-file-name "autosave" user-emacs-directory))
 
 (setq auto-save-file-name-transforms
