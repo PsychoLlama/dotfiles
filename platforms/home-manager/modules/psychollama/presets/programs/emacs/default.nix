@@ -27,6 +27,7 @@ in
         plugins.lua-mode
         plugins.markdown-mode
         plugins.nix-mode
+        plugins.rust-mode
 
         # Core features
         plugins.apheleia

@@ -2,6 +2,9 @@
 (setq visible-cursor nil) ; don't blink the cursor
 (menu-bar-mode -1) ; disable menu bar
 
+(setq indent-tabs-mode nil) ; use spaces as the default
+(setq tab-width 2) ; set the default tab width to 2 spaces
+
 (line-number-mode 1) ; Show line numbers in source code.
 (add-hook 'prog-mode-hook (lambda ()
 			    (display-line-numbers-mode)
@@ -110,7 +113,7 @@
 	(less-css-mode . (prettier))
 	(html-mode . (prettier))
 	(typescript-ts-mode . (prettier eslint))
-	(rust-ts-mode . (rustfmt))
+	(rust-mode . (rustfmt))
 	(yaml-ts-mode . (prettier))
 	(nix-mode . (nixfmt))
 	(lua-mode . (stylua))
@@ -119,22 +122,22 @@
 
 (setq eglot-server-programs ; --- LSP INTEGRATION ---
       `((nix-mode . (,df/lsp-nil :initializationOptions
-				  (:nil (:nix (:flake (:autoArchive t))))))
+				 (:nil (:nix (:flake (:autoArchive t))))))
 	(lua-mode . (,df/lsp-luals :initializationOptions
 				   (:Lua (:format (:enable :json-false)
-					  :workspace (:checkThirdParty :json-false)
-					  :addonManager (:enable :json-false)))))
+					          :workspace (:checkThirdParty :json-false)
+					          :addonManager (:enable :json-false)))))
 	(typescript-ts-mode . (,df/lsp-tsserver "--stdio"))
 	(go-ts-mode . (,df/lsp-gopls "-remote=auto"))
-	(rust-ts-mode . (,df/lsp-rust-analyzer))
+	(rust-mode . (,df/lsp-rust-analyzer))
 	(nushell-ts-mode . ("nu" "--lsp"))))
 
-; Apparently people usually run `M-x eglot` manually. Absurd.
-(add-hook 'typescript-ts-mode-hook #'eglot-ensure)
+                                        
+(add-hook 'typescript-ts-mode-hook #'eglot-ensure) ; Apparently people usually run `M-x eglot` manually. Absurd.
 (add-hook 'lua-mode-hook #'eglot-ensure)
 (add-hook 'nix-mode-hook #'eglot-ensure)
 (add-hook 'go-ts-mode-hook #'eglot-ensure)
-(add-hook 'rust-ts-mode-hook #'eglot-ensure)
+(add-hook 'rust-mode-hook #'eglot-ensure)
 
 
 (setq copilot-indent-offset-warning-disable t) ; --- COPILOT ---
@@ -143,6 +146,10 @@
 
 
 (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescript-ts-mode)) ; --- CUSTOM FILETYPES ---
+
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+(add-hook 'rust-mode-hook (lambda () (setq tab-width 4))) ; Set tab width to 4 spaces
+(setq rust-mode-treesitter-derive t) ; Use tree-sitter grammar for syntax highlighting
 
 
 (keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf) ; --- CUSTOM KEYBINDINGS ---
