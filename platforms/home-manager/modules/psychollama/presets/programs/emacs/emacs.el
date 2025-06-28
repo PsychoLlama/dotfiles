@@ -7,8 +7,8 @@
 
 (line-number-mode 1) ; Show line numbers in source code.
 (add-hook 'prog-mode-hook (lambda ()
-			    (display-line-numbers-mode)
-			    (custom-set-faces ; Make the line number column's background transparent
+                            (display-line-numbers-mode)
+                            (custom-set-faces ; Make the line number column's background transparent
                              '(line-number ((t (:background nil))))
                              '(line-number-current-line ((t (:background nil)))))))
 
@@ -92,47 +92,47 @@
 
 (setq apheleia-formatters ; Map names to shell commands
       `((prettier . (,df/formatter-prettier filepath))
-	(eslint . (,df/formatter-eslint
-		   "--stdin-filename" filepath
-		   "--stdin"
-		   "--fix-to-stdout"))
+        (eslint . (,df/formatter-eslint
+                   "--stdin-filename" filepath
+                   "--stdin"
+                   "--fix-to-stdout"))
 
-	(nixfmt . (,df/formatter-nixfmt "--quiet"))
-	(stylua . (,df/formatter-stylua
-		   "--stdin-filepath" filepath
-		   "--search-parent-directories"
-		   "--allow-hidden"
-		   "-"))
+        (nixfmt . (,df/formatter-nixfmt "--quiet"))
+        (stylua . (,df/formatter-stylua
+                   "--stdin-filepath" filepath
+                   "--search-parent-directories"
+                   "--allow-hidden"
+                   "-"))
 
-	(rustfmt . ("rustfmt" "--emit=stdout"))
-	(gofmt . ("gofmt"))))
+        (rustfmt . ("rustfmt" "--emit=stdout"))
+        (gofmt . ("gofmt"))))
 
 (setq apheleia-mode-alist ; Map major modes to formatters
       '((markdown-mode . (prettier))
-	(css-mode . (prettier))
-	(less-css-mode . (prettier))
-	(html-mode . (prettier))
-	(typescript-ts-mode . (prettier eslint))
-	(rust-mode . (rustfmt))
-	(yaml-ts-mode . (prettier))
-	(nix-mode . (nixfmt))
-	(lua-mode . (stylua))
-	(go-mode . (gofmt))))
+        (css-mode . (prettier))
+        (less-css-mode . (prettier))
+        (html-mode . (prettier))
+        (typescript-ts-mode . (prettier eslint))
+        (rust-mode . (rustfmt))
+        (yaml-ts-mode . (prettier))
+        (nix-mode . (nixfmt))
+        (lua-mode . (stylua))
+        (go-mode . (gofmt))))
 
 
 (setq eglot-server-programs ; --- LSP INTEGRATION ---
       `((nix-mode . (,df/lsp-nil :initializationOptions
-				 (:nil (:nix (:flake (:autoArchive t))))))
-	(lua-mode . (,df/lsp-luals :initializationOptions
-				   (:Lua (:format (:enable :json-false)
-					          :workspace (:checkThirdParty :json-false)
-					          :addonManager (:enable :json-false)))))
-	(typescript-ts-mode . (,df/lsp-tsserver "--stdio"))
-	(go-ts-mode . (,df/lsp-gopls "-remote=auto"))
-	(rust-mode . (,df/lsp-rust-analyzer))
-	(nushell-ts-mode . ("nu" "--lsp"))))
+                                 (:nil (:nix (:flake (:autoArchive t))))))
+        (lua-mode . (,df/lsp-luals :initializationOptions
+                                   (:Lua (:format (:enable :json-false)
+                                                  :workspace (:checkThirdParty :json-false)
+                                                  :addonManager (:enable :json-false)))))
+        (typescript-ts-mode . (,df/lsp-tsserver "--stdio"))
+        (go-ts-mode . (,df/lsp-gopls "-remote=auto"))
+        (rust-mode . (,df/lsp-rust-analyzer))
+        (nushell-ts-mode . ("nu" "--lsp"))))
 
-                                        
+
 (add-hook 'typescript-ts-mode-hook #'eglot-ensure) ; Apparently people usually run `M-x eglot` manually. Absurd.
 (add-hook 'lua-mode-hook #'eglot-ensure)
 (add-hook 'nix-mode-hook #'eglot-ensure)
