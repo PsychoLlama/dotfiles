@@ -30,6 +30,7 @@ in
         plugins.rust-mode
 
         # Core features
+        plugins.aidermacs
         plugins.apheleia
         plugins.company
         plugins.copilot

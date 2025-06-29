@@ -203,6 +203,12 @@
 (add-hook 'rust-mode-hook (lambda () (setq tab-width 4))) ; Set tab width to 4 spaces
 (setq rust-mode-treesitter-derive t) ; Use tree-sitter grammar for syntax highlighting
 
+
+;;; --- AI INTEGRATIONS ---
+(keymap-set evil-normal-state-map "SPC c" 'aidermacs-transient-menu)
+(setq aidermacs-default-chat-mode 'ask)
+
+
 ;;; --- CUSTOM KEYBINDINGS ---
 (keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf)
 (keymap-set evil-normal-state-map "SPC f" 'counsel-projectile-find-file)
