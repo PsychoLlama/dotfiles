@@ -47,14 +47,8 @@ def n [...files: path] {
   }
 }
 
-# Open emacs.
-def e [...files: path] {
-  if ($files | length) == 0 {
-    emacs -nw $env.PWD
-  } else {
-    emacs -nw ...$files
-  }
-}
+# Launch emacs without a GUI.
+alias e = emacs --no-window-system
 
 # Fuzzy find and edit a file.
 def nf [] {

@@ -8,6 +8,11 @@
 (setq show-paren-delay 0) ; Show matching parentheses immediately.
 (setq eldoc-idle-delay 0.2) ; Show symbol information quickly.
 
+(defun display-startup-echo-area-message ()) ; Override echo message on startup.
+(setq inhibit-startup-screen t) ; Don't show the startup screen.
+(setq initial-buffer-choice (getenv "PWD")) ; View current dir by default.
+(setq initial-scratch-message nil) ; Don't show scratch buffer hints.
+
 (line-number-mode 1) ; Show line numbers in source code.
 (add-hook 'prog-mode-hook (lambda ()
                             (display-line-numbers-mode)
