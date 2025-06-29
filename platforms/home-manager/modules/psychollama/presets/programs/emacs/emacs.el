@@ -191,6 +191,9 @@
 (setq-default flycheck-sh-shellcheck-executable df/linter-shellcheck)
 (setq-default flycheck-lua-luacheck-executable df/linter-luacheck)
 
+(setq-default flycheck-disabled-checkers
+	      '(emacs-lisp-checkdoc emacs-lisp)) ; Too many false errors.
+
 (keymap-set evil-normal-state-map "[ d" 'flycheck-previous-error)
 (keymap-set evil-normal-state-map "] d" 'flycheck-next-error)
 
