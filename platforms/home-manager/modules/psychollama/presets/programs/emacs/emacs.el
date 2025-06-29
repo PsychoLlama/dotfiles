@@ -2,6 +2,7 @@
 (setq visible-cursor nil) ; don't blink the cursor
 (menu-bar-mode -1) ; disable menu bar
 
+(setq scroll-conservatively 10000) ; scroll without jumping
 (setq indent-tabs-mode nil) ; use spaces as the default
 (setq tab-width 2) ; set the default tab width to 2 spaces
 
