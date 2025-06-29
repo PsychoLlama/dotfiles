@@ -94,6 +94,14 @@
 (evil-collection-init)
 
 
+;;; --- FILE BROWSING ---
+(add-hook 'dired-mode-hook
+ (lambda ()
+   (evil-collection-define-key 'normal 'dired-mode-map
+     "h" 'dired-up-directory
+     "l" 'dired-find-file)))
+
+
 ;;; --- TREESITTER INTEGRATION ---
 (global-tree-sitter-mode 1)
 (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
