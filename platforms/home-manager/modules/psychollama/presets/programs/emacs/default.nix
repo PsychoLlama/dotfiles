@@ -34,6 +34,7 @@ in
         plugins.company
         plugins.copilot
         plugins.counsel
+        plugins.counsel-projectile
         plugins.doom-themes
         plugins.eglot
         plugins.evil

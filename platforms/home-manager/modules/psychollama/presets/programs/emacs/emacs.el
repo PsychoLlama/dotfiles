@@ -40,8 +40,11 @@
 
 ;;; --- PICKERS/NAVIGATION ---
 (counsel-mode 1)
+(setq counsel-projectile-switch-project-action
+      '(1 ("D" counsel-projectile-switch-project-action-dired "open Dired")))
 
 
+;;; --- STRUCTURAL EDITING ---
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
 (add-hook 'emacs-lisp-mode-hook                  #'enable-paredit-mode)
