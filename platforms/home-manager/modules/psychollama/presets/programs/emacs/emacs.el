@@ -214,7 +214,7 @@
 ;;; --- COPILOT ---
 (setq copilot-indent-offset-warning-disable t)
 (add-hook 'prog-mode-hook 'copilot-mode)
-(evil-define-key 'normal prog-mode-map (kbd "C-j") #'copilot-accept-completion)
+(evil-define-key 'insert prog-mode-map (kbd "C-j") #'copilot-accept-completion)
 
 
 ;;; --- CUSTOM FILETYPES ---
