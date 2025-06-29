@@ -26,7 +26,7 @@ in
         # Major modes
         plugins.lua-mode
         plugins.markdown-mode
-        plugins.nix-mode
+        plugins.nix-ts-mode
         plugins.rust-mode
 
         # Core features
