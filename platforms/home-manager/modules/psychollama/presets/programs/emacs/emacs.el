@@ -103,7 +103,9 @@
  (lambda ()
    (evil-collection-define-key 'normal 'dired-mode-map
      "h" 'dired-up-directory
-     "l" 'dired-find-file)))
+     "l" 'dired-find-file
+     "F" 'counsel-file-jump
+     "T" 'counsel-dired-jump)))
 
 (keymap-set evil-normal-state-map "SPC [" 'dired-jump) ; Open parent dir of buffer.
 (keymap-set evil-normal-state-map "SPC z" 'counsel-projectile-switch-project)
@@ -171,6 +173,8 @@
 (add-hook 'nix-mode-hook #'eglot-ensure)
 (add-hook 'go-ts-mode-hook #'eglot-ensure)
 (add-hook 'rust-mode-hook #'eglot-ensure)
+
+(keymap-set evil-normal-state-map "SPC r n" 'eglot-rename) ; Rename symbol under cursor.
 
 
 ;;; --- LINTING ---
