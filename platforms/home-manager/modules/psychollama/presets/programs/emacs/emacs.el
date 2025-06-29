@@ -71,10 +71,10 @@
 (setq undo-tree-history-directory-alist
       `(("." . ,df/emacs-undo-tree-directory)))
 
+(setq evil-want-keybinding nil) ; Extra modes are handled by `evil-collection`.
 (setq evil-want-minibuffer t) ; Use vim keybinds in the minibuffer.
 (setq evil-want-Y-yank-to-eol t) ; Mirror nvim 0.10 `Y` behavior.
 (setq evil-search-wrap nil) ; Basically `&nowrapscan`.
-(setq evil-want-keybinding nil) ; Extra modes are handled by `evil-collection`.
 
 (evil-mode 1) ; yay, evil!
 (keymap-set evil-normal-state-map "C-u" 'evil-scroll-up)
@@ -150,7 +150,12 @@
 
 
 ;;; --- LINTING ---
-(add-hook 'prog-mode-hook #'flymake-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(global-flycheck-eglot-mode 1) ; Bridge eglot diagnostics into flycheck.
+
+(setq-default flycheck-javascript-eslint-executable df/linter-eslint)
+(setq-default flycheck-sh-shellcheck-executable df/linter-shellcheck)
+(setq-default flycheck-lua-luacheck-executable df/linter-luacheck)
 
 
 ;;; --- COPILOT ---
@@ -187,3 +192,5 @@
       (message (format "Not a directory: %s" parent-dir)))))
 
 (keymap-set evil-normal-state-map "SPC [" 'df/view-parent-directory)
+(keymap-set evil-normal-state-map "[ d" 'flycheck-previous-error)
+(keymap-set evil-normal-state-map "] d" 'flycheck-next-error)

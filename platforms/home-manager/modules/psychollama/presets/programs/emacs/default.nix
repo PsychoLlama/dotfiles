@@ -41,6 +41,8 @@ in
         plugins.evil-commentary
         plugins.evil-surround
         plugins.evil-terminal-cursor-changer
+        plugins.flycheck
+        plugins.flycheck-eglot
         plugins.magit
         plugins.paredit
         plugins.projectile
@@ -102,6 +104,23 @@ in
       "df/lsp-luals" = {
         description = "Executable for the Lua language server.";
         value = "${pkgs.unstable.lua-language-server}/bin/lua-language-server";
+      };
+
+      # Linters
+      "df/linter-shellcheck" = {
+        description = "Executable for `shellcheck`.";
+        value = "${pkgs.unstable.shellcheck}/bin/shellcheck";
+      };
+
+      "df/linter-eslint" = {
+        description = "Executable for `eslint_d`.";
+        value = "${pkgs.unstable.eslint_d}/bin/eslint_d";
+      };
+
+      # Assumes this is installed in the local dev shell.
+      "df/linter-luacheck" = {
+        description = "Executable for `luacheck`.";
+        value = "luacheck";
       };
     };
   };
