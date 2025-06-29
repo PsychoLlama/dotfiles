@@ -6,6 +6,7 @@
 (setq indent-tabs-mode nil) ; Use spaces as the default.
 (setq tab-width 2) ; Set the default tab width to 2 spaces.
 (setq show-paren-delay 0) ; Show matching parentheses immediately.
+(setq eldoc-idle-delay 0.2) ; Show symbol information quickly.
 
 (line-number-mode 1) ; Show line numbers in source code.
 (add-hook 'prog-mode-hook (lambda ()
