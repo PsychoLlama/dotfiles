@@ -46,6 +46,8 @@
       (tooltip-mode -1))
   (set-face-background 'default "unspecified-bg")) ; Use a transparent background in terminal mode
 
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode) ; Fancy delimiters.
+
 
 ;;; --- PROJECT MANAGEMENT ---
 (projectile-mode 1)

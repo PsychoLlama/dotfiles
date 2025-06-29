@@ -50,6 +50,7 @@ in
         plugins.magit
         plugins.paredit
         plugins.projectile
+        plugins.rainbow-delimiters
         plugins.tree-sitter-langs
         plugins.treesit-grammars.with-all-grammars
         plugins.undo-tree
