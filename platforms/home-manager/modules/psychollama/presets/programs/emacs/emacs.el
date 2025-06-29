@@ -21,7 +21,9 @@
 (setq auto-save-file-name-transforms
       `((".*" ,(concat df/emacs-auto-save-directory "\\1") t)))
 
-(load-theme 'atom-one-dark t) ; --- THEMEING ---
+
+;;; --- THEMEING ---
+(load-theme 'atom-one-dark t)
 (if (display-graphic-p)
     (progn ; Remove chrome from the UI
       (scroll-bar-mode -1)
@@ -60,7 +62,8 @@
   (keymap-set paredit-mode-map "RET" #'df/paredit-RET))
 
 
-(defconst df/emacs-undo-tree-directory ; --- EVIL MODE ---
+;;; --- EVIL MODE ---
+(defconst df/emacs-undo-tree-directory
   (expand-file-name "undo-tree" user-emacs-directory))
 
 (global-undo-tree-mode)
@@ -68,9 +71,10 @@
 (setq undo-tree-history-directory-alist
       `(("." . ,df/emacs-undo-tree-directory)))
 
-(setq evil-want-minibuffer t) ; use vim keybinds in the minibuffer
-(setq evil-want-Y-yank-to-eol t) ; mirror nvim 0.10 `Y` behavior
-
+(setq evil-want-minibuffer t) ; Use vim keybinds in the minibuffer.
+(setq evil-want-Y-yank-to-eol t) ; Mirror nvim 0.10 `Y` behavior.
+(setq evil-search-wrap nil) ; Basically `&nowrapscan`.
+(setq evil-want-keybinding nil) ; Extra modes are handled by `evil-collection`.
 
 (evil-mode 1) ; yay, evil!
 (keymap-set evil-normal-state-map "C-u" 'evil-scroll-up)
@@ -78,17 +82,21 @@
 
 (global-evil-surround-mode 1)
 (evil-commentary-mode 1)
+(evil-collection-init)
 
 
-(global-tree-sitter-mode 1) ; --- TREESITTER INTEGRATION ---
+;;; --- TREESITTER INTEGRATION ---
+(global-tree-sitter-mode 1)
 (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
 
-(setq company-idle-delay 0) ; --- COMPLETION ENGINE ---
+;;; --- COMPLETION ENGINE ---
+(setq company-idle-delay 0)
 (add-hook 'after-init-hook #'global-company-mode)
 
 
-(apheleia-global-mode 1) ; --- AUTO-FORMATTING ---
+;;; --- AUTO-FORMATTING ---
+(apheleia-global-mode 1)
 
 (setq apheleia-formatters ; Map names to shell commands
       `((prettier . (,df/formatter-prettier filepath))
@@ -120,7 +128,8 @@
         (go-mode . (gofmt))))
 
 
-(setq eglot-server-programs ; --- LSP INTEGRATION ---
+;;; --- LSP INTEGRATION ---
+(setq eglot-server-programs
       `((nix-mode . (,df/lsp-nil :initializationOptions
                                  (:nil (:nix (:flake (:autoArchive t))))))
         (lua-mode . (,df/lsp-luals :initializationOptions
@@ -140,29 +149,37 @@
 (add-hook 'rust-mode-hook #'eglot-ensure)
 
 
-(setq copilot-indent-offset-warning-disable t) ; --- COPILOT ---
+;;; --- LINTING ---
+(add-hook 'prog-mode-hook #'flymake-mode)
+
+
+;;; --- COPILOT ---
+(setq copilot-indent-offset-warning-disable t)
 (add-hook 'prog-mode-hook 'copilot-mode)
 (keymap-set evil-insert-state-map "C-j" #'copilot-accept-completion)
 
 
-(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescript-ts-mode)) ; --- CUSTOM FILETYPES ---
+;;; --- CUSTOM FILETYPES ---
+(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescript-ts-mode))
 
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 (add-hook 'rust-mode-hook (lambda () (setq tab-width 4))) ; Set tab width to 4 spaces
 (setq rust-mode-treesitter-derive t) ; Use tree-sitter grammar for syntax highlighting
 
 
-(keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf) ; --- CUSTOM KEYBINDINGS ---
+;;; --- CUSTOM KEYBINDINGS ---
+(keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf)
+
 
 (defun df/search-project-files ()
-  "Uses `counsel-file-jump' to fuzzy-find a file within the current project."
+  "Use `counsel-file-jump' to fuzzy-find a file within the current project."
   (interactive)
   (counsel-file-jump "" (projectile-project-root)))
 
 (keymap-set evil-normal-state-map "SPC f" 'df/search-project-files)
 
 (defun df/view-parent-directory ()
-  "Opens the buffer's parent directory in dired"
+  "Opens the buffer's parent directory in Dired."
   (interactive)
   (let ((parent-dir (expand-file-name ".." (buffer-name))))
     (if (file-directory-p parent-dir)
