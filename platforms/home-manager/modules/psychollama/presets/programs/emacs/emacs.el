@@ -105,6 +105,7 @@
      "h" 'dired-up-directory
      "l" 'dired-find-file)))
 
+(keymap-set evil-normal-state-map "SPC [" 'dired-jump) ; Open parent dir of buffer.
 (keymap-set evil-normal-state-map "SPC z" 'counsel-projectile-switch-project)
 
 
@@ -201,13 +202,3 @@
 (keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf)
 (keymap-set evil-normal-state-map "SPC f" 'counsel-projectile-find-file)
 (keymap-set evil-normal-state-map "SPC g" 'magit-status)
-
-(defun df/nav-parent-directory ()
-  "Opens the buffer's parent directory in Dired."
-  (interactive)
-  (let ((parent-dir (expand-file-name ".." (buffer-name))))
-    (if (file-directory-p parent-dir)
-  (dired parent-dir)
-      (message (format "Not a directory: %s" parent-dir)))))
-
-(keymap-set evil-normal-state-map "SPC [" 'df/nav-parent-directory)
