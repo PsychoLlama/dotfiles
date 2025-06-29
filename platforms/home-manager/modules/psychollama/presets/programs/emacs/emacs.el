@@ -200,6 +200,7 @@
 ;;; --- CUSTOM KEYBINDINGS ---
 (keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf)
 (keymap-set evil-normal-state-map "SPC f" 'counsel-projectile-find-file)
+(keymap-set evil-normal-state-map "SPC g" 'magit-status)
 
 (defun df/nav-parent-directory ()
   "Opens the buffer's parent directory in Dired."
