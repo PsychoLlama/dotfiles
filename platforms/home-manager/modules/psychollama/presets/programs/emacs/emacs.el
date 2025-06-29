@@ -117,8 +117,8 @@
      (kbd "SPC") nil ; Turn off Dired's `SPC` keymap. It breaks leader bindings.
      "h" 'dired-up-directory
      "l" 'dired-find-file
-     "F" 'counsel-file-jump
-     "T" 'counsel-dired-jump)))
+     "F" 'counsel-fd-file-jump
+     "T" 'counsel-fd-dired-jump)))
 
 (evil-define-key 'normal prog-mode-map (kbd "SPC [") 'dired-jump) ; Open parent dir of buffer.
 (evil-define-key 'normal 'global (kbd "SPC z") 'counsel-projectile-switch-project)

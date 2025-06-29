@@ -35,6 +35,7 @@ in
         plugins.company
         plugins.copilot
         plugins.counsel
+        plugins.counsel-fd
         plugins.counsel-projectile
         plugins.diredfl
         plugins.doom-themes
