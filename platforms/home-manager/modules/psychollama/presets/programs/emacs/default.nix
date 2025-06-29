@@ -31,10 +31,10 @@ in
 
         # Core features
         plugins.apheleia
-        plugins.atom-one-dark-theme
         plugins.company
         plugins.copilot
         plugins.counsel
+        plugins.doom-themes
         plugins.eglot
         plugins.evil
         plugins.evil-collection

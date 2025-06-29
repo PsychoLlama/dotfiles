@@ -23,7 +23,7 @@
 
 
 ;;; --- THEMEING ---
-(load-theme 'atom-one-dark t)
+(load-theme 'doom-one t)
 (if (display-graphic-p)
     (progn ; Remove chrome from the UI
       (scroll-bar-mode -1)
