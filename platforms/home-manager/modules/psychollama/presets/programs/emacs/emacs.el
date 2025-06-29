@@ -32,7 +32,13 @@
   (set-face-background 'default "unspecified-bg")) ; Use a transparent background in terminal mode
 
 
+;;; --- PROJECT MANAGEMENT ---
 (projectile-mode 1)
+(setq projectile-project-search-path '(("~/projects/" . 2)))
+(setq projectile-switch-project-action #'projectile-dired)
+
+
+;;; --- PICKERS/NAVIGATION ---
 (counsel-mode 1)
 
 
@@ -157,6 +163,9 @@
 (setq-default flycheck-sh-shellcheck-executable df/linter-shellcheck)
 (setq-default flycheck-lua-luacheck-executable df/linter-luacheck)
 
+(keymap-set evil-normal-state-map "[ d" 'flycheck-previous-error)
+(keymap-set evil-normal-state-map "] d" 'flycheck-next-error)
+
 
 ;;; --- COPILOT ---
 (setq copilot-indent-offset-warning-disable t)
@@ -188,9 +197,7 @@
   (interactive)
   (let ((parent-dir (expand-file-name ".." (buffer-name))))
     (if (file-directory-p parent-dir)
-	(dired parent-dir)
+  (dired parent-dir)
       (message (format "Not a directory: %s" parent-dir)))))
 
 (keymap-set evil-normal-state-map "SPC [" 'df/view-parent-directory)
-(keymap-set evil-normal-state-map "[ d" 'flycheck-previous-error)
-(keymap-set evil-normal-state-map "] d" 'flycheck-next-error)
