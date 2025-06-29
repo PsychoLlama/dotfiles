@@ -16,6 +16,8 @@
 (setq select-enable-clipboard nil) ; Prefer xclip to sync the kill ring with the system clipboard.
 (xclip-mode 1)
 
+(save-place-mode 1) ; Save the cursor position in files.
+
 (defconst df/emacs-auto-save-directory ; Don't store backup files in the same directory.
   (expand-file-name "autosave" user-emacs-directory))
 
