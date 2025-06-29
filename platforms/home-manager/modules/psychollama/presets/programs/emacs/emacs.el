@@ -132,11 +132,6 @@
 (setq dired-free-space nil) ; Don't show disk space.
 
 
-;;; --- TREESITTER INTEGRATION ---
-(global-tree-sitter-mode 1)
-(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
-
-
 ;;; --- COMPLETION ENGINE ---
 (setq company-idle-delay 0)
 (add-hook 'after-init-hook #'global-company-mode)
@@ -220,7 +215,8 @@
 
 
 ;;; --- CUSTOM FILETYPES ---
-(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 (add-hook 'rust-mode-hook (lambda () (setq tab-width 4))) ; Set tab width to 4 spaces
