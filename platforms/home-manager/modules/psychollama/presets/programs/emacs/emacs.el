@@ -102,6 +102,8 @@
      "h" 'dired-up-directory
      "l" 'dired-find-file)))
 
+(keymap-set evil-normal-state-map "SPC z" 'counsel-projectile-switch-project)
+
 
 ;;; --- TREESITTER INTEGRATION ---
 (global-tree-sitter-mode 1)
@@ -195,16 +197,9 @@
 
 ;;; --- CUSTOM KEYBINDINGS ---
 (keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf)
+(keymap-set evil-normal-state-map "SPC f" 'counsel-projectile-find-file)
 
-
-(defun df/search-project-files ()
-  "Use `counsel-file-jump' to fuzzy-find a file within the current project."
-  (interactive)
-  (counsel-file-jump "" (projectile-project-root)))
-
-(keymap-set evil-normal-state-map "SPC f" 'df/search-project-files)
-
-(defun df/view-parent-directory ()
+(defun df/nav-parent-directory ()
   "Opens the buffer's parent directory in Dired."
   (interactive)
   (let ((parent-dir (expand-file-name ".." (buffer-name))))
@@ -212,4 +207,4 @@
   (dired parent-dir)
       (message (format "Not a directory: %s" parent-dir)))))
 
-(keymap-set evil-normal-state-map "SPC [" 'df/view-parent-directory)
+(keymap-set evil-normal-state-map "SPC [" 'df/nav-parent-directory)
