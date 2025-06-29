@@ -1,10 +1,11 @@
-(setq ring-bell-function 'ignore) ; disable annoying bell
-(setq visible-cursor nil) ; don't blink the cursor
-(menu-bar-mode -1) ; disable menu bar
+(setq ring-bell-function 'ignore) ; Disable annoying bell.
+(setq visible-cursor nil) ; Don't blink the cursor.
+(menu-bar-mode -1) ; Disable menu bar.
 
-(setq scroll-conservatively 10000) ; scroll without jumping
-(setq indent-tabs-mode nil) ; use spaces as the default
-(setq tab-width 2) ; set the default tab width to 2 spaces
+(setq scroll-conservatively 10000) ; Scroll without jumping.
+(setq indent-tabs-mode nil) ; Use spaces as the default.
+(setq tab-width 2) ; Set the default tab width to 2 spaces.
+(setq show-paren-delay 0) ; Show matching parentheses immediately.
 
 (line-number-mode 1) ; Show line numbers in source code.
 (add-hook 'prog-mode-hook (lambda ()
@@ -195,7 +196,6 @@
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 (add-hook 'rust-mode-hook (lambda () (setq tab-width 4))) ; Set tab width to 4 spaces
 (setq rust-mode-treesitter-derive t) ; Use tree-sitter grammar for syntax highlighting
-
 
 ;;; --- CUSTOM KEYBINDINGS ---
 (keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf)
