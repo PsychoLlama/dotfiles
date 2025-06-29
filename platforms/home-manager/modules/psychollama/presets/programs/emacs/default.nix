@@ -36,6 +36,7 @@ in
         plugins.copilot
         plugins.counsel
         plugins.counsel-projectile
+        plugins.diredfl
         plugins.doom-themes
         plugins.eglot
         plugins.evil

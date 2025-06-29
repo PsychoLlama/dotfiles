@@ -113,8 +113,14 @@
      "F" 'counsel-file-jump
      "T" 'counsel-dired-jump)))
 
-(keymap-set evil-normal-state-map "SPC [" 'dired-jump) ; Open parent dir of buffer.
-(keymap-set evil-normal-state-map "SPC z" 'counsel-projectile-switch-project)
+(evil-define-key 'normal prog-mode-map (kbd "SPC [" ) 'dired-jump) ; Open parent dir of buffer.
+(evil-define-key 'normal 'global (kbd "SPC z" ) 'counsel-projectile-switch-project)
+
+(diredfl-global-mode 1) ; Exa-style highlighting in dired.
+
+(add-hook 'dired-mode-hook 'dired-hide-details-mode) ; Only show file names.
+(setq dired-listing-switches "-lAh --group-directories-first")
+(setq dired-free-space nil) ; Don't show disk space.
 
 
 ;;; --- TREESITTER INTEGRATION ---
