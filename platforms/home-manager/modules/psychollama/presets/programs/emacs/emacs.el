@@ -96,8 +96,9 @@
 (setq evil-search-wrap nil) ; Basically `&nowrapscan`.
 
 (evil-mode 1) ; yay, evil!
-(keymap-set evil-normal-state-map "C-u" 'evil-scroll-up)
-(evil-terminal-cursor-changer-activate) ; fix terminal cursor modes
+(require 'evil-core) ; Provides `evil-define-key`.
+(evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
+(evil-terminal-cursor-changer-activate) ; Fixes terminal cursor modes
 
 (global-evil-surround-mode 1)
 (evil-commentary-mode 1)
@@ -108,13 +109,14 @@
 (add-hook 'dired-mode-hook
  (lambda ()
    (evil-collection-define-key 'normal 'dired-mode-map
+     (kbd "SPC") nil ; Turn off Dired's `SPC` keymap. It breaks leader bindings.
      "h" 'dired-up-directory
      "l" 'dired-find-file
      "F" 'counsel-file-jump
      "T" 'counsel-dired-jump)))
 
-(evil-define-key 'normal prog-mode-map (kbd "SPC [" ) 'dired-jump) ; Open parent dir of buffer.
-(evil-define-key 'normal 'global (kbd "SPC z" ) 'counsel-projectile-switch-project)
+(evil-define-key 'normal prog-mode-map (kbd "SPC [") 'dired-jump) ; Open parent dir of buffer.
+(evil-define-key 'normal 'global (kbd "SPC z") 'counsel-projectile-switch-project)
 
 (diredfl-global-mode 1) ; Exa-style highlighting in dired.
 
@@ -186,7 +188,7 @@
 (add-hook 'go-ts-mode-hook #'eglot-ensure)
 (add-hook 'rust-mode-hook #'eglot-ensure)
 
-(keymap-set evil-normal-state-map "SPC r n" 'eglot-rename) ; Rename symbol under cursor.
+(evil-define-key 'normal prog-mode-map (kbd "SPC r n") 'eglot-rename) ; Rename symbol under cursor.
 
 
 ;;; --- LINTING ---
@@ -200,14 +202,14 @@
 (setq-default flycheck-disabled-checkers
 	      '(emacs-lisp-checkdoc emacs-lisp)) ; Too many false errors.
 
-(keymap-set evil-normal-state-map "[ d" 'flycheck-previous-error)
-(keymap-set evil-normal-state-map "] d" 'flycheck-next-error)
+(evil-define-key 'normal prog-mode-map (kbd "[ d") 'flycheck-previous-error)
+(evil-define-key 'normal prog-mode-map (kbd "] d") 'flycheck-next-error)
 
 
 ;;; --- COPILOT ---
 (setq copilot-indent-offset-warning-disable t)
 (add-hook 'prog-mode-hook 'copilot-mode)
-(keymap-set evil-insert-state-map "C-j" #'copilot-accept-completion)
+(evil-define-key 'normal prog-mode-map (kbd "C-j") #'copilot-accept-completion)
 
 
 ;;; --- CUSTOM FILETYPES ---
@@ -219,11 +221,11 @@
 
 
 ;;; --- AI INTEGRATIONS ---
-(keymap-set evil-normal-state-map "SPC c" 'aidermacs-transient-menu)
+(evil-define-key 'normal 'global (kbd "SPC c") 'aidermacs-transient-menu)
 (setq aidermacs-default-chat-mode 'ask)
 
 
 ;;; --- CUSTOM KEYBINDINGS ---
-(keymap-set evil-normal-state-map "SPC b" 'counsel-buffer-or-recentf)
-(keymap-set evil-normal-state-map "SPC f" 'counsel-projectile-find-file)
-(keymap-set evil-normal-state-map "SPC g" 'magit-status)
+(evil-define-key 'normal 'global (kbd "SPC b") 'counsel-buffer-or-recentf)
+(evil-define-key 'normal 'global (kbd "SPC f") 'counsel-projectile-find-file)
+(evil-define-key 'normal 'global (kbd "SPC g") 'magit-status)
