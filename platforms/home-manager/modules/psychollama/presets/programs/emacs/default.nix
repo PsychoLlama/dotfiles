@@ -24,6 +24,7 @@ in
       in
       _: [
         # Major modes
+        plugins.nushell-ts-mode
         plugins.lua-mode
         plugins.markdown-mode
         plugins.nix-ts-mode

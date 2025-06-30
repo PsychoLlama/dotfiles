@@ -189,6 +189,7 @@
 (add-hook 'nix-ts-mode-hook #'eglot-ensure)
 (add-hook 'go-ts-mode-hook #'eglot-ensure)
 (add-hook 'rust-mode-hook #'eglot-ensure)
+(add-hook 'nushell-ts-mode-hook #'eglot-ensure)
 
 (evil-define-key 'normal prog-mode-map (kbd "SPC r n") 'eglot-rename) ; Rename symbol under cursor.
 
@@ -218,6 +219,7 @@
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.nu\\'" . nushell-ts-mode))
 
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 (add-hook 'rust-mode-hook (lambda () (setq tab-width 4))) ; Set tab width to 4 spaces
