@@ -233,3 +233,11 @@
 (evil-define-key 'normal 'global (kbd "SPC b") 'counsel-buffer-or-recentf)
 (evil-define-key 'normal 'global (kbd "SPC f") 'counsel-projectile-find-file)
 (evil-define-key 'normal 'global (kbd "SPC g") 'magit-status)
+
+; Clear next/prev bindings in evil mode for the minibuffer.
+(eval-after-load "evil-maps"
+  (dolist (map '(evil-motion-state-map
+		 evil-insert-state-map
+		 evil-emacs-state-map))
+    (define-key (eval map) "\C-n" nil)
+    (define-key (eval map) "\C-p" nil)))
