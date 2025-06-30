@@ -21,6 +21,14 @@ in
     extraPackages =
       let
         plugins = pkgs.unstable.emacsPackages;
+        copilot = plugins.copilot.override {
+          copilot-language-server-fhs =
+            if pkgs.stdenv.isDarwin then
+              # FHS variant is not supported (or necessary) on macOS.
+              pkgs.unstable.copilot-language-server
+            else
+              pkgs.unstable.copilot-language-server-fhs;
+        };
       in
       _: [
         # Major modes
@@ -31,10 +39,10 @@ in
         plugins.rust-mode
 
         # Core features
+        copilot
         plugins.aidermacs
         plugins.apheleia
         plugins.company
-        plugins.copilot
         plugins.counsel
         plugins.counsel-fd
         plugins.counsel-projectile
