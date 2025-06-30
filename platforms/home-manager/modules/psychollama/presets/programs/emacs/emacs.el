@@ -168,15 +168,15 @@
         (rust-mode . (rustfmt))
         (yaml-ts-mode . (prettier))
         (nix-ts-mode . (nixfmt))
-        (lua-mode . (stylua))
-        (go-mode . (gofmt))))
+        (lua-ts-mode . (stylua))
+        (go-ts-mode . (gofmt))))
 
 
 ;;; --- LSP INTEGRATION ---
 (setq eglot-server-programs
       `((nix-ts-mode . (,df/lsp-nil :initializationOptions
                                  (:nil (:nix (:flake (:autoArchive t))))))
-        (lua-mode . (,df/lsp-luals :initializationOptions
+        (lua-ts-mode . (,df/lsp-luals :initializationOptions
                                    (:Lua (:format (:enable :json-false)
                                                   :workspace (:checkThirdParty :json-false)
                                                   :addonManager (:enable :json-false)))))
@@ -187,7 +187,7 @@
 
 
 (add-hook 'typescript-ts-mode-hook #'eglot-ensure) ; Apparently people usually run `M-x eglot` manually. Absurd.
-(add-hook 'lua-mode-hook #'eglot-ensure)
+(add-hook 'lua-ts-mode-hook #'eglot-ensure)
 (add-hook 'nix-ts-mode-hook #'eglot-ensure)
 (add-hook 'go-ts-mode-hook #'eglot-ensure)
 (add-hook 'rust-mode-hook #'eglot-ensure)
@@ -218,10 +218,12 @@
 
 
 ;;; --- CUSTOM FILETYPES ---
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.nu\\'" . nushell-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 (add-hook 'rust-mode-hook (lambda () (setq tab-width 4))) ; Set tab width to 4 spaces
