@@ -1,5 +1,6 @@
 (setq ring-bell-function 'ignore) ; Disable annoying bell.
 (setq visible-cursor nil) ; Don't blink the cursor.
+(blink-cursor-mode 0) ; Seriously, don't blink the cursor.
 (menu-bar-mode -1) ; Disable menu bar.
 
 (setq scroll-conservatively 10000) ; Scroll without jumping.
