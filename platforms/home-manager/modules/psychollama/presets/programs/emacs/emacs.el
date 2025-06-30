@@ -6,7 +6,6 @@
 (setq indent-tabs-mode nil) ; Use spaces as the default.
 (setq tab-width 2) ; Set the default tab width to 2 spaces.
 (setq show-paren-delay 0) ; Show matching parentheses immediately.
-(setq eldoc-idle-delay 0.2) ; Show symbol information quickly.
 
 (defun display-startup-echo-area-message ()) ; Override echo message on startup.
 (setq inhibit-startup-screen t) ; Don't show the startup screen.
@@ -174,6 +173,7 @@
 
 
 ;;; --- LSP INTEGRATION ---
+(setq eldoc-idle-delay 0) ; Show symbol information quickly.
 (setq eglot-server-programs
       `((nix-ts-mode . (,df/lsp-nil :initializationOptions
                                  (:nil (:nix (:flake (:autoArchive t))))))
