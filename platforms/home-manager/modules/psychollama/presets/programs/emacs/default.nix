@@ -119,6 +119,11 @@ in
         value = "${pkgs.unstable.lua-language-server}/bin/lua-language-server";
       };
 
+      "df/lsp-jsonls" = {
+        description = "Executable for the JSON language server.";
+        value = "${pkgs.unstable.vscode-langservers-extracted}/bin/vscode-json-language-server";
+      };
+
       # Linters
       "df/linter-shellcheck" = {
         description = "Executable for `shellcheck`.";

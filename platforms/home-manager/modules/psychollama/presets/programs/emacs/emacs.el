@@ -167,6 +167,7 @@
         (typescript-ts-mode . (prettier eslint))
         (rust-mode . (rustfmt))
         (yaml-ts-mode . (prettier))
+        (json-ts-mode . (prettier))
         (nix-ts-mode . (nixfmt))
         (lua-ts-mode . (stylua))
         (go-ts-mode . (gofmt))))
@@ -181,17 +182,18 @@
                                                   :workspace (:checkThirdParty :json-false)
                                                   :addonManager (:enable :json-false)))))
         (typescript-ts-mode . (,df/lsp-tsserver "--stdio"))
+        (json-ts-mode . (,df/lsp-jsonls "--stdio"))
         (go-ts-mode . (,df/lsp-gopls "-remote=auto"))
         (rust-mode . (,df/lsp-rust-analyzer))
         (nushell-ts-mode . ("nu" "--lsp"))))
 
-
-(add-hook 'typescript-ts-mode-hook #'eglot-ensure) ; Apparently people usually run `M-x eglot` manually. Absurd.
+(add-hook 'go-ts-mode-hook #'eglot-ensure)
+(add-hook 'json-ts-mode-hook #'eglot-ensure)
 (add-hook 'lua-ts-mode-hook #'eglot-ensure)
 (add-hook 'nix-ts-mode-hook #'eglot-ensure)
-(add-hook 'go-ts-mode-hook #'eglot-ensure)
-(add-hook 'rust-mode-hook #'eglot-ensure)
 (add-hook 'nushell-ts-mode-hook #'eglot-ensure)
+(add-hook 'rust-mode-hook #'eglot-ensure)
+(add-hook 'typescript-ts-mode-hook #'eglot-ensure)
 
 (evil-define-key 'normal prog-mode-map (kbd "SPC r n") 'eglot-rename) ; Rename symbol under cursor.
 
@@ -224,6 +226,9 @@
 (add-to-list 'auto-mode-alist '("\\.nu\\'" . nushell-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-ts-mode))
+(dolist (ext '("json" "lock" "jsonc" "json5" "ndjson"))
+  (add-to-list 'auto-mode-alist (cons (concat "\\." ext "\\'") 'json-ts-mode)))
 
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 (add-hook 'rust-mode-hook (lambda () (setq tab-width 4))) ; Set tab width to 4 spaces
