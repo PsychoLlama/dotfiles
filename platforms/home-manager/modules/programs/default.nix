@@ -59,6 +59,7 @@ in
     (makeProgramModule "sshfs")
     (makeProgramModule "termshark")
     (makeProgramModule "tokei")
+    (makeProgramModule "tree-sitter")
     (makeProgramModule "viddy")
     (makeProgramModule "viu")
     (makeProgramModule "wf-recorder")

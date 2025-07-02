@@ -17,6 +17,7 @@ in
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
       programs = {
+        tree-sitter.enable = mkDefault true;
         aider-chat.enable = mkDefault true;
         ast-grep.enable = mkDefault true;
         bat.enable = mkDefault true;

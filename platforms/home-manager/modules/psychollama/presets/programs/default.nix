@@ -46,6 +46,7 @@ in
     ./starship.nix
     ./swaylock.nix
     ./tmux
+    ./tree-sitter.nix
     ./waybar
     ./wezterm.nix
     ./zathura.nix
