@@ -26,6 +26,7 @@ in
 {
   imports = [
     ./aider-chat.nix
+    ./claude-code.nix
     ./emacs.nix
     ./glow.nix
     ./hyprland.nix
@@ -35,7 +36,6 @@ in
     (makeProgramModule "ast-grep")
     (makeProgramModule "binutils")
     (makeProgramModule "brightnessctl")
-    (makeProgramModule "claude-code")
     (makeProgramModule "dive")
     (makeProgramModule "dogdns")
     (makeProgramModule "doggo")
