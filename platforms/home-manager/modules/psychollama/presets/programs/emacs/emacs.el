@@ -237,7 +237,7 @@
 
 
 ;;; --- AI INTEGRATIONS ---
-(evil-define-key 'normal 'global (kbd "SPC c") 'aidermacs-transient-menu)
+(evil-define-key 'normal 'global (kbd "SPC a") 'aidermacs-transient-menu)
 (setq aidermacs-default-chat-mode 'ask)
 
 
