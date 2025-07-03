@@ -49,6 +49,7 @@ in
       };
 
       services = {
+        emacs.enable = mkDefault true;
         auth-agent.enable = mkDefault true;
       };
     };

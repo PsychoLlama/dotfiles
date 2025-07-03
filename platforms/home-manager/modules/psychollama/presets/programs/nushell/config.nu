@@ -48,7 +48,7 @@ def n [...files: path] {
 }
 
 # Launch emacs without a GUI.
-alias e = emacs --no-window-system
+alias e = emacsclient --no-window-system
 
 # Fuzzy find and edit a file.
 def nf [] {
