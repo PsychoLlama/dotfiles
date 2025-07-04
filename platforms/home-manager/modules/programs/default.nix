@@ -46,6 +46,7 @@ in
     (makeProgramModule "ipfs")
     (makeProgramModule "llm")
     (makeProgramModule "miniserve")
+    (makeProgramModule "nix-output-monitor")
     (makeProgramModule "nmap")
     (makeProgramModule "onefetch")
     (makeProgramModule "pamixer")

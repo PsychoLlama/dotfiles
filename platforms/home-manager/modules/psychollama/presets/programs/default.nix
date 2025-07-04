@@ -69,6 +69,7 @@ in
     (mkUnstablePreset "hyprlock")
     (mkUnstablePreset "jq")
     (mkUnstablePreset "miniserve")
+    (mkUnstablePreset "nix-output-monitor")
     (mkUnstablePreset "nmap")
     (mkUnstablePreset "nushell")
     (mkUnstablePreset "pamixer")

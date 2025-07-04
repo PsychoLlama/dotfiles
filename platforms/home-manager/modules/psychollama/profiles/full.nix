@@ -17,7 +17,7 @@ in
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
       programs = {
-        tree-sitter.enable = mkDefault true;
+        nix-output-monitor.enable = mkDefault true;
         aider-chat.enable = mkDefault true;
         ast-grep.enable = mkDefault true;
         bat.enable = mkDefault true;
@@ -42,6 +42,7 @@ in
         starship.enable = mkDefault true;
         termshark.enable = mkDefault true;
         tmux.enable = mkDefault true;
+        tree-sitter.enable = mkDefault true;
         viddy.enable = mkDefault true;
         wezterm.enable = mkDefault true;
         whois.enable = mkDefault true;
