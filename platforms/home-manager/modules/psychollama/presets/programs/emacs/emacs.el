@@ -220,6 +220,7 @@
 
 ;;; --- COPILOT ---
 (setq copilot-indent-offset-warning-disable t)
+(setq copilot-max-char-warning-disable t)
 (add-hook 'prog-mode-hook 'copilot-mode)
 (evil-define-key 'insert prog-mode-map (kbd "C-j") #'copilot-accept-completion)
 
