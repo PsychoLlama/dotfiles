@@ -226,6 +226,7 @@
 (add-to-list 'auto-mode-alist '("\\.nu\\'" . nushell-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\`[Jj]ustfile\\'" . just-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-ts-mode))
 (dolist (ext '("json" "lock" "jsonc" "json5" "ndjson"))
   (add-to-list 'auto-mode-alist (cons (concat "\\." ext "\\'") 'json-ts-mode)))

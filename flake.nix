@@ -194,6 +194,7 @@
         system: pkgs: {
           default = pkgs.mkShell {
             packages = [
+              pkgs.just
               pkgs.luaPackages.luacheck
               pkgs.stylua
             ];

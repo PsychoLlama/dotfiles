@@ -32,6 +32,7 @@ in
       in
       _: [
         # Major modes
+        plugins.just-ts-mode
         plugins.lua-mode
         plugins.markdown-mode
         plugins.nix-ts-mode
