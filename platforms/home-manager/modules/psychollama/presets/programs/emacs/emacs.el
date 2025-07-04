@@ -12,12 +12,6 @@
 (setq inhibit-startup-screen t) ; Don't show the startup screen.
 (setq initial-scratch-message nil) ; Don't show scratch buffer hints.
 
-; View current dir by default.
-(setq initial-buffer-choice
- (lambda ()
-   (or (cl-find-if #'buffer-file-name (buffer-list))
-    (dired-noselect (getenv "PWD")))))
-
 (line-number-mode 1) ; Show line numbers in source code.
 (add-hook 'prog-mode-hook (lambda ()
                             (display-line-numbers-mode)
