@@ -128,7 +128,7 @@
 
 (defalias 'dired-x-find-file 'dired) ; Expected by `counsel-fd-dired-jump'.
 
-(evil-define-key 'normal prog-mode-map (kbd "SPC [") 'dired-jump) ; Open parent dir of buffer.
+(evil-define-key 'normal 'global (kbd "SPC [") 'dired-jump) ; Open parent dir of buffer.
 (evil-define-key 'normal 'global (kbd "SPC z") 'counsel-projectile-switch-project)
 
 (diredfl-global-mode 1) ; Exa-style highlighting in dired.
