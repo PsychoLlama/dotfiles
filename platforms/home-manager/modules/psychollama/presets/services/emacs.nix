@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
 let
   cfg = config.psychollama.presets.services.emacs;
@@ -18,5 +13,6 @@ in
     enable = true;
     client.enable = lib.mkDefault true;
     startWithUserSession = lib.mkDefault true;
+    defaultEditor = lib.mkDefault true;
   };
 }
