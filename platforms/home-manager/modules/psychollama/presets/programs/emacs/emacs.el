@@ -121,8 +121,12 @@
      (kbd "SPC") nil ; Turn off Dired's `SPC` keymap. It breaks leader bindings.
      "h" 'dired-up-directory
      "l" 'dired-find-file
-     "F" 'counsel-fd-file-jump
-     "T" 'counsel-fd-dired-jump)))
+     "i" 'dired-create-empty-file
+     "d" 'dired-create-directory
+     "f" 'counsel-fd-file-jump
+     "t" 'counsel-fd-dired-jump)))
+
+(defalias 'dired-x-find-file 'dired) ; Expected by `counsel-fd-dired-jump'.
 
 (evil-define-key 'normal prog-mode-map (kbd "SPC [") 'dired-jump) ; Open parent dir of buffer.
 (evil-define-key 'normal 'global (kbd "SPC z") 'counsel-projectile-switch-project)
@@ -142,7 +146,7 @@
 ;;; --- AUTO-FORMATTING ---
 (apheleia-global-mode 1)
 
-(setq apheleia-formatters ; Map names to shell commands
+(setq apheleia-formatters		; Map names to shell commands
       `((prettier . (,df/formatter-prettier filepath))
         (eslint . (,df/formatter-eslint
                    "--stdin-filename" filepath
@@ -159,7 +163,7 @@
         (rustfmt . ("rustfmt" "--emit=stdout"))
         (gofmt . ("gofmt"))))
 
-(setq apheleia-mode-alist ; Map major modes to formatters
+(setq apheleia-mode-alist	       ; Map major modes to formatters
       '((markdown-mode . (prettier))
         (css-mode . (prettier))
         (less-css-mode . (prettier))
