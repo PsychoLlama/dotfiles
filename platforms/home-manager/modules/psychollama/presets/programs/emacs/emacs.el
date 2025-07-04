@@ -219,6 +219,10 @@
 (evil-define-key 'insert prog-mode-map (kbd "C-j") #'copilot-accept-completion)
 
 
+;;; --- LLMS ---
+(setq gptel-api-key (getenv "OPENAI_API_KEY"))
+
+
 ;;; --- CUSTOM FILETYPES ---
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-ts-mode))
