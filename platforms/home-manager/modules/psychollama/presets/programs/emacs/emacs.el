@@ -241,9 +241,15 @@
 
 
 ;;; --- CUSTOM KEYBINDINGS ---
+(defun df/dired-project-root ()
+  "Open the project's root directory in Dired."
+  (interactive)
+  (dired (projectile-project-root)))
+
 (evil-define-key 'normal 'global (kbd "SPC b") 'counsel-buffer-or-recentf)
 (evil-define-key 'normal 'global (kbd "SPC f") 'counsel-projectile-find-file)
 (evil-define-key 'normal 'global (kbd "SPC g") 'magit-status)
+(evil-define-key 'normal 'global (kbd "SPC p") 'df/dired-project-root)
 
 ; Clear next/prev bindings in evil mode for the minibuffer.
 (eval-after-load "evil-maps"
