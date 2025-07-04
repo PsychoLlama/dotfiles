@@ -178,7 +178,7 @@
 
 
 ;;; --- LSP INTEGRATION ---
-(setq eldoc-idle-delay 0) ; Show symbol information quickly.
+(setq eldoc-idle-delay 0.1) ; Show symbol information quickly.
 (setq eglot-server-programs
       `((nix-ts-mode . (,df/lsp-nil :initializationOptions
                                  (:nil (:nix (:flake (:autoArchive t))))))
