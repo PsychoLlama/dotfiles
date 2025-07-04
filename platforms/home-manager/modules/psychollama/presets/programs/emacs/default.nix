@@ -41,6 +41,7 @@ in
 
         # Core features
         copilot
+        plugins.gptel
         plugins.aidermacs
         plugins.apheleia
         plugins.company
