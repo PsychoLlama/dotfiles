@@ -119,7 +119,7 @@
      "h" 'dired-up-directory
      "l" 'dired-find-file
      "i" 'dired-create-empty-file
-     "d" 'dired-create-directory
+     "a" 'dired-create-directory
      "f" 'counsel-fd-file-jump
      "t" 'counsel-fd-dired-jump)))
 
