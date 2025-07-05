@@ -221,6 +221,10 @@
 
 ;;; --- LLMS ---
 (setq gptel-api-key (getenv "OPENAI_API_KEY"))
+(gptel-make-anthropic "Claude" :stream t :key (getenv "ANTHROPIC_API_KEY"))
+(gptel-make-gemini "Gemini" :stream t :key (getenv "GEMINI_API_KEY"))
+(gptel-make-gh-copilot "Copilot")
+
 (evil-define-key 'normal 'global (kbd "SPC c") 'gptel)
 (evil-define-key 'normal 'gptel-mode-map (kbd "g ?") 'gptel-menu)
 
