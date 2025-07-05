@@ -23,6 +23,7 @@
 (xclip-mode 1)
 
 (save-place-mode 1) ; Save the cursor position in files.
+(savehist-mode 1) ; Save minibuffer history.
 
 (electric-pair-mode 1) ; Automatically close brackets and quotes.
 
