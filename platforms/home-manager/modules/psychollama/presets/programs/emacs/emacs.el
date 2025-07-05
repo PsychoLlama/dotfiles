@@ -26,11 +26,11 @@
 
 (electric-pair-mode 1) ; Automatically close brackets and quotes.
 
-(defconst df/emacs-auto-save-directory ; Don't store backup files in the same directory.
+(defconst my/emacs-auto-save-directory ; Don't store backup files in the same directory.
   (expand-file-name "autosave" user-emacs-directory))
 
 (setq auto-save-file-name-transforms
-      `((".*" ,(concat df/emacs-auto-save-directory "\\1") t)))
+      `((".*" ,(concat my/emacs-auto-save-directory "\\1") t)))
 
 
 ;;; --- THEMEING ---
@@ -66,7 +66,7 @@
 (add-hook 'lisp-interaction-mode-hook            #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook                      #'enable-paredit-mode)
 
-(defun df/paredit-RET ()
+(defun my/paredit-RET ()
   "Wraps `paredit-RET' to restore evaluation when you press <return>."
   (interactive)
   (cond
@@ -81,17 +81,17 @@
     (paredit-RET))))
 
 (with-eval-after-load 'paredit
-  (keymap-set paredit-mode-map "RET" #'df/paredit-RET))
+  (keymap-set paredit-mode-map "RET" #'my/paredit-RET))
 
 
 ;;; --- EVIL MODE ---
-(defconst df/emacs-undo-tree-directory
+(defconst my/emacs-undo-tree-directory
   (expand-file-name "undo-tree" user-emacs-directory))
 
 (global-undo-tree-mode)
 (setq evil-undo-system 'undo-tree)
 (setq undo-tree-history-directory-alist
-      `(("." . ,df/emacs-undo-tree-directory)))
+      `(("." . ,my/emacs-undo-tree-directory)))
 
 (setq evil-want-keybinding nil) ; Extra modes are handled by `evil-collection`.
 (setq evil-want-minibuffer t) ; Use vim keybinds in the minibuffer.
@@ -143,14 +143,14 @@
 (apheleia-global-mode 1)
 
 (setq apheleia-formatters		; Map names to shell commands
-      `((prettier . (,df/formatter-prettier filepath))
-        (eslint . (,df/formatter-eslint
+      `((prettier . (,my/formatter-prettier filepath))
+        (eslint . (,my/formatter-eslint
                    "--stdin-filename" filepath
                    "--stdin"
                    "--fix-to-stdout"))
 
-        (nixfmt . (,df/formatter-nixfmt "--quiet"))
-        (stylua . (,df/formatter-stylua
+        (nixfmt . (,my/formatter-nixfmt "--quiet"))
+        (stylua . (,my/formatter-stylua
                    "--stdin-filepath" filepath
                    "--search-parent-directories"
                    "--allow-hidden"
@@ -176,16 +176,16 @@
 ;;; --- LSP INTEGRATION ---
 (setq eldoc-idle-delay 0.1) ; Show symbol information quickly.
 (setq eglot-server-programs
-      `((nix-ts-mode . (,df/lsp-nil :initializationOptions
+      `((nix-ts-mode . (,my/lsp-nil :initializationOptions
                                  (:nil (:nix (:flake (:autoArchive t))))))
-        (lua-ts-mode . (,df/lsp-luals :initializationOptions
+        (lua-ts-mode . (,my/lsp-luals :initializationOptions
                                    (:Lua (:format (:enable :json-false)
                                                   :workspace (:checkThirdParty :json-false)
                                                   :addonManager (:enable :json-false)))))
-        (typescript-ts-mode . (,df/lsp-tsserver "--stdio"))
-        (json-ts-mode . (,df/lsp-jsonls "--stdio"))
-        (go-ts-mode . (,df/lsp-gopls "-remote=auto"))
-        (rust-mode . (,df/lsp-rust-analyzer))
+        (typescript-ts-mode . (,my/lsp-tsserver "--stdio"))
+        (json-ts-mode . (,my/lsp-jsonls "--stdio"))
+        (go-ts-mode . (,my/lsp-gopls "-remote=auto"))
+        (rust-mode . (,my/lsp-rust-analyzer))
         (nushell-ts-mode . ("nu" "--lsp"))))
 
 (add-hook 'go-ts-mode-hook #'eglot-ensure)
@@ -203,9 +203,9 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (global-flycheck-eglot-mode 1) ; Bridge eglot diagnostics into flycheck.
 
-(setq-default flycheck-javascript-eslint-executable df/linter-eslint)
-(setq-default flycheck-sh-shellcheck-executable df/linter-shellcheck)
-(setq-default flycheck-lua-luacheck-executable df/linter-luacheck)
+(setq-default flycheck-javascript-eslint-executable my/linter-eslint)
+(setq-default flycheck-sh-shellcheck-executable my/linter-shellcheck)
+(setq-default flycheck-lua-luacheck-executable my/linter-luacheck)
 
 (setq-default flycheck-disabled-checkers
 	      '(emacs-lisp-checkdoc emacs-lisp)) ; Too many false errors.
@@ -259,7 +259,7 @@
 
 
 ;;; --- CUSTOM KEYBINDINGS ---
-(defun df/dired-project-root ()
+(defun my/dired-project-root ()
   "Open the project's root directory in Dired."
   (interactive)
   (dired (projectile-project-root)))
@@ -267,7 +267,7 @@
 (evil-define-key 'normal 'global (kbd "SPC b") 'counsel-buffer-or-recentf)
 (evil-define-key 'normal 'global (kbd "SPC f") 'counsel-projectile-find-file)
 (evil-define-key 'normal 'global (kbd "SPC g") 'magit-status)
-(evil-define-key 'normal 'global (kbd "SPC p") 'df/dired-project-root)
+(evil-define-key 'normal 'global (kbd "SPC p") 'my/dired-project-root)
 
 ; Clear next/prev bindings in evil mode for the minibuffer.
 (eval-after-load "evil-maps"

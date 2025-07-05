@@ -71,75 +71,75 @@ in
     # TODO: Make these packages configurable.
     variables = {
       # Formatters
-      "df/formatter-prettier" = {
+      "my/formatter-prettier" = {
         description = "Executable for `prettierd`.";
         value = "${pkgs.unstable.prettierd}/bin/prettierd";
       };
 
-      "df/formatter-eslint" = {
+      "my/formatter-eslint" = {
         description = "Executable for `eslint_d`.";
         value = "${pkgs.unstable.eslint_d}/bin/eslint_d";
       };
 
-      "df/formatter-nixfmt" = {
+      "my/formatter-nixfmt" = {
         description = "Executable for `nixfmt`.";
         value = "${pkgs.unstable.nixfmt-rfc-style}/bin/nixfmt";
       };
 
-      "df/formatter-stylua" = {
+      "my/formatter-stylua" = {
         description = "Executable for `stylua`.";
         value = "${pkgs.unstable.stylua}/bin/stylua";
       };
 
       # Language servers
-      "df/lsp-nil" = {
+      "my/lsp-nil" = {
         description = "Executable for the Nil (nix) language server.";
         value = "${pkgs.unstable.nil}/bin/nil";
       };
 
-      "df/lsp-tsserver" = {
+      "my/lsp-tsserver" = {
         description = "Executable for the TypeScript language server.";
         value = "${pkgs.unstable.nodePackages.typescript-language-server}/bin/typescript-language-server";
       };
 
-      "df/lsp-clangd" = {
+      "my/lsp-clangd" = {
         description = "Executable for the Clangd language server.";
         value = if pkgs.stdenv.isDarwin then "clangd" else "${pkgs.unstable.clang-tools}/bin/clangd";
       };
 
-      "df/lsp-gopls" = {
+      "my/lsp-gopls" = {
         description = "Executable for the Go language server.";
         value = "${pkgs.unstable.gopls}/bin/gopls";
       };
 
-      "df/lsp-rust-analyzer" = {
+      "my/lsp-rust-analyzer" = {
         description = "Executable for the Rust Analyzer language server.";
         value = "${pkgs.unstable.rust-analyzer}/bin/rust-analyzer";
       };
 
-      "df/lsp-luals" = {
+      "my/lsp-luals" = {
         description = "Executable for the Lua language server.";
         value = "${pkgs.unstable.lua-language-server}/bin/lua-language-server";
       };
 
-      "df/lsp-jsonls" = {
+      "my/lsp-jsonls" = {
         description = "Executable for the JSON language server.";
         value = "${pkgs.unstable.vscode-langservers-extracted}/bin/vscode-json-language-server";
       };
 
       # Linters
-      "df/linter-shellcheck" = {
+      "my/linter-shellcheck" = {
         description = "Executable for `shellcheck`.";
         value = "${pkgs.unstable.shellcheck}/bin/shellcheck";
       };
 
-      "df/linter-eslint" = {
+      "my/linter-eslint" = {
         description = "Executable for `eslint_d`.";
         value = "${pkgs.unstable.eslint_d}/bin/eslint_d";
       };
 
       # Assumes this is installed in the local dev shell.
-      "df/linter-luacheck" = {
+      "my/linter-luacheck" = {
         description = "Executable for `luacheck`.";
         value = "luacheck";
       };
