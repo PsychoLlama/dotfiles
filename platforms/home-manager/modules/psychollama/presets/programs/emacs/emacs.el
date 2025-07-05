@@ -221,6 +221,8 @@
 
 ;;; --- LLMS ---
 (setq gptel-api-key (getenv "OPENAI_API_KEY"))
+(evil-define-key 'normal 'global (kbd "SPC c") 'gptel)
+(evil-define-key 'normal 'gptel-mode-map (kbd "g ?") 'gptel-menu)
 
 
 ;;; --- ENVIRONMENT ---
