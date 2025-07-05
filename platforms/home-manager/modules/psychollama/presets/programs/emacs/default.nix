@@ -18,10 +18,23 @@ in
     enable = true;
     package = lib.mkDefault pkgs.unstable.emacs;
     config-file = ./emacs.el;
-    extraPackages =
-      let
-        plugins = pkgs.unstable.emacsPackages;
-        copilot = plugins.copilot.override {
+    plugins = {
+      # Major modes
+      just-ts-mode.enable = lib.mkDefault true;
+      lua-mode.enable = lib.mkDefault true;
+      markdown-mode.enable = lib.mkDefault true;
+      nix-ts-mode.enable = lib.mkDefault true;
+      nushell-ts-mode.enable = lib.mkDefault true;
+      rust-mode.enable = lib.mkDefault true;
+
+      # Core features
+      direnv.enable = lib.mkDefault true;
+      aidermacs.enable = lib.mkDefault true;
+      apheleia.enable = lib.mkDefault true;
+      company.enable = lib.mkDefault true;
+      copilot = {
+        enable = lib.mkDefault true;
+        package = pkgs.unstable.emacsPackages.copilot.override {
           copilot-language-server-fhs =
             if pkgs.stdenv.isDarwin then
               # FHS variant is not supported (or necessary) on macOS.
@@ -29,44 +42,32 @@ in
             else
               pkgs.unstable.copilot-language-server-fhs;
         };
-      in
-      _: [
-        # Major modes
-        plugins.just-ts-mode
-        plugins.lua-mode
-        plugins.markdown-mode
-        plugins.nix-ts-mode
-        plugins.nushell-ts-mode
-        plugins.rust-mode
-
-        # Core features
-        copilot
-        plugins.direnv
-        plugins.aidermacs
-        plugins.apheleia
-        plugins.company
-        plugins.counsel
-        plugins.counsel-fd
-        plugins.counsel-projectile
-        plugins.diredfl
-        plugins.doom-themes
-        plugins.eglot
-        plugins.evil
-        plugins.evil-collection
-        plugins.evil-commentary
-        plugins.evil-surround
-        plugins.evil-terminal-cursor-changer
-        plugins.flycheck
-        plugins.flycheck-eglot
-        plugins.gptel
-        plugins.magit
-        plugins.paredit
-        plugins.projectile
-        plugins.rainbow-delimiters
-        plugins.treesit-grammars.with-all-grammars
-        plugins.undo-tree
-        plugins.xclip
-      ];
+      };
+      counsel.enable = lib.mkDefault true;
+      counsel-fd.enable = lib.mkDefault true;
+      counsel-projectile.enable = lib.mkDefault true;
+      diredfl.enable = lib.mkDefault true;
+      doom-themes.enable = lib.mkDefault true;
+      eglot.enable = lib.mkDefault true;
+      evil.enable = lib.mkDefault true;
+      evil-collection.enable = lib.mkDefault true;
+      evil-commentary.enable = lib.mkDefault true;
+      evil-surround.enable = lib.mkDefault true;
+      evil-terminal-cursor-changer.enable = lib.mkDefault true;
+      flycheck.enable = lib.mkDefault true;
+      flycheck-eglot.enable = lib.mkDefault true;
+      gptel.enable = lib.mkDefault true;
+      magit.enable = lib.mkDefault true;
+      paredit.enable = lib.mkDefault true;
+      projectile.enable = lib.mkDefault true;
+      rainbow-delimiters.enable = lib.mkDefault true;
+      treesit-grammars = {
+        enable = lib.mkDefault true;
+        package = pkgs.unstable.emacsPackages.treesit-grammars.with-all-grammars;
+      };
+      undo-tree.enable = lib.mkDefault true;
+      xclip.enable = lib.mkDefault true;
+    };
 
     # TODO: Make these packages configurable.
     variables = {
