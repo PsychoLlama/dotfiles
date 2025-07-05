@@ -223,6 +223,11 @@
 (setq gptel-api-key (getenv "OPENAI_API_KEY"))
 
 
+;;; --- ENVIRONMENT ---
+(direnv-mode 1)
+(setq direnv-always-show-summary nil) 
+
+
 ;;; --- CUSTOM FILETYPES ---
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.lua\\'" . lua-ts-mode))

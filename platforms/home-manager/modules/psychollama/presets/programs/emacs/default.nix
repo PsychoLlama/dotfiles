@@ -41,7 +41,7 @@ in
 
         # Core features
         copilot
-        plugins.gptel
+        plugins.direnv
         plugins.aidermacs
         plugins.apheleia
         plugins.company
@@ -58,6 +58,7 @@ in
         plugins.evil-terminal-cursor-changer
         plugins.flycheck
         plugins.flycheck-eglot
+        plugins.gptel
         plugins.magit
         plugins.paredit
         plugins.projectile
