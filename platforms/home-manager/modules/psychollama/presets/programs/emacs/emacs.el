@@ -97,8 +97,10 @@
 (setq evil-want-minibuffer t) ; Use vim keybinds in the minibuffer.
 (setq evil-want-Y-yank-to-eol t) ; Mirror nvim 0.10 `Y` behavior.
 (setq evil-search-wrap nil) ; Basically `&nowrapscan`.
+(setq evil-search-module 'evil-search) ; Replace `isearch' with `evil-search'.
 
 (evil-mode 1) ; yay, evil!
+
 (require 'evil-core) ; Provides `evil-define-key`.
 (evil-define-key 'normal 'global (kbd "C-u") 'evil-scroll-up)
 (evil-terminal-cursor-changer-activate) ; Fixes terminal cursor modes
