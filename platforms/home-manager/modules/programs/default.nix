@@ -31,6 +31,7 @@ in
     ./glow.nix
     ./hyprland.nix
     ./nushell
+    ./viu.nix
 
     (makeProgramModule "acpi")
     (makeProgramModule "ast-grep")
@@ -62,7 +63,6 @@ in
     (makeProgramModule "tokei")
     (makeProgramModule "tree-sitter")
     (makeProgramModule "viddy")
-    (makeProgramModule "viu")
     (makeProgramModule "wf-recorder")
     (makeProgramModule "whois")
     (makeProgramModule "wireplumber")
