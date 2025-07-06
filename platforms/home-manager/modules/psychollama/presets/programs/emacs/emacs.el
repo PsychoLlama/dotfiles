@@ -11,6 +11,7 @@
 (defun display-startup-echo-area-message ()) ; Override echo message on startup.
 (setq inhibit-startup-screen t) ; Don't show the startup screen.
 (setq initial-scratch-message nil) ; Don't show scratch buffer hints.
+(setq server-client-instructions nil) ; Suppress emacsclient startup help message.
 
 (line-number-mode 1) ; Show line numbers in source code.
 (add-hook 'prog-mode-hook (lambda ()
