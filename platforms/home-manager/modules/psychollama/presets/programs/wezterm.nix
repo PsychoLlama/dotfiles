@@ -11,6 +11,9 @@ let
   inline = lib.generators.mkLuaInline;
   toLua = lib.generators.toLua { };
   settings = {
+    # Assumes `pkgs.wezterm.terminfo` exists in `$TERMINFO_DIRS`.
+    term = "wezterm";
+
     color_scheme = "OneDarkPro";
     window_background_opacity = 0.85;
     hide_tab_bar_if_only_one_tab = true;
