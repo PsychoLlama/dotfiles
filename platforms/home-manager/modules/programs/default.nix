@@ -32,6 +32,7 @@ in
     ./hyprland.nix
     ./nushell
     ./viu.nix
+    ./wezterm.nix
 
     (makeProgramModule "acpi")
     (makeProgramModule "ast-grep")
