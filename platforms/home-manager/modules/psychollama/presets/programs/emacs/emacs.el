@@ -28,11 +28,27 @@
 
 (electric-pair-mode 1) ; Automatically close brackets and quotes.
 
-(defconst my/emacs-auto-save-directory ; Don't store backup files in the same directory.
-  (expand-file-name "autosave" user-emacs-directory))
+(defconst my/emacs-auto-save-directory
+  (expand-file-name "autosave/" user-emacs-directory))
 
-(setq auto-save-file-name-transforms
-      `((".*" ,(concat my/emacs-auto-save-directory "\\1") t)))
+(defconst my/emacs-backup-directory
+  (expand-file-name "backup/" user-emacs-directory))
+
+(defconst my/emacs-lock-directory
+  (expand-file-name "locks/" user-emacs-directory))
+
+(mkdir my/emacs-auto-save-directory t)
+(mkdir my/emacs-backup-directory t)
+(mkdir my/emacs-lock-directory t)
+
+(setq auto-save-file-name-transforms ; Don't store backup files in the same directory.
+      `((".*" ,my/emacs-auto-save-directory t)))
+
+(setq backup-directory-alist ; Hide those annoying `./my-file~' artifacts.
+      `(("." . ,my/emacs-backup-directory)))
+
+(setq lock-file-name-transforms ; Don't store file locks in the same directory.
+      `((".*" ,my/emacs-lock-directory t)))
 
 
 ;;; --- THEMEING ---
