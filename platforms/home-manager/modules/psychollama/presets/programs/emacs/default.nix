@@ -7,11 +7,53 @@
 
 let
   cfg = config.psychollama.presets.programs.emacs;
+
+  /**
+    Similar to `lib.mkPackageOption` but supports pulling executables
+    from the path instead of nixpkgs.
+  */
+  mkExeOption =
+    package: executable:
+    lib.mkOption {
+      type = lib.types.str;
+      default = if package == null then executable else "${package}/bin/${executable}";
+      description = "Executable path for `${executable}`.";
+    };
 in
 
 {
   options.psychollama.presets.programs.emacs = {
     enable = lib.mkEnableOption "Use an opinionated Emacs config";
+
+    linters = {
+      shellcheck = mkExeOption pkgs.unstable.shellcheck "shellcheck";
+      eslint = mkExeOption pkgs.unstable.eslint_d "eslint_d";
+
+      # Assumes this is installed in the local dev shell.
+      luacheck = mkExeOption null "luacheck";
+    };
+
+    formatters = {
+      prettier = mkExeOption pkgs.unstable.prettierd "prettierd";
+      eslint = mkExeOption pkgs.unstable.eslint_d "eslint_d";
+      nixfmt = mkExeOption pkgs.unstable.nixfmt-rfc-style "nixfmt";
+      stylua = mkExeOption pkgs.unstable.stylua "stylua";
+    };
+
+    languageServers = {
+      nil = mkExeOption pkgs.unstable.nil "nil";
+      tsserver = mkExeOption pkgs.unstable.nodePackages.typescript-language-server "typescript-language-server";
+      gopls = mkExeOption pkgs.unstable.gopls "gopls";
+      rust-analyzer = mkExeOption pkgs.unstable.rust-analyzer "rust-analyzer";
+      luals = mkExeOption pkgs.unstable.lua-language-server "lua-language-server";
+      jsonls = mkExeOption pkgs.unstable.vscode-langservers-extracted "vscode-json-language-server";
+      clangd =
+        # Use clangd from XCode on macOS.
+        if pkgs.stdenv.isDarwin then
+          mkExeOption null "clangd"
+        else
+          mkExeOption pkgs.unstable.clang-tools "clangd";
+    };
   };
 
   config.programs.emacs = lib.mkIf cfg.enable {
@@ -69,80 +111,78 @@ in
       xclip.enable = lib.mkDefault true;
     };
 
-    # TODO: Make these packages configurable.
     variables = {
       # Formatters
       "my/formatter-prettier" = {
         description = "Executable for `prettierd`.";
-        value = "${pkgs.unstable.prettierd}/bin/prettierd";
+        value = cfg.formatters.prettier;
       };
 
       "my/formatter-eslint" = {
         description = "Executable for `eslint_d`.";
-        value = "${pkgs.unstable.eslint_d}/bin/eslint_d";
+        value = cfg.formatters.eslint;
       };
 
       "my/formatter-nixfmt" = {
         description = "Executable for `nixfmt`.";
-        value = "${pkgs.unstable.nixfmt-rfc-style}/bin/nixfmt";
+        value = cfg.formatters.nixfmt;
       };
 
       "my/formatter-stylua" = {
         description = "Executable for `stylua`.";
-        value = "${pkgs.unstable.stylua}/bin/stylua";
+        value = cfg.formatters.stylua;
       };
 
       # Language servers
       "my/lsp-nil" = {
         description = "Executable for the Nil (nix) language server.";
-        value = "${pkgs.unstable.nil}/bin/nil";
+        value = cfg.languageServers.nil;
       };
 
       "my/lsp-tsserver" = {
         description = "Executable for the TypeScript language server.";
-        value = "${pkgs.unstable.nodePackages.typescript-language-server}/bin/typescript-language-server";
-      };
-
-      "my/lsp-clangd" = {
-        description = "Executable for the Clangd language server.";
-        value = if pkgs.stdenv.isDarwin then "clangd" else "${pkgs.unstable.clang-tools}/bin/clangd";
+        value = cfg.languageServers.tsserver;
       };
 
       "my/lsp-gopls" = {
         description = "Executable for the Go language server.";
-        value = "${pkgs.unstable.gopls}/bin/gopls";
+        value = cfg.languageServers.gopls;
       };
 
       "my/lsp-rust-analyzer" = {
         description = "Executable for the Rust Analyzer language server.";
-        value = "${pkgs.unstable.rust-analyzer}/bin/rust-analyzer";
+        value = cfg.languageServers.rust-analyzer;
       };
 
       "my/lsp-luals" = {
         description = "Executable for the Lua language server.";
-        value = "${pkgs.unstable.lua-language-server}/bin/lua-language-server";
+        value = cfg.languageServers.luals;
       };
 
       "my/lsp-jsonls" = {
         description = "Executable for the JSON language server.";
-        value = "${pkgs.unstable.vscode-langservers-extracted}/bin/vscode-json-language-server";
+        value = cfg.languageServers.jsonls;
+      };
+
+      "my/lsp-clangd" = {
+        description = "Executable for the Clangd language server.";
+        value = cfg.languageServers.clangd;
       };
 
       # Linters
       "my/linter-shellcheck" = {
         description = "Executable for `shellcheck`.";
-        value = "${pkgs.unstable.shellcheck}/bin/shellcheck";
+        value = cfg.linters.shellcheck;
       };
 
       "my/linter-eslint" = {
         description = "Executable for `eslint_d`.";
-        value = "${pkgs.unstable.eslint_d}/bin/eslint_d";
+        value = cfg.linters.eslint;
       };
 
-      # Assumes this is installed in the local dev shell.
       "my/linter-luacheck" = {
         description = "Executable for `luacheck`.";
-        value = "luacheck";
+        value = cfg.linters.luacheck;
       };
     };
   };
