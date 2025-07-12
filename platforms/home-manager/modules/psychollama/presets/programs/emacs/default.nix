@@ -26,27 +26,30 @@ in
     enable = lib.mkEnableOption "Use an opinionated Emacs config";
 
     linters = {
-      shellcheck = mkExeOption pkgs.unstable.shellcheck "shellcheck";
       eslint = mkExeOption pkgs.unstable.eslint_d "eslint_d";
+      ruff = mkExeOption pkgs.unstable.ruff "ruff";
+      shellcheck = mkExeOption pkgs.unstable.shellcheck "shellcheck";
 
       # Assumes this is installed in the local dev shell.
       luacheck = mkExeOption null "luacheck";
     };
 
     formatters = {
-      prettier = mkExeOption pkgs.unstable.prettierd "prettierd";
+      black = mkExeOption pkgs.unstable.black "black";
       eslint = mkExeOption pkgs.unstable.eslint_d "eslint_d";
       nixfmt = mkExeOption pkgs.unstable.nixfmt-rfc-style "nixfmt";
+      prettier = mkExeOption pkgs.unstable.prettierd "prettierd";
       stylua = mkExeOption pkgs.unstable.stylua "stylua";
     };
 
     languageServers = {
-      nil = mkExeOption pkgs.unstable.nil "nil";
-      tsserver = mkExeOption pkgs.unstable.nodePackages.typescript-language-server "typescript-language-server";
       gopls = mkExeOption pkgs.unstable.gopls "gopls";
-      rust-analyzer = mkExeOption pkgs.unstable.rust-analyzer "rust-analyzer";
-      luals = mkExeOption pkgs.unstable.lua-language-server "lua-language-server";
       jsonls = mkExeOption pkgs.unstable.vscode-langservers-extracted "vscode-json-language-server";
+      luals = mkExeOption pkgs.unstable.lua-language-server "lua-language-server";
+      nil = mkExeOption pkgs.unstable.nil "nil";
+      pyright = mkExeOption pkgs.unstable.pyright "pyright-langserver";
+      rust-analyzer = mkExeOption pkgs.unstable.rust-analyzer "rust-analyzer";
+      tsserver = mkExeOption pkgs.unstable.nodePackages.typescript-language-server "typescript-language-server";
       clangd =
         # Use clangd from XCode on macOS.
         if pkgs.stdenv.isDarwin then
@@ -133,6 +136,11 @@ in
         value = cfg.formatters.stylua;
       };
 
+      "my/formatter-black" = {
+        description = "Executable for `black`.";
+        value = cfg.formatters.black;
+      };
+
       # Language servers
       "my/lsp-nil" = {
         description = "Executable for the Nil (nix) language server.";
@@ -169,6 +177,11 @@ in
         value = cfg.languageServers.clangd;
       };
 
+      "my/lsp-pyright" = {
+        description = "Executable for the Pyright language server.";
+        value = cfg.languageServers.pyright;
+      };
+
       # Linters
       "my/linter-shellcheck" = {
         description = "Executable for `shellcheck`.";
@@ -183,6 +196,11 @@ in
       "my/linter-luacheck" = {
         description = "Executable for `luacheck`.";
         value = cfg.linters.luacheck;
+      };
+
+      "my/linter-ruff" = {
+        description = "Executable for `ruff`.";
+        value = cfg.linters.ruff;
       };
     };
   };
