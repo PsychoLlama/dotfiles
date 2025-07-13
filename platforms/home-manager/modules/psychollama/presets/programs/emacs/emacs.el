@@ -14,11 +14,13 @@
 (setq server-client-instructions nil) ; Suppress emacsclient startup help message.
 
 (line-number-mode 1) ; Show line numbers in source code.
-(add-hook 'prog-mode-hook (lambda ()
-                            (display-line-numbers-mode)
-                            (custom-set-faces ; Make the line number column's background transparent
-                             '(line-number ((t (:background nil))))
-                             '(line-number-current-line ((t (:background nil)))))))
+(add-hook 'prog-mode-hook #'display-line-numbers-mode);
+(custom-set-faces ; Make the line number column's background transparent
+ '(line-number ((t (:background nil))))
+ '(line-number-current-line ((t (:background nil))))
+
+ ; Default highlight makes text unreadable.
+ '(lazy-highlight ((t (:background "skyblue" :foreground "black")))))
 
 (setq select-enable-clipboard nil) ; Prefer xclip to sync the kill ring with the system clipboard.
 (xclip-mode 1)
