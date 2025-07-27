@@ -30,6 +30,7 @@ in
     ./aider-chat.nix
     ./bat.nix
     ./bottom.nix
+    ./claude-code.nix
     ./direnv.nix
     ./editor.nix
     ./emacs
@@ -56,7 +57,6 @@ in
     (mkUnstablePreset "bat")
     (mkUnstablePreset "bottom")
     (mkUnstablePreset "brightnessctl")
-    (mkUnstablePreset "claude-code")
     (mkUnstablePreset "direnv")
     (mkUnstablePreset "dive")
     (mkUnstablePreset "doggo")
