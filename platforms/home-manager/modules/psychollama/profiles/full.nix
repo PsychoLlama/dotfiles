@@ -17,7 +17,7 @@ in
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
       programs = {
-        nix-output-monitor.enable = mkDefault true;
+        gh.enable = mkDefault true;
         aider-chat.enable = mkDefault true;
         ast-grep.enable = mkDefault true;
         bat.enable = mkDefault true;
@@ -35,6 +35,7 @@ in
         jq.enable = mkDefault true;
         llm.enable = mkDefault true;
         miniserve.enable = mkDefault true;
+        nix-output-monitor.enable = mkDefault true;
         nmap.enable = mkDefault true;
         nushell.enable = mkDefault true;
         spotify-player.enable = mkDefault true;
