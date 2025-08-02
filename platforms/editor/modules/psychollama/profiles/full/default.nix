@@ -50,8 +50,6 @@ in
         lualine-nvim.enable = lib.mkDefault true;
         markdown-preview-nvim.enable = lib.mkDefault true;
         navitron-nvim.enable = lib.mkDefault true;
-        neotest-vitest.enable = lib.mkDefault true;
-        neotest.enable = lib.mkDefault true;
         nvim-autopairs.enable = lib.mkDefault true;
         nvim-cmp.enable = lib.mkDefault true;
         nvim-lint.enable = lib.mkDefault true;

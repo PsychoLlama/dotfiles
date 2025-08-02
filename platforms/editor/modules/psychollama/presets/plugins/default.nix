@@ -56,8 +56,6 @@ in
     (mkPluginPreset "lualine-nvim" ./lualine.lua)
     (mkPluginPreset "markdown-preview-nvim" ./markdown-preview/config.lua)
     (mkPluginPreset "navitron-nvim" ./navitron.lua)
-    (mkPluginPreset "neotest" ./neotest.lua)
-    (mkPluginPreset "neotest-vitest" null)
     (mkPluginPreset "nvim-autopairs" ./autopairs.lua)
     (mkPluginPreset "nvim-cmp" ./nvim-cmp.lua)
     (mkPluginPreset "nvim-lint" ./nvim-lint/config.lua)
