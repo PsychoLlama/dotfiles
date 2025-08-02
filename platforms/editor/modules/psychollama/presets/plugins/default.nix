@@ -51,7 +51,6 @@ in
     (mkPluginPreset "fzf-vim" null)
     (mkPluginPreset "gitlinker-nvim" ./gitlinker.lua)
     (mkPluginPreset "gitsigns-nvim" ./gitsigns.lua)
-    (mkPluginPreset "img-clip-nvim" null)
     (mkPluginPreset "lualine-lsp-progress" null)
     (mkPluginPreset "lualine-nvim" ./lualine.lua)
     (mkPluginPreset "markdown-preview-nvim" ./markdown-preview/config.lua)
