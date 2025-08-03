@@ -36,7 +36,7 @@ export def 'repo root' [
   suggested_root?: string
 ] {
   $suggested_root
-    | default ($env | get -i REPO_ROOT)
+    | default $env.REPO_ROOT?
     | default ~/projects
     | path expand
 }
