@@ -23,21 +23,6 @@ odp.setup({
       bg = bg_color,
       fg = colors.blue,
     },
-
-    -- Snacks.picker. These are linked to `NormalFloat` and friends which have
-    -- aggessively dark backgrounds. I want transparency. Declaring fg colors
-    -- unlinks them and removes the default background.
-    SnacksPickerTitle = {
-      fg = colors.blue,
-    },
-
-    SnacksPickerBorder = {
-      fg = colors.gray,
-    },
-
-    SnacksPicker = {
-      fg = colors.white,
-    },
   },
   styles = {
     comments = 'italic',

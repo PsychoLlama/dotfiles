@@ -9,13 +9,6 @@ in
     opts = {
       input.enabled = true;
       notifier.enabled = true;
-      picker = {
-        enabled = true;
-        layout = {
-          fullscreen = true;
-          preset = "telescope";
-        };
-      };
     };
   };
 }
