@@ -41,8 +41,6 @@ $env.config.hooks.env_change = {
 # Open the editor.
 @deprecated "Change your ways, heathen."
 def n [...files: path] {
-  [y] | input list "Accept defeat?"
-
   if ($files | length) == 0 {
     nvim $env.PWD
   } else {
