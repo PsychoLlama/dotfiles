@@ -48,11 +48,6 @@ in
           addresses = [ "dynamic" ];
           id = "7B5KM6T-7NXKMY5-KM7TIQJ-WFX2OBO-OHMZOPA-HAXTV5B-5RNKXFM-OEF5AAL";
         };
-
-        old-phone = {
-          addresses = [ "dynamic" ];
-          id = "S2U7KKV-SXJGOI3-6MSJWIT-U2JP32Y-HH7WZU5-ZDS6KAT-6CNYRAM-ZQTWZAQ";
-        };
       };
     };
   };
