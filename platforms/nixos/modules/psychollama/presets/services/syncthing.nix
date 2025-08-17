@@ -40,8 +40,8 @@ in
 
       devices = {
         file-server = {
-          addresses = [ "tcp://rpi3-002.host.selfhosted.city" ];
-          id = "MLM3RUS-6LHM76Q-OPW5UIC-EAH7EUM-ZNG6TJW-TDASURZ-GCZ2YOX-ASNI6Q4";
+          addresses = [ "tcp://nas-001.host.nova.selfhosted.city" ];
+          id = "SJZG6UN-EOBGJV6-RAV5X5F-6QBWY6U-AE5TXOT-2E57WP7-CAWQJRX-F3AO5QG";
         };
 
         phone = {
