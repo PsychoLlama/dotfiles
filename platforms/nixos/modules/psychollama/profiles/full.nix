@@ -30,6 +30,7 @@ in
     services = {
       automatic-timezoned.enable = lib.mkDefault true;
       printing.enable = lib.mkDefault true;
+      tailscale.enable = lib.mkDefault true;
     };
 
     fonts.enableDefaultPackages = lib.mkDefault true;
