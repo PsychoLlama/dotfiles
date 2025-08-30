@@ -38,8 +38,7 @@ $env.config.hooks.env_change = {
   ]
 }
 
-# Open the editor.
-@deprecated "Change your ways, heathen."
+# Launch neovim.
 def n [...files: path] {
   if ($files | length) == 0 {
     nvim $env.PWD
