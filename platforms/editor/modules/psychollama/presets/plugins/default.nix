@@ -38,7 +38,6 @@ in
     ./snacks
 
     (mkPluginPreset "alternaut-nvim" ./alternaut/config.lua)
-    (mkPluginPreset "avante-nvim" ./avante.lua)
     (mkPluginPreset "cmp-buffer" null)
     (mkPluginPreset "cmp-cmdline" null)
     (mkPluginPreset "cmp-nvim-lsp" null)
