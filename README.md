@@ -10,7 +10,7 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
 
 ## Stack
 
-- WM: [Hyprland](https://hyprland.org/) + [Waybar](https://github.com/Alexays/Waybar/)
+- WM: [Sway](https://swaywm.org/) + [Waybar](https://github.com/Alexays/Waybar/)
 - Launcher: [Rofi](https://github.com/davatorium/rofi)
 - Notifications: [Dunst](https://github.com/dunst-project/dunst)
 - Terminal: [Wezterm](https://wezfurlong.org/wezterm)

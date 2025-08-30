@@ -36,12 +36,10 @@ in
       layer = "top";
       modules-left = [
         "sway/workspaces"
-        "hyprland/workspaces"
       ];
 
       modules-center = [
         "sway/window"
-        "hyprland/window"
       ];
 
       modules-right = [

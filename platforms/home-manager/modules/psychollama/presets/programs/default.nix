@@ -39,8 +39,6 @@ in
     ./gh.nix
     ./git.nix
     ./glow.nix
-    ./hyprland.nix
-    ./hyprlock.nix
     ./llm.nix
     ./nushell
     ./rofi.nix
@@ -67,7 +65,6 @@ in
     (mkUnstablePreset "git")
     (mkUnstablePreset "glow")
     (mkUnstablePreset "grim")
-    (mkUnstablePreset "hyprlock")
     (mkUnstablePreset "jq")
     (mkUnstablePreset "miniserve")
     (mkUnstablePreset "nix-output-monitor")

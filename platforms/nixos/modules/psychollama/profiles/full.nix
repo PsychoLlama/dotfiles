@@ -10,8 +10,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    security.pam.services.hyprlock = lib.mkDefault { };
-
     psychollama.presets = {
       services = {
         greetd.enable = lib.mkDefault true;
@@ -21,7 +19,6 @@ in
       };
 
       programs = {
-        hyprland.enable = lib.mkDefault true;
         sway.enable = lib.mkDefault true;
         wireshark.enable = lib.mkDefault true;
       };

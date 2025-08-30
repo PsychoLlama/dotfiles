@@ -29,7 +29,6 @@ in
     ./claude-code.nix
     ./emacs.nix
     ./glow.nix
-    ./hyprland.nix
     ./nushell
     ./viu.nix
     ./wezterm.nix

@@ -21,7 +21,6 @@ in
       services = {
         dunst.enable = mkDefault true;
         gammastep.enable = mkDefault true;
-        hypridle.enable = mkDefault true;
         sway.enable = mkDefault true;
         swaybg.enable = mkDefault true;
       };
@@ -31,8 +30,6 @@ in
         brightnessctl.enable = mkDefault true;
         firefox.enable = mkDefault true;
         grim.enable = mkDefault true;
-        hyprland.enable = mkDefault true;
-        hyprlock.enable = mkDefault true;
         pamixer.enable = mkDefault true;
         parted.enable = mkDefault true;
         playerctl.enable = mkDefault true;
