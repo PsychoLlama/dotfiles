@@ -62,7 +62,6 @@ in
     (mkPluginPreset "nvim-treesitter" ./nvim-treesitter.lua)
     (mkPluginPreset "nvim-treesitter-textobjects" null)
     (mkPluginPreset "onedarkpro-nvim" ./onedarkpro.lua)
-    (mkPluginPreset "remix-nvim" null)
     (mkPluginPreset "snacks-nvim" ./snacks/config.lua)
     (mkPluginPreset "teleport-vim" ./teleport.lua)
     (mkPluginPreset "telescope-fzf-native-nvim" ./telescope-fzf-native.lua)

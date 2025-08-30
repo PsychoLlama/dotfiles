@@ -1,7 +1,6 @@
 {
   nixpkgs,
   nixpkgs-unstable,
-  tree-sitter-remix,
   self,
   ...
 }:

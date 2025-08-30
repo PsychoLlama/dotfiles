@@ -56,7 +56,6 @@ in
         nvim-treesitter-textobjects.enable = lib.mkDefault true;
         nvim-treesitter.enable = lib.mkDefault true;
         onedarkpro-nvim.enable = lib.mkDefault true;
-        remix-nvim.enable = lib.mkDefault true;
         snacks-nvim.enable = lib.mkDefault true;
         teleport-vim.enable = lib.mkDefault true;
         telescope-fzf-native-nvim.enable = lib.mkDefault true;
@@ -71,14 +70,7 @@ in
     };
 
     extraPlugins = [
-      (pkgs.unstable.vimPlugins.nvim-treesitter.withPlugins (
-        _:
-        pkgs.unstable.vimPlugins.nvim-treesitter.allGrammars
-        ++ [
-          pkgs.tree-sitter.builtGrammars.tree-sitter-remix
-          pkgs.tree-sitter.builtGrammars.tree-sitter-nu
-        ]
-      ))
+      pkgs.unstable.vimPlugins.nvim-treesitter.withAllGrammars
     ];
 
     settings = {

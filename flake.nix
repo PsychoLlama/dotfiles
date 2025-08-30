@@ -36,8 +36,6 @@
       url = "github:PsychoLlama/teleport.vim";
       flake = false;
     };
-
-    tree-sitter-remix.url = "github:PsychoLlama/tree-sitter-remix";
   };
 
   outputs =
@@ -47,18 +45,16 @@
       nixos-hardware,
       nixpkgs,
       nixpkgs-unstable,
-      tree-sitter-remix,
       home-manager,
       systems,
       ...
     }:
+
     let
       lib = import ./lib flake-inputs;
 
-      importPkgs = system: import nixpkgs { inherit system; };
-
       # { system -> pkgs }
-      pkgsBySystem = lib.genAttrs (import systems) importPkgs;
+      pkgsBySystem = lib.genAttrs (import systems) (system: import nixpkgs { inherit system; });
 
       # (system: pkgs: a) -> { system -> a }
       eachSystem = lib.flip lib.mapAttrs pkgsBySystem;

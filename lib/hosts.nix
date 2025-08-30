@@ -3,7 +3,6 @@
   nix-darwin,
   nixpkgs,
   nixpkgs-unstable,
-  tree-sitter-remix,
   self,
   ...
 }:
@@ -22,7 +21,6 @@ let
 
   nixpkgs-config.nixpkgs = {
     overlays = [
-      tree-sitter-remix.overlays.custom-grammars
       self.overlays.latest-packages
       self.overlays.vim-plugins
     ];
