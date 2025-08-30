@@ -22,7 +22,7 @@ in
       enable = true;
       client.enable = lib.mkDefault true;
       startWithUserSession = lib.mkDefault true;
-      defaultEditor = lib.mkDefault true;
+      defaultEditor = false; # Managed by program preset.
     };
 
     systemd.user.services.emacs.Service = {

@@ -204,4 +204,17 @@ in
       };
     };
   };
+
+  # Set emacs to be the default editor. The HM module only does this if you
+  # enable the launchd service on macOS which is a huge pain to manage.
+  #
+  # Source:
+  # https://github.com/nix-community/home-manager/blob/080e8b48b0318b38143d5865de9334f46d51fce3/modules/services/emacs.nix#L124-L128
+  config.home.sessionVariables = lib.mkIf cfg.enable {
+    EDITOR = lib.mkDefault (
+      lib.getBin (
+        pkgs.writeShellScript "editor" ''exec ${lib.getBin config.programs.emacs.package}/bin/emacsclient "''${@:---create-frame}"''
+      )
+    );
+  };
 }
