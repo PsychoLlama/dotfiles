@@ -55,26 +55,7 @@
     let
       lib = import ./lib flake-inputs;
 
-      # Packages with unfree licenses. To be replaced with libre alternatives.
-      evilPackages = [
-        "claude-code"
-        "copilot-language-server"
-      ];
-
-      importPkgs =
-        system:
-        import nixpkgs {
-          inherit system;
-          overlays = [
-            tree-sitter-remix.overlays.custom-grammars
-            self.overlays.latest-packages
-            self.overlays.vim-plugins
-          ];
-
-          config = {
-            allowUnfreePredicate = pkg: lib.elem (lib.getName pkg) evilPackages;
-          };
-        };
+      importPkgs = system: import nixpkgs { inherit system; };
 
       # { system -> pkgs }
       pkgsBySystem = lib.genAttrs (import systems) importPkgs;
@@ -85,9 +66,7 @@
 
     {
       nixpkgs = pkgsBySystem;
-      lib = lib.dotfiles // {
-        inherit eachSystem;
-      };
+      lib = lib.dotfiles;
 
       nixosModules = {
         editor-platform = ./platforms/editor/modules;
@@ -106,19 +85,16 @@
       };
 
       nixosConfigurations = lib.dotfiles.hosts.nixos {
-        ava = {
-          pkgs = pkgsBySystem.x86_64-linux;
-          modules = [
-            nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
-            nixpkgs.nixosModules.notDetected
-            ./hosts/ava
-          ];
-        };
+        ava = [
+          nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
+          nixpkgs.nixosModules.notDetected
+          ./hosts/ava
+        ];
       };
 
       homeConfigurations = lib.dotfiles.hosts.home-manager {
         overlord = {
-          pkgs = pkgsBySystem.x86_64-linux;
+          system = "x86_64-linux";
           modules = [ ./hosts/tars ];
         };
       };

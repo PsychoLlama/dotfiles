@@ -3,6 +3,7 @@
   nix-darwin,
   nixpkgs,
   nixpkgs-unstable,
+  tree-sitter-remix,
   self,
   ...
 }:
@@ -17,6 +18,24 @@ let
     # The hostname determines the default attrset key to use when rebuilding
     # the system.
     networking.hostName = lib.mkDefault hostName;
+  };
+
+  nixpkgs-config.nixpkgs = {
+    overlays = [
+      tree-sitter-remix.overlays.custom-grammars
+      self.overlays.latest-packages
+      self.overlays.vim-plugins
+    ];
+
+    config = {
+      # Packages with unfree licenses. To be replaced with libre alternatives.
+      allowUnfreePredicate =
+        pkg:
+        lib.elem (lib.getName pkg) [
+          "claude-code"
+          "copilot-language-server"
+        ];
+    };
   };
 
   # Pin `<nixpkgs>` and `flake:nixpkgs` to match system packages. This is the
@@ -90,16 +109,14 @@ in
 
 {
   nixos = lib.mapAttrs (
-    hostName:
-    { pkgs, modules }:
+    hostName: modules:
     lib.nixosSystem {
-      inherit pkgs;
-
       modules = modules ++ [
         home-manager.nixosModules.home-manager
         self.nixosModules.nixos-platform
         self.nixosModules.nixos-configs
 
+        nixpkgs-config
         nix-flakes
         hm-substrate
 
@@ -109,14 +126,12 @@ in
   );
 
   darwin = lib.mapAttrs (
-    hostName:
-    { pkgs, modules }:
+    hostName: modules:
     nix-darwin.lib.darwinSystem {
-      inherit pkgs;
-
       modules = modules ++ [
         home-manager.darwinModules.home-manager
 
+        nixpkgs-config
         nix-path
         nix-flakes
         hm-substrate
@@ -126,11 +141,15 @@ in
     }
   );
 
+  # NOTE: Requires an import of `pkgs` ahead of time. No support for
+  # dynamically importing with `nixpkgs.hostPlatform`.
   home-manager = lib.mapAttrs (
     hostName:
-    { pkgs, modules }:
+    { system, modules }:
     home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
+      pkgs = import nixpkgs nixpkgs-config.nixpkgs // {
+        inherit system;
+      };
 
       modules = modules ++ [
         self.nixosModules.home-manager-platform
