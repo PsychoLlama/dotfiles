@@ -62,7 +62,9 @@
 
     {
       nixpkgs = pkgsBySystem;
-      lib = lib.dotfiles;
+      lib = lib.dotfiles // {
+        inherit eachSystem;
+      };
 
       nixosModules = {
         editor-platform = ./platforms/editor/modules;
