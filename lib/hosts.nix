@@ -34,14 +34,11 @@ let
           "copilot-language-server"
         ];
     };
-  };
 
-  # Pin `<nixpkgs>` and `flake:nixpkgs` to match system packages. This is the
-  # default on NixOS 24.05.
-  nix-path = {
-    nix = {
-      nixPath = [ "nixpkgs=${nixpkgs-unstable}" ];
-      registry.nixpkgs.flake = nixpkgs-unstable;
+    # Pin `<nixpkgs>` and `flake:nixpkgs` to match system packages.
+    flake = {
+      source = lib.mkForce nixpkgs-unstable; # Stable is dumb. Live a little.
+      setNixPath = true;
     };
   };
 
@@ -130,7 +127,6 @@ in
         home-manager.darwinModules.home-manager
 
         nixpkgs-config
-        nix-path
         nix-flakes
         hm-substrate
 
