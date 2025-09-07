@@ -18,7 +18,9 @@ in
 
   config.services.syncthing = lib.mkIf cfg.enable {
     enable = true;
-    package = pkgs.unstable.syncthing;
+
+    # Use stable. New version expects flags in a different style.
+    package = pkgs.syncthing;
 
     user = username;
     group = "users";
