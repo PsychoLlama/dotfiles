@@ -10,8 +10,9 @@ let
 in
 
 {
-  options.psychollama.presets.programs.aider-chat.enable =
-    lib.mkEnableOption "Install the latest version of aider-chat";
+  options.psychollama.presets.programs.aider-chat = {
+    enable = lib.mkEnableOption "Install the latest version of aider-chat";
+  };
 
   config.programs.aider-chat = lib.mkIf cfg.enable {
     enable = lib.mkDefault true;
@@ -25,5 +26,9 @@ in
       restore-chat-history = true;
       vim = true;
     };
+  };
+
+  config.programs.git = lib.mkIf cfg.enable {
+    ignores = [ ".aider*" ];
   };
 }

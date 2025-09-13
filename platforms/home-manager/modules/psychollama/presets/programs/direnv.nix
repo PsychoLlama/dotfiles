@@ -35,4 +35,8 @@ in
       }))
     ''
   );
+
+  config.programs.git = lib.mkIf cfg.enable {
+    ignores = [ ".direnv/" ];
+  };
 }

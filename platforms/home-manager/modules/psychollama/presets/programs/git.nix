@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
 let
   cfg = config.psychollama.presets.programs.git;
@@ -68,13 +63,6 @@ in
           editor = "nvim";
           untrackedCache = true;
           fsmonitor = true;
-          excludesfile = lib.mkIf config.programs.aider-chat.enable (
-            toString (
-              pkgs.writeText ".gitignore" ''
-                .aider*
-              ''
-            )
-          );
         };
       };
     };
