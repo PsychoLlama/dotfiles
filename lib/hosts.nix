@@ -38,7 +38,8 @@ let
     # Pin `<nixpkgs>` and `flake:nixpkgs` to match system packages.
     flake = {
       source = lib.mkForce nixpkgs-unstable; # Stable is dumb. Live a little.
-      setNixPath = true;
+      setNixPath = lib.mkForce true;
+      setFlakeRegistry = true;
     };
   };
 
