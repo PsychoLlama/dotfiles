@@ -7,6 +7,7 @@ use nu-hooks/nu-hooks/nuenv/hook.nu [
 $env.config.edit_mode = 'vi'
 $env.config.show_banner = false
 $env.config.footer_mode = 20
+$env.config.filesize.unit = 'binary'
 $env.config.history = {
   file_format: 'sqlite'
   max_size: 100_000_000_000
