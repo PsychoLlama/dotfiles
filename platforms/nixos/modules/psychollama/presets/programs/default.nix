@@ -1,6 +1,8 @@
 {
   imports = [
-    ./sway
+    ./npm.nix
     ./wireshark.nix
+
+    ./sway
   ];
 }
