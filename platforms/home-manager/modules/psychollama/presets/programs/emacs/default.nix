@@ -80,7 +80,7 @@ in
       copilot = {
         enable = lib.mkDefault true;
         package = pkgs.unstable.emacsPackages.copilot.override {
-          copilot-language-server-fhs =
+          copilot-language-server =
             if pkgs.stdenv.isDarwin then
               # FHS variant is not supported (or necessary) on macOS.
               pkgs.unstable.copilot-language-server
