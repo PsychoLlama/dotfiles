@@ -38,6 +38,33 @@ in
       ];
     };
 
+    /*
+      TODO: Automate this.
+
+      use std/iter *
+
+      let displays = swaymsg -t get_outputs -r | from json
+      let main = $displays | iter find { $in.name == "eDP-1" }
+      let ext = $displays | iter find { $in.model == "LG ULTRAWIDE" }
+
+      let dimensions = {
+        x: (($main.rect.width / 2) - ($ext.rect.width / 2) | into int)
+        y: -($ext.rect.height | into int)
+      }
+
+      let ext_id = $ext | select make model serial | values | str join " "
+
+      $'
+      output "($main.name)" position 0 0
+      output "($ext_id)" position ($dimensions.x) ($dimensions.y)
+      '
+    */
+    programs.sway.extraConfig = ''
+      # Orient displays supporting my external monitor.
+      output "eDP-1" position 0 0
+      output "LG Electronics LG ULTRAWIDE 404NTLEDA584" position -760 -1440
+    '';
+
     home-manager.users.${username} = {
       home.stateVersion = "22.05";
       home.packages = [ pkgs.man-pages ];
