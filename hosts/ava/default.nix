@@ -47,22 +47,28 @@ in
       let main = $displays | iter find { $in.name == "eDP-1" }
       let ext = $displays | iter find { $in.model == "LG ULTRAWIDE" }
 
-      let dimensions = {
-        x: (($main.rect.width / 2) - ($ext.rect.width / 2) | into int)
-        y: -($ext.rect.height | into int)
+      let d = {
+        ext: {
+          x: 0
+          y: 0
+        }
+        main: {
+          x: (($ext.rect.width / 2) - ($main.rect.width / 2) | into int)
+          y: $ext.rect.height
+        }
       }
 
       let ext_id = $ext | select make model serial | values | str join " "
 
       $'
-      output "($main.name)" position 0 0
-      output "($ext_id)" position ($dimensions.x) ($dimensions.y)
+      output "($ext_id)" position ($d.ext.x) ($d.ext.y)
+      output "($main.name)" position ($d.main.x) ($d.main.y)
       '
     */
     programs.sway.extraConfig = ''
       # Orient displays supporting my external monitor.
-      output "eDP-1" position 0 0
-      output "LG Electronics LG ULTRAWIDE 404NTLEDA584" position -760 -1440
+      output "LG Electronics LG ULTRAWIDE 404NTLEDA584" position 0 0
+      output "eDP-1" position 760 1440
     '';
 
     home-manager.users.${username} = {
