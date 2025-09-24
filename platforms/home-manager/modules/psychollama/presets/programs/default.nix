@@ -36,6 +36,7 @@ in
     ./emacs
     ./fd.nix
     ./firefox.nix
+    ./fuzzel.nix
     ./gh.nix
     ./git.nix
     ./glow.nix
