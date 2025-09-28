@@ -23,6 +23,7 @@ in
         gammastep.enable = mkDefault true;
         sway.enable = mkDefault true;
         swaybg.enable = mkDefault true;
+        swayidle.enable = mkDefault true;
       };
 
       programs = {

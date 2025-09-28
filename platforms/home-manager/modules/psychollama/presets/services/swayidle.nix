@@ -12,7 +12,9 @@ let
 in
 
 {
-  options.psychollama.presets.services.swayidle.enable = lib.mkEnableOption "Automatically lock the computer when inactive";
+  options.psychollama.presets.services.swayidle = {
+    enable = lib.mkEnableOption "Automatically lock the computer when inactive";
+  };
 
   config.services.swayidle = lib.mkIf cfg.enable {
     enable = true;
