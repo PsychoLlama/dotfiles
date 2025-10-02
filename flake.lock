@@ -8,15 +8,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1748824248,
-        "narHash": "sha256-qys0xl0LpMAyr0bgLkzN5Rqx55j0q0tGoEOQuAIwIWE=",
+        "lastModified": 1759409252,
+        "narHash": "sha256-MK7HbJbKopC9BIwO8i0E8muBMU5UYkGKVkopvmtt95s=",
         "owner": "PsychoLlama",
         "repo": "alternaut.nvim",
-        "rev": "f18386ca8ece75ff768075491037c0a2f931ad6c",
+        "rev": "d4c458114c7febcff330087ec268a64ebfff012a",
         "type": "github"
       },
       "original": {
         "owner": "PsychoLlama",
+        "ref": "remove-vimscript-implementation",
         "repo": "alternaut.nvim",
         "type": "github"
       }

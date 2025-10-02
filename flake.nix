@@ -18,7 +18,7 @@
     };
 
     alternaut-nvim = {
-      url = "github:PsychoLlama/alternaut.nvim";
+      url = "github:PsychoLlama/alternaut.nvim/remove-vimscript-implementation";
       inputs.systems.follows = "systems";
     };
 
