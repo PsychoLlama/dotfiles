@@ -29,7 +29,7 @@ in
         p = "push --set-upstream origin";
         pf = "push --force-with-lease";
         s = "stash";
-        ss = "stash save --include-untracked";
+        ss = "stash push --staged --message";
         pl = "pull origin";
         amend = "commit --amend";
       };
