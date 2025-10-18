@@ -33,6 +33,7 @@ in
             "Bash(grep:*)"
             "Bash(head:*)"
             "Bash(ls:*)"
+            "Bash(mkdir:*)"
             "Bash(pwd:*)"
             "Bash(rg:*)"
             "Bash(tail:*)"
