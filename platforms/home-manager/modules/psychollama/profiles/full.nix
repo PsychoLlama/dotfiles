@@ -17,12 +17,12 @@ in
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
       programs = {
-        gh.enable = mkDefault true;
         aider-chat.enable = mkDefault true;
         ast-grep.enable = mkDefault true;
         bat.enable = mkDefault true;
         bottom.enable = mkDefault true;
         claude-code.enable = mkDefault true;
+        codex.enable = mkDefault true;
         direnv.enable = mkDefault true;
         dive.enable = mkDefault true;
         doggo.enable = mkDefault true;
@@ -30,6 +30,7 @@ in
         emacs.enable = mkDefault true;
         fd.enable = mkDefault true;
         fzf.enable = mkDefault true;
+        gh.enable = mkDefault true;
         git.enable = mkDefault true;
         glow.enable = mkDefault true;
         jq.enable = mkDefault true;
