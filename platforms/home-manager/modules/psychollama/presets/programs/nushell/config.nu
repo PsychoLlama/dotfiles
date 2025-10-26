@@ -170,7 +170,7 @@ def "," [
     if ($ident | str contains '#') {
       $ident
     } else {
-      $"nixpkgs#($ident)"
+      $"unstable#($ident)"
     }
   }
 

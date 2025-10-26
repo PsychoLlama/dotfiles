@@ -49,8 +49,16 @@ let
     {
       nix = {
         package = pkgs.nixVersions.latest;
-        settings.experimental-features = "nix-command flakes";
-        registry.dotfiles.flake = self;
+
+        registry = {
+          dotfiles.flake = self;
+          unstable.flake = nixpkgs-unstable;
+        };
+
+        settings = {
+          experimental-features = "nix-command flakes";
+          flake-registry = null; # Disable default listings.
+        };
       };
     };
 
