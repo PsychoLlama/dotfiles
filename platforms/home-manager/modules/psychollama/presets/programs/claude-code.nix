@@ -43,6 +43,7 @@ in
             "Bash(git add:*)"
             "Bash(git bisect:*)"
             "Bash(git blame:*)"
+            "Bash(git commit:*)"
             "Bash(git diff:*)"
             "Bash(git fetch:*)"
             "Bash(git grep:*)"
@@ -75,6 +76,7 @@ in
             "Bash(npm run fmt:*)"
             "Bash(npm run lint:*)"
             "Bash(npm run test:*)" # Potential arbitrary code execution.
+            "Bash(npm test:*)"
 
             "WebFetch(domain:docs.anthropic.com)"
             "WebFetch(domain:docs.claude.com)"
