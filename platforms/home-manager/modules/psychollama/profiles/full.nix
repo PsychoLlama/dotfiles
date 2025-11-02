@@ -11,13 +11,13 @@ let
 in
 
 {
-  options.psychollama.profiles.full.enable =
-    lib.mkEnableOption "Enable all dotfiles programs and services";
+  options.psychollama.profiles.full = {
+    enable = lib.mkEnableOption "Enable all dotfiles programs and services";
+  };
 
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
       programs = {
-        ast-grep.enable = mkDefault true;
         bat.enable = mkDefault true;
         bottom.enable = mkDefault true;
         claude-code.enable = mkDefault true;
@@ -33,17 +33,13 @@ in
         git.enable = mkDefault true;
         glow.enable = mkDefault true;
         jq.enable = mkDefault true;
-        llm.enable = mkDefault true;
         miniserve.enable = mkDefault true;
         nix-output-monitor.enable = mkDefault true;
-        nmap.enable = mkDefault true;
         nushell.enable = mkDefault true;
         spotify-player.enable = mkDefault true;
-        sshfs.enable = mkDefault pkgs.stdenv.isLinux;
         starship.enable = mkDefault true;
         termshark.enable = mkDefault true;
         tmux.enable = mkDefault true;
-        tree-sitter.enable = mkDefault true;
         viddy.enable = mkDefault true;
         wezterm.enable = mkDefault true;
         whois.enable = mkDefault true;
@@ -58,13 +54,10 @@ in
 
     programs = {
       binutils.enable = mkDefault true;
-      du-dust.enable = mkDefault true;
       duf.enable = mkDefault true;
       hexyl.enable = mkDefault true;
-      ipfs.enable = mkDefault pkgs.stdenv.isLinux;
       onefetch.enable = mkDefault true;
       parted.enable = mkDefault pkgs.stdenv.isLinux;
-      pv.enable = mkDefault true;
       radare2.enable = mkDefault true;
       rage.enable = mkDefault true;
       ripgrep.enable = mkDefault true;

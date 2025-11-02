@@ -39,20 +39,17 @@ in
     ./gh.nix
     ./git.nix
     ./glow.nix
-    ./llm.nix
     ./nushell
     ./rofi.nix
     ./spotify-player.nix
     ./starship.nix
     ./swaylock.nix
     ./tmux
-    ./tree-sitter.nix
     ./waybar
     ./wezterm.nix
     ./zathura.nix
 
     (mkUnstablePreset "acpi")
-    (mkUnstablePreset "ast-grep")
     (mkUnstablePreset "bat")
     (mkUnstablePreset "bottom")
     (mkUnstablePreset "brightnessctl")
@@ -69,7 +66,6 @@ in
     (mkUnstablePreset "jq")
     (mkUnstablePreset "miniserve")
     (mkUnstablePreset "nix-output-monitor")
-    (mkUnstablePreset "nmap")
     (mkUnstablePreset "nushell")
     (mkUnstablePreset "pamixer")
     (mkUnstablePreset "parted")
@@ -77,7 +73,6 @@ in
     (mkUnstablePreset "rofi")
     (mkUnstablePreset "slurp")
     (mkUnstablePreset "spotify-player")
-    (mkUnstablePreset "sshfs")
     (mkUnstablePreset "starship")
     (mkUnstablePreset "swaylock")
     (mkUnstablePreset "termshark")
