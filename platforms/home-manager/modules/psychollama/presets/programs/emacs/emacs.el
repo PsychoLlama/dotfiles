@@ -279,11 +279,6 @@
 (setq rust-mode-treesitter-derive t) ; Use tree-sitter grammar for syntax highlighting
 
 
-;;; --- AI INTEGRATIONS ---
-(evil-define-key 'normal 'global (kbd "SPC a") 'aidermacs-transient-menu)
-(setq aidermacs-default-chat-mode 'ask)
-
-
 ;;; --- CUSTOM KEYBINDINGS ---
 (defun my/dired-project-root ()
   "Open the project's root directory in Dired."

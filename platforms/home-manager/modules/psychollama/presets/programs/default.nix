@@ -27,7 +27,6 @@ in
 
 {
   imports = [
-    ./aider-chat.nix
     ./bat.nix
     ./bottom.nix
     ./claude-code.nix

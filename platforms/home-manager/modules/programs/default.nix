@@ -25,7 +25,6 @@ let
 in
 {
   imports = [
-    ./aider-chat.nix
     ./claude-code.nix
     ./emacs.nix
     ./glow.nix

@@ -74,7 +74,6 @@ in
 
       # Core features
       direnv.enable = lib.mkDefault true;
-      aidermacs.enable = lib.mkDefault true;
       apheleia.enable = lib.mkDefault true;
       company.enable = lib.mkDefault true;
       copilot = {
