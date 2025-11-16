@@ -76,17 +76,7 @@ in
       direnv.enable = lib.mkDefault true;
       apheleia.enable = lib.mkDefault true;
       company.enable = lib.mkDefault true;
-      copilot = {
-        enable = lib.mkDefault true;
-        package = pkgs.unstable.emacsPackages.copilot.override {
-          copilot-language-server =
-            if pkgs.stdenv.isDarwin then
-              # FHS variant is not supported (or necessary) on macOS.
-              pkgs.unstable.copilot-language-server
-            else
-              pkgs.unstable.copilot-language-server-fhs;
-        };
-      };
+      copilot.enable = lib.mkDefault true;
       counsel.enable = lib.mkDefault true;
       counsel-fd.enable = lib.mkDefault true;
       counsel-projectile.enable = lib.mkDefault true;
