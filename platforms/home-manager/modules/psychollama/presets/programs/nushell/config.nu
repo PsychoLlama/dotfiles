@@ -91,40 +91,6 @@ def chat [] {
   nvim -c 'execute "CodeCompanionChat" | wincmd l | quit'
 }
 
-# Show information about a nix package.
-def gist [
-  # Any attribute of `pkgs`
-  pkg_path: string
-
-  # Show all the metadata
-  --long (-l)
-
-  # Open the homepage
-  --open (-o)
-] {
-  let pkg = nix eval --offline --json $"nixpkgs#($pkg_path).meta" | from json
-
-  # Probably because the package doesn't exist. Nix would've printed an error.
-  if $pkg == null {
-    return
-  }
-
-  if $long {
-    return $pkg
-  }
-
-  if $open {
-    start $pkg.homepage
-    return $pkg.homepage
-  }
-
-  $pkg
-    | select name? description? homepage?
-    | transpose key value
-    | where value != null
-    | reduce --fold {} { |row, acc| $acc | merge { $row.key: $row.value } }
-}
-
 # `mkdir` and `cd` in one move.
 def --env md [directory: path] {
   mkdir $directory
@@ -160,31 +126,6 @@ def --wrapped search [...args] {
     }
 }
 
-# Drop into a shell providing nix packages.
-def "," [
-  package_name: string # Anything from nixpkgs.
-  ...extra_packages: string # Optional extras.
-] {
-  # Default bare identifiers to the nixpkgs flake.
-  def canonicalize [ident: string] {
-    if ($ident | str contains '#') {
-      $ident
-    } else {
-      $"unstable#($ident)"
-    }
-  }
-
-  nix shell ...(
-    | [$package_name ...$extra_packages]
-    | each { |ident| canonicalize $ident }
-  )
-}
-
-# Drop into a nix development shell.
-def ">>" [] {
-  nix develop --command $env.SHELL
-}
-
 # Encrypt stdin using public keys from GitHub.
 def encrypt [
   username: string # Any GitHub username.
@@ -213,3 +154,4 @@ def 'wallpaper set' [image: path] {
 
 # Custom libraries
 use dotfiles/repo *
+use dotfiles/x *
