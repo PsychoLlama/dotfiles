@@ -10,7 +10,8 @@ let
 in
 
 {
-  options.psychollama.presets.services.gammastep.enable = lib.mkEnableOption "Use the gammastep blue light filter";
+  options.psychollama.presets.services.gammastep.enable =
+    lib.mkEnableOption "Use the gammastep blue light filter";
 
   config.services.gammastep = lib.mkIf cfg.enable {
     enable = true;

@@ -11,7 +11,8 @@ let
 in
 
 {
-  options.psychollama.presets.services.auth-agent.enable = lib.mkEnableOption "Cross platform ssh-agent";
+  options.psychollama.presets.services.auth-agent.enable =
+    lib.mkEnableOption "Cross platform ssh-agent";
 
   config = lib.mkIf cfg.enable {
     services.auth-agent = {
