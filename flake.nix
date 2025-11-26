@@ -54,7 +54,13 @@
       lib = import ./lib flake-inputs;
 
       # { system -> pkgs }
-      pkgsBySystem = lib.genAttrs (import systems) (system: import nixpkgs { inherit system; });
+      pkgsBySystem = lib.genAttrs (import systems) (
+        system:
+        import nixpkgs {
+          inherit system;
+          overlays = nixpkgs.lib.attrValues self.overlays;
+        }
+      );
 
       # (system: pkgs: a) -> { system -> a }
       eachSystem = lib.flip lib.mapAttrs pkgsBySystem;
