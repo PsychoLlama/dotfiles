@@ -170,7 +170,9 @@
             packages = [
               pkgs.just
               pkgs.luaPackages.luacheck
+              pkgs.nixfmt-rfc-style
               pkgs.stylua
+              pkgs.treefmt
             ];
           };
         }
