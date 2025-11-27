@@ -1,7 +1,7 @@
 { vimUtils }:
 
 vimUtils.buildVimPlugin {
-  pname = "ext.nvim";
+  pname = "lab.nvim";
   version = "latest";
   src = ./.;
 }

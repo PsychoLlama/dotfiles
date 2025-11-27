@@ -40,10 +40,10 @@ in
         conform-nvim.enable = lib.mkDefault true;
         copilot-lua.enable = lib.mkDefault true;
         deja-view-vim.enable = lib.mkDefault true;
-        ext-nvim.enable = lib.mkDefault true;
         fzf-vim.enable = lib.mkDefault true;
         gitlinker-nvim.enable = lib.mkDefault true;
         gitsigns-nvim.enable = lib.mkDefault true;
+        lab-nvim.enable = lib.mkDefault true;
         lualine-lsp-progress.enable = lib.mkDefault true;
         lualine-nvim.enable = lib.mkDefault true;
         markdown-preview-nvim.enable = lib.mkDefault true;

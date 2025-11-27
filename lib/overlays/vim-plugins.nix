@@ -25,7 +25,7 @@ in
     pkgs.vimPlugins
     // extraVimPlugins
     // {
-      "ext-nvim" = pkgs.callPackage ../../pkgs/ext.nvim { };
+      "lab-nvim" = pkgs.callPackage ../../pkgs/lab.nvim { };
       "alternaut-nvim" = inputs.alternaut-nvim.packages.${pkgs.system}.default;
     };
 }

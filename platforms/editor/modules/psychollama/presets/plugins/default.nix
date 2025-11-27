@@ -46,7 +46,7 @@ in
     (mkPluginPreset "conform-nvim" ./conform/config.lua)
     (mkPluginPreset "copilot-lua" ./copilot.lua)
     (mkPluginPreset "deja-view-vim" null)
-    (mkPluginPreset "ext-nvim" null)
+    (mkPluginPreset "lab-nvim" null)
     (mkPluginPreset "fzf-vim" null)
     (mkPluginPreset "gitlinker-nvim" ./gitlinker.lua)
     (mkPluginPreset "gitsigns-nvim" ./gitsigns.lua)

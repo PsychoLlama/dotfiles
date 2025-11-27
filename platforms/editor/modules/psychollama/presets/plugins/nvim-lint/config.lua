@@ -14,7 +14,7 @@ return function(config)
     'InsertLeave',
     'TextChanged',
   }, {
-    group = vim.api.nvim_create_augroup('ext.autolint', {}),
+    group = vim.api.nvim_create_augroup('lab.autolint', {}),
     desc = 'Run standalone linters',
     callback = function()
       -- TODO: Throttle this. `TextChanged` can happen a lot.
