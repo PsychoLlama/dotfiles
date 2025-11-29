@@ -76,6 +76,7 @@ in
             "Bash(npm run fmt:*)"
             "Bash(npm run lint:*)"
             "Bash(npm run test:*)" # Potential arbitrary code execution.
+            "Bash(npm run)"
             "Bash(npm test:*)"
 
             "WebFetch(domain:docs.anthropic.com)"
