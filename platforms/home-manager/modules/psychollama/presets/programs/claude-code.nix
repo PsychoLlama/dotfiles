@@ -37,6 +37,7 @@ in
             "Bash(pwd:*)"
             "Bash(rg:*)"
             "Bash(tail:*)"
+            "Bash(tree:*)"
             "Bash(wc:*)"
             "Bash(which:*)"
 
@@ -72,11 +73,8 @@ in
 
             # JavaScript / TypeScript projects
             "Bash(npm info:*)"
-            "Bash(npm run build:*)"
-            "Bash(npm run fmt:*)"
-            "Bash(npm run lint:*)"
-            "Bash(npm run test:*)" # Potential arbitrary code execution.
             "Bash(npm run)"
+            "Bash(npm run:*)" # Potential arbitrary code execution.
             "Bash(npm test:*)"
 
             # Nix projects
