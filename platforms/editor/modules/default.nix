@@ -30,12 +30,6 @@ let
 in
 
 {
-  imports = [
-    ./lsp
-    ./plugins.nix
-    ./settings.nix
-  ];
-
   options = {
     enable = lib.mkEnableOption "Whether to enable Neovim";
 

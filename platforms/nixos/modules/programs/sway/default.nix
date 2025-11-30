@@ -5,8 +5,6 @@ let
 in
 
 {
-  imports = [ ./input.nix ];
-
   options.programs.sway = {
     extraConfig = lib.mkOption {
       type = lib.types.lines;

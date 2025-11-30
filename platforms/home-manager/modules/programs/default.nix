@@ -25,13 +25,6 @@ let
 in
 {
   imports = [
-    ./claude-code.nix
-    ./emacs.nix
-    ./glow.nix
-    ./nushell
-    ./viu.nix
-    ./wezterm.nix
-
     (makeProgramModule "acpi")
     (makeProgramModule "binutils")
     (makeProgramModule "brightnessctl")

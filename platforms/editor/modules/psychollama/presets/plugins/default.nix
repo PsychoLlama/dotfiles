@@ -30,13 +30,6 @@ in
 
 {
   imports = [
-    ./alternaut
-    ./codecompanion
-    ./conform
-    ./markdown-preview
-    ./nvim-lint
-    ./snacks
-
     (mkPluginPreset "alternaut-nvim" ./alternaut/config.lua)
     (mkPluginPreset "cmp-buffer" null)
     (mkPluginPreset "cmp-cmdline" null)

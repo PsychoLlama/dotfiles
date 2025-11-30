@@ -27,28 +27,6 @@ in
 
 {
   imports = [
-    ./bat.nix
-    ./bottom.nix
-    ./claude-code.nix
-    ./direnv.nix
-    ./editor.nix
-    ./emacs
-    ./fd.nix
-    ./firefox.nix
-    ./fuzzel.nix
-    ./gh.nix
-    ./git.nix
-    ./glow.nix
-    ./nushell
-    ./rofi.nix
-    ./spotify-player.nix
-    ./starship.nix
-    ./swaylock.nix
-    ./tmux
-    ./waybar
-    ./wezterm.nix
-    ./zathura.nix
-
     (mkUnstablePreset "acpi")
     (mkUnstablePreset "bat")
     (mkUnstablePreset "bottom")
