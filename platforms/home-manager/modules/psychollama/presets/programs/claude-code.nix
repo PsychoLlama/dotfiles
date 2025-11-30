@@ -79,6 +79,11 @@ in
             "Bash(npm run)"
             "Bash(npm test:*)"
 
+            # Nix projects
+            "Bash(nix eval:*)"
+            "Bash(nix flake show:*)"
+            "Bash(nix search:*)"
+
             "WebFetch(domain:docs.anthropic.com)"
             "WebFetch(domain:docs.claude.com)"
             "WebFetch(domain:platform.openai.com)"
