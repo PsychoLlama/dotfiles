@@ -73,14 +73,44 @@
       };
 
       nixosModules = {
-        editor-platform = ./platforms/editor/modules;
-        editor-configs = ./platforms/editor/modules/psychollama;
+        editor-platform = {
+          imports = lib.dotfiles.discoverNixFiles {
+            directory = ./platforms/editor/modules;
+            exclude = [ ./platforms/editor/modules/psychollama ];
+          };
+        };
 
-        home-manager-platform = ./platforms/home-manager/modules;
-        home-manager-configs = ./platforms/home-manager/modules/psychollama;
+        editor-configs = {
+          imports = lib.dotfiles.discoverNixFiles {
+            directory = ./platforms/editor/modules/psychollama;
+          };
+        };
 
-        nixos-platform = ./platforms/nixos/modules;
-        nixos-configs = ./platforms/nixos/modules/psychollama;
+        home-manager-platform = {
+          imports = lib.dotfiles.discoverNixFiles {
+            directory = ./platforms/home-manager/modules;
+            exclude = [ ./platforms/home-manager/modules/psychollama ];
+          };
+        };
+
+        home-manager-configs = {
+          imports = lib.dotfiles.discoverNixFiles {
+            directory = ./platforms/home-manager/modules/psychollama;
+          };
+        };
+
+        nixos-platform = {
+          imports = lib.dotfiles.discoverNixFiles {
+            directory = ./platforms/nixos/modules;
+            exclude = [ ./platforms/nixos/modules/psychollama ];
+          };
+        };
+
+        nixos-configs = {
+          imports = lib.dotfiles.discoverNixFiles {
+            directory = ./platforms/nixos/modules/psychollama;
+          };
+        };
       };
 
       overlays = {
