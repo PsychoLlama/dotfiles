@@ -15,6 +15,6 @@ in
 
   config.programs.chromium = lib.mkIf cfg.enable {
     enable = lib.mkDefault true;
-    package = lib.mkDefault pkgs.unstable.ungoogled-chromium;
+    package = lib.mkDefault pkgs.unstable.chromium;
   };
 }
