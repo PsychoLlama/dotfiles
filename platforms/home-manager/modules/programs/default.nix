@@ -28,7 +28,6 @@ in
     (makeProgramModule "acpi")
     (makeProgramModule "binutils")
     (makeProgramModule "brightnessctl")
-    (makeProgramModule "codex")
     (makeProgramModule "dive")
     (makeProgramModule "dogdns")
     (makeProgramModule "doggo")

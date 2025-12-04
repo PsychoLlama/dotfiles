@@ -27,7 +27,7 @@ let
   # Evaluate modules in a minimal NixOS environment. This is lighter than
   # creating a new machine.
   nixos = import (pkgs.path + "/nixos/lib/eval-config.nix") {
-    inherit (pkgs) system;
+    system = pkgs.stdenv.hostPlatform.system;
     inherit pkgs;
     inherit modules;
   };

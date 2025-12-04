@@ -75,9 +75,9 @@ in
       home.stateVersion = "22.05";
       home.packages = [ pkgs.man-pages ];
 
-      programs.git = {
-        userName = "Jesse Gibson";
-        userEmail = "JesseTheGibson@gmail.com";
+      programs.git.settings.user = {
+        name = "Jesse Gibson";
+        email = "JesseTheGibson@gmail.com";
       };
 
       psychollama.profiles = {

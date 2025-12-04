@@ -16,8 +16,8 @@ in
       hhh = "git diff HEAD~2";
     };
 
-    programs.git = {
-      aliases = {
+    programs.git.settings = {
+      alias = {
         a = "add --all";
         d = "diff";
         b = "branch";
@@ -34,36 +34,35 @@ in
         amend = "commit --amend";
       };
 
-      delta = {
-        enable = true;
-
-        options = {
-          dark = true;
-          syntax-theme = "OneHalfDark";
-        };
+      push = {
+        autoSetupRemote = true;
+        default = "current";
       };
 
-      extraConfig = {
-        push = {
-          autoSetupRemote = true;
-          default = "current";
-        };
+      fetch = {
+        prune = true;
+        pruneTags = true;
+      };
 
-        fetch = {
-          prune = true;
-          pruneTags = true;
-        };
+      init.defaultBranch = "main";
+      pull.rebase = true;
+      rebase.autoStash = true;
+      interactive.singleKey = true;
 
-        init.defaultBranch = "main";
-        pull.rebase = true;
-        rebase.autoStash = true;
-        interactive.singleKey = true;
+      core = {
+        editor = "nvim";
+        untrackedCache = true;
+        fsmonitor = true;
+      };
+    };
 
-        core = {
-          editor = "nvim";
-          untrackedCache = true;
-          fsmonitor = true;
-        };
+    programs.delta = {
+      enable = true;
+      enableGitIntegration = true;
+
+      options = {
+        dark = true;
+        syntax-theme = "OneHalfDark";
       };
     };
   };

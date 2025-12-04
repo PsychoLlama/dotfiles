@@ -23,6 +23,5 @@ in
 
     # Avoids interleaving with systemd output.
     systemd.services.greetd.serviceConfig.Type = "idle";
-    services.greetd.vt = 2;
   };
 }
