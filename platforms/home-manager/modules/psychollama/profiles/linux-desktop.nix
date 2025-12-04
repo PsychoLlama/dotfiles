@@ -17,6 +17,7 @@ in
 
     psychollama.presets = {
       fonts.enable = true;
+      gtk.enable = mkDefault true;
 
       services = {
         dunst.enable = mkDefault true;
