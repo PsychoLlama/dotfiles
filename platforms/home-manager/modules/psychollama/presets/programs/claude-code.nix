@@ -78,9 +78,14 @@ in
             "Bash(npm test:*)"
 
             # Nix projects
+            "Bash(nix build:*)"
             "Bash(nix eval:*)"
+            "Bash(nix flake check:*)"
             "Bash(nix flake show:*)"
             "Bash(nix search:*)"
+
+            # Generic projects
+            "Bash(just:*)" # Potential arbitrary code execution.
 
             "WebFetch(domain:docs.anthropic.com)"
             "WebFetch(domain:docs.claude.com)"
