@@ -13,63 +13,68 @@
 --- The full set of all supported language servers.
 --- @alias core.lsp.Config table<string, core.lsp.Server>
 
---- @type core.lsp.Config | nil
-local global_config = nil
+--- @type core.lsp.Config
+local servers = {}
 
---- @alias core.lsp.StartCallback fun(server: vim.lsp.ClientConfig): nil
---- @type core.lsp.StartCallback[]
+--- @alias core.lsp.AttachCallback fun(config: vim.lsp.ClientConfig): nil
+--- @type core.lsp.AttachCallback[]
 local callbacks = {}
 
 local M = {}
 
+--- @param filetype string
+local function launch_servers(filetype)
+  vim.iter(servers):each(function(_, server)
+    if not vim.tbl_contains(server.filetypes, filetype) then
+      return
+    end
+
+    -- May be mutated by callbacks.
+    local config = {
+      name = server.name,
+      cmd = server.command,
+      root_dir = vim.fs.root(0, server.root.patterns),
+      settings = server.settings,
+    }
+
+    for _, callback in ipairs(callbacks) do
+      callback(config)
+    end
+
+    vim.lsp.start(config)
+  end)
+end
+
 --- Configure LSP clients according to file type.
 --- @param settings core.lsp.Config
 function M.setup(settings)
-  global_config = settings
-
-  local filetypes = vim.fn.flatten(vim
-    .iter(settings)
-    :map(function(_, server)
-      return server.filetypes
-    end)
-    :totable())
+  servers = settings
 
   vim.api.nvim_create_autocmd('FileType', {
-    pattern = filetypes,
+    pattern = '*',
     group = vim.api.nvim_create_augroup('core.lsp.launcher', {}),
     callback = function(event)
-      vim.iter(settings):each(function(_, server)
-        if not vim.tbl_contains(server.filetypes, event.match) then
-          return
-        end
-
-        -- May be mutated by callbacks.
-        local config = {
-          name = server.name,
-          cmd = server.command,
-          root_dir = vim.fs.root(0, server.root.patterns),
-          settings = server.settings,
-        }
-
-        for _, callback in ipairs(callbacks) do
-          callback(server)
-        end
-
-        vim.lsp.start(config)
-      end)
+      launch_servers(event.match)
     end,
   })
 end
 
+--- Add a language server dynamically after setup.
+--- @param server core.lsp.Server
+function M.add(server)
+  servers[server.name] = server
+  launch_servers(vim.bo.filetype)
+end
+
 --- Retrieve the global config for all language servers.
 function M.get_config()
-  return global_config
+  return servers
 end
 
 --- Register a callback to run before a language server starts. Useful for
 --- overriding settings or adding additional capabilities.
---- @param callback core.lsp.StartCallback
-function M.on_start(callback)
+--- @param callback core.lsp.AttachCallback
+function M.on_attach(callback)
   table.insert(callbacks, callback)
 end
 

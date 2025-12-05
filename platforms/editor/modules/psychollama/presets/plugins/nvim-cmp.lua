@@ -86,6 +86,6 @@ cmp.setup.cmdline(':', {
 })
 
 -- Advertise extended completion capabilities.
-core_lsp.on_start(function(client)
-  client.capabilities = nvim_lsp.default_capabilities(client.capabilities)
+core_lsp.on_attach(function(config)
+  config.capabilities = nvim_lsp.default_capabilities(config.capabilities)
 end)
