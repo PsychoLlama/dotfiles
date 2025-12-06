@@ -1,4 +1,6 @@
 .direnv/
+.ls-check/
+.luarc.check.lua
 result
 result-*
 templates/*/flake.lock

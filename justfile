@@ -20,5 +20,12 @@ lint:
 test:
   vusted pkgs platforms
 
-# Run all checks (lint + test).
-check: lint test
+# Run lua-language-server type checks.
+typecheck:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  export VIMRUNTIME=$(nvim --clean --headless --cmd 'echo $VIMRUNTIME | q' 2>&1)
+  lua-language-server --check . --checklevel=Warning
+
+# Run all checks (lint + typecheck + test).
+check: lint typecheck test

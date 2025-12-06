@@ -70,7 +70,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         return
       end
 
-      if not client.supports_method(lsp_method, args.buf) then
+      if not client:supports_method(lsp_method, args.buf) then
         return
       end
 

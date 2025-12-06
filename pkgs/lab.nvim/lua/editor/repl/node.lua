@@ -2,7 +2,7 @@ local M = {}
 
 function M.open()
   if vim.fn.executable('node') == 0 then
-    vim.notify('Error: No node executable.', vim.log.levels.error)
+    vim.notify('Error: No node executable.', vim.log.levels.ERROR)
     return
   end
 

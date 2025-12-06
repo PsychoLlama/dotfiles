@@ -27,7 +27,7 @@ function M.eval_configs()
 
   for _, plugin in ipairs(plugins) do
     if plugin.config then
-      --- @type core.pkg.ConfigHook
+      --- @type string | core.pkg.ConfigHook
       local callback = plugin.config
 
       if type(callback) == 'string' then

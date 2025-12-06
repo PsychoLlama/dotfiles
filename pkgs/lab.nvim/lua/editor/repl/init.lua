@@ -11,7 +11,7 @@ function M.open(opts)
   vim.cmd.resize(10)
   vim.opt_local.number = false
   vim.opt_local.signcolumn = 'no'
-  vim.fn.termopen(opts.command)
+  vim.fn.jobstart(opts.command, { term = true })
   vim.cmd.normal('A')
 end
 
