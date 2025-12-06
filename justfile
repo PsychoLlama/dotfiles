@@ -11,3 +11,14 @@ activate mode="test":
 # Format all files.
 fmt:
   treefmt
+
+# Run luacheck on all Lua files.
+lint:
+  luacheck pkgs platforms
+
+# Run Lua tests with vusted.
+test:
+  vusted pkgs platforms
+
+# Run all checks (lint + test).
+check: lint test

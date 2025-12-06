@@ -205,7 +205,8 @@
           default = pkgs.mkShell {
             packages = [
               pkgs.just
-              pkgs.luaPackages.luacheck
+              pkgs.luajitPackages.luacheck
+              pkgs.luajitPackages.vusted
               pkgs.nixfmt-rfc-style
               pkgs.stylua
               pkgs.treefmt
