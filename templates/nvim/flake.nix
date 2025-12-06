@@ -26,6 +26,8 @@
         system: pkgs:
         pkgs.mkShell {
           packages = [
+            pkgs.just
+            pkgs.lua-language-server
             pkgs.luajitPackages.luacheck
             pkgs.luajitPackages.vusted
             pkgs.stylua

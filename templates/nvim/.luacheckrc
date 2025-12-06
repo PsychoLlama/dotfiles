@@ -2,18 +2,15 @@ ignore = {
   '631', -- max_line_length (managed by stylua)
 }
 
-read_globals = {
+globals = {
   'vim',
+}
+
+read_globals = {
   'describe',
   'it',
   'assert',
   'before_each',
   'after_each',
   'pending',
-}
-
-files['tests'] = {
-  ignore = {
-    -- Nothing for now.
-  },
 }

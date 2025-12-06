@@ -149,9 +149,9 @@
           path = ./templates/rust;
         };
 
-        lua = {
-          description = "Flake environment for building Lua/Neovim projects";
-          path = ./templates/lua;
+        nvim = {
+          description = "Flake environment for building Neovim plugins";
+          path = ./templates/nvim;
         };
       };
 
