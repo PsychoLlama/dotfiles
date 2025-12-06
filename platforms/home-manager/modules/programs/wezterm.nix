@@ -7,22 +7,33 @@
 
 let
   cfg = config.programs.wezterm;
-  toLua = lib.generators.toLua { };
   json = pkgs.formats.json { };
 in
 
 {
   options.programs.wezterm = {
-    # TODO: Replace this with a `wezterm.lua` file.
-    # Generate variables, not programs.
     settings = lib.mkOption {
       type = json.type;
       default = { };
-      description = "Generated WezTerm config";
+      description = "Settings injected into the WezTerm config as JSON";
+    };
+
+    configFile = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = "Lua config file that receives the settings";
     };
   };
 
-  config.programs.wezterm.extraConfig = lib.mkIf cfg.enable ''
-    return ${toLua cfg.settings};
-  '';
+  config.programs.wezterm.extraConfig = lib.mkIf cfg.enable (
+    lib.mkMerge [
+      ''
+        local nix = ${builtins.toJSON cfg.settings}
+      ''
+
+      (lib.mkIf (cfg.configFile != null) ''
+        return dofile('${cfg.configFile}')
+      '')
+    ]
+  );
 }
