@@ -11,8 +11,11 @@ exclude_files = {
   'result*/**',
 }
 
-read_globals = {
+globals = {
   'vim',
+}
+
+read_globals = {
   'describe',
   'it',
   'assert',
