@@ -34,20 +34,29 @@ let
   # A list of the enabled plugins. [ <derivation> ]
   managedPackages = lib.mapAttrsToList (_: plugin: plugin.package) enabledVimPlugins;
 
+  # Resolve a plugin config to a store path. Accepts either a path to a Lua
+  # file or inline Lua code as a string.
+  resolveConfig =
+    plugin:
+    if plugin.extraConfig == null then
+      null
+    else if lib.isPath plugin.extraConfig then
+      # Use builtins.path to isolate the file so unrelated repo changes don't
+      # invalidate the editor derivation.
+      builtins.path {
+        name = "${plugin.package.pname}-config.lua";
+        path = plugin.extraConfig;
+      }
+    else
+      toString (pkgs.writeText "${plugin.package.pname}-config.lua" plugin.extraConfig);
+
   # Managed plugins have more features, such as an associated config file.
   managedManifest = lib.mapAttrsToList (_: plugin: {
     name = plugin.package.pname;
     source = plugin.package.outPath;
     opts = plugin.opts;
     type = "pack";
-    config = (
-      if lib.isPath plugin.extraConfig then
-        toString plugin.extraConfig
-      else if plugin.extraConfig != null then
-        toString (pkgs.writeText "${plugin.package.pname}-config.lua" plugin.extraConfig)
-      else
-        null
-    );
+    config = resolveConfig plugin;
   }) enabledVimPlugins;
 
   # Unmanaged plugins have less information. They are any derivation that

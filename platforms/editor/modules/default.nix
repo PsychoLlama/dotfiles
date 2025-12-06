@@ -10,6 +10,13 @@ let
   lua = lib.generators.toLua { };
   configFile = pkgs.writeText "user-config.lua" config.extraConfig;
 
+  # Isolate the runtime directory so changes elsewhere in the repo don't
+  # invalidate the editor derivation.
+  runtimeSrc = lib.fileset.toSource {
+    root = ../runtime;
+    fileset = ../runtime;
+  };
+
   # This is the generated `&packpath` directory for all plugins.
   packdir = pkgs.vimUtils.packDir {
     managed-by-nix = {
@@ -19,7 +26,7 @@ let
         (pkgs.vimUtils.buildVimPlugin {
           pname = "neovim-core";
           version = "latest";
-          src = ../runtime;
+          src = runtimeSrc;
         })
       ];
 
