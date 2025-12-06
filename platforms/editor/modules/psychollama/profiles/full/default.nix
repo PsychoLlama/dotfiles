@@ -38,7 +38,6 @@ in
         cmp-path.enable = lib.mkDefault true;
         codecompanion-nvim.enable = lib.mkDefault true;
         conform-nvim.enable = lib.mkDefault true;
-        copilot-lua.enable = lib.mkDefault true;
         deja-view-vim.enable = lib.mkDefault true;
         fzf-vim.enable = lib.mkDefault true;
         gitlinker-nvim.enable = lib.mkDefault true;

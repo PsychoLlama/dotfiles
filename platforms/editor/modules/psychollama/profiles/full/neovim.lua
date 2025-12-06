@@ -63,8 +63,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     --- Create a keybinding for an LSP method, but only if the server supports
     --- the action. This prevents overriding default mappings like `K` if the
-    --- server doesn't support it. A good example is Copilot which supports
-    --- almost nothing but is attached to most buffers.
+    --- server doesn't support it.
     local function lspmap(binding, lsp_method, callback, opts)
       if has_mapping[lsp_method] then
         return

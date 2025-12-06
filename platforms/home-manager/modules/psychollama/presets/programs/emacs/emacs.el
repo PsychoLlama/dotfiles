@@ -239,18 +239,10 @@
 (evil-define-key 'normal prog-mode-map (kbd "] d") 'flycheck-next-error)
 
 
-;;; --- COPILOT ---
-(setq copilot-indent-offset-warning-disable t)
-(setq copilot-max-char-warning-disable t)
-(add-hook 'prog-mode-hook 'copilot-mode)
-(evil-define-key 'insert prog-mode-map (kbd "C-j") #'copilot-accept-completion)
-
-
 ;;; --- LLMS ---
 (setq gptel-api-key (getenv "OPENAI_API_KEY"))
 (gptel-make-anthropic "Claude" :stream t :key (getenv "ANTHROPIC_API_KEY"))
 (gptel-make-gemini "Gemini" :stream t :key (getenv "GEMINI_API_KEY"))
-(gptel-make-gh-copilot "Copilot")
 
 (evil-define-key 'normal 'global (kbd "SPC c") 'gptel)
 (evil-define-key 'normal 'gptel-mode-map (kbd "g ?") 'gptel-menu)

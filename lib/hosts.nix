@@ -31,7 +31,6 @@ let
         pkg:
         lib.elem (lib.getName pkg) [
           "claude-code"
-          "copilot-language-server"
         ];
     };
 

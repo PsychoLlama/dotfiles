@@ -76,7 +76,6 @@ in
       direnv.enable = lib.mkDefault true;
       apheleia.enable = lib.mkDefault true;
       company.enable = lib.mkDefault true;
-      copilot.enable = lib.mkDefault true;
       counsel.enable = lib.mkDefault true;
       counsel-fd.enable = lib.mkDefault true;
       counsel-projectile.enable = lib.mkDefault true;
