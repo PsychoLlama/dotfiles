@@ -69,6 +69,16 @@ function M.add_hook(hook)
   table.insert(hooks, hook)
 end
 
+--- Add a new plugin to the manifest. Must be called before `load()`.
+--- @param name string Name of the plugin.
+--- @param plugin core.pkg.PluginSpec Plugin definition (name and opts fields are optional).
+function M.add(name, plugin)
+  M.add_hook(function(plugins)
+    table.insert(plugins, vim.tbl_extend('keep', plugin, { name = name, opts = {} }))
+    return plugins
+  end)
+end
+
 --- Overrides a plugin matched by `name`. Must be called before `load()`.
 --- Called with `nil` if no existing plugin exists.
 --- @param name string Name of the plugin to add or replace.
@@ -153,3 +163,10 @@ return M
 
 --- @class core.pkg.Query
 --- @field name string Name tested for an exact match
+
+--- @class core.pkg.PluginSpec
+--- @field type 'pack' | 'path' Loading strategy
+--- @field source string Path to the plugin's source code
+--- @field name? string Unique plugin name (provided by add())
+--- @field config? string | core.pkg.ConfigHook Optional config file or function
+--- @field opts? table Given options if the config returns a function
