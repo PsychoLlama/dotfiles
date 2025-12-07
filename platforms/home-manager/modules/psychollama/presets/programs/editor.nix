@@ -20,6 +20,8 @@ in
       MANPAGER = "${neovim}/bin/nvim -c 'Man!'";
     };
 
+    programs.git.ignores = [ ".vimrc.lua" ];
+
     programs.editor = {
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.neovim;
