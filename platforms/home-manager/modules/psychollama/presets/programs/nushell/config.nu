@@ -1,42 +1,42 @@
 # Set up `nuenv` to execute trusted local `.env.nu` files if they exist.
 use nu-hooks/nu-hooks/nuenv/hook.nu [
-  "nuenv allow"
-  "nuenv disallow"
+  "nuenv allow",
+  "nuenv disallow",
 ]
 
-$env.config.edit_mode = 'vi'
+$env.config.edit_mode = "vi"
 $env.config.show_banner = false
 $env.config.footer_mode = 20
-$env.config.filesize.unit = 'binary'
+$env.config.filesize.unit = "binary"
 $env.config.history = {
-  file_format: 'sqlite'
-  max_size: 100_000_000_000
-  isolation: true
+  file_format: "sqlite",
+  max_size: 100_000_000_000,
+  isolation: true,
 }
 
 $env.config.table = {
-  mode: 'rounded'
-  header_on_separator: true
+  mode: "rounded",
+  header_on_separator: true,
 }
 
 $env.config.cursor_shape = {
-  vi_normal: 'block'
-  vi_insert: 'line'
+  vi_normal: "block",
+  vi_insert: "line",
 }
 
 $env.config.completions = {
-  case_sensitive: false
-  partial: false
-  quick: true
+  case_sensitive: false,
+  partial: false,
+  quick: true,
   external: {
-    enable: true
-  }
+    enable: true,
+  },
 }
 
 $env.config.hooks.env_change = {
   PWD: [
-    (use nu-hooks/nu-hooks/nuenv/hook.nu; hook setup)
-  ]
+    (use nu-hooks/nu-hooks/nuenv/hook.nu; hook setup),
+  ],
 }
 
 # Launch neovim.
@@ -106,7 +106,7 @@ def s [] {
   if $repo_check.exit_code == 0 {
     git status
   } else {
-    echo 'Not a git repo.'
+    echo "Not a git repo."
   }
 }
 
@@ -114,16 +114,16 @@ def s [] {
 def --wrapped search [...args] {
   rg ...$args --json
   | from jsonl
-  | where type == 'match'
+  | where type == "match"
   | get data
   | group-by path.text
   | transpose file matches
   | upsert matches {
-      select lines.text line_number absolute_offset submatches
-      | upsert submatches { select match.text start end | rename match }
-      | rename content line column captures
-      | upsert content { str trim }
-    }
+    select lines.text line_number absolute_offset submatches
+    | upsert submatches { select match.text start end | rename match }
+    | rename content line column captures
+    | upsert content { str trim }
+  }
 }
 
 # Encrypt stdin using public keys from GitHub.
@@ -134,7 +134,7 @@ def encrypt [
   let keys = (
     | http get $"https://github.com/($username).keys"
     | lines
-    | each { || [ "--recipient" $in ] }
+    | each {|| [ "--recipient" $in ] }
     | flatten
   )
 
@@ -147,7 +147,7 @@ def decrypt [] {
 }
 
 # Change the desktop wallpaper.
-def 'wallpaper set' [image: path] {
+def "wallpaper set" [image: path] {
   ln -sf $image ~/attic/images/wallpapers/current
   systemctl --user restart swaybg.service
 }

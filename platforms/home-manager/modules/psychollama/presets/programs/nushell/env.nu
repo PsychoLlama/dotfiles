@@ -24,10 +24,10 @@ if (sys host | get name | $in != "Darwin") {
   path add /run/wrappers/bin
 }
 
-$env.PROMPT_INDICATOR = { || "" }
-$env.PROMPT_INDICATOR_VI_INSERT = { || "" }
-$env.PROMPT_INDICATOR_VI_NORMAL = { || "" }
-$env.PROMPT_MULTILINE_INDICATOR = { || "" }
+$env.PROMPT_INDICATOR = {|| "" }
+$env.PROMPT_INDICATOR_VI_INSERT = {|| "" }
+$env.PROMPT_INDICATOR_VI_NORMAL = {|| "" }
+$env.PROMPT_MULTILINE_INDICATOR = {|| "" }
 
 # Global `.env` for API keys. Mostly for generative models.
 do --ignore-errors { open ~/.env.yml } | default {} | load-env
