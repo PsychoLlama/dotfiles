@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1760292549,
-        "narHash": "sha256-GPfZ7IjwBktoi4+u+uqmobXIHYfTV2L6Yq2LIXKcadE=",
+        "lastModified": 1765091851,
+        "narHash": "sha256-N0yv0jDTzgis1mdSuvgjQmJQiTgKH+mg2f4jexsQyqw=",
         "owner": "PsychoLlama",
         "repo": "alternaut.nvim",
-        "rev": "f325358fa0779c2c9c27aa74744f15f1e2441ed9",
+        "rev": "1bd78280e7276e73e884d8f1d8c181b242ed0a2c",
         "type": "github"
       },
       "original": {
@@ -112,14 +112,18 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 0,
-        "narHash": "sha256-GheQGRNYAhHsvPxWVOhAmg9lZKkis22UPbEHlmZMthg=",
-        "path": "/nix/store/xnws56qm6sg7yc7dbw62c1y24s9jhcpf-source",
-        "type": "path"
+        "lastModified": 1764947035,
+        "narHash": "sha256-EYHSjVM4Ox4lvCXUMiKKs2vETUSL5mx+J2FfutM7T9w=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "a672be65651c80d3f592a89b3945466584a22069",
+        "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs-unstable": {
