@@ -41,10 +41,10 @@ local hooks = {}
 local M = {}
 
 --- Load all plugins. Optionally, pass a callback to change the list of
---- plugins before loading.
+--- plugins before loading. Deferred plugins are registered but not loaded.
 --- @return core.pkg.Plugin[]
 function M.load()
-  local plugins = loader.get_manifest()
+  local plugins = loader.get_eager_plugins()
 
   for _, plugin_hook in ipairs(hooks) do
     plugins = plugin_hook(plugins) or plugins
@@ -57,6 +57,9 @@ function M.load()
 
   -- Idempotent operation. This ensures the standard libary evaluates first.
   load_plugin(stdlib)
+
+  -- Register deferred plugins (they load on-demand)
+  loader.register_deferred()
 
   return loaded_plugins
 end
@@ -74,7 +77,10 @@ end
 --- @param plugin core.pkg.PluginSpec Plugin definition (name and opts fields are optional).
 function M.add(name, plugin)
   M.add_hook(function(plugins)
-    table.insert(plugins, vim.tbl_extend('keep', plugin, { name = name, opts = {} }))
+    table.insert(
+      plugins,
+      vim.tbl_extend('keep', plugin, { name = name, opts = {} })
+    )
     return plugins
   end)
 end

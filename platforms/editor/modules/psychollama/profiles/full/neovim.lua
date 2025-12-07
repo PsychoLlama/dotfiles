@@ -17,12 +17,9 @@ vim.g.markdown_recommended_style = false
 local LSP_FLOAT_STYLE = { border = 'rounded' }
 
 -- Misc mappings
-vim.keymap.set(
-  'n',
-  '<leader>p',
-  require('editor.navigation').open_project_root,
-  { desc = 'Open project root', silent = true }
-)
+vim.keymap.set('n', '<leader>p', function()
+  require('editor.navigation').open_project_root()
+end, { desc = 'Open project root', silent = true })
 
 vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
   noremap = true,

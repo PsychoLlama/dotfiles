@@ -6,8 +6,16 @@
 }:
 
 let
-  mkPluginPreset =
-    name: extraConfig:
+  # Simple preset: just a name and optional config file
+  mkPluginPreset = name: extraConfig: mkPluginPresetFull name { inherit extraConfig; };
+
+  # Full preset with all options including defer
+  mkPluginPresetFull =
+    name:
+    {
+      extraConfig ? null,
+      defer ? null,
+    }:
 
     let
       cfg = config.psychollama.presets.plugins.${name};
@@ -23,7 +31,7 @@ let
       config.plugins.${name} = lib.mkIf cfg.enable {
         enable = lib.mkDefault true;
         package = lib.mkDefault cfg.package;
-        inherit extraConfig;
+        inherit extraConfig defer;
       };
     };
 in
@@ -35,16 +43,38 @@ in
     (mkPluginPreset "cmp-cmdline" null)
     (mkPluginPreset "cmp-nvim-lsp" null)
     (mkPluginPreset "cmp-path" null)
-    (mkPluginPreset "codecompanion-nvim" ./codecompanion/config.lua)
+
+    # Defer codecompanion until its commands are used (~26ms saved)
+    (mkPluginPresetFull "codecompanion-nvim" {
+      extraConfig = ./codecompanion/config.lua;
+      defer.cmd = [
+        "CodeCompanion"
+        "CodeCompanionChat"
+        "CodeCompanionCmd"
+        "CodeCompanionActions"
+      ];
+    })
     (mkPluginPreset "conform-nvim" ./conform/config.lua)
     (mkPluginPreset "deja-view-vim" null)
     (mkPluginPreset "lab-nvim" null)
     (mkPluginPreset "fzf-vim" null)
     (mkPluginPreset "gitlinker-nvim" ./gitlinker.lua)
-    (mkPluginPreset "gitsigns-nvim" ./gitsigns.lua)
+
+    # Defer gitsigns until a buffer is read (~18ms saved)
+    (mkPluginPresetFull "gitsigns-nvim" {
+      extraConfig = ./gitsigns.lua;
+      defer.event = "BufReadPre";
+    })
+
     (mkPluginPreset "lualine-lsp-progress" null)
     (mkPluginPreset "lualine-nvim" ./lualine.lua)
-    (mkPluginPreset "markdown-preview-nvim" ./markdown-preview/config.lua)
+
+    # Defer markdown-preview until markdown files are opened
+    (mkPluginPresetFull "markdown-preview-nvim" {
+      extraConfig = ./markdown-preview/config.lua;
+      defer.ft = "markdown";
+    })
+
     (mkPluginPreset "navitron-nvim" ./navitron.lua)
     (mkPluginPreset "nvim-autopairs" ./autopairs.lua)
     (mkPluginPreset "nvim-cmp" ./nvim-cmp.lua)
@@ -58,7 +88,13 @@ in
     (mkPluginPreset "telescope-fzf-native-nvim" ./telescope-fzf-native.lua)
     (mkPluginPreset "telescope-nvim" ./telescope.lua)
     (mkPluginPreset "telescope-undo-nvim" ./telescope-undo.lua)
-    (mkPluginPreset "treesj" ./treesj.lua)
+
+    # Defer treesj until its keymap is used (~13ms saved)
+    (mkPluginPresetFull "treesj" {
+      extraConfig = ./treesj.lua;
+      defer.keys = "<leader>j";
+    })
+
     (mkPluginPreset "vim-endwise" null)
     (mkPluginPreset "vim-fugitive" null)
     (mkPluginPreset "vim-repeat" null)

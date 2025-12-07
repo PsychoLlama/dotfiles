@@ -28,6 +28,37 @@ let
     in
     valueType;
 
+  # Defer spec type for lazy-loading plugins
+  deferSpecType = types.submodule {
+    options = {
+      event = mkOption {
+        type = types.nullOr (types.either types.str (types.listOf types.str));
+        default = null;
+        description = "Autocmd event(s) to trigger loading";
+      };
+      pattern = mkOption {
+        type = types.nullOr (types.either types.str (types.listOf types.str));
+        default = null;
+        description = "Pattern for event matching";
+      };
+      cmd = mkOption {
+        type = types.nullOr (types.either types.str (types.listOf types.str));
+        default = null;
+        description = "Command(s) that trigger loading";
+      };
+      keys = mkOption {
+        type = types.nullOr (types.either types.str (types.listOf types.str));
+        default = null;
+        description = "Keymap(s) that trigger loading";
+      };
+      ft = mkOption {
+        type = types.nullOr (types.either types.str (types.listOf types.str));
+        default = null;
+        description = "Filetype(s) that trigger loading";
+      };
+    };
+  };
+
   # An attrset of only the enabled plugins. { vim-fugitive = <derivation>; }
   enabledVimPlugins = lib.filterAttrs (k: v: v.enable) config.plugins;
 
@@ -50,6 +81,9 @@ let
     else
       toString (pkgs.writeText "${plugin.package.pname}-config.lua" plugin.extraConfig);
 
+  # Convert defer spec to a clean Lua table (filter out null values)
+  resolveDeferSpec = defer: if defer == null then null else lib.filterAttrs (_: v: v != null) defer;
+
   # Managed plugins have more features, such as an associated config file.
   managedManifest = lib.mapAttrsToList (_: plugin: {
     name = plugin.package.pname;
@@ -57,6 +91,7 @@ let
     opts = plugin.opts;
     type = "pack";
     config = resolveConfig plugin;
+    defer = resolveDeferSpec plugin.defer;
   }) enabledVimPlugins;
 
   # Unmanaged plugins have less information. They are any derivation that
@@ -97,6 +132,15 @@ in
               type = luaValueType;
               default = { };
               description = "Options passed to the config if it returns a function";
+            };
+
+            defer = mkOption {
+              type = types.nullOr deferSpecType;
+              default = null;
+              description = ''
+                Defer loading until triggers fire. Supports event, cmd, keys, and ft.
+                Example: { cmd = "CodeCompanion"; } or { ft = ["lua" "nix"]; }
+              '';
             };
           };
         }
