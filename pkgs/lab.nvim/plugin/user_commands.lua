@@ -10,3 +10,7 @@ end, { desc = 'Open a Nix repl', force = true })
 vim.api.nvim_create_user_command('Permissions', function(opts)
   require('editor.perms').command(opts)
 end, { desc = 'Manage file permissions', force = true, nargs = '?' })
+
+vim.api.nvim_create_user_command('Author', function(opts)
+  require('git.author').command(opts.line1, opts.line2)
+end, { desc = 'Show git blame authorship', force = true, range = true })

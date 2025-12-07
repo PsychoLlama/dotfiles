@@ -1,0 +1,5 @@
+return {
+  _all = {
+    lpath = "pkgs/lab.nvim/lua/?.lua;pkgs/lab.nvim/lua/?/init.lua",
+  },
+}
