@@ -53,7 +53,10 @@ in
             "Bash(git remote show:*)"
             "Bash(git restore:*)"
             "Bash(git show:*)"
+            "Bash(git stash:*)"
             "Bash(git status:*)"
+            "Bash(git checkout:*)"
+            "Bash(git branch:*)"
 
             "Bash(gh issue list:*)"
             "Bash(gh issue view:*)"
@@ -66,26 +69,37 @@ in
             "Bash(gh status:*)"
 
             # Rust Projects
+            "Bash(cargo --list:*)"
             "Bash(cargo build:*)"
             "Bash(cargo check:*)"
             "Bash(cargo clippy:*)"
-            "Bash(cargo test:*)" # Potential arbitrary code execution.
+            "Bash(cargo doc:*)"
+            "Bash(cargo fmt:*)"
+            "Bash(cargo run:*)" # Arbitrary code execution.
+            "Bash(cargo search:*)"
+            "Bash(cargo test:*)" # Arbitrary code execution.
+            "Bash(rustc:*)"
 
             # JavaScript / TypeScript projects
             "Bash(npm info:*)"
             "Bash(npm run)"
-            "Bash(npm run:*)" # Potential arbitrary code execution.
+            "Bash(npm run:*)" # Arbitrary code execution.
             "Bash(npm test:*)"
 
             # Nix projects
             "Bash(nix build:*)"
+            "Bash(nix develop:*)" # Arbitrary code execution.
             "Bash(nix eval:*)"
             "Bash(nix flake check:*)"
             "Bash(nix flake show:*)"
+            "Bash(nix run:*)" # Arbitrary code execution.
             "Bash(nix search:*)"
 
+            # Lua projects
+            "Bash(luacheck:*)"
+
             # Generic projects
-            "Bash(just:*)" # Potential arbitrary code execution.
+            "Bash(just:*)" # Arbitrary code execution.
 
             "WebFetch(domain:docs.anthropic.com)"
             "WebFetch(domain:docs.claude.com)"
