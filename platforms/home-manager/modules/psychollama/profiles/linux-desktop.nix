@@ -42,6 +42,7 @@ in
         swaylock.enable = mkDefault true;
         waybar.enable = mkDefault true;
         wf-recorder.enable = mkDefault true;
+        dictation.enable = mkDefault true;
         wireplumber.enable = mkDefault true;
         wl-clipboard.enable = mkDefault true;
         zathura.enable = mkDefault true;
