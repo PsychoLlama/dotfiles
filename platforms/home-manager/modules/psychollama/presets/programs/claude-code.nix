@@ -53,10 +53,17 @@ in
             "Bash(git remote show:*)"
             "Bash(git restore:*)"
             "Bash(git show:*)"
+            "Bash(git cherry-pick:*)"
+            "Bash(git clean:*)"
+            "Bash(git merge:*)"
+            "Bash(git rebase:*)"
+            "Bash(git reset:*)"
+            "Bash(git revert:*)"
             "Bash(git stash:*)"
             "Bash(git status:*)"
             "Bash(git checkout:*)"
             "Bash(git branch:*)"
+            "Bash(git tag:*)"
 
             "Bash(gh issue list:*)"
             "Bash(gh issue view:*)"
@@ -64,9 +71,15 @@ in
             "Bash(gh pr diff:*)"
             "Bash(gh pr list:*)"
             "Bash(gh pr view:*)"
+            "Bash(gh release list:*)"
+            "Bash(gh release view:*)"
             "Bash(gh repo list:*)"
             "Bash(gh repo view:*)"
+            "Bash(gh run list:*)"
+            "Bash(gh run view:*)"
             "Bash(gh status:*)"
+            "Bash(gh workflow list:*)"
+            "Bash(gh workflow view:*)"
 
             # Rust Projects
             "Bash(cargo --list:*)"
@@ -91,7 +104,9 @@ in
             "Bash(nix develop:*)" # Arbitrary code execution.
             "Bash(nix eval:*)"
             "Bash(nix flake check:*)"
+            "Bash(nix flake metadata:*)"
             "Bash(nix flake show:*)"
+            "Bash(nix flake update:*)"
             "Bash(nix run:*)" # Arbitrary code execution.
             "Bash(nix search:*)"
 
