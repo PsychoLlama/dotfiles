@@ -8,71 +8,52 @@
 let
   cfg = config.psychollama.presets.programs.dictation;
 
-  dictation =
-    pkgs.writers.writeNuBin "dictation"
-      {
-        makeWrapperArgs = [
-          "--prefix"
-          "PATH"
-          ":"
-          (lib.makeBinPath [
-            pkgs.bash
-            pkgs.coreutils
-            pkgs.pipewire
-            pkgs.util-linux
-            pkgs.whisper-cpp
-          ])
-          "--set"
-          "DICTATION_MODEL"
-          cfg.model
-        ];
-      }
-      # nu
-      ''
-        const MODEL_URL = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main"
+  dictation = pkgs.writeShellApplication {
+    name = "dictation";
+    runtimeInputs = [
+      pkgs.coreutils
+      pkgs.curl
+      pkgs.pipewire
+      pkgs.whisper-cpp
+    ];
+    text = ''
+      MODEL_URL="https://huggingface.co/ggerganov/whisper.cpp/resolve/main"
+      MODEL="''${DICTATION_MODEL:-${cfg.model}}"
+      MODEL_DIR="''${XDG_DATA_HOME:-$HOME/.local/share}/whisper"
+      MODEL_PATH="$MODEL_DIR/ggml-$MODEL.bin"
 
-        # Speech-to-text using local Whisper
-        export def main [
-          --model (-m): string  # Whisper model (tiny.en, base.en, small.en, medium.en, large)
-        ] {
-          let model = $model | default $env.DICTATION_MODEL
-          let model_dir = ($env.XDG_DATA_HOME? | default $"($env.HOME)/.local/share") | path join "whisper"
-          let model_path = $model_dir | path join $"ggml-($model).bin"
+      # Download model if needed
+      if [[ ! -f "$MODEL_PATH" ]]; then
+        mkdir -p "$MODEL_DIR"
+        echo -e "\033[36mDownloading whisper model ($MODEL)...\033[0m" >&2
+        curl -L "$MODEL_URL/ggml-$MODEL.bin" -o "$MODEL_PATH"
+      fi
 
-          # Download model if needed
-          if not ($model_path | path exists) {
-            mkdir $model_dir
-            print --stderr $"(ansi cyan)Downloading whisper model \(($model)\)...(ansi reset)"
-            http get $"($MODEL_URL)/ggml-($model).bin" | save $model_path
-          }
+      # Record audio to temp file
+      audio_file="$(mktemp --suffix=.wav)"
+      echo -e "\033[1;32m● Recording...\033[0m Press Enter to stop" >&2
 
-          # Record audio to temp file
-          let audio_file = mktemp --tmpdir --suffix .wav
-          print --stderr $"(ansi green_bold)● Recording...(ansi reset) Press Enter to stop"
+      pw-record "$audio_file" &
+      pid=$!
+      read -r
+      kill -TERM "$pid"
+      sleep 0.2
 
-          # pw-record needs SIGTERM (not SIGKILL) to properly finalize the WAV header
-          let pid_file = mktemp --tmpdir
-          ^bash -c $"pw-record '($audio_file)' & echo $! > '($pid_file)'"
-          input
-          let pid = open $pid_file | str trim
-          ^kill -TERM $pid
-          sleep 200ms
-          rm -f $pid_file
+      # Transcribe
+      echo -e "\033[33m⏳ Transcribing...\033[0m" >&2
+      result="$(whisper-cli -m "$MODEL_PATH" --no-prints --no-timestamps "$audio_file" 2>/dev/null)"
+      result="''${result#"''${result%%[![:space:]]*}"}"  # trim leading whitespace
 
-          # Transcribe
-          print --stderr $"(ansi yellow)⏳ Transcribing...(ansi reset)"
-          let result = whisper-cli -m $model_path --no-prints --no-timestamps $audio_file | str trim
+      rm -f "$audio_file"
 
-          rm -f $audio_file
-
-          if ($result | is-empty) {
-            print --stderr $"(ansi red)No speech detected(ansi reset)"
-          } else {
-            print --stderr $"(ansi green)✓(ansi reset)"
-            $result | str trim
-          }
-        }
-      '';
+      if [[ -z "$result" ]]; then
+        echo -e "\033[31mNo speech detected\033[0m" >&2
+      else
+        echo -e "\033[32m✓\033[0m" >&2
+        printf '%s' "$result"
+      fi
+    '';
+  };
 in
 
 {
