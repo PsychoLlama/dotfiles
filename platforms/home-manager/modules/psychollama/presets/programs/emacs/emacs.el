@@ -178,7 +178,8 @@
 
         (rustfmt . ("rustfmt" "--emit=stdout"))
         (black . (,my/formatter-black "--quiet" "--fast" "-"))
-        (gofmt . ("gofmt"))))
+        (gofmt . ("gofmt"))
+        (nufmt . (,my/formatter-nufmt))))
 
 (setq apheleia-mode-alist	       ; Map major modes to formatters
       '((markdown-mode . (prettier))
@@ -192,7 +193,8 @@
         (nix-ts-mode . (nixfmt))
         (lua-ts-mode . (stylua))
         (python-ts-mode . (black))
-        (go-ts-mode . (gofmt))))
+        (go-ts-mode . (gofmt))
+        (nushell-ts-mode . (nufmt))))
 
 
 ;;; --- LSP INTEGRATION ---

@@ -158,6 +158,60 @@
         "type": "github"
       }
     },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1764947035,
+        "narHash": "sha256-EYHSjVM4Ox4lvCXUMiKKs2vETUSL5mx+J2FfutM7T9w=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "a672be65651c80d3f592a89b3945466584a22069",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
+        "lastModified": 1744536153,
+        "narHash": "sha256-awS2zRgF4uTwrOKwwiJcByDzDOdo3Q1rPZbiHQg/N38=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "18dd725c29603f582cf1900e0d25f9f1063dbf11",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nufmt": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3",
+        "rust-overlay": "rust-overlay",
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1765148053,
+        "narHash": "sha256-2lSiLUjPPHcXPzcs30uTRBoQWGmL0r0AW3QgyW6rRnM=",
+        "owner": "PsychoLlama",
+        "repo": "nufmt",
+        "rev": "50d533e0fd69a817431957ebed1773536ee05542",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PsychoLlama",
+        "repo": "nufmt",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "alternaut-nvim": "alternaut-nvim",
@@ -168,8 +222,27 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "nufmt": "nufmt",
         "systems": "systems",
         "teleport-vim": "teleport-vim"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_4"
+      },
+      "locked": {
+        "lastModified": 1764988672,
+        "narHash": "sha256-FIJtt3Zil89/hLy9i7f0R2xXcJDPc3CeqiiCLfsFV0Y=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "086fd19a68e80fcc8a298e9df4674982e4c498a6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     },
     "systems": {

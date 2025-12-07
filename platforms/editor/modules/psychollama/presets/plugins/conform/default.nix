@@ -58,6 +58,12 @@ in
         gofmt = {
           command = "gofmt";
         };
+
+        # Dynamic dependency. Assumes `nufmt` is provided by direnv.
+        nufmt = {
+          command = "nufmt";
+          stdin = true;
+        };
       };
 
       formatters_by_ft = rec {
@@ -83,6 +89,7 @@ in
         vue = [ "prettier" ];
         yaml = [ "prettier" ];
         go = [ "gofmt" ];
+        nu = [ "nufmt" ];
       };
     };
   };

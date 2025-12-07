@@ -5,3 +5,7 @@ includes = ["*.nix"]
 [formatter.lua]
 command = "stylua"
 includes = ["*.lua"]
+
+[formatter.nushell]
+command = "nufmt"
+includes = ["*.nu"]

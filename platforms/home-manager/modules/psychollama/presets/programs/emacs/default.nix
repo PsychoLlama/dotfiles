@@ -38,6 +38,7 @@ in
       black = mkExeOption pkgs.unstable.black "black";
       eslint = mkExeOption pkgs.unstable.eslint_d "eslint_d";
       nixfmt = mkExeOption pkgs.unstable.nixfmt-rfc-style "nixfmt";
+      nufmt = mkExeOption pkgs.nufmt "nufmt";
       prettier = mkExeOption pkgs.unstable.prettierd "prettierd";
       stylua = mkExeOption pkgs.unstable.stylua "stylua";
     };
@@ -127,6 +128,11 @@ in
       "my/formatter-black" = {
         description = "Executable for `black`.";
         value = cfg.formatters.black;
+      };
+
+      "my/formatter-nufmt" = {
+        description = "Executable for `nufmt`.";
+        value = cfg.formatters.nufmt;
       };
 
       # Language servers
