@@ -5,7 +5,5 @@ let
 in
 
 {
-  config.plugins.markdown-preview-nvim = lib.mkIf cfg.enable {
-    opts.browser = lib.mkDefault "firefox";
-  };
+  config.plugins.markdown-preview-nvim = lib.mkIf cfg.enable { };
 }
