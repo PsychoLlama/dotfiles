@@ -35,6 +35,7 @@ in
             directories = [
               "."
               "spec"
+              "tests"
             ];
           };
 
