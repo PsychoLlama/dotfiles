@@ -110,7 +110,9 @@ local function register_key_trigger(name, key)
     desc = key.desc or ('Load ' .. name)
   end
 
-  for _, mode in ipairs(modes --[[@as string[] ]]) do
+  for _, mode in
+    ipairs(modes --[[@as string[] ]])
+  do
     vim.keymap.set(mode, lhs, function()
       load_deferred(name)
       -- Re-trigger the keymap
@@ -162,7 +164,9 @@ function M.register(plugin, spec)
   -- Register command triggers
   if spec.cmd then
     local cmds = type(spec.cmd) == 'string' and { spec.cmd } or spec.cmd
-    for _, cmd in ipairs(cmds --[[@as string[] ]]) do
+    for _, cmd in
+      ipairs(cmds --[[@as string[] ]])
+    do
       register_command_trigger(name, cmd --[[@as string]])
     end
   end
@@ -173,7 +177,9 @@ function M.register(plugin, spec)
     if type(keys) == 'string' then
       keys = { keys }
     end
-    for _, key in ipairs(keys --[[@as (string|core.pkg.KeySpec)[] ]]) do
+    for _, key in
+      ipairs(keys --[[@as (string|core.pkg.KeySpec)[] ]])
+    do
       register_key_trigger(name, key)
     end
   end
