@@ -2,8 +2,6 @@
 --- Lazy-loading utilities for core.pkg. Allows deferring plugin loading and
 --- configuration until specific events, commands, or keymaps trigger them.
 
-local loader = require('core.pkg._loader')
-
 local M = {}
 
 --- @class core.pkg.DeferSpec
@@ -82,7 +80,7 @@ local function register_command_trigger(name, cmd)
     vim.cmd(cmd .. args)
   end, {
     nargs = '*',
-    complete = function(...)
+    complete = function()
       load_deferred(name)
       -- Return completions from the real command
       return vim.fn.getcompletion(cmd .. ' ', 'cmdline')
@@ -112,12 +110,12 @@ local function register_key_trigger(name, key)
     desc = key.desc or ('Load ' .. name)
   end
 
-  for _, mode in ipairs(modes) do
+  for _, mode in ipairs(modes --[[@as string[] ]]) do
     vim.keymap.set(mode, lhs, function()
       load_deferred(name)
       -- Re-trigger the keymap
       local keys = vim.api.nvim_replace_termcodes(lhs, true, true, true)
-      vim.api.nvim_feedkeys(keys, mode, false)
+      vim.api.nvim_feedkeys(keys, mode --[[@as string]], false)
     end, { desc = desc })
 
     table.insert(cleanups[name], function()
@@ -164,8 +162,8 @@ function M.register(plugin, spec)
   -- Register command triggers
   if spec.cmd then
     local cmds = type(spec.cmd) == 'string' and { spec.cmd } or spec.cmd
-    for _, cmd in ipairs(cmds) do
-      register_command_trigger(name, cmd)
+    for _, cmd in ipairs(cmds --[[@as string[] ]]) do
+      register_command_trigger(name, cmd --[[@as string]])
     end
   end
 
@@ -175,7 +173,7 @@ function M.register(plugin, spec)
     if type(keys) == 'string' then
       keys = { keys }
     end
-    for _, key in ipairs(keys) do
+    for _, key in ipairs(keys --[[@as (string|core.pkg.KeySpec)[] ]]) do
       register_key_trigger(name, key)
     end
   end
