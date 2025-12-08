@@ -14,6 +14,7 @@ in
       services = {
         greetd.enable = lib.mkDefault true;
         pipewire.enable = lib.mkDefault true;
+        podman.enable = lib.mkDefault true;
         syncthing.enable = lib.mkDefault true;
         zfs.enable = lib.mkDefault true;
       };
