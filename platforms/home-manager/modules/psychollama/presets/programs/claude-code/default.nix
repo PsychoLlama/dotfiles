@@ -7,6 +7,7 @@
 
 let
   cfg = config.psychollama.presets.programs.claude-code;
+  coreEditorDoc = pkgs.writeText "neovim-framework.md" (builtins.readFile ./neovim-framework.md);
 in
 
 {
@@ -18,6 +19,17 @@ in
     programs.claude-code = {
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.claude-code;
+
+      memory.text = ''
+        # Environment
+
+        Nix is available. Use `nix develop` to run programs (not `nix shell` or `nix run`).
+
+        # Editor Framework
+
+        When writing neovim plugins or editing with `.vimrc.lua`, see [the guide](${coreEditorDoc}).
+      '';
+
       settings = {
         includeCoAuthoredBy = false;
         theme = "dark";
