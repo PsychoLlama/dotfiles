@@ -20,6 +20,10 @@ in
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.claude-code;
 
+      commands = {
+        "feature-freeze" = ./commands/feature-freeze.md;
+      };
+
       memory.text = ''
         # Environment
 

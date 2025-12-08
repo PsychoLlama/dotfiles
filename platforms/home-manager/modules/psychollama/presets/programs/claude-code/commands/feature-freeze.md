@@ -1,0 +1,3 @@
+Feature freeze! This is a time to improve code quality. Maintainability, file size, abstraction, whatever makes it easier to do your job. Find open issues (including code smells) and document them as tickets in `ref/improvements.md`.
+
+Next, raise any questions before we begin.
