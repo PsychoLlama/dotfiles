@@ -22,9 +22,6 @@ in
     networking = {
       networkmanager.enable = true;
       hostId = "daf96cd8"; # Random. Required by the ZFS pool.
-
-      useDHCP = false;
-      interfaces.wlp0s20f3.useDHCP = true;
     };
 
     users.users.${username} = {
