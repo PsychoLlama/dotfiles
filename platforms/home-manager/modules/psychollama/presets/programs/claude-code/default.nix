@@ -21,7 +21,8 @@ in
       package = lib.mkDefault pkgs.unstable.claude-code;
 
       commands = {
-        "feature-freeze" = ./commands/feature-freeze.md;
+        "quality.plan" = ./commands/quality.plan.md;
+        "quality.run" = ./commands/quality.run.md;
       };
 
       memory.text = ''
