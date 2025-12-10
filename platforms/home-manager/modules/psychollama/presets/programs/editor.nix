@@ -17,6 +17,7 @@ in
 
   config = lib.mkIf cfg.enable {
     home.sessionVariables = {
+      EDITOR = "${neovim}/bin/nvim";
       MANPAGER = "${neovim}/bin/nvim -c 'Man!'";
     };
 
