@@ -23,7 +23,6 @@ let
     overlays = [
       self.overlays.latest-packages
       self.overlays.vim-plugins
-      self.overlays.nufmt
     ];
 
     config = {

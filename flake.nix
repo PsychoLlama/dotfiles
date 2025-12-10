@@ -37,10 +37,6 @@
       flake = false;
     };
 
-    nufmt = {
-      url = "github:PsychoLlama/nufmt";
-      inputs.systems.follows = "systems";
-    };
   };
 
   outputs =
@@ -121,7 +117,6 @@
       overlays = {
         latest-packages = import ./lib/overlays/latest-packages.nix flake-inputs;
         vim-plugins = import ./lib/overlays/vim-plugins.nix flake-inputs;
-        nufmt = flake-inputs.nufmt.overlays.default;
       };
 
       nixosConfigurations = lib.dotfiles.hosts.nixos {
@@ -215,7 +210,6 @@
               pkgs.luajitPackages.luacheck
               pkgs.luajitPackages.vusted
               pkgs.nixfmt-rfc-style
-              pkgs.nufmt
               pkgs.stylua
               pkgs.treefmt
             ];

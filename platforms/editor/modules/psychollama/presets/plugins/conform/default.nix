@@ -59,10 +59,6 @@ in
           command = "gofmt";
         };
 
-        nufmt = {
-          command = "${pkgs.nufmt}/bin/nufmt";
-          args = [ "--stdin" ];
-        };
       };
 
       formatters_by_ft = rec {
@@ -88,7 +84,6 @@ in
         vue = [ "prettier" ];
         yaml = [ "prettier" ];
         go = [ "gofmt" ];
-        nu = [ "nufmt" ];
       };
     };
   };
