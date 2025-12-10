@@ -129,7 +129,6 @@ in
         value = cfg.formatters.black;
       };
 
-
       # Language servers
       "my/lsp-nil" = {
         description = "Executable for the Nil (nix) language server.";
