@@ -199,11 +199,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1765168543,
-        "narHash": "sha256-hHfqEOMf0txqe/GXT55A68MUQz6FVQJ1hd4VBJ+hxjI=",
+        "lastModified": 1765341812,
+        "narHash": "sha256-ds6Z0xgPsAuSgPfIX4BCbr/od5bcdqqFrD8LVipfmZE=",
         "owner": "PsychoLlama",
         "repo": "nufmt",
-        "rev": "ba9f329cf5d594c989cf29fb2ff60b874d3782ed",
+        "rev": "6c60df8acdda9bb7eab9ffab77fcd459c4cfb2a4",
         "type": "github"
       },
       "original": {
