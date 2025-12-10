@@ -10,7 +10,7 @@ export def "main" [
 
   # Default bare identifiers to the nixpkgs flake.
   def canonicalize [ident: string] {
-    if ($ident | str contains "#") {
+    if ($ident | str contains '#') {
       $ident
     } else {
       $"unstable#($ident)"
@@ -18,8 +18,8 @@ export def "main" [
   }
 
   nix shell ...(
-    | [ ...$packages ]
-    | each {|ident| canonicalize $ident }
+    | [...$packages]
+    | each { |ident| canonicalize $ident }
   )
 }
 
@@ -51,19 +51,19 @@ export def "x show" [
   }
 
   $pkg
-  | select name? description? homepage
-  | transpose key value
-  | where value != null
-  | reduce --fold {} {|row, acc| $acc | merge { $row.key: $row.value } }
+    | select name? description? homepage?
+    | transpose key value
+    | where value != null
+    | reduce --fold {} { |row, acc| $acc | merge { $row.key: $row.value } }
 }
 
 # Drop into a Nix repl
-export def "x repl" [] {
+export def 'x repl' [] {
   nix repl -f 'flake:unstable' --extra-experimental-features 'pipe-operators'
 }
 
 # Search for packages
-export def "x find" [term: string, ...extra_terms: string] {
+export def 'x find' [term: string, ...extra_terms: string] {
   let result = nix search unstable $term ...$extra_terms --json | from json
 
   $result
@@ -72,6 +72,6 @@ export def "x find" [term: string, ...extra_terms: string] {
   | upsert meta { select description version }
 }
 
-export alias "x s" = x show
-export alias "x r" = x repl
-export alias "x f" = x find
+export alias 'x s' = x show
+export alias 'x r' = x repl
+export alias 'x f' = x find
