@@ -39,8 +39,11 @@ in
         includeCoAuthoredBy = false;
         theme = "dark";
         autoUpdates = false;
+        preferredNotifChannel = "terminal_bell";
+        model = "opus";
 
         permissions = {
+          defaultMode = "acceptEdits";
           allow = [
             # Mostly read-only, but dangerously allows reading outside the workdir.
             "Bash(cat:*)"
