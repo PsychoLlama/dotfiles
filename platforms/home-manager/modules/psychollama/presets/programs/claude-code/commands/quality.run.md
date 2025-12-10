@@ -1,3 +1,7 @@
+---
+description: Execute improvement tickets from quality.plan
+---
+
 Time to execute the quality improvement plan!
 
 1. Create and check out a new branch named `quality/<short-description>` based on the improvements
