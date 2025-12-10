@@ -23,6 +23,7 @@ let
     overlays = [
       self.overlays.latest-packages
       self.overlays.vim-plugins
+      self.overlays.nufmt
     ];
 
     config = {
@@ -157,6 +158,7 @@ in
         self.nixosModules.home-manager-platform
         self.nixosModules.home-manager-configs
         nix-flakes
+        editor-program
       ];
     }
   );

@@ -179,7 +179,7 @@
         (rustfmt . ("rustfmt" "--emit=stdout"))
         (black . (,my/formatter-black "--quiet" "--fast" "-"))
         (gofmt . ("gofmt"))
-        (nufmt . (,my/formatter-nufmt))))
+        (nufmt . (,my/formatter-nufmt "--stdin"))))
 
 (setq apheleia-mode-alist	       ; Map major modes to formatters
       '((markdown-mode . (prettier))

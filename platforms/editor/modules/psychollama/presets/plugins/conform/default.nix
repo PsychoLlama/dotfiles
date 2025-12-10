@@ -59,10 +59,9 @@ in
           command = "gofmt";
         };
 
-        # Dynamic dependency. Assumes `nufmt` is provided by direnv.
         nufmt = {
-          command = "nufmt";
-          stdin = true;
+          command = "${pkgs.nufmt}/bin/nufmt";
+          args = [ "--stdin" ];
         };
       };
 
