@@ -32,15 +32,13 @@ in
           fi
         ''}
 
-        ${lib.optionalString pkgs.stdenv.isLinux ''
-          bind-key v display-popup -E ${pkgs.writers.writeBash "tmux-dictation" ''
-            target_pane="$TMUX_PANE"
-            text="$(dictation | sed 's/^[[:space:]]*//')"
+        bind-key v display-popup -E ${pkgs.writers.writeBash "tmux-dictation" ''
+          target_pane="$TMUX_PANE"
+          text="$(dictation)"
 
-            if [[ -n "$text" ]]; then
-              ${tmux}/bin/tmux send-keys -t "$target_pane" -- "$text"
-            fi
-          ''}
+          if [[ -n "$text" ]]; then
+            ${tmux}/bin/tmux send-keys -t "$target_pane" -- "$text"
+          fi
         ''}
       '';
     };

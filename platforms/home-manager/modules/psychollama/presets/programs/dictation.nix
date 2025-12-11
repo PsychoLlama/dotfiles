@@ -8,14 +8,21 @@
 let
   cfg = config.psychollama.presets.programs.dictation;
 
+  isLinux = pkgs.stdenv.isLinux;
+
+  # Use pipewire on Linux, sox on macOS
+  recordCommand = if isLinux then ''pw-record "$audio_file"'' else ''rec -q "$audio_file"'';
+
+  audioDeps = if isLinux then [ pkgs.pipewire ] else [ pkgs.sox ];
+
   dictation = pkgs.writeShellApplication {
     name = "dictation";
     runtimeInputs = [
-      pkgs.coreutils
       pkgs.curl
-      pkgs.pipewire
       pkgs.whisper-cpp
-    ];
+    ]
+    ++ audioDeps;
+
     text = ''
       MODEL_URL="https://huggingface.co/ggerganov/whisper.cpp/resolve/main"
       MODEL="''${DICTATION_MODEL:-${cfg.model}}"
@@ -30,10 +37,10 @@ let
       fi
 
       # Record audio to temp file
-      audio_file="$(mktemp --suffix=.wav)"
+      audio_file="$(mktemp).wav"
       echo -e "\033[1;32m● Recording...\033[0m Press Enter to stop" >&2
 
-      pw-record "$audio_file" &
+      ${recordCommand} &
       pid=$!
       read -r
       kill -TERM "$pid"
