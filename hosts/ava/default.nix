@@ -13,7 +13,10 @@ in
   imports = [ ./hardware-configuration.nix ];
 
   config = {
-    boot.loader.systemd-boot.enable = true;
+    boot.loader.systemd-boot = {
+      enable = true;
+      configurationLimit = 20;
+    };
 
     # fprintd doesn't play well with swaylock's pam module. It effectively
     # disables password input.
