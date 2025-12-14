@@ -44,6 +44,7 @@ in
         viddy.enable = mkDefault true;
         wezterm.enable = mkDefault true;
         whois.enable = mkDefault true;
+        zellij.enable = mkDefault true;
         zoxide.enable = mkDefault true;
       };
 
