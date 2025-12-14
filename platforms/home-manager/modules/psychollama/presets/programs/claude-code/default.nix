@@ -37,6 +37,12 @@ in
         - Use `nvim --headless -c 'help <name> | echo expand("%:p") | qa'` to find plugin help pages.
         - Use `nvim --headless -c 'echo $VIMRUNTIME | qa'` to find the neovim runtime.
         - When editing `.vimrc.lua`, see [the core library guide](${coreEditorDoc}).
+
+        # Nix Codebases
+
+        - Use `nix eval` and `nix build` to experiment with your changes.
+        - New files are not discoverable by Nix until you `git add` them.
+        - Dotfiles repos discover and import `.nix` files automatically. No need for module `imports`.
       '';
 
       settings = {
