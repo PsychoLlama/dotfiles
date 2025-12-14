@@ -81,7 +81,7 @@ in
     withNodeJs = mkOption {
       type = types.bool;
       description = "Whether to enable Node.js support";
-      default = true;
+      default = false;
     };
 
     extraPlugins = mkOption {
