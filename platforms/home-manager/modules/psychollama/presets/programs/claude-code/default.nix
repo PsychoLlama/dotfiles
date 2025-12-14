@@ -8,6 +8,7 @@
 let
   cfg = config.psychollama.presets.programs.claude-code;
   coreEditorDoc = pkgs.writeText "neovim-framework.md" (builtins.readFile ./neovim-framework.md);
+  inherit (config.programs.editor) neovim;
 in
 
 {
@@ -28,11 +29,14 @@ in
       memory.text = ''
         # Environment
 
-        Nix is available. Use `nix develop` to run programs (not `nix shell` or `nix run`).
+        - Nix is installed with `nix-command flakes` enabled.
+        - Prefer the `nix` command (`nix build` over `nix-build`, `nix shell` over `nix-shell`, etc).
 
-        # Editor Framework
+        # Developing Neovim Plugins
 
-        When writing neovim plugins or editing with `.vimrc.lua`, see [the guide](${coreEditorDoc}).
+        - Use `nvim --headless -c 'help <name> | echo expand("%:p") | qa'` to find plugin help pages.
+        - Use `nvim --headless -c 'echo $VIMRUNTIME | qa'` to find the neovim runtime.
+        - When editing `.vimrc.lua`, see [the core library guide](${coreEditorDoc}).
       '';
 
       settings = {
