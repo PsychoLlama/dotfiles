@@ -136,15 +136,12 @@ function M.on_load(override)
   return M.add_hook(override)
 end
 
---- Find a plugin by some match criteria.
---- @param query string|core.pkg.Query
+--- Find a plugin by name.
+--- @param name string Plugin name (exact match)
 --- @param plugin_set? 'bundled'|'active' Defaults to 'active'
 --- @return core.pkg.Plugin|nil
-function M.find(query, plugin_set)
+function M.find(name, plugin_set)
   plugin_set = plugin_set or 'active'
-  if type(query) == 'string' then
-    query = { name = query }
-  end
 
   local plugin_sets = {
     bundled = M.list_bundled(),
@@ -154,21 +151,16 @@ function M.find(query, plugin_set)
   local plugins = plugin_sets[plugin_set]
     or error('Invalid plugin set: ' .. plugin_set)
 
-  local match = nil
   for _, plugin in ipairs(plugins) do
-    if plugin.name == query.name then
-      match = plugin
-      break
+    if plugin.name == name then
+      return plugin
     end
   end
 
-  return match
+  return nil
 end
 
 return M
-
---- @class core.pkg.Query
---- @field name string Name tested for an exact match
 
 --- @class core.pkg.PluginSpec
 --- @field type 'pack' | 'path' Loading strategy
