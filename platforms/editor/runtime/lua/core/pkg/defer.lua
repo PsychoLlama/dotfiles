@@ -115,9 +115,11 @@ local function register_key_trigger(name, key)
   do
     vim.keymap.set(mode, lhs, function()
       load_deferred(name)
-      -- Re-trigger the keymap
-      local keys = vim.api.nvim_replace_termcodes(lhs, true, true, true)
-      vim.api.nvim_feedkeys(keys, mode --[[@as string]], false)
+      -- Re-trigger the keymap using lazy.nvim's approach:
+      -- - Prepend <Ignore> so Neovim processes the key transparently
+      -- - Use 'i' mode to insert at front of typeahead buffer
+      local feed = vim.api.nvim_replace_termcodes('<Ignore>' .. lhs, true, true, true)
+      vim.api.nvim_feedkeys(feed, 'i', false)
     end, { desc = desc })
 
     table.insert(cleanups[name], function()

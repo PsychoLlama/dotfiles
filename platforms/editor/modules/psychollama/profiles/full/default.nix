@@ -141,6 +141,9 @@ in
 
     # TODO: Convert parts of the neovim config to Nix.
     extraConfig = ''
+      -- Set mapleader before loading plugins so deferred keymaps expand correctly.
+      vim.g.mapleader = ' '
+      vim.api.nvim_set_keymap('n', '<space>', '<nop>', {})
       vim.o.shell = "${pkgs.dash}/bin/dash"
       vim.cmd.source('${./neovim.lua}')
     '';

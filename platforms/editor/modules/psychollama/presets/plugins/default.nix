@@ -44,7 +44,7 @@ in
     (mkPluginPreset "cmp-nvim-lsp" null)
     (mkPluginPreset "cmp-path" null)
 
-    # Defer codecompanion until its commands are used (~26ms saved)
+    # Defer codecompanion until its commands or keymap are used (~26ms saved)
     (mkPluginPresetFull "codecompanion-nvim" {
       extraConfig = ./codecompanion/config.lua;
       defer.cmd = [
@@ -53,6 +53,7 @@ in
         "CodeCompanionCmd"
         "CodeCompanionActions"
       ];
+      defer.keys = "<leader>c";
     })
     (mkPluginPreset "conform-nvim" ./conform/config.lua)
     (mkPluginPreset "deja-view-vim" null)

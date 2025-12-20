@@ -4,9 +4,7 @@ require('core.pkg').load()
 -- Operation not yet supported by the Nix binding.
 vim.opt.shortmess:append('I')
 
--- Use <space> as the leader key.
-vim.g.mapleader = ' '
-vim.api.nvim_set_keymap('n', '<space>', '<nop>', {})
+-- Visual mode leader nop (normal mode set in Nix extraConfig before sourcing).
 vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 
 -- Disable dumb markdown indents from `$VIMRUNTIME`.
