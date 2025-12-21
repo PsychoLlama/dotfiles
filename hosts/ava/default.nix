@@ -7,6 +7,7 @@
 
 let
   inherit (config.psychollama.settings) username;
+  shell = config.home-manager.users.${username}.programs.nushell.package;
 in
 
 {
@@ -27,10 +28,14 @@ in
       hostId = "daf96cd8"; # Random. Required by the ZFS pool.
     };
 
+    # Important! Keep this in sync with the HM user shell.
+    environment.shells = [ shell ];
+
     users.users.${username} = {
       isNormalUser = true;
       name = "overlord";
       description = "Jesse Gibson";
+      shell = shell;
       extraGroups = [
         "networkmanager"
         "podman"
