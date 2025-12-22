@@ -39,7 +39,11 @@ let
     path:
     let
       pathStr = toString path;
-      excluded = lib.any (excludePath: lib.hasInfix (excludePath + "/") pathStr) excludeStrs;
+      excluded = lib.any (
+        excludePath:
+        # Match directories (path contains excludePath/) or exact files
+        lib.hasInfix (excludePath + "/") pathStr || pathStr == excludePath
+      ) excludeStrs;
     in
     !excluded
   ) nixFiles;

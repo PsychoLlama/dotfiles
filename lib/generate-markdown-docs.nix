@@ -32,8 +32,22 @@ let
     inherit modules;
   };
 
+  # Evaluate home-manager modules using HM's own evaluation machinery.
+  hm = home-manager.lib.homeManagerConfiguration {
+    inherit pkgs;
+    modules = modules ++ [
+      {
+        home.username = "nobody";
+        home.homeDirectory = "/homeless-shelter";
+        home.stateVersion = "24.11";
+      }
+    ];
+  };
+
   allOptions = lib.optionAttrSetToDocList (
-    if platform == "nixos" then nixos.options else pristine.options
+    if platform == "nixos" then nixos.options
+    else if platform == "home-manager" then hm.options
+    else pristine.options
   );
 
   # Only generate documentation for things under the `psychollama.*` namespace.

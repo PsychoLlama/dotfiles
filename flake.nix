@@ -176,6 +176,24 @@
             ];
           };
 
+          home-manager-configs-doc = pkgs.callPackage lib.dotfiles.generateMarkdownDocs {
+            platform = "home-manager";
+            prefix = "psychollama.";
+            modules = [
+              self.nixosModules.home-manager-platform
+              {
+                imports = lib.dotfiles.discoverNixFiles {
+                  directory = ./platforms/home-manager/modules/psychollama;
+                  exclude = [ ./platforms/home-manager/modules/psychollama/presets/programs/editor.nix ];
+                };
+
+                # Stub for editor preset (requires `programs.editor` from hosts.nix).
+                options.psychollama.presets.programs.editor.enable =
+                  lib.mkEnableOption "Configure editor as the one true editor";
+              }
+            ];
+          };
+
           docs-website =
             pkgs.runCommand "generate-docs-website"
               {
@@ -185,6 +203,7 @@
                 cp --no-preserve=mode --recursive "${self.outPath}/docs" docs/
                 cp "${nixos-configs-doc}/options.md" docs/src/nixos.md
                 cp "${editor-configs-doc}/options.md" docs/src/editor.md
+                cp "${home-manager-configs-doc}/options.md" docs/src/home-manager.md
 
                 ls -lAh docs
 
