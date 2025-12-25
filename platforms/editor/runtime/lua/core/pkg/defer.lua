@@ -118,7 +118,8 @@ local function register_key_trigger(name, key)
       -- Re-trigger the keymap using lazy.nvim's approach:
       -- - Prepend <Ignore> so Neovim processes the key transparently
       -- - Use 'i' mode to insert at front of typeahead buffer
-      local feed = vim.api.nvim_replace_termcodes('<Ignore>' .. lhs, true, true, true)
+      local feed =
+        vim.api.nvim_replace_termcodes('<Ignore>' .. lhs, true, true, true)
       vim.api.nvim_feedkeys(feed, 'i', false)
     end, { desc = desc })
 

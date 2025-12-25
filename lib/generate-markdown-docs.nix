@@ -45,9 +45,12 @@ let
   };
 
   allOptions = lib.optionAttrSetToDocList (
-    if platform == "nixos" then nixos.options
-    else if platform == "home-manager" then hm.options
-    else pristine.options
+    if platform == "nixos" then
+      nixos.options
+    else if platform == "home-manager" then
+      hm.options
+    else
+      pristine.options
   );
 
   # Only generate documentation for things under the `psychollama.*` namespace.
