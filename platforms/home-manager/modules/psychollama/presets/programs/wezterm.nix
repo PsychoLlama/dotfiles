@@ -9,6 +9,7 @@ let
   inherit (config.theme) palette;
   cfg = config.psychollama.presets.programs.wezterm;
   inline = lib.generators.mkLuaInline;
+  tmux = config.programs.tmux.package;
 in
 
 {
@@ -75,15 +76,15 @@ in
       default_prog = map toString [
         (pkgs.writeShellScript "start-tmux" ''
           first_session="$(
-            ${pkgs.tmux}/bin/tmux list-sessions \
+            ${tmux}/bin/tmux list-sessions \
             -F '#{session_id}' 2>/dev/null \
             | head -1 || true
           )"
 
           if [[ -n "$first_session" ]]; then
-            ${pkgs.tmux}/bin/tmux attach-session -t "$first_session"
+            ${tmux}/bin/tmux attach-session -t "$first_session"
           else
-            ${pkgs.tmux}/bin/tmux new-session
+            ${tmux}/bin/tmux new-session
           fi
         '')
       ];
