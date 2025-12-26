@@ -73,7 +73,7 @@ in
       };
 
       default_prog = map toString [
-        (pkgs.writeScript "start-tmux" ''
+        (pkgs.writeShellScript "start-tmux" ''
           first_session="$(
             ${pkgs.tmux}/bin/tmux list-sessions \
             -F '#{session_id}' 2>/dev/null \
