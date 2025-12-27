@@ -8,7 +8,17 @@
 let
   cfg = config.psychollama.presets.programs.claude-code;
   coreEditorDoc = pkgs.writeText "neovim-framework.md" (builtins.readFile ./neovim-framework.md);
-  inherit (config.programs.editor) neovim;
+
+  # Block access to files named exactly ".env"
+  blockEnvFiles = pkgs.writers.writeDash "block-env-files" ''
+    file_path=$(${pkgs.jq}/bin/jq -r '.tool_input.file_path // ""')
+    basename=$(basename "$file_path")
+
+    if [ "$basename" = ".env" ]; then
+      echo "Access to .env files is blocked" >&2
+      exit 2
+    fi
+  '';
 in
 
 {
@@ -51,6 +61,20 @@ in
         autoUpdates = false;
         preferredNotifChannel = "terminal_bell";
         model = "opus";
+
+        hooks = {
+          PreToolUse = [
+            {
+              matcher = "Read|Edit|Write";
+              hooks = [
+                {
+                  type = "command";
+                  command = blockEnvFiles;
+                }
+              ];
+            }
+          ];
+        };
 
         permissions = {
           defaultMode = "acceptEdits";
