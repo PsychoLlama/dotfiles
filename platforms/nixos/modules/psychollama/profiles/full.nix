@@ -12,6 +12,7 @@ in
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
       services = {
+        agenix.enable = lib.mkDefault true;
         greetd.enable = lib.mkDefault true;
         pipewire.enable = lib.mkDefault true;
         podman.enable = lib.mkDefault true;
