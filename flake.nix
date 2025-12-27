@@ -49,6 +49,7 @@
     flake-inputs@{
       self,
 
+      agenix,
       nixos-hardware,
       nixpkgs,
       nixpkgs-unstable,
@@ -230,6 +231,7 @@
         system: pkgs: {
           default = pkgs.mkShell {
             packages = [
+              agenix.packages.${system}.default
               pkgs.just
               pkgs.lua-language-server
               pkgs.luajitPackages.luacheck

@@ -4,12 +4,12 @@ let
 
   # Host SSH public keys (for decryption at runtime)
   # Get with: cat /etc/ssh/ssh_host_agenix_key.pub
-  ava = "ssh-ed25519 ..."; # TODO: Replace after deploy
+  ava = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFlUATv/+bsebVVXQG+/ZQdXCJyRrrPUmZyOGM05HPss";
 
   allUsers = [ overlord ];
   allHosts = [ ava ];
 in
 
 {
-  "restic-env.age".publicKeys = allUsers ++ allHosts;
+  "platforms/nixos/modules/psychollama/presets/services/restic/env.age".publicKeys = allUsers ++ allHosts;
 }

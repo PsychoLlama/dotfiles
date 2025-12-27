@@ -16,6 +16,7 @@ in
         greetd.enable = lib.mkDefault true;
         pipewire.enable = lib.mkDefault true;
         podman.enable = lib.mkDefault true;
+        restic.enable = lib.mkDefault true;
         syncthing.enable = lib.mkDefault true;
         tailscale.enable = lib.mkDefault true;
         zfs.enable = lib.mkDefault true;
