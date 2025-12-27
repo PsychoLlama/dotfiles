@@ -1,4 +1,5 @@
 {
+  agenix,
   home-manager,
   nix-darwin,
   nixpkgs,
@@ -115,6 +116,7 @@ in
     hostName: modules:
     lib.nixosSystem {
       modules = modules ++ [
+        agenix.nixosModules.default
         home-manager.nixosModules.home-manager
         self.nixosModules.nixos-platform
         self.nixosModules.nixos-configs
