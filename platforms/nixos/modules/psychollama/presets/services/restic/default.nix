@@ -26,13 +26,15 @@ in
       environmentFile = config.age.secrets.restic-env.path;
       package = pkgs.unstable.restic;
 
-      paths = [ homeDirectory ];
+      paths = [
+        homeDirectory
+        "${homeDirectory}/projects/psychollama"
+        "${homeDirectory}/projects/taylor1791"
+      ];
 
       exclude = [
-        # Exclude projects, re-include specific ones below
-        "${homeDirectory}/projects/*"
-        "!${homeDirectory}/projects/psychollama"
-        "!${homeDirectory}/projects/taylor1791"
+        # Exclude all projects (specific ones added via paths above)
+        "${homeDirectory}/projects"
 
         # Caches and temp
         "${homeDirectory}/.cache"
@@ -45,6 +47,7 @@ in
         "**/node_modules"
         "**/target/debug"
         "**/target/release"
+        "**/dist/"
         "**/.direnv"
         "**/result"
 
