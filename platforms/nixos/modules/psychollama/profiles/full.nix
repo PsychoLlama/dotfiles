@@ -14,6 +14,7 @@ in
       services = {
         agenix.enable = lib.mkDefault true;
         greetd.enable = lib.mkDefault true;
+        litellm.enable = lib.mkDefault true;
         pipewire.enable = lib.mkDefault true;
         podman.enable = lib.mkDefault true;
         restic.enable = lib.mkDefault true;

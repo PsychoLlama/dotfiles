@@ -102,6 +102,7 @@ let
 
       # Add custom dotfiles modules to the HM framework.
       sharedModules = [
+        agenix.homeManagerModules.default
         self.nixosModules.home-manager-platform
         self.nixosModules.home-manager-configs
         editor-program
@@ -156,6 +157,7 @@ in
       };
 
       modules = modules ++ [
+        agenix.homeManagerModules.default
         self.nixosModules.home-manager-platform
         self.nixosModules.home-manager-configs
         nix-flakes
