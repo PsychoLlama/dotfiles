@@ -62,6 +62,10 @@ in
         preferredNotifChannel = "terminal_bell";
         model = "opus";
 
+        enabledPlugins = {
+          "ralph-wiggum@claude-plugins-official" = lib.mkDefault true;
+        };
+
         hooks = {
           PreToolUse = [
             {
