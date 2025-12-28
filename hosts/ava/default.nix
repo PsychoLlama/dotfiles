@@ -85,6 +85,11 @@ in
         email = "JesseTheGibson@gmail.com";
       };
 
+      # Route codecompanion through the local litellm proxy.
+      programs.editor.plugins.codecompanion-nvim.opts.litellm = {
+        url = "http://localhost:4000";
+      };
+
       psychollama.profiles = {
         full.enable = true;
         linux-desktop.enable = true;
