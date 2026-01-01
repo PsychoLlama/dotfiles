@@ -78,6 +78,18 @@ in
               ];
             }
           ];
+
+          Stop = [
+            {
+              matcher = "*";
+              hooks = [
+                {
+                  type = "command";
+                  command = ./hooks/keep-going.nu;
+                }
+              ];
+            }
+          ];
         };
 
         permissions = {
