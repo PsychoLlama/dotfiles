@@ -114,25 +114,26 @@ in
             "Bash(git add:*)"
             "Bash(git bisect:*)"
             "Bash(git blame:*)"
+            "Bash(git branch:*)"
+            "Bash(git checkout:*)"
+            "Bash(git cherry-pick:*)"
+            "Bash(git clean:*)"
             "Bash(git commit:*)"
             "Bash(git diff:*)"
             "Bash(git fetch:*)"
             "Bash(git grep:*)"
             "Bash(git log:*)"
             "Bash(git ls-remote:*)"
-            "Bash(git remote show:*)"
-            "Bash(git restore:*)"
-            "Bash(git show:*)"
-            "Bash(git cherry-pick:*)"
-            "Bash(git clean:*)"
             "Bash(git merge:*)"
             "Bash(git rebase:*)"
+            "Bash(git remote show:*)"
             "Bash(git reset:*)"
+            "Bash(git restore:*)"
             "Bash(git revert:*)"
+            "Bash(git rm:*)"
+            "Bash(git show:*)"
             "Bash(git stash:*)"
             "Bash(git status:*)"
-            "Bash(git checkout:*)"
-            "Bash(git branch:*)"
             "Bash(git tag:*)"
 
             "Bash(gh issue list:*)"
@@ -185,6 +186,11 @@ in
 
             # Generic projects
             "Bash(just:*)" # Arbitrary code execution.
+
+            # System Management
+            "Bash(journalctl:*)"
+            "Bash(systemctl list-units:*)"
+            "Bash(systemctl status:*)"
 
             "WebFetch(domain:docs.anthropic.com)"
             "WebFetch(domain:docs.claude.com)"
