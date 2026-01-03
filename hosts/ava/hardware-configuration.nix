@@ -9,6 +9,11 @@
   ];
 
   boot.kernelModules = [ "kvm-intel" ];
+
+  # Disable nouveau runtime power management. Without this, the NVIDIA GPU
+  # enters a deep sleep state that corrupts HDMI connector detection after
+  # suspend/hibernate. Trade-off: slightly higher power draw when mobile.
+  boot.kernelParams = [ "nouveau.runpm=0" ];
   hardware.bluetooth.enable = true;
 
   fileSystems =
