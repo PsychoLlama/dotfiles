@@ -36,7 +36,12 @@ in
 
     programs.ssh = {
       extraConfig = ''
+        # Tailscale
         Host ${lib.concatStringsSep " " (lib.attrNames hosts)}
+          User root
+
+        # LAN lookup
+        Host *.host.nova.selfhosted.city
           User root
       '';
 
