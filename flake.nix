@@ -229,6 +229,8 @@
               { psychollama.profiles.full.enable = true; }
             ];
           };
+
+          inherit (pkgs) chrome-devtools-mcp;
         }
       );
 
@@ -241,6 +243,7 @@
               pkgs.lua-language-server
               pkgs.luajitPackages.luacheck
               pkgs.luajitPackages.vusted
+              pkgs.nix-update
               pkgs.nixfmt-rfc-style
               pkgs.stylua
               pkgs.treefmt

@@ -23,6 +23,7 @@ buildNpmPackage rec {
   # users provide their own Chrome via --executablePath or --browserUrl.
   env.PUPPETEER_SKIP_DOWNLOAD = "1";
 
+  # nix-update --flake chrome-devtools-mcp --version-regex 'chrome-devtools-mcp-v(.*)'
   passthru.updateScript = nix-update-script { };
 
   meta = {
