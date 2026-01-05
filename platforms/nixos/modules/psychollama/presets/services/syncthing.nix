@@ -42,12 +42,12 @@ in
 
       devices = {
         file-server = {
-          addresses = [ "tcp://nas-001.host.nova.selfhosted.city" ];
+          addresses = [ "tcp://nas-001" ];
           id = "SJZG6UN-EOBGJV6-RAV5X5F-6QBWY6U-AE5TXOT-2E57WP7-CAWQJRX-F3AO5QG";
         };
 
         phone = {
-          addresses = [ "dynamic" ];
+          addresses = [ "tcp://google-pixel-7" ];
           id = "7B5KM6T-7NXKMY5-KM7TIQJ-WFX2OBO-OHMZOPA-HAXTV5B-5RNKXFM-OEF5AAL";
         };
       };
