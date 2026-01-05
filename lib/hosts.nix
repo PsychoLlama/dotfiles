@@ -23,6 +23,7 @@ let
   nixpkgs-config.nixpkgs = {
     overlays = [
       self.overlays.latest-packages
+      self.overlays.packages
       self.overlays.vim-plugins
     ];
 

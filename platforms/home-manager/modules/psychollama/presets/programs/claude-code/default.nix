@@ -31,6 +31,16 @@ in
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.claude-code;
 
+      mcpServers = {
+        chrome-devtools = {
+          command = "${pkgs.chrome-devtools-mcp}/bin/chrome-devtools-mcp";
+          args = [
+            "--executablePath"
+            "${config.programs.chromium.package}/bin/chromium"
+          ];
+        };
+      };
+
       commands = {
         "quality.plan" = ./commands/quality.plan.md;
         "quality.run" = ./commands/quality.run.md;
