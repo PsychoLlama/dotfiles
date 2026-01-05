@@ -37,7 +37,9 @@ in
       mcpServers = {
         chrome-devtools = {
           command = "${pkgs.chrome-devtools-mcp}/bin/chrome-devtools-mcp";
-          args = [
+
+          # Only necessary on NixOS. Wish this supported an env variable.
+          args = lib.optionals pkgs.stdenv.isLinux [
             "--executablePath"
             "${config.programs.chromium.package}/bin/chromium"
           ];
