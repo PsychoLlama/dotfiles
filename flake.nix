@@ -127,6 +127,7 @@
 
       overlays = {
         latest-packages = import ./lib/overlays/latest-packages.nix flake-inputs;
+        packages = import ./lib/overlays/packages.nix flake-inputs;
         vim-plugins = import ./lib/overlays/vim-plugins.nix flake-inputs;
       };
 
