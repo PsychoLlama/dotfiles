@@ -40,6 +40,10 @@ in
         Host ${lib.concatStringsSep " " (lib.attrNames hosts)}
           User root
 
+        # UniFi U6-Lite
+        Host access-point.host.nova.selfhosted.city
+          User admin
+
         # LAN lookup
         Host *.host.nova.selfhosted.city
           User root
