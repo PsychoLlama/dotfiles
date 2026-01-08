@@ -33,6 +33,15 @@ typecheck:
   export VIMRUNTIME=$(nvim --clean --headless --cmd 'echo $VIMRUNTIME | q' 2>&1)
   lua-language-server --check . --checklevel=Warning
 
+# Update all flake inputs and custom packages.
+update:
+  nix flake update
+  @just update-packages
+
+# Update all custom packages.
+update-packages:
+  nix-update --flake chrome-devtools-mcp --version-regex 'chrome-devtools-mcp-v(.*)'
+
 # Run all checks, reporting all failures.
 check:
   #!/usr/bin/env bash
