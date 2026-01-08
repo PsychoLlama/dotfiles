@@ -123,3 +123,16 @@ vim.treesitter.query.add_predicate('is-not?', function()
   --
   -- See: https://github.com/neovim/neovim/issues/27521
 end, {})
+
+-- Enable treesitter highlighting for all filetypes with available parsers.
+-- Built-in filetypes (lua, c, vim, markdown) have ftplugins that do this, but
+-- third-party parsers don't.
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('treesitter-highlight', {}),
+  callback = function(args)
+    local lang = vim.treesitter.language.get_lang(args.match)
+    if lang and pcall(vim.treesitter.start, args.buf, lang) then
+      -- Highlighting started successfully
+    end
+  end,
+})

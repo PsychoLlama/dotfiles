@@ -51,7 +51,21 @@ in
         nvim-cmp.enable = lib.mkDefault true;
         nvim-lint.enable = lib.mkDefault true;
         nvim-luapad.enable = lib.mkDefault true;
-        nvim-treesitter-textobjects.enable = lib.mkDefault true;
+        nvim-treesitter-textobjects = {
+          enable = lib.mkDefault true;
+
+          # Nixpkgs tracks frozen master branch; main branch has nvim-treesitter compat fixes
+          package = pkgs.unstable.vimPlugins.nvim-treesitter-textobjects.overrideAttrs {
+            doCheck = false;
+            version = "0-unstable-2026-01-02";
+            src = pkgs.fetchFromGitHub {
+              owner = "nvim-treesitter";
+              repo = "nvim-treesitter-textobjects";
+              rev = "28a3494c075ef0f353314f627546537e43c09592";
+              hash = "sha256-5VeIAW09my+4fqXbzVG7RnLXrjpXAk/g2vd7RbhNws8=";
+            };
+          };
+        };
         nvim-treesitter.enable = lib.mkDefault true;
         onedarkpro-nvim.enable = lib.mkDefault true;
         snacks-nvim.enable = lib.mkDefault true;
