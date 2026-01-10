@@ -1,8 +1,9 @@
 require('core.env').source_direnv_vimrc()
 require('core.pkg').load()
 
--- Operation not yet supported by the Nix binding.
+-- Operations not yet supported by the Nix binding.
 vim.opt.shortmess:append('I')
+vim.opt.backupdir = vim.fn.stdpath('state') .. '/backup'
 
 -- Visual mode leader nop (normal mode set in Nix extraConfig before sourcing).
 vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})

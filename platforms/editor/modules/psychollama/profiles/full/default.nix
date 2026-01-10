@@ -144,7 +144,6 @@ in
       # Storage settings
       backupcopy = "yes";
       backup = true;
-      backupdir = "/tmp";
       undofile = true;
       history = 10000;
 
