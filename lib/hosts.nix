@@ -96,20 +96,31 @@ let
     };
 
   # Set reasonable defaults for home-manager as a submodule.
-  hm-substrate = {
-    home-manager = {
-      useGlobalPkgs = lib.mkDefault true;
-      useUserPackages = lib.mkDefault true;
+  hm-substrate =
+    { config, ... }:
+    {
+      home-manager = {
+        useGlobalPkgs = lib.mkDefault true;
+        useUserPackages = lib.mkDefault true;
 
-      # Add custom dotfiles modules to the HM framework.
-      sharedModules = [
-        agenix.homeManagerModules.default
-        self.nixosModules.home-manager-platform
-        self.nixosModules.home-manager-configs
-        editor-program
-      ];
+        # Add custom dotfiles modules to the HM framework.
+        sharedModules = [
+          agenix.homeManagerModules.default
+          self.nixosModules.home-manager-platform
+          self.nixosModules.home-manager-configs
+          self.nixosModules.theme
+          editor-program
+
+          {
+            # Inherit theme config from host platform.
+            theme = {
+              name = lib.mkDefault config.theme.name;
+              palettes = lib.mkDefault config.theme.palettes;
+            };
+          }
+        ];
+      };
     };
-  };
 
 in
 
@@ -122,6 +133,7 @@ in
         home-manager.nixosModules.home-manager
         self.nixosModules.nixos-platform
         self.nixosModules.nixos-configs
+        self.nixosModules.theme
 
         nixpkgs-config
         nix-flakes
@@ -137,6 +149,7 @@ in
     nix-darwin.lib.darwinSystem {
       modules = modules ++ [
         home-manager.darwinModules.home-manager
+        self.nixosModules.theme
 
         nixpkgs-config
         nix-flakes
@@ -161,6 +174,7 @@ in
         agenix.homeManagerModules.default
         self.nixosModules.home-manager-platform
         self.nixosModules.home-manager-configs
+        self.nixosModules.theme
         nix-flakes
         editor-program
       ];

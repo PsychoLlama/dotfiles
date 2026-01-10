@@ -85,6 +85,8 @@
       };
 
       nixosModules = {
+        theme = import ./platforms/universal/modules/theme.nix;
+
         editor-platform = {
           imports = lib.dotfiles.discoverNixFiles {
             directory = ./platforms/editor/modules;
