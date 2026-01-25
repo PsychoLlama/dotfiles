@@ -37,7 +37,7 @@ in
     formatters = {
       black = mkExeOption pkgs.unstable.black "black";
       eslint = mkExeOption pkgs.unstable.eslint_d "eslint_d";
-      nixfmt = mkExeOption pkgs.unstable.nixfmt-rfc-style "nixfmt";
+      nixfmt = mkExeOption pkgs.unstable.nixfmt "nixfmt";
       prettier = mkExeOption pkgs.unstable.prettierd "prettierd";
       stylua = mkExeOption pkgs.unstable.stylua "stylua";
     };

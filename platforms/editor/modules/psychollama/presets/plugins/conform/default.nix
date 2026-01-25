@@ -17,7 +17,7 @@ in
 
       formatters = {
         nixfmt = {
-          command = "${pkgs.unstable.nixfmt-rfc-style}/bin/nixfmt";
+          command = "${pkgs.unstable.nixfmt}/bin/nixfmt";
           args = [ "--quiet" ];
         };
 

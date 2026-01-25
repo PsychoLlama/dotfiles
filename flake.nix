@@ -246,7 +246,7 @@
               pkgs.luajitPackages.luacheck
               pkgs.luajitPackages.vusted
               pkgs.nix-update
-              pkgs.nixfmt-rfc-style
+              pkgs.nixfmt
               pkgs.stylua
               pkgs.treefmt
             ];
