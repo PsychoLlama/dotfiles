@@ -12,9 +12,11 @@ vim.filetype.add({
     end,
     nix = function(_, bufnr)
       vim.bo[bufnr].commentstring = '#%s'
+      return 'nix'
     end,
     go = function(_, bufnr)
       vim.bo[bufnr].expandtab = false
+      return 'go'
     end,
   },
   filename = {
