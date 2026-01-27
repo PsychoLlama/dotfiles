@@ -80,7 +80,7 @@ nix run '.#editor'
 Reference docs are generated as an mdbook. Test documentation changes:
 
 ```bash
-nix build '.#docs'
+nix build '.#docs-website'
 ```
 
 ## Developing

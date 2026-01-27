@@ -176,6 +176,7 @@
             platform = "nixos";
             prefix = "psychollama.";
             modules = [
+              agenix.nixosModules.default
               home-manager.nixosModules.home-manager
               self.nixosModules.nixos-platform
               self.nixosModules.nixos-configs

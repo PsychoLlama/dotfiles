@@ -10,6 +10,10 @@ activate mode="test":
 build:
   nixos-rebuild --log-format internal-json -v build --flake . 2>&1 | nom --json
 
+# Build the documentation website.
+build-docs:
+  nix build '.#docs-website'
+
 # Format all files.
 fmt:
   treefmt
@@ -65,4 +69,6 @@ check:
   just unit-test-built || failed=1
   echo "--- Building NixOS configuration ---"
   just build || failed=1
+  echo "--- Building documentation ---"
+  just build-docs || failed=1
   exit $failed
