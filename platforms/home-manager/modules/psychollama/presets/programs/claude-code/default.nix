@@ -27,9 +27,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Load Claude MCP tool definitions on-demand. Saves on context utilization.
-    home.sessionVariables.ENABLE_EXPERIMENTAL_MCP_CLI = "true";
-
     programs.claude-code = {
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.claude-code;
