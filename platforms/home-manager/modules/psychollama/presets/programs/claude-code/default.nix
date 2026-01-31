@@ -56,6 +56,7 @@ in
 
         - Nix is installed with `nix-command flakes` enabled.
         - Prefer the `nix` command (`nix build` over `nix-build`, `nix shell` over `nix-shell`, etc).
+        - Prefer `fd` over `find`.
 
         # Developing Neovim Plugins
 
@@ -113,6 +114,7 @@ in
             # Mostly read-only, but dangerously allows reading outside the workdir.
             "Bash(cat:*)"
             "Bash(date:*)"
+            "Bash(fd:*)"
             "Bash(file:*)"
             "Bash(find:*)"
             "Bash(grep:*)"
