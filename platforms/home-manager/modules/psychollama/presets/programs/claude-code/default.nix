@@ -19,6 +19,36 @@ let
       exit 2
     fi
   '';
+
+  # Send desktop notification when permission is requested
+  notifyPermissionRequest =
+    pkgs.writers.writeDash "notify-permission-request"
+      # bash
+      ''
+        input=$(cat)
+        message=$(echo "$input" | ${pkgs.jq}/bin/jq -r '.message // "Permission requested"')
+        cwd=$(echo "$input" | ${pkgs.jq}/bin/jq -r '.cwd // ""')
+        project=$(basename "$cwd")
+
+        if [ -z "$project" ]; then
+          title="Claude Code"
+        else
+          title="Claude Code ($project)"
+        fi
+
+        case "$(uname)" in
+          Darwin)
+            osascript -e "display notification \"$message\" with title \"$title\""
+            ;;
+          *)
+            ${pkgs.libnotify}/bin/notify-send \
+              --urgency=normal \
+              --icon=dialog-question \
+              "$title" \
+              "$message"
+            ;;
+        esac
+      '';
 in
 
 {
@@ -80,6 +110,18 @@ in
         };
 
         hooks = {
+          Notification = [
+            {
+              matcher = "permission_prompt";
+              hooks = [
+                {
+                  type = "command";
+                  command = notifyPermissionRequest;
+                }
+              ];
+            }
+          ];
+
           PreToolUse = [
             {
               matcher = "Read|Edit|Write";
