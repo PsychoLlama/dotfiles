@@ -37,7 +37,6 @@ in
         pamixer.enable = mkDefault true;
         parted.enable = mkDefault true;
         playerctl.enable = mkDefault true;
-        rofi.enable = mkDefault true;
         slurp.enable = mkDefault true;
         swaylock.enable = mkDefault true;
         waybar.enable = mkDefault true;

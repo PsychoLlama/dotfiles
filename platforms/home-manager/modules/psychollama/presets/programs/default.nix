@@ -48,7 +48,6 @@ in
     (mkUnstablePreset "pamixer")
     (mkUnstablePreset "parted")
     (mkUnstablePreset "playerctl")
-    (mkUnstablePreset "rofi")
     (mkUnstablePreset "slurp")
     (mkUnstablePreset "spotify-player")
     (mkUnstablePreset "starship")
