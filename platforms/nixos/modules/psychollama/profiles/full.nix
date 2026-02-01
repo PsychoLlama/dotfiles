@@ -11,6 +11,8 @@ in
 
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
+      fonts.enable = lib.mkDefault true;
+
       services = {
         agenix.enable = lib.mkDefault true;
         greetd.enable = lib.mkDefault true;
