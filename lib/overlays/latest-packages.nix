@@ -7,6 +7,7 @@ flake-inputs: final: prev: {
     inherit (prev) config;
     system = prev.stdenv.hostPlatform.system;
     overlays = [
+      flake-inputs.self.overlays.packages
       flake-inputs.self.overlays.vim-plugins
     ];
   };

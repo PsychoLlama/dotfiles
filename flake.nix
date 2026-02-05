@@ -233,7 +233,7 @@
             ];
           };
 
-          inherit (pkgs) chrome-devtools-mcp claude-code-bin;
+          inherit (pkgs) chrome-devtools-mcp claude-code-bin codex;
         }
       );
 
