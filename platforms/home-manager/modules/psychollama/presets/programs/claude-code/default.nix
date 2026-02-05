@@ -59,7 +59,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.claude-code = {
       enable = lib.mkDefault true;
-      package = lib.mkDefault pkgs.unstable.claude-code-bin;
+      package = lib.mkDefault pkgs.claude-code-bin;
 
       mcpServers = {
         chrome-devtools = {
