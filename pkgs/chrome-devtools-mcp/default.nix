@@ -7,16 +7,16 @@
 
 buildNpmPackage rec {
   pname = "chrome-devtools-mcp";
-  version = "0.15.1";
+  version = "0.16.0";
 
   src = fetchFromGitHub {
     owner = "ChromeDevTools";
     repo = "chrome-devtools-mcp";
     rev = "${pname}-v${version}";
-    hash = "sha256-5y6oG/ubh7g0JJA6rt70Oi2hbjwTLB6kXL6z4m/ufOE=";
+    hash = "sha256-Jbr3+cWT2H+++LqTgUOuTmRtfnN38JqHX3kmRig+2hw=";
   };
 
-  npmDepsHash = "sha256-fgREF9d5VNARtm0b86E3c/bfzOQPO+Fs1YkX+vfXYoE=";
+  npmDepsHash = "sha256-4GOCDMyfY6CeJPux2NmkfoJ030iu/xrZGqnnIpHS4gY=";
   npmBuildScript = "bundle";
 
   # Puppeteer tries to download Chrome during install; skip it since
