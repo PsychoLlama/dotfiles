@@ -79,6 +79,7 @@ in
         - Nix is installed with `nix-command flakes` enabled.
         - Prefer the `nix` command (`nix build` over `nix-build`, `nix shell` over `nix-shell`, etc).
         - Prefer `fd` over `find`.
+        - Prefer `rg` over `grep`.
 
         # Developing Neovim Plugins
 
@@ -99,10 +100,6 @@ in
         autoUpdates = false;
         preferredNotifChannel = "terminal_bell";
         model = "opus";
-
-        enabledPlugins = {
-          "ralph-loop@claude-plugins-official" = lib.mkDefault true;
-        };
 
         hooks = {
           Notification = [
