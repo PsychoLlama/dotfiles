@@ -101,7 +101,7 @@ in
         model = "opus";
 
         enabledPlugins = {
-          "ralph-wiggum@claude-plugins-official" = lib.mkDefault true;
+          "ralph-loop@claude-plugins-official" = lib.mkDefault true;
         };
 
         hooks = {
