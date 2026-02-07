@@ -34,12 +34,11 @@ stdenv.mkDerivation (finalAttrs: {
   # otherwise the bun runtime is executed instead of the binary
   dontStrip = true;
 
-  nativeBuildInputs =
-    [
-      installShellFiles
-      makeBinaryWrapper
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isElf [ autoPatchelfHook ];
+  nativeBuildInputs = [
+    installShellFiles
+    makeBinaryWrapper
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isElf [ autoPatchelfHook ];
 
   strictDeps = true;
 

@@ -37,9 +37,10 @@ stdenv.mkDerivation (finalAttrs: {
   dontBuild = true;
   dontStrip = true;
 
-  nativeBuildInputs =
-    [ makeBinaryWrapper ]
-    ++ lib.optionals stdenv.hostPlatform.isElf [ autoPatchelfHook ];
+  nativeBuildInputs = [
+    makeBinaryWrapper
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isElf [ autoPatchelfHook ];
 
   buildInputs = lib.optionals stdenv.hostPlatform.isElf [
     libcap
