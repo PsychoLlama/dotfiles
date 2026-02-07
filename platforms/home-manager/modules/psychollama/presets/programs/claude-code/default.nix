@@ -169,6 +169,7 @@ in
             "Bash(git stash:*)"
             "Bash(git status:*)"
             "Bash(git tag:*)"
+            "Bash(git worktree:*)"
 
             "Bash(gh issue list:*)"
             "Bash(gh issue view:*)"
