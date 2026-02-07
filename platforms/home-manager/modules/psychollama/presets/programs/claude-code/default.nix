@@ -79,15 +79,10 @@ in
         - Prefer the `nix` command (`nix build` over `nix-build`, `nix shell` over `nix-shell`, etc).
         - Prefer `fd` over `find`.
         - Prefer `rg` over `grep`.
-
-        # Nix Codebases
-
-        - Use `nix eval` and `nix build` to experiment with your changes.
-        - New files are not discoverable by Nix until you `git add` them.
-        - Dotfiles repos discover and import `.nix` files automatically. No need for module `imports`.
       '';
 
       skills.neovim = ./skills/neovim;
+      skills.nix = ./skills/nix;
 
       settings = {
         includeCoAuthoredBy = false;
@@ -223,6 +218,9 @@ in
             "Bash(journalctl:*)"
             "Bash(systemctl list-units:*)"
             "Bash(systemctl status:*)"
+
+            # Nix store (read-only source-diving)
+            "Read(//nix/store/**)"
 
             "WebFetch(domain:docs.anthropic.com)"
             "WebFetch(domain:docs.claude.com)"

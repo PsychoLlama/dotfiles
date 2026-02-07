@@ -92,3 +92,4 @@ All programs are declaratively managed through this repo. When asked to change c
 - Run `just build` to verify the NixOS configuration compiles.
 - When refactoring, use `nix eval` to verify settings are applied correctly.
 - New files must be `git add`-ed before Nix can discover them.
+- Nix modules in this repo are discovered and imported automatically. No need for module `imports`.
