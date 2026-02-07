@@ -79,6 +79,11 @@ in
         - Prefer the `nix` command (`nix build` over `nix-build`, `nix shell` over `nix-shell`, etc).
         - Prefer `fd` over `find`.
         - Prefer `rg` over `grep`.
+
+        # Git Conventions
+
+        - Branch naming: `jesse.gibson/<ticket-id>/<slug>` (with ticket) or `jesse.gibson/<slug>` (without ticket).
+        - Worktree naming: `<repo>@<slug>`.
       '';
 
       skills.neovim = ./skills/neovim;
