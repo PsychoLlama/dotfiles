@@ -73,11 +73,6 @@ in
         };
       };
 
-      commands = {
-        "quality.plan" = ./commands/quality.plan.md;
-        "quality.run" = ./commands/quality.run.md;
-      };
-
       memory.text = ''
         # Environment
 
