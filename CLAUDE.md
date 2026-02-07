@@ -85,6 +85,8 @@ nix build '.#docs-website'
 
 ## Developing
 
+All programs are declaratively managed through this repo. When asked to change configuration for a program (e.g. Claude Code settings, shell aliases, git config), edit the corresponding Nix module -- never the dotfiles directly.
+
 - Run `just check` before committing. Keep everything passing.
 - Run `just fmt` to apply code formatting.
 - Run `just build` to verify the NixOS configuration compiles.
