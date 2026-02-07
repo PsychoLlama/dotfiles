@@ -37,7 +37,6 @@ in
         cmp-cmdline.enable = lib.mkDefault true;
         cmp-nvim-lsp.enable = lib.mkDefault true;
         cmp-path.enable = lib.mkDefault true;
-        codecompanion-nvim.enable = lib.mkDefault true;
         conform-nvim.enable = lib.mkDefault true;
         deja-view-vim.enable = lib.mkDefault true;
         fzf-vim.enable = lib.mkDefault true;
