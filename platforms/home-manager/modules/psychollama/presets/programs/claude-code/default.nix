@@ -7,6 +7,7 @@
 
 let
   cfg = config.psychollama.presets.programs.claude-code;
+  jsonFormat = pkgs.formats.json { };
 
   # Block access to files named exactly ".env"
   blockEnvFiles = pkgs.writers.writeDash "block-env-files" ''
@@ -53,24 +54,17 @@ in
 {
   options.psychollama.presets.programs.claude-code = {
     enable = lib.mkEnableOption "Opinionated config for Claude Code";
+    mcpServers = lib.mkOption {
+      type = jsonFormat.type;
+      default = { };
+      description = "MCP servers to configure for Claude Code.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     programs.claude-code = {
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.claude-code-bin;
-
-      mcpServers = {
-        chrome-devtools = {
-          command = "${pkgs.chrome-devtools-mcp}/bin/chrome-devtools-mcp";
-
-          # Only necessary on NixOS. Wish this supported an env variable.
-          args = lib.optionals pkgs.stdenv.isLinux [
-            "--executablePath"
-            "${config.programs.chromium.package}/bin/chromium"
-          ];
-        };
-      };
 
       memory.text = ''
         # Environment
@@ -265,6 +259,20 @@ in
           ];
         };
       };
+    };
+
+    psychollama.presets.programs.claude-code.mcpServers.chrome-devtools = {
+      command = "${pkgs.chrome-devtools-mcp}/bin/chrome-devtools-mcp";
+
+      # Only necessary on NixOS. Wish this supported an env variable.
+      args = lib.optionals pkgs.stdenv.isLinux [
+        "--executablePath"
+        "${config.programs.chromium.package}/bin/chromium"
+      ];
+    };
+
+    home.file.".mcp.json".source = jsonFormat.generate "claude-mcp.json" {
+      mcpServers = cfg.mcpServers;
     };
 
     programs.git = lib.mkIf cfg.enable {
