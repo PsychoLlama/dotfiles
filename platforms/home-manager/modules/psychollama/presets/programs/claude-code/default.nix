@@ -7,7 +7,6 @@
 
 let
   cfg = config.psychollama.presets.programs.claude-code;
-  coreEditorDoc = pkgs.writeText "neovim-framework.md" (builtins.readFile ./neovim-framework.md);
 
   # Block access to files named exactly ".env"
   blockEnvFiles = pkgs.writers.writeDash "block-env-files" ''
@@ -81,18 +80,14 @@ in
         - Prefer `fd` over `find`.
         - Prefer `rg` over `grep`.
 
-        # Developing Neovim Plugins
-
-        - Use `nvim --headless -c 'help <name> | echo expand("%:p") | qa'` to find plugin help pages.
-        - Use `nvim --headless -c 'echo $VIMRUNTIME | qa'` to find the neovim runtime.
-        - When editing `.vimrc.lua`, see [the core library guide](${coreEditorDoc}).
-
         # Nix Codebases
 
         - Use `nix eval` and `nix build` to experiment with your changes.
         - New files are not discoverable by Nix until you `git add` them.
         - Dotfiles repos discover and import `.nix` files automatically. No need for module `imports`.
       '';
+
+      skills.neovim = ./skills/neovim;
 
       settings = {
         includeCoAuthoredBy = false;

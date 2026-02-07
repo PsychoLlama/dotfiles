@@ -1,3 +1,13 @@
+---
+description: Neovim plugin development guidance, custom framework API, and editor conventions. Use when working on neovim plugins, editing .vimrc.lua, or modifying the editor platform.
+---
+
+# Developing Neovim Plugins
+
+- Use `nvim --headless -c 'help <name> | echo expand("%:p") | qa'` to find plugin help pages.
+- Use `nvim --headless -c 'echo $VIMRUNTIME | qa'` to find the neovim runtime.
+- When editing `.vimrc.lua`, see the framework guide below.
+
 # Neovim Framework
 
 Custom plugin loader via `require('core.pkg')`. Used in `.vimrc.lua` files.
