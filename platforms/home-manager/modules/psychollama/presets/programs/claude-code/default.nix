@@ -91,6 +91,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home.shellAliases.a = "claude"; # `a` short for `agent`
+
     programs.claude-code = {
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.claude-code-bin;

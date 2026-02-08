@@ -8,7 +8,6 @@ in
   config = lib.mkIf cfg.enable {
     home.shellAliases = {
       g = "git";
-      c = "git commit";
       b = "git branch";
       ch = "git checkout";
       h = "git diff HEAD --staged";
