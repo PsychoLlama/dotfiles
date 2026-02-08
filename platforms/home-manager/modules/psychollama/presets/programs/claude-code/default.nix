@@ -260,14 +260,22 @@ in
 
             # Nix projects
             "Bash(nix build:*)"
+            "Bash(nix derivation show:*)"
             "Bash(nix develop:*)" # Arbitrary code execution.
             "Bash(nix eval:*)"
             "Bash(nix flake check:*)"
+            "Bash(nix flake lock:*)"
             "Bash(nix flake metadata:*)"
             "Bash(nix flake show:*)"
             "Bash(nix flake update:*)"
+            "Bash(nix fmt:*)"
+            "Bash(nix hash:*)"
+            "Bash(nix log:*)"
+            "Bash(nix path-info:*)"
+            "Bash(nix repl:*)" # Arbitrary code execution.
             "Bash(nix run:*)" # Arbitrary code execution.
             "Bash(nix search:*)"
+            "Bash(nix why-depends:*)"
 
             # Lua projects
             "Bash(luacheck:*)"
