@@ -45,6 +45,7 @@ in
         lab-nvim.enable = lib.mkDefault true;
         lualine-lsp-progress.enable = lib.mkDefault true;
         lualine-nvim.enable = lib.mkDefault true;
+        markdown-nvim.enable = lib.mkDefault true;
         markdown-preview-nvim.enable = lib.mkDefault true;
         navitron-nvim.enable = lib.mkDefault true;
         nvim-autopairs.enable = lib.mkDefault true;

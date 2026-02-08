@@ -58,7 +58,12 @@ in
     (mkPluginPreset "lualine-lsp-progress" null)
     (mkPluginPreset "lualine-nvim" ./lualine.lua)
 
-    # Defer markdown-preview until markdown files are opened
+    # Defer markdown plugins until markdown files are opened
+    (mkPluginPresetFull "markdown-nvim" {
+      extraConfig = ./markdown.lua;
+      defer.ft = "markdown";
+    })
+
     (mkPluginPresetFull "markdown-preview-nvim" {
       extraConfig = ./markdown-preview/config.lua;
       defer.ft = "markdown";
