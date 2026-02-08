@@ -10,15 +10,55 @@ let
   jsonFormat = pkgs.formats.json { };
 
   # Block access to files named exactly ".env"
-  blockEnvFiles = pkgs.writers.writeDash "block-env-files" ''
-    file_path=$(${pkgs.jq}/bin/jq -r '.tool_input.file_path // ""')
-    basename=$(basename "$file_path")
+  blockEnvFiles =
+    pkgs.writers.writeDash "block-env-files"
+      # bash
+      ''
+        file_path=$(${pkgs.jq}/bin/jq -r '.tool_input.file_path // ""')
+        basename=$(basename "$file_path")
 
-    if [ "$basename" = ".env" ]; then
-      echo "Access to .env files is blocked" >&2
-      exit 2
-    fi
-  '';
+        if [ "$basename" = ".env" ]; then
+          echo "Access to .env files is blocked" >&2
+          exit 2
+        fi
+      '';
+
+  # Send a desktop notification on demand
+  notifyUser =
+    pkgs.writers.writeDash "notify"
+      # bash
+      ''
+        title="Claude Code"
+        icon="dialog-information"
+
+        while [ $# -gt 0 ]; do
+          case "$1" in
+            --title) title="$2"; shift 2 ;;
+            --icon) icon="$2"; shift 2 ;;
+            *) break ;;
+          esac
+        done
+
+        if [ $# -eq 0 ]; then
+          echo "Usage: notify [--title TITLE] [--icon ICON] <message>" >&2
+          exit 1
+        fi
+
+        message="$*"
+
+        case "$(uname)" in
+          Darwin)
+            osascript -e "display notification \"$message\" with title \"$title\""
+            ;;
+          *)
+            ${pkgs.libnotify}/bin/notify-send \
+              --urgency=normal \
+              --icon="$icon" \
+              "$title" \
+              "$message"
+            ;;
+        esac
+      '';
 
   # Send desktop notification when permission is requested
   notifyPermissionRequest =
@@ -30,24 +70,13 @@ let
         cwd=$(echo "$input" | ${pkgs.jq}/bin/jq -r '.cwd // ""')
         project=$(basename "$cwd")
 
-        if [ -z "$project" ]; then
-          title="Claude Code"
-        else
+        if [ -n "$project" ]; then
           title="Claude Code ($project)"
+        else
+          title="Claude Code"
         fi
 
-        case "$(uname)" in
-          Darwin)
-            osascript -e "display notification \"$message\" with title \"$title\""
-            ;;
-          *)
-            ${pkgs.libnotify}/bin/notify-send \
-              --urgency=normal \
-              --icon=dialog-question \
-              "$title" \
-              "$message"
-            ;;
-        esac
+        exec ${notifyUser} --title "$title" --icon dialog-question "$message"
       '';
 in
 
@@ -78,6 +107,10 @@ in
 
         - Branch naming: `jesse.gibson/<ticket-id>/<slug>` (with ticket) or `jesse.gibson/<slug>` (without ticket).
         - Worktree naming: `<repo>@<slug>`.
+
+        # Capabilities
+
+        - `~/.claude/caps/notify <message>` sends a desktop notification. Use it to get my attention after completing a long-running task.
       '';
 
       skills.neovim = ./skills/neovim;
@@ -138,6 +171,7 @@ in
             "Bash(tree:*)"
             "Bash(wc:*)"
             "Bash(which:*)"
+            "Bash(~/.claude/caps/notify:*)"
 
             "Bash(git add:*)"
             "Bash(git bisect:*)"
@@ -294,6 +328,10 @@ in
         "--executablePath"
         "${config.programs.chromium.package}/bin/chromium"
       ];
+    };
+
+    home.file.".claude/caps/notify" = {
+      source = notifyUser;
     };
 
     home.file.".mcp.json".source = jsonFormat.generate "claude-mcp.json" {
