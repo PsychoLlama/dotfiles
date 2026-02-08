@@ -1,5 +1,5 @@
 ---
-description: Nix development guidance for flakes, packaging, modules, and NixOS/home-manager configurations. Use when working on .nix files, flake projects, or NixOS/nix-darwin/home-manager configs.
+description: ALWAYS use this skill for anything related to Nix, NixOS, nix-darwin, home-manager, or nixpkgs. This includes writing Nix code, looking up modules/options/packages, answering questions, and debugging Nix errors.
 ---
 
 - Use `nix eval` and `nix build` to experiment with your changes.
