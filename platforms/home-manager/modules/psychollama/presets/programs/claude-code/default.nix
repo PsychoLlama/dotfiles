@@ -125,6 +125,11 @@ in
         preferredNotifChannel = "terminal_bell";
         model = "opus";
 
+        env = {
+          # I don't want uncommitted memory affecting Claude's decisions.
+          CLAUDE_CODE_DISABLE_AUTO_MEMORY = "1";
+        };
+
         hooks = {
           Notification = [
             {
