@@ -9,6 +9,7 @@
   autoPatchelfHook,
   libcap,
   openssl,
+  zlib,
   gcc,
   ripgrep,
 }:
@@ -45,6 +46,7 @@ stdenv.mkDerivation (finalAttrs: {
   buildInputs = lib.optionals stdenv.hostPlatform.isElf [
     libcap
     openssl
+    zlib
     gcc.cc.lib
   ];
 
