@@ -118,6 +118,8 @@ in
       skills.neovim = ./skills/neovim;
       skills.nix = ./skills/nix;
 
+      commands.repo-update = ./commands/repo-update.md;
+
       settings = {
         includeCoAuthoredBy = false;
         theme = "dark";
