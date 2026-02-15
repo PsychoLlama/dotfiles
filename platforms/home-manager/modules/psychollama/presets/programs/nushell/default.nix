@@ -15,7 +15,7 @@ let
   # Some modules use POSIX interpolation, which Nushell obviously doesn't
   # support. Just ignore them.
   safeSessionVariables = lib.filterAttrs (
-    _: value: lib.strings.hasInfix "\${" value == false
+    _: value: !(lib.isString value && lib.strings.hasInfix "\${" value)
   ) config.home.sessionVariables;
 in
 

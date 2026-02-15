@@ -16,6 +16,12 @@ in
     enable = true;
     package = pkgs.unstable.dunst;
 
+    iconTheme = {
+      name = "AdwaitaLegacy";
+      package = pkgs.unstable.adwaita-icon-theme-legacy;
+      size = "32x32";
+    };
+
     settings = {
       global = {
         follow = "keyboard";
