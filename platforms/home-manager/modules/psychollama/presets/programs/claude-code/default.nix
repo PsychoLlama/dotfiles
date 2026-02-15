@@ -159,6 +159,12 @@ in
 
         permissions = {
           defaultMode = "acceptEdits";
+
+          additionalDirectories = [
+            "${config.home.homeDirectory}/projects/psychollama"
+            "${config.home.homeDirectory}/projects/@learn"
+          ];
+
           allow = [
             # Mostly read-only, but dangerously allows reading outside the workdir.
             "Bash(cat:*)"

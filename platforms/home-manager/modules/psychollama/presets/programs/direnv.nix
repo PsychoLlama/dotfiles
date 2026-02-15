@@ -15,8 +15,12 @@ in
     nix-direnv.enable = true;
 
     config = {
-      whitelist.prefix = [ "${config.home.homeDirectory}/projects/psychollama" ];
       global.hide_env_diff = true;
+
+      whitelist.prefix = [
+        "${config.home.homeDirectory}/projects/psychollama"
+        "${config.home.homeDirectory}/projects/@learn"
+      ];
     };
   };
 
