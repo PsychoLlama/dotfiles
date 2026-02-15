@@ -7,7 +7,6 @@
 
 let
   cfg = config.psychollama.presets.programs.claude-code;
-  jsonFormat = pkgs.formats.json { };
 
   # Block access to files named exactly ".env"
   blockEnvFiles =
@@ -83,11 +82,6 @@ in
 {
   options.psychollama.presets.programs.claude-code = {
     enable = lib.mkEnableOption "Opinionated config for Claude Code";
-    mcpServers = lib.mkOption {
-      type = jsonFormat.type;
-      default = { };
-      description = "MCP servers to configure for Claude Code.";
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -337,7 +331,7 @@ in
       };
     };
 
-    psychollama.presets.programs.claude-code.mcpServers.chrome-devtools = {
+    programs.claude-code.mcpServers.chrome-devtools = {
       command = "${pkgs.chrome-devtools-mcp}/bin/chrome-devtools-mcp";
 
       # Only necessary on NixOS. Wish this supported an env variable.
@@ -349,10 +343,6 @@ in
 
     home.file.".claude/caps/notify" = {
       source = notifyUser;
-    };
-
-    home.file.".mcp.json".source = jsonFormat.generate "claude-mcp.json" {
-      mcpServers = cfg.mcpServers;
     };
 
     programs.git = lib.mkIf cfg.enable {
