@@ -103,10 +103,12 @@ in
 
         - Branch naming: `jesse.gibson/<ticket-id>/<slug>` (with ticket) or `jesse.gibson/<slug>` (without ticket).
         - Worktree naming: `<repo>@<slug>`.
+        - Avoid the `-C` flag.
 
         # Capabilities
 
         - `~/.claude/caps/notify <message>` sends a desktop notification. Use it to get my attention after completing a long-running task.
+
       '';
 
       skills.using-neovim = ./skills/using-neovim;
