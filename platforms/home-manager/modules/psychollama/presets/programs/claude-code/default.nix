@@ -109,8 +109,8 @@ in
         - `~/.claude/caps/notify <message>` sends a desktop notification. Use it to get my attention after completing a long-running task.
       '';
 
-      skills.neovim = ./skills/neovim;
-      skills.nix = ./skills/nix;
+      skills.using-neovim = ./skills/using-neovim;
+      skills.using-nix = ./skills/using-nix;
 
       commands.repo-update = ./commands/repo-update.md;
 
