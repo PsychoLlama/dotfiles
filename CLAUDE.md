@@ -16,6 +16,11 @@ Prefer `home-manager` when possible as the most cross-platform option.
 
 Prefer `programs.foo.package` over `pkgs.foo` when referencing packages. Presets often use the unstable version, and this avoids installing both.
 
+### Nix Style
+
+- When defining new options, prefer namespacing like `foo.bar` instead of `fooBar`.
+- Use dotted syntax for single-field attrsets (`foo.bar = "baz";`). Expand into a nested block when there are 2+ fields.
+
 ## Directory Structure
 
 - `hosts/` - Machine-specific configs

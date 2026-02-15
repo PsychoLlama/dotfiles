@@ -111,8 +111,10 @@ in
 
       '';
 
-      skills.using-neovim = ./skills/using-neovim;
-      skills.using-nix = ./skills/using-nix;
+      skills = {
+        using-neovim = ./skills/using-neovim;
+        using-nix = ./skills/using-nix;
+      };
 
       commands.repo-update = ./commands/repo-update.md;
 
