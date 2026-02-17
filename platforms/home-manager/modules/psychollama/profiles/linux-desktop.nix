@@ -22,12 +22,12 @@ in
       services = {
         dunst.enable = mkDefault true;
         gammastep.enable = mkDefault true;
-        sway.enable = mkDefault true;
         swaybg.enable = mkDefault true;
         swayidle.enable = mkDefault true;
       };
 
       programs = {
+        sway.enable = mkDefault true;
         acpi.enable = mkDefault true;
         brightnessctl.enable = mkDefault true;
         chromium.enable = mkDefault true;

@@ -43,42 +43,41 @@ in
       ];
     };
 
-    /*
-      TODO: Automate this.
-
-      use std/iter *
-
-      let displays = swaymsg -t get_outputs -r | from json
-      let main = $displays | iter find { $in.name == "eDP-1" }
-      let ext = $displays | iter find { $in.model == "LG ULTRAWIDE" }
-
-      let d = {
-        ext: {
-          x: 0
-          y: 0
-        }
-        main: {
-          x: (($ext.rect.width / 2) - ($main.rect.width / 2) | into int)
-          y: $ext.rect.height
-        }
-      }
-
-      let ext_id = $ext | select make model serial | values | str join " "
-
-      $'
-      output "($ext_id)" position ($d.ext.x) ($d.ext.y)
-      output "($main.name)" position ($d.main.x) ($d.main.y)
-      '
-    */
-    programs.sway.extraConfig = ''
-      # Orient displays supporting my external monitor.
-      output "LG Electronics LG ULTRAWIDE 404NTLEDA584" position 0 0
-      output "eDP-1" position 760 1440
-    '';
-
     home-manager.users.${username} = {
       home.stateVersion = "22.05";
       home.packages = [ pkgs.man-pages ];
+
+      /*
+        TODO: Automate this.
+
+        use std/iter *
+
+        let displays = swaymsg -t get_outputs -r | from json
+        let main = $displays | iter find { $in.name == "eDP-1" }
+        let ext = $displays | iter find { $in.model == "LG ULTRAWIDE" }
+
+        let d = {
+          ext: {
+            x: 0
+            y: 0
+          }
+          main: {
+            x: (($ext.rect.width / 2) - ($main.rect.width / 2) | into int)
+            y: $ext.rect.height
+          }
+        }
+
+        let ext_id = $ext | select make model serial | values | str join " "
+
+        $'
+        output "($ext_id)" position ($d.ext.x) ($d.ext.y)
+        output "($main.name)" position ($d.main.x) ($d.main.y)
+        '
+      */
+      wayland.windowManager.sway.config.output = {
+        "LG Electronics LG ULTRAWIDE 404NTLEDA584".position = "0 0";
+        "eDP-1".position = "760 1440";
+      };
 
       programs.git.settings.user = {
         name = "Jesse Gibson";
