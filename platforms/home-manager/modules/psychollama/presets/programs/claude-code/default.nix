@@ -123,7 +123,7 @@ in
         theme = "dark";
         autoUpdates = false;
         preferredNotifChannel = "terminal_bell";
-        model = "opus";
+        model = "sonnet";
 
         env = {
           # I don't want uncommitted memory affecting Claude's decisions.
