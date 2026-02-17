@@ -6,6 +6,7 @@ description: ALWAYS use this skill for anything related to Nix, NixOS, nix-darwi
 - New files are not discoverable by Nix until you `git add` them.
 - Prefer `lib` functions over `builtins` when both exist (e.g. `lib.map` over `builtins.map`).
 - Don't guess hostnames or other configuration names. Use `nix flake show` or `nix repl` to discover them.
+- If you delegate Nix-related work to a subagent, always instruct it to invoke the `using-nix` skill so it has the same context you do.
 
 # Exploring flake outputs
 
@@ -22,4 +23,4 @@ description: ALWAYS use this skill for anything related to Nix, NixOS, nix-darwi
 
 - Use `EDITOR=cat nix edit nixpkgs#<package>` to view a package's source. Does not work with modules.
 - Use `nix flake metadata <flake> --json | jq -r '.path'` to get a flake's store path, then read files directly from it to source-dive modules and other definitions.
-- Never search `/nix/store` broadly — it's massive and will take forever. Always resolve the specific store path you need first.
+- NEVER run `find`, `fd`, `glob`, `grep`, or any broad search against `/nix/store`. It contains millions of files and will hang or take an unreasonable amount of time. Always resolve the exact store path you need first (e.g. via `nix flake metadata` or `nix build --print-out-paths`), then read from that path directly.
