@@ -8,11 +8,13 @@
 let
   inherit (config.theme) palette;
   cfg = config.psychollama.presets.programs.ghostty;
-  zellij = config.programs.zellij.package;
+  zellij = lib.getExe' config.programs.zellij.package "zellij";
+  ghosttyPkg = pkgs.unstable.${if pkgs.stdenv.isDarwin then "ghostty-bin" else "ghostty"};
 in
 
 {
   config.programs.ghostty = lib.mkIf cfg.enable {
+    package = ghosttyPkg;
     themes.OneDarkPro = {
       background = palette.normal.black;
       foreground = palette.normal.white;
@@ -59,7 +61,7 @@ in
 
       command = toString (
         pkgs.writeShellScript "start-zellij" ''
-          exec ${zellij}/bin/zellij attach --create
+          exec ${zellij} attach --create
         ''
       );
     };
