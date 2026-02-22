@@ -64,6 +64,7 @@ in
         "${modifier}+Shift+l" = "move right";
 
         # Workspaces.
+        "${modifier}+0" = "workspace number 0";
         "${modifier}+1" = "workspace number 1";
         "${modifier}+2" = "workspace number 2";
         "${modifier}+3" = "workspace number 3";
@@ -73,7 +74,6 @@ in
         "${modifier}+7" = "workspace number 7";
         "${modifier}+8" = "workspace number 8";
         "${modifier}+9" = "workspace number 9";
-        "${modifier}+0" = "workspace number 10";
 
         "${modifier}+Tab" = "workspace next";
         "${modifier}+Shift+Tab" = "workspace prev";
