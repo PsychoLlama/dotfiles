@@ -14,6 +14,7 @@ let
   brightnessctl = lib.getExe' config.programs.brightnessctl.package "brightnessctl";
   pamixer = lib.getExe' config.programs.pamixer.package "pamixer";
   waybar = lib.getExe' config.programs.waybar.package "waybar";
+  ghostty = lib.getExe' config.programs.ghostty.package "ghostty";
 in
 
 {
@@ -39,6 +40,7 @@ in
         "${modifier}+q" = "kill";
 
         "${modifier}+Return" = "exec ${wezterm}";
+        "${modifier}+Shift+Return" = "exec ${ghostty}";
         "${modifier}+space" = "exec ${fuzzel}";
 
         # Emoji picker.
