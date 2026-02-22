@@ -42,6 +42,8 @@ Use options from `home-manager` and `nixos` whenever possible. Only define custo
 - **Profiles**: Groups of presets. Consumed by hosts.
 - Hosts enable profiles and may selectively enable/disable individual presets.
 - Presets use `pkgs.unstable.*` for the latest package versions.
+- Install packages via `programs.<name>.enable` + `programs.<name>.package = pkgs.unstable.<name>`, not `home.packages`.
+- Use `lib.getExe' config.programs.<name>.package "<binary>"` for executable paths; bind these in `let` at the top of the file.
 
 ## Editor
 
