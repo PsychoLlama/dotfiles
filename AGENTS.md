@@ -20,6 +20,7 @@ Prefer `programs.foo.package` over `pkgs.foo` when referencing packages. Presets
 
 - When defining new options, prefer namespacing like `foo.bar` instead of `fooBar`.
 - Use dotted syntax for single-field attrsets (`foo.bar = "baz";`). Expand into a nested block when there are 2+ fields.
+- Prefer `pkgs.writeShellApplication` for shell scripts.
 
 ## Directory Structure
 
@@ -100,3 +101,4 @@ All programs are declaratively managed through this repo. When asked to change c
 - When refactoring, use `nix eval` to verify settings are applied correctly.
 - New files must be `git add`-ed before Nix can discover them.
 - Nix modules in this repo are discovered and imported automatically. No need for module `imports`.
+- Every `.nix` file under `platforms/` is imported as a module — helper files are not possible. All `.nix` files must be valid NixOS/home-manager modules.

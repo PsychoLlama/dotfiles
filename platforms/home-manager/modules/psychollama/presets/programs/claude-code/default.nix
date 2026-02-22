@@ -8,20 +8,6 @@
 let
   cfg = config.psychollama.presets.programs.claude-code;
 
-  # Block access to files named exactly ".env"
-  blockEnvFiles =
-    pkgs.writers.writeDash "block-env-files"
-      # bash
-      ''
-        file_path=$(${pkgs.jq}/bin/jq -r '.tool_input.file_path // ""')
-        basename=$(basename "$file_path")
-
-        if [ "$basename" = ".env" ]; then
-          echo "Access to .env files is blocked" >&2
-          exit 2
-        fi
-      '';
-
   # Send a desktop notification on demand
   notifyUser =
     pkgs.writers.writeDash "notify"
@@ -59,24 +45,6 @@ let
         esac
       '';
 
-  # Send desktop notification when permission is requested
-  notifyPermissionRequest =
-    pkgs.writers.writeDash "notify-permission-request"
-      # bash
-      ''
-        input=$(cat)
-        message=$(echo "$input" | ${pkgs.jq}/bin/jq -r '.message // "Permission requested"')
-        cwd=$(echo "$input" | ${pkgs.jq}/bin/jq -r '.cwd // ""')
-        project=$(basename "$cwd")
-
-        if [ -n "$project" ]; then
-          title="Claude Code ($project)"
-        else
-          title="Claude Code"
-        fi
-
-        exec ${notifyUser} --title "$title" --icon dialog-question "$message"
-      '';
 in
 
 {
@@ -127,33 +95,6 @@ in
         env = {
           # I don't want uncommitted memory affecting Claude's decisions.
           CLAUDE_CODE_DISABLE_AUTO_MEMORY = "1";
-        };
-
-        hooks = {
-          Notification = [
-            {
-              matcher = "permission_prompt";
-              hooks = [
-                {
-                  type = "command";
-                  command = notifyPermissionRequest;
-                }
-              ];
-            }
-          ];
-
-          PreToolUse = [
-            {
-              matcher = "Read|Edit|Write";
-              hooks = [
-                {
-                  type = "command";
-                  command = blockEnvFiles;
-                }
-              ];
-            }
-          ];
-
         };
 
         permissions = {
