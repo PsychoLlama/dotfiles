@@ -152,9 +152,9 @@ def 'wallpaper set' [image: path] {
   systemctl --user restart swaybg.service
 }
 
-# Start a research session with web-only tool access.
+# Start a research session with read-only tool access.
 def research [...args] {
-  claude --agents ~/.claude/dotfiles/share/agents.json --agent researcher ...$args
+  claude --agents (open --raw ~/.claude/dotfiles/share/agents.json) --agent researcher --permission-mode bypassPermissions ...$args
 }
 
 # Custom libraries
