@@ -49,7 +49,7 @@ in
 {
   config = lib.mkIf cfg.enable {
     programs.claude-code.scripts.notify = {
-      source = notify;
+      source = lib.getExe notify;
       allow = true;
     };
   };

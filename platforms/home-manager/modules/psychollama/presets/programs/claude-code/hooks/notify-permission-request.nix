@@ -36,7 +36,7 @@ in
         hooks = [
           {
             type = "command";
-            command = notifyPermissionRequest;
+            command = lib.getExe notifyPermissionRequest;
           }
         ];
       }

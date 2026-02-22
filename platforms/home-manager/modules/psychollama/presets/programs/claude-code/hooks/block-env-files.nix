@@ -31,7 +31,7 @@ in
         hooks = [
           {
             type = "command";
-            command = blockEnvFiles;
+            command = lib.getExe blockEnvFiles;
           }
         ];
       }
