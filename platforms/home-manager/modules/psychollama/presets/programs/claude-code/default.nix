@@ -7,44 +7,6 @@
 
 let
   cfg = config.psychollama.presets.programs.claude-code;
-
-  # Send a desktop notification on demand
-  notifyUser =
-    pkgs.writers.writeDash "notify"
-      # bash
-      ''
-        title="Claude Code"
-        icon="dialog-information"
-
-        while [ $# -gt 0 ]; do
-          case "$1" in
-            --title) title="$2"; shift 2 ;;
-            --icon) icon="$2"; shift 2 ;;
-            *) break ;;
-          esac
-        done
-
-        if [ $# -eq 0 ]; then
-          echo "Usage: notify [--title TITLE] [--icon ICON] <message>" >&2
-          exit 1
-        fi
-
-        message="$*"
-
-        case "$(uname)" in
-          Darwin)
-            osascript -e "display notification \"$message\" with title \"$title\""
-            ;;
-          *)
-            ${pkgs.libnotify}/bin/notify-send \
-              --urgency=normal \
-              --icon="$icon" \
-              "$title" \
-              "$message"
-            ;;
-        esac
-      '';
-
 in
 
 {
@@ -248,11 +210,6 @@ in
             "WebFetch(domain:platform.openai.com)"
           ];
         };
-      };
-
-      scripts.notify = {
-        source = notifyUser;
-        allow = true;
       };
 
       servers.chrome-devtools = {
