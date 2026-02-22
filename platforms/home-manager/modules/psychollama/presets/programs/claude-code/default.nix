@@ -211,7 +211,6 @@ in
           ];
         };
       };
-
     };
 
     programs.git = lib.mkIf cfg.enable {

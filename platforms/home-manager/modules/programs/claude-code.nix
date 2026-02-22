@@ -101,9 +101,7 @@ in
         ])
         ++ (lib.pipe cfg.servers [
           (lib.filterAttrs (_: server: server.enable))
-          (lib.mapAttrsToList (
-            name: server: map (tool: "mcp__${name}__${tool}") server.permissions.allow
-          ))
+          (lib.mapAttrsToList (name: server: map (tool: "mcp__${name}__${tool}") server.permissions.allow))
           lib.concatLists
         ]);
     };
