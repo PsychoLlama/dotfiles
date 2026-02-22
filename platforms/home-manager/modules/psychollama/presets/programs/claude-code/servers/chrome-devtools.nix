@@ -7,21 +7,26 @@
 
 let
   cfg = config.psychollama.presets.programs.claude-code;
+  chromiumExe = lib.getExe' config.programs.chromium.package "chromium";
+
+  wrapper = pkgs.writeShellApplication {
+    name = "chrome-devtools-mcp";
+    text = ''
+      if [ "''${CHROME_MCP_AUTOCONNECT:-}" = "true" ]; then
+        args=(--autoConnect ${lib.optionalString pkgs.stdenv.isLinux "--userDataDir ${config.home.homeDirectory}/.config/chromium"})
+      else
+        args=(${lib.optionalString pkgs.stdenv.isLinux "--executablePath ${chromiumExe}"})
+      fi
+
+      exec ${lib.getExe pkgs.chrome-devtools-mcp} "''${args[@]}" "$@"
+    '';
+  };
 in
 
 {
   config = lib.mkIf cfg.enable {
     programs.claude-code.servers.chrome-devtools = {
-      # DANGER! Assumes an isolated browser.
-      settings = {
-        command = "${pkgs.chrome-devtools-mcp}/bin/chrome-devtools-mcp";
-
-        # Only necessary on NixOS. Wish this supported an env variable.
-        args = lib.optionals pkgs.stdenv.isLinux [
-          "--executablePath"
-          "${config.programs.chromium.package}/bin/chromium"
-        ];
-      };
+      settings.command = lib.getExe wrapper;
 
       permissions.allow = [
         "click"
