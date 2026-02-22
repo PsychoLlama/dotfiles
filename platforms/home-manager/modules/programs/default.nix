@@ -26,6 +26,7 @@ in
 {
   imports = [
     (makeProgramModule "acpi")
+    (makeProgramModule "bemoji")
     (makeProgramModule "binutils")
     (makeProgramModule "brightnessctl")
     (makeProgramModule "dive")
@@ -53,5 +54,6 @@ in
     (makeProgramModule "whois")
     (makeProgramModule "wireplumber")
     (makeProgramModule "wl-clipboard")
+    (makeProgramModule "wtype")
   ];
 }
