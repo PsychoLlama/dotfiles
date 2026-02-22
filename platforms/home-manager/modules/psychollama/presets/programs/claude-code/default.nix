@@ -107,8 +107,7 @@ in
 
         # Capabilities
 
-        - `~/.claude/caps/notify <message>` sends a desktop notification. Use it to get my attention after completing a long-running task.
-
+        - `${config.programs.claude-code.scripts.notify.path} <message>` sends a desktop notification. Use it to get my attention after completing a long-running task.
       '';
 
       skills = {
@@ -184,7 +183,6 @@ in
             "Bash(tree:*)"
             "Bash(wc:*)"
             "Bash(which:*)"
-            "Bash(~/.claude/caps/notify:*)"
 
             "Bash(git add:*)"
             "Bash(git bisect:*)"
@@ -339,20 +337,21 @@ in
           ];
         };
       };
-    };
 
-    programs.claude-code.mcpServers.chrome-devtools = {
-      command = "${pkgs.chrome-devtools-mcp}/bin/chrome-devtools-mcp";
+      scripts.notify = {
+        source = notifyUser;
+        allow = true;
+      };
 
-      # Only necessary on NixOS. Wish this supported an env variable.
-      args = lib.optionals pkgs.stdenv.isLinux [
-        "--executablePath"
-        "${config.programs.chromium.package}/bin/chromium"
-      ];
-    };
+      mcpServers.chrome-devtools = {
+        command = "${pkgs.chrome-devtools-mcp}/bin/chrome-devtools-mcp";
 
-    home.file.".claude/caps/notify" = {
-      source = notifyUser;
+        # Only necessary on NixOS. Wish this supported an env variable.
+        args = lib.optionals pkgs.stdenv.isLinux [
+          "--executablePath"
+          "${config.programs.chromium.package}/bin/chromium"
+        ];
+      };
     };
 
     programs.git = lib.mkIf cfg.enable {
