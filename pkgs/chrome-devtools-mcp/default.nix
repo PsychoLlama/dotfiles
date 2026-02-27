@@ -7,16 +7,16 @@
 
 buildNpmPackage rec {
   pname = "chrome-devtools-mcp";
-  version = "0.17.3";
+  version = "0.18.1";
 
   src = fetchFromGitHub {
     owner = "ChromeDevTools";
     repo = "chrome-devtools-mcp";
     rev = "${pname}-v${version}";
-    hash = "sha256-hGOnbxy+F8U1vFSZ1PvCXwQu0s/GWj3zHOnTsse7m7U=";
+    hash = "sha256-Tdgf3LjhSYKKZ46rfUJRQXuNjrjceezPUZfwarmlYp0=";
   };
 
-  npmDepsHash = "sha256-vkpqL/tCUDS+rUuI2ZepSll4gMW43nEMMYV62t6qeAs=";
+  npmDepsHash = "sha256-zh7YYVhWwoj590nfKmoHHRt8v7+mBrsDvA7gPeKnMdE=";
   npmBuildScript = "bundle";
 
   # Puppeteer tries to download Chrome during install; skip it since
@@ -30,5 +30,6 @@ buildNpmPackage rec {
     description = "Chrome DevTools MCP server for AI coding assistants";
     homepage = "https://github.com/ChromeDevTools/chrome-devtools-mcp";
     license = lib.licenses.asl20;
+    mainProgram = "chrome-devtools-mcp";
   };
 }
