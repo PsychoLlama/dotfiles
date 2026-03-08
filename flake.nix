@@ -248,6 +248,7 @@
               pkgs.luajitPackages.vusted
               pkgs.nix-update
               pkgs.nixfmt
+              pkgs.prettier
               pkgs.stylua
               pkgs.treefmt
             ];
