@@ -78,15 +78,17 @@ in
             "Bash(head:*)"
             "Bash(jq:*)"
             "Bash(ls:*)"
-            "Bash(nvim:*)"
             "Bash(mkdir:*)"
+            "Bash(nvim:*)"
             "Bash(pwd:*)"
             "Bash(rg:*)"
             "Bash(tail:*)"
             "Bash(tree:*)"
             "Bash(wc:*)"
             "Bash(which:*)"
+            "Bash(xxd:*)"
 
+            # Local git commands (no remote effects)
             "Bash(git add:*)"
             "Bash(git bisect:*)"
             "Bash(git blame:*)"
@@ -154,6 +156,12 @@ in
             "Bash(gh workflow list:*)"
             "Bash(gh workflow view:*)"
 
+            # Generic Project Tools
+            "Bash(just:*)"
+            "Bash(prek:*)"
+            "Bash(prettier:*)"
+            "Bash(treefmt:*)"
+
             # Rust Projects
             "Bash(cargo --list:*)"
             "Bash(cargo build:*)"
@@ -161,21 +169,21 @@ in
             "Bash(cargo clippy:*)"
             "Bash(cargo doc:*)"
             "Bash(cargo fmt:*)"
-            "Bash(cargo run:*)" # Arbitrary code execution.
+            "Bash(cargo run:*)"
             "Bash(cargo search:*)"
-            "Bash(cargo test:*)" # Arbitrary code execution.
+            "Bash(cargo test:*)"
             "Bash(rustc:*)"
 
             # JavaScript / TypeScript projects
             "Bash(npm info:*)"
             "Bash(npm run)"
-            "Bash(npm run:*)" # Arbitrary code execution.
+            "Bash(npm run:*)"
             "Bash(npm test:*)"
 
             # Nix projects
             "Bash(nix build:*)"
             "Bash(nix derivation show:*)"
-            "Bash(nix develop:*)" # Arbitrary code execution.
+            "Bash(nix develop:*)"
             "Bash(nix eval:*)"
             "Bash(nix flake check:*)"
             "Bash(nix flake lock:*)"
@@ -186,24 +194,19 @@ in
             "Bash(nix hash:*)"
             "Bash(nix log:*)"
             "Bash(nix path-info:*)"
-            "Bash(nix repl:*)" # Arbitrary code execution.
-            "Bash(nix run:*)" # Arbitrary code execution.
+            "Bash(nix repl:*)"
+            "Bash(nix run:*)"
             "Bash(nix search:*)"
             "Bash(nix why-depends:*)"
+            "Read(//nix/store/**)" # Read-only source diving
 
             # Lua projects
             "Bash(luacheck:*)"
-
-            # Generic projects
-            "Bash(just:*)" # Arbitrary code execution.
 
             # System Management
             "Bash(journalctl:*)"
             "Bash(systemctl list-units:*)"
             "Bash(systemctl status:*)"
-
-            # Nix store (read-only source-diving)
-            "Read(//nix/store/**)"
 
             "WebFetch(domain:docs.anthropic.com)"
             "WebFetch(domain:docs.claude.com)"
