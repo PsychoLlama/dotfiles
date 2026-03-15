@@ -181,6 +181,7 @@ in
             "Bash(npm test:*)"
 
             # Nix projects
+            "Bash(dix:*)"
             "Bash(nix build:*)"
             "Bash(nix derivation show:*)"
             "Bash(nix develop:*)"

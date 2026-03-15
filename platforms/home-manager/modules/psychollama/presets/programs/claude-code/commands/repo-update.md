@@ -13,6 +13,6 @@ disable-model-invocation: true
 
 ## Curating a Changelog
 
-- Identify all _used_ packages who's version changed between updates.
-- Describe deprecations and meaningful changes to accommodate new versions.
-- Use upstream commits to guide your investigation.
+- Use `dix <old-store-path> <new-store-path>` to diff the system's Nix store paths before and after the update.
+- Summarize meaningful package version changes and deprecations from the diff.
+- Do not search the web or dive into source code to identify changes. The `dix` output is your source of truth.
