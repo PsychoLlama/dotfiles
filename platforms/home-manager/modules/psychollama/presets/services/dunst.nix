@@ -7,6 +7,18 @@
 
 let
   cfg = config.psychollama.presets.services.dunst;
+  soundTheme = config.psychollama.presets.sound-theme;
+
+  notificationSound = pkgs.writeShellApplication {
+    name = "dunst-notification-sound";
+    text = ''
+      case "''${DUNST_URGENCY:-normal}" in
+        critical) sound="dialog-error" ;;
+        *) sound="message-new-instant" ;;
+      esac
+      ${soundTheme.play} "$sound" &
+    '';
+  };
 in
 {
   options.psychollama.presets.services.dunst.enable =
@@ -24,6 +36,7 @@ in
 
     settings = {
       global = {
+        script = "${notificationSound}/bin/dunst-notification-sound";
         follow = "keyboard";
         font = "Monospace 12";
         frame_color = "#3f3f3f";
