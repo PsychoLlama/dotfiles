@@ -181,6 +181,12 @@ in
             "Bash(npm t:*)"
             "Bash(npm test:*)"
             "Bash(npm view:*)"
+            "Bash(pnpm info:*)"
+            "Bash(pnpm run)"
+            "Bash(pnpm run:*)"
+            "Bash(pnpm t:*)"
+            "Bash(pnpm test:*)"
+            "Bash(pnpm view:*)"
 
             # Nix projects
             "Bash(dix:*)"
