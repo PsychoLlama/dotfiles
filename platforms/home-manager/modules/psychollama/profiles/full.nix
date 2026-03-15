@@ -24,6 +24,7 @@ in
         codex.enable = mkDefault true;
         dictation.enable = mkDefault true;
         direnv.enable = mkDefault true;
+        dix.enable = mkDefault true;
         dive.enable = mkDefault true;
         doggo.enable = mkDefault true;
         editor.enable = mkDefault true;

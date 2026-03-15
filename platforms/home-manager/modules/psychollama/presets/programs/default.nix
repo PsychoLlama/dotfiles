@@ -33,6 +33,7 @@ in
     (mkUnstablePreset "brightnessctl")
     (mkUnstablePreset "codex")
     (mkUnstablePreset "direnv")
+    (mkUnstablePreset "dix")
     (mkUnstablePreset "dive")
     (mkUnstablePreset "doggo")
     (mkUnstablePreset "fd")

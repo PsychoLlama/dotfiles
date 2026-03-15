@@ -29,6 +29,7 @@ in
     (makeProgramModule "bemoji")
     (makeProgramModule "binutils")
     (makeProgramModule "brightnessctl")
+    (makeProgramModule "dix")
     (makeProgramModule "dive")
     (makeProgramModule "dogdns")
     (makeProgramModule "doggo")
