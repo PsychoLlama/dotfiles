@@ -178,7 +178,9 @@ in
             "Bash(npm info:*)"
             "Bash(npm run)"
             "Bash(npm run:*)"
+            "Bash(npm t:*)"
             "Bash(npm test:*)"
+            "Bash(npm view:*)"
 
             # Nix projects
             "Bash(dix:*)"
