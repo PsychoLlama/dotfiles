@@ -31,12 +31,13 @@
     in
 
     {
-      devShell = eachSystem (
-        system: pkgs:
-        pkgs.mkShell {
-          packages = [
-            (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
-          ];
+      devShells = eachSystem (
+        system: pkgs: {
+          default = pkgs.mkShell {
+            packages = [
+              (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
+            ];
+          };
         }
       );
     };

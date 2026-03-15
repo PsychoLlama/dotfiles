@@ -22,16 +22,17 @@
     in
 
     {
-      devShell = eachSystem (
-        system: pkgs:
-        pkgs.mkShell {
-          packages = [
-            pkgs.just
-            pkgs.lua-language-server
-            pkgs.luajitPackages.luacheck
-            pkgs.luajitPackages.vusted
-            pkgs.stylua
-          ];
+      devShells = eachSystem (
+        system: pkgs: {
+          default = pkgs.mkShell {
+            packages = [
+              pkgs.just
+              pkgs.lua-language-server
+              pkgs.luajitPackages.luacheck
+              pkgs.luajitPackages.vusted
+              pkgs.stylua
+            ];
+          };
         }
       );
     };

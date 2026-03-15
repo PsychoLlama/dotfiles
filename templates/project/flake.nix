@@ -22,10 +22,11 @@
     in
 
     {
-      devShell = eachSystem (
-        system: pkgs:
-        pkgs.mkShell {
-          packages = [ ];
+      devShells = eachSystem (
+        system: pkgs: {
+          default = pkgs.mkShell {
+            packages = [ ];
+          };
         }
       );
     };
