@@ -26,16 +26,6 @@ in
           args = [ "$FILENAME" ];
         };
 
-        eslint = {
-          command = "${pkgs.unstable.eslint_d}/bin/eslint_d";
-          args = [
-            "--stdin-filename"
-            "$FILENAME"
-            "--stdin"
-            "--fix-to-stdout"
-          ];
-        };
-
         stylua = {
           command = "${pkgs.unstable.stylua}/bin/stylua";
           args = [
@@ -65,10 +55,7 @@ in
         javascript = typescript;
         javascriptreact = typescript;
         typescriptreact = typescript;
-        typescript = [
-          "eslint"
-          "prettier"
-        ];
+        typescript = [ "prettier" ];
 
         css = [ "prettier" ];
         graphql = [ "prettier" ];
