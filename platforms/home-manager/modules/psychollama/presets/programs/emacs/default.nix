@@ -49,7 +49,7 @@ in
       nil = mkExeOption pkgs.unstable.nil "nil";
       pyright = mkExeOption pkgs.unstable.pyright "pyright-langserver";
       rust-analyzer = mkExeOption pkgs.unstable.rust-analyzer "rust-analyzer";
-      tsserver = mkExeOption pkgs.unstable.nodePackages.typescript-language-server "typescript-language-server";
+      tsserver = mkExeOption pkgs.unstable.typescript-language-server "typescript-language-server";
       clangd =
         # Use clangd from XCode on macOS.
         if pkgs.stdenv.isDarwin then

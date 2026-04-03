@@ -7,16 +7,16 @@
 
 buildNpmPackage rec {
   pname = "chrome-devtools-mcp";
-  version = "0.20.3";
+  version = "0.21.0";
 
   src = fetchFromGitHub {
     owner = "ChromeDevTools";
     repo = "chrome-devtools-mcp";
     rev = "${pname}-v${version}";
-    hash = "sha256-Q2GogBX6FeS9SFxTdS6OMf1GqGpOSLzrAlsXX8xO1DI=";
+    hash = "sha256-p1KW9O5OHy48lOMII0CdnFmQQBOfsxLNX+7pySA5blk=";
   };
 
-  npmDepsHash = "sha256-4u2pPw4wRXlf8zVZp7HsChjfXwm/9gntzKgo8GwTHsg=";
+  npmDepsHash = "sha256-IeNjeOjT6BQSrn39fDXs8WufiR/J+vL7WN0FcvKWOSs=";
   npmBuildScript = "bundle";
 
   # TS2717: type conflict between chrome-devtools-frontend and @paulirish/trace_engine.
