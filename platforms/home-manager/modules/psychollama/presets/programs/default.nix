@@ -31,7 +31,6 @@ in
     (mkUnstablePreset "bat")
     (mkUnstablePreset "bottom")
     (mkUnstablePreset "brightnessctl")
-    (mkUnstablePreset "codex")
     (mkUnstablePreset "direnv")
     (mkUnstablePreset "dix")
     (mkUnstablePreset "dive")
