@@ -39,6 +39,7 @@ in
         miniserve.enable = mkDefault true;
         nix-output-monitor.enable = mkDefault true;
         nushell.enable = mkDefault true;
+        spotify.enable = mkDefault true;
         spotify-player.enable = mkDefault true;
         starship.enable = mkDefault true;
         termshark.enable = mkDefault true;
