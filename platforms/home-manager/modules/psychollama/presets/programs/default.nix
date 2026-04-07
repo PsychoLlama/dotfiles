@@ -50,7 +50,6 @@ in
     (mkUnstablePreset "parted")
     (mkUnstablePreset "playerctl")
     (mkUnstablePreset "slurp")
-    (mkUnstablePreset "spotify-player")
     (mkUnstablePreset "starship")
     (mkUnstablePreset "swaylock")
     (mkUnstablePreset "termshark")
