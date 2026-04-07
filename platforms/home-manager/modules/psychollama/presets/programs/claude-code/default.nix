@@ -33,11 +33,20 @@ in
 
         - Branch naming: `jesse.gibson/<ticket-id>/<slug>` (with ticket) or `jesse.gibson/<slug>` (without ticket).
         - Worktree naming: `<repo>@<slug>`.
-        - Avoid the `-C` flag.
+
+        # Commit Messages
+
+        - Imperative title, descriptive body (markdown).
+        - Capture context not otherwise available (goal, failed approaches, decisions, etc).
 
         # Capabilities
 
         - `${config.programs.claude-code.scripts.notify.path} <message>` sends a desktop notification. Use it to get my attention after completing a long-running task.
+
+        # Authoring Agent Files
+
+        - `AGENTS.md` is the source of truth. `CLAUDE.md` should only contain `@AGENTS.md`.
+        - Author `AGENTS.md` with short, declarative statements.
       '';
 
       skills = {
