@@ -40,6 +40,7 @@ in
         "get_network_request"
         "handle_dialog"
         "hover"
+        "lighthouse_audit"
         "list_console_messages"
         "list_network_requests"
         "list_pages"
@@ -51,8 +52,10 @@ in
         "press_key"
         "resize_page"
         "select_page"
+        "take_memory_snapshot"
         "take_screenshot"
         "take_snapshot"
+        "type_text"
         "upload_file"
         "wait_for"
       ];
