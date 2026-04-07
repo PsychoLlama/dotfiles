@@ -20,6 +20,7 @@ Prefer `programs.foo.package` over `pkgs.foo` when referencing packages. Presets
 
 - When defining new options, prefer namespacing like `foo.bar` instead of `fooBar`.
 - Use dotted syntax for single-field attrsets (`foo.bar = "baz";`). Expand into a nested block when there are 2+ fields.
+- Always declare `options` with block syntax, even if `enable` is the only field.
 - Prefer `pkgs.writeShellApplication` for shell scripts.
 
 ## Directory Structure
