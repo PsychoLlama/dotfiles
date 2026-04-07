@@ -36,16 +36,16 @@ Module options mirror directory structure: `psychollama.presets.programs.foo` li
 
 ## Platform Modules
 
-Use options from `home-manager` and `nixos` whenever possible. Only define custom modules in `modules/programs/` or `modules/services/` when the upstream platform lacks support.
+- Prefer upstream `home-manager`/`nixos` options. Only add custom modules when upstream lacks support.
+- `makeProgramModule` and `mkUnstablePreset` exist for simple programs (enable + package only). Use standalone files when custom options are needed.
 
 ## Presets and Profiles
 
-- **Presets**: Single-responsibility modules. Only support `enable` option, no additional configuration.
-- **Profiles**: Groups of presets. Consumed by hosts.
-- Hosts enable profiles and may selectively enable/disable individual presets.
+- **Presets**: Single-responsibility, `enable` option only.
+- **Profiles**: Groups of presets.
 - Presets use `pkgs.unstable.*` for the latest package versions.
-- Install packages via `programs.<name>.enable` + `programs.<name>.package = pkgs.unstable.<name>`, not `home.packages`.
-- Use `lib.getExe' config.programs.<name>.package "<binary>"` for executable paths; bind these in `let` at the top of the file.
+- Use `programs.<name>.enable` + `programs.<name>.package`, not `home.packages`.
+- Use `lib.getExe'` for executable paths; bind in `let` at top of file.
 
 ## Editor
 
