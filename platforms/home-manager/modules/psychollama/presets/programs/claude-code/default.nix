@@ -234,7 +234,10 @@ in
     };
 
     programs.git = lib.mkIf cfg.enable {
-      ignores = [ "**/.claude/settings.local.json" ];
+      ignores = [
+        "**/.claude/settings.local.json"
+        "**/.claude/worktrees"
+      ];
     };
   };
 }
