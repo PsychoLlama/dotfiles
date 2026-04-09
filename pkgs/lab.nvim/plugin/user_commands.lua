@@ -1,8 +1,4 @@
 -- Lazy-load commands: modules are only required when commands are invoked
-vim.api.nvim_create_user_command('Node', function()
-  require('editor.repl.node').open()
-end, { desc = 'Open a NodeJS repl', force = true })
-
 vim.api.nvim_create_user_command('Nix', function()
   require('editor.repl.nix').open()
 end, { desc = 'Open a Nix repl', force = true })
