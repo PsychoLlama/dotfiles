@@ -12,7 +12,6 @@ in
 {
   config.plugins.conform-nvim = lib.mkIf cfg.enable {
     opts = {
-      format_on_save = true;
       default_format_opts.undojoin = true;
 
       formatters = {
