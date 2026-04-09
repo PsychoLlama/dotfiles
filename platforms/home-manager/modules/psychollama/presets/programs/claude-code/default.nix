@@ -32,7 +32,6 @@ in
         # Git Conventions
 
         - Branch naming: `jesse.gibson/<ticket-id>/<slug>` (with ticket) or `jesse.gibson/<slug>` (without ticket).
-        - Worktree naming: `<repo>@<slug>`.
 
         # Commit Messages
 
