@@ -2,9 +2,9 @@
 export def "main" [
   ...packages: string # Anything from nixpkgs.
 ] {
-  # Assume we're in a dev environment.
+  # Drop into a repl with the current flake.
   if ($packages | is-empty) {
-    nix develop --command $env.SHELL
+    x repl
     return
   }
 
@@ -20,7 +20,7 @@ export def "main" [
   nix shell ...(
     | [...$packages]
     | each { |ident| canonicalize $ident }
-  )
+  ) --command nu
 }
 
 # Show information about a nix package.
