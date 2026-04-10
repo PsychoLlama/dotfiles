@@ -11,6 +11,7 @@
       "${3rd}/luassert/library",
       "platforms/editor/runtime",
       "packages/ext.nvim"
-    ]
+    ],
+    "ignoreDir": [".direnv"]
   }
 }
