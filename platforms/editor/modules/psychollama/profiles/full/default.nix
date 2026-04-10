@@ -27,8 +27,7 @@ in
         nil.enable = lib.mkDefault true;
         nushell.enable = lib.mkDefault true;
         rust-analyzer.enable = lib.mkDefault true;
-        vtsls.enable = lib.mkDefault true;
-        vue.enable = lib.mkDefault true;
+        typescript.enable = lib.mkDefault true;
       };
 
       plugins = {
