@@ -11,6 +11,44 @@ let
 
   rootDir = ".claude/dotfiles";
   scriptsDir = "${rootDir}/bin";
+
+  enabledPlugins = lib.filterAttrs (_: plugin: plugin.enable) cfg.plugins;
+
+  # HACK: Assembling directory trees with runCommand + mkdir/ln is ugly.
+  # Replace with a proper declarative directory builder (e.g. linkFarm,
+  # pkgs.buildEnv, or a custom lib helper) when one fits.
+  mkPluginDir =
+    name: plugin:
+    pkgs.runCommand "claude-plugin-${name}" { } ''
+      mkdir -p $out/.claude-plugin
+      ln -s ${
+        json.generate "plugin.json" {
+          inherit name;
+          inherit (plugin) description;
+        }
+      } $out/.claude-plugin/plugin.json
+      ln -s ${json.generate "lsp.json" plugin.lsp.servers} $out/.lsp.json
+    '';
+
+  marketplace = pkgs.runCommand "claude-marketplace-dotfiles" { } ''
+    mkdir -p $out/.claude-plugin $out/plugins
+    ln -s ${
+      json.generate "marketplace.json" {
+        name = "dotfiles";
+        owner.name = "dotfiles";
+        plugins = lib.mapAttrsToList (name: plugin: {
+          inherit name;
+          inherit (plugin) description;
+          source = "./plugins/${name}";
+        }) enabledPlugins;
+      }
+    } $out/.claude-plugin/marketplace.json
+    ${lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (
+        name: plugin: "ln -s ${mkPluginDir name plugin} $out/plugins/${name}"
+      ) enabledPlugins
+    )}
+  '';
 in
 
 {
@@ -79,6 +117,38 @@ in
             };
           }
         )
+      );
+    };
+
+    plugins = lib.mkOption {
+      default = { };
+      description = ''
+        Claude Code plugins. Generates an inline settings marketplace and
+        enables each plugin via settings.json.
+      '';
+
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options = {
+            enable = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              description = "Whether to enable this plugin.";
+            };
+
+            description = lib.mkOption {
+              type = lib.types.str;
+              default = "";
+              description = "Brief description of the plugin.";
+            };
+
+            lsp.servers = lib.mkOption {
+              type = json.type;
+              default = { };
+              description = "LSP server configurations (maps to lspServers in plugin manifest).";
+            };
+          };
+        }
       );
     };
 
@@ -202,6 +272,18 @@ in
           ];
         };
       }
+
+      # Plugins: generate a local directory marketplace
+      (lib.mkIf (enabledPlugins != { }) {
+        programs.claude-code.settings = {
+          extraKnownMarketplaces.dotfiles.source = {
+            source = "directory";
+            path = "${marketplace}";
+          };
+
+          enabledPlugins = lib.mapAttrs' (name: _: lib.nameValuePair "${name}@dotfiles" true) enabledPlugins;
+        };
+      })
 
       # Agent manifest: generate agents.json for use with --agents
       (lib.mkIf (cfg.agentManifest != { }) {
