@@ -60,6 +60,7 @@ in
       binutils.enable = mkDefault true;
       duf.enable = mkDefault true;
       hexyl.enable = mkDefault true;
+      lsof.enable = mkDefault true;
       onefetch.enable = mkDefault true;
       parted.enable = mkDefault pkgs.stdenv.isLinux;
       radare2.enable = mkDefault true;

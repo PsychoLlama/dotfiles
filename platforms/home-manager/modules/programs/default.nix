@@ -37,6 +37,7 @@ in
     (makeProgramModule "duf")
     (makeProgramModule "grim")
     (makeProgramModule "hexyl")
+    (makeProgramModule "lsof")
     (makeProgramModule "miniserve")
     (makeProgramModule "nix-output-monitor")
     (makeProgramModule "onefetch")
