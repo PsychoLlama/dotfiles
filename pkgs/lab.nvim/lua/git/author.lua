@@ -60,7 +60,7 @@ local function print_line_details(line)
   end
 
   local details = blames[1]
-  local date = os.date('%m/%d/%Y', details.author.time)
+  local date = os.date('%m/%d/%Y', details.author.time) --[[@as string]]
 
   vim.api.nvim_echo({
     { details.sha:sub(1, 7), 'String' },
