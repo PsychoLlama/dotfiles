@@ -4,10 +4,11 @@ local M = {}
 function M.open_project_root()
   local current_dir = vim.fs.normalize(vim.fn.expand('%:p'))
   local parent_dir = vim.fn.fnamemodify(current_dir, ':h')
+  -- Prefer project-specific markers so nested packages in monorepos resolve
+  -- to the nearest project rather than the whole repo.
   local root = vim.fs.root(parent_dir, {
+    { 'package.json', 'Cargo.toml' },
     '.git/',
-    'package.json',
-    'Cargo.toml',
   })
 
   if root then

@@ -26,7 +26,7 @@ local function create()
         .. '-'
         .. utils.normalize_title(title)
         .. '.md'
-      local filepath = config.slip_box .. '/' .. filename
+      local filepath = vim.fs.joinpath(config.slip_box, filename)
 
       vim.fn.writefile({
         '---',

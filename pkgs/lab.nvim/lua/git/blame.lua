@@ -174,15 +174,7 @@ end
 function M.find_repo_root(path)
   local dir = vim.fn.isdirectory(path) == 1 and path
     or vim.fn.fnamemodify(path, ':h')
-  local result = vim
-    .system({ 'git', 'rev-parse', '--show-toplevel' }, { cwd = dir, text = true })
-    :wait()
-
-  if result.code ~= 0 then
-    return nil
-  end
-
-  return vim.trim(result.stdout)
+  return vim.fs.root(dir, '.git')
 end
 
 ---Get blame for a file
