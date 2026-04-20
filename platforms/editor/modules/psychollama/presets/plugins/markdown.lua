@@ -2,7 +2,7 @@ local markdown = require('markdown')
 
 markdown.setup({
   on_attach = function(bufnr)
-    local opts = { buffer = bufnr }
+    local opts = { buf = bufnr }
 
     -- Toggle task checkboxes
     vim.keymap.set('n', '<c-x>', '<cmd>MDTaskToggle<cr>', opts)

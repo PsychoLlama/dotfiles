@@ -116,8 +116,8 @@ in
       wrapscan = false;
       pumheight = 10;
       pumblend = 20;
+      pumborder = "rounded";
       winblend = 0;
-      autoread = true;
       ignorecase = true;
       smartcase = true;
       mouse = "";
@@ -128,9 +128,7 @@ in
       ];
 
       # Display settings
-      incsearch = true;
       showcmd = true;
-      termguicolors = true;
       signcolumn = "yes";
       number = true;
       numberwidth = 3;
@@ -145,7 +143,6 @@ in
       backupcopy = "yes";
       backup = true;
       undofile = true;
-      history = 10000;
 
       # Integrations
       clipboard = "unnamedplus";

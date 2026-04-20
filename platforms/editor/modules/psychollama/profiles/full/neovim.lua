@@ -31,13 +31,13 @@ vim.keymap.set('n', 'gl', function()
   vim.diagnostic.open_float(LSP_FLOAT_STYLE)
 end)
 
-vim.keymap.set('n', '[d', function()
-  vim.diagnostic.jump({ count = -1, float = LSP_FLOAT_STYLE })
-end)
-
-vim.keymap.set('n', ']d', function()
-  vim.diagnostic.jump({ count = 1, float = LSP_FLOAT_STYLE })
-end)
+vim.diagnostic.config({
+  jump = {
+    on_jump = function()
+      vim.diagnostic.open_float(LSP_FLOAT_STYLE)
+    end,
+  },
+})
 
 -- LSP Config
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -74,7 +74,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
       has_mapping[lsp_method] = true
       vim.keymap.set(opts.mode, binding, callback, {
-        buffer = args.buf,
+        buf = args.buf,
         desc = lsp_method,
       })
     end
@@ -83,11 +83,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     lspmap('<c-k>', P.textDocument_signatureHelp, vim.lsp.buf.signature_help)
     lspmap('gd', P.textDocument_definition, vim.lsp.buf.definition)
-    lspmap('gi', P.textDocument_implementation, vim.lsp.buf.implementation)
-    lspmap('gr', P.textDocument_references, vim.lsp.buf.references)
     lspmap('gy', P.textDocument_typeDefinition, vim.lsp.buf.type_definition)
-    lspmap('<leader>rn', P.textDocument_rename, vim.lsp.buf.rename)
-    lspmap('go', P.textDocument_codeAction, vim.lsp.buf.code_action)
     lspmap('K', P.textDocument_hover, function()
       vim.lsp.buf.hover(LSP_FLOAT_STYLE)
     end)
@@ -116,14 +112,6 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.cmd.wincmd('_')
   end,
 })
-
-vim.treesitter.query.add_predicate('is-not?', function()
-  -- Many TS grammars ship queries that use `#is-not?` to detect locals. The
-  -- errors make the buffer unusable. This is a stub to fail more gracefully.
-  -- If Neovim adds support later, `add_predicate` will throw on startup.
-  --
-  -- See: https://github.com/neovim/neovim/issues/27521
-end, {})
 
 -- Enable treesitter highlighting for all filetypes with available parsers.
 -- Built-in filetypes (lua, c, vim, markdown) have ftplugins that do this, but
