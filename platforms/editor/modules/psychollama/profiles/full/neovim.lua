@@ -26,6 +26,11 @@ vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
   desc = 'Clear search highlights',
 })
 
+vim.keymap.set('n', '<leader>u', function()
+  vim.cmd.packadd('nvim.undotree')
+  vim.cmd.Undotree()
+end, { desc = 'Toggle undotree' })
+
 -- Diagnostics are sourced from both standalone linters and language servers.
 vim.keymap.set('n', 'gl', function()
   vim.diagnostic.open_float(LSP_FLOAT_STYLE)

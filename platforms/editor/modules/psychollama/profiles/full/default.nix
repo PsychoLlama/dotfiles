@@ -42,7 +42,6 @@ in
         gitlinker-nvim.enable = lib.mkDefault true;
         gitsigns-nvim.enable = lib.mkDefault true;
         lab-nvim.enable = lib.mkDefault true;
-        lualine-lsp-progress.enable = lib.mkDefault true;
         lualine-nvim.enable = lib.mkDefault true;
         markdown-nvim.enable = lib.mkDefault true;
         markdown-preview-nvim.enable = lib.mkDefault true;
@@ -72,7 +71,6 @@ in
         teleport-vim.enable = lib.mkDefault true;
         telescope-fzf-native-nvim.enable = lib.mkDefault true;
         telescope-nvim.enable = lib.mkDefault true;
-        telescope-undo-nvim.enable = lib.mkDefault true;
         treesj.enable = lib.mkDefault true;
         vim-endwise.enable = lib.mkDefault true;
         vim-fugitive.enable = lib.mkDefault true;

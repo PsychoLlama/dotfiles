@@ -55,7 +55,6 @@ in
       defer.event = "BufReadPre";
     })
 
-    (mkPluginPreset "lualine-lsp-progress" null)
     (mkPluginPreset "lualine-nvim" ./lualine.lua)
 
     # Defer markdown plugins until markdown files are opened
@@ -81,7 +80,6 @@ in
     (mkPluginPreset "teleport-vim" ./teleport.lua)
     (mkPluginPreset "telescope-fzf-native-nvim" ./telescope-fzf-native.lua)
     (mkPluginPreset "telescope-nvim" ./telescope.lua)
-    (mkPluginPreset "telescope-undo-nvim" ./telescope-undo.lua)
 
     # Defer treesj until its keymap is used (~13ms saved)
     (mkPluginPresetFull "treesj" {
