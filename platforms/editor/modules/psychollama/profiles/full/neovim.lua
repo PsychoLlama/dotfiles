@@ -1,4 +1,14 @@
 require('core.env').source_direnv_vimrc()
+
+-- Built-in opt package shipped with Neovim. Registering it with core.pkg
+-- gives us lazy loading on first use of `:Undotree` -- same contract as
+-- nix-managed plugins.
+require('core.pkg').add('nvim.undotree', {
+  type = 'pack',
+  source = vim.fs.joinpath(vim.env.VIMRUNTIME, 'pack/dist/opt/nvim.undotree'),
+  defer = { cmd = 'Undotree' },
+})
+
 require('core.pkg').load()
 
 -- Operations not yet supported by the Nix binding.
@@ -25,11 +35,6 @@ vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
   silent = true,
   desc = 'Clear search highlights',
 })
-
-vim.keymap.set('n', '<leader>u', function()
-  vim.cmd.packadd('nvim.undotree')
-  vim.cmd.Undotree()
-end, { desc = 'Toggle undotree' })
 
 -- Diagnostics are sourced from both standalone linters and language servers.
 vim.keymap.set('n', 'gl', function()

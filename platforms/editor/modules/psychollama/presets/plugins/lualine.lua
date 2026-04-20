@@ -17,14 +17,7 @@ require('lualine').setup({
     lualine_a = {},
     lualine_b = { 'branch' },
     lualine_c = { 'filename', 'diagnostics' },
-    lualine_x = {
-      {
-        function()
-          return vim.ui.progress_status()
-        end,
-      },
-      'filetype',
-    },
+    lualine_x = { vim.ui.progress_status, 'filetype' },
     lualine_y = { 'progress' },
     lualine_z = { 'location' },
   },
