@@ -50,15 +50,21 @@ function M.load()
     plugins = plugin_hook(plugins) or plugins
   end
 
+  local defer = nil
   for _, plugin in ipairs(plugins) do
-    load_plugin(plugin)
-    table.insert(loaded_plugins, plugin)
+    if plugin.defer then
+      defer = defer or require('core.pkg.defer')
+      defer.register(plugin, plugin.defer)
+    else
+      load_plugin(plugin)
+      table.insert(loaded_plugins, plugin)
+    end
   end
 
   -- Idempotent operation. This ensures the standard libary evaluates first.
   load_plugin(stdlib)
 
-  -- Register deferred plugins (they load on-demand)
+  -- Register manifest-declared deferred plugins (hook-added ones handled above)
   loader.register_deferred()
 
   return loaded_plugins
