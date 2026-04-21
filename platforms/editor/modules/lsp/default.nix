@@ -11,8 +11,16 @@ in
       type = types.anything;
       readOnly = true;
       internal = true;
-      default = lib.filterAttrs (_: server: server.enabled) cfg.servers;
-      description = "Language server manifest generated for the core framework";
+      default = lib.mapAttrs (
+        _: server:
+        lib.filterAttrs (_: v: v != null) {
+          cmd = server.command;
+          filetypes = server.filetypes;
+          root_markers = server.root.patterns;
+          settings = server.settings;
+        }
+      ) (lib.filterAttrs (_: server: server.enabled) cfg.servers);
+      description = "Language server configs in vim.lsp.config() shape";
     };
 
     lsp = {

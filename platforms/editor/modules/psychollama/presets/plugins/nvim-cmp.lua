@@ -1,5 +1,4 @@
 local cmp = require('cmp')
-local core_lsp = require('core.lsp')
 local nvim_lsp = require('cmp_nvim_lsp')
 
 local function has_words_before()
@@ -85,7 +84,7 @@ cmp.setup.cmdline(':', {
   }),
 })
 
--- Advertise extended completion capabilities.
-core_lsp.on_attach(function(config)
-  config.capabilities = nvim_lsp.default_capabilities(config.capabilities)
-end)
+-- Advertise extended completion capabilities to every LSP client.
+vim.lsp.config('*', {
+  capabilities = nvim_lsp.default_capabilities(),
+})

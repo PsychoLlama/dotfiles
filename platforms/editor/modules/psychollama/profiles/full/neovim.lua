@@ -21,9 +21,8 @@ vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 -- Disable dumb markdown indents from `$VIMRUNTIME`.
 vim.g.markdown_recommended_style = false
 
--- Default border style. Managing this manually instead of `&winborder` to
--- keep settings isolated to LSP windows. Global settings affect plugins.
-local LSP_FLOAT_STYLE = { border = 'rounded' }
+-- Rounded border for diagnostic floats, matching the rest of the editor UI.
+local DIAGNOSTIC_FLOAT_STYLE = { border = 'rounded' }
 
 -- Misc mappings
 vim.keymap.set('n', '<leader>p', function()
@@ -38,67 +37,20 @@ vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
 
 -- Diagnostics are sourced from both standalone linters and language servers.
 vim.keymap.set('n', 'gl', function()
-  vim.diagnostic.open_float(LSP_FLOAT_STYLE)
+  vim.diagnostic.open_float(DIAGNOSTIC_FLOAT_STYLE)
 end)
 
 vim.diagnostic.config({
   jump = {
     on_jump = function()
-      vim.diagnostic.open_float(LSP_FLOAT_STYLE)
+      vim.diagnostic.open_float(DIAGNOSTIC_FLOAT_STYLE)
     end,
   },
 })
 
--- LSP Config
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('lsp_settings', {}),
-  callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-    if not client then
-      vim.notify(
-        'Failed to initialize LSP mappings. Client not found.',
-        vim.log.levels.ERROR
-      )
-
-      return
-    end
-
-    -- Only create mappings once per buffer per LSP method.
-    local has_mapping = {}
-
-    --- Create a keybinding for an LSP method, but only if the server supports
-    --- the action. This prevents overriding default mappings like `K` if the
-    --- server doesn't support it.
-    local function lspmap(binding, lsp_method, callback, opts)
-      if has_mapping[lsp_method] then
-        return
-      end
-
-      if not client:supports_method(lsp_method, args.buf) then
-        return
-      end
-
-      opts = opts or {}
-      opts.mode = opts.mode or 'n'
-
-      has_mapping[lsp_method] = true
-      vim.keymap.set(opts.mode, binding, callback, {
-        buf = args.buf,
-        desc = lsp_method,
-      })
-    end
-
-    local P = vim.lsp.protocol.Methods
-
-    lspmap('<c-k>', P.textDocument_signatureHelp, vim.lsp.buf.signature_help)
-    lspmap('gd', P.textDocument_definition, vim.lsp.buf.definition)
-    lspmap('gy', P.textDocument_typeDefinition, vim.lsp.buf.type_definition)
-    lspmap('K', P.textDocument_hover, function()
-      vim.lsp.buf.hover(LSP_FLOAT_STYLE)
-    end)
-  end,
-})
+-- Codelens is opt-in; enable globally so servers that publish lenses surface
+-- them. The default `grx` binding runs the lens under the cursor.
+vim.lsp.codelens.enable()
 
 -- The default horizontal split leaves your cursor on (IMO) the wrong side.
 local function open_split()
