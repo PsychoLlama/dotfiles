@@ -10,9 +10,11 @@ in
   };
 
   config.lsp.servers.nushell = lib.mkIf cfg.enable {
-    server = "nu";
-    args = [ "--lsp" ];
+    cmd = [
+      "nu"
+      "--lsp"
+    ];
     filetypes = [ "nu" ];
-    root.patterns = [ ".git/" ];
+    root_markers = [ ".git/" ];
   };
 }

@@ -16,9 +16,11 @@ in
   };
 
   config.lsp.servers.jsonls = lib.mkIf cfg.enable {
-    server = "${cfg.package}/bin/vscode-json-language-server";
-    root.patterns = [ ".git/" ];
-    args = [ "--stdio" ];
+    cmd = [
+      "${cfg.package}/bin/vscode-json-language-server"
+      "--stdio"
+    ];
+    root_markers = [ ".git/" ];
     filetypes = [
       "json"
       "jsonc"

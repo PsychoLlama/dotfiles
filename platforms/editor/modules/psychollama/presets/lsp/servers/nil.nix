@@ -16,9 +16,9 @@ in
   };
 
   config.lsp.servers.nil = lib.mkIf cfg.enable {
-    server = "${cfg.package}/bin/nil";
+    cmd = [ "${cfg.package}/bin/nil" ];
     filetypes = [ "nix" ];
-    root.patterns = [ "flake.nix" ];
+    root_markers = [ "flake.nix" ];
     settings.nil.nix.flake.autoArchive = true;
   };
 }

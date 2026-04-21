@@ -21,9 +21,6 @@ vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
 -- Disable dumb markdown indents from `$VIMRUNTIME`.
 vim.g.markdown_recommended_style = false
 
--- Rounded border for diagnostic floats, matching the rest of the editor UI.
-local DIAGNOSTIC_FLOAT_STYLE = { border = 'rounded' }
-
 -- Misc mappings
 vim.keymap.set('n', '<leader>p', function()
   require('editor.navigation').open_project_root()
@@ -37,13 +34,13 @@ vim.api.nvim_set_keymap('n', '<esc>', '<cmd>nohlsearch<cr><esc>', {
 
 -- Diagnostics are sourced from both standalone linters and language servers.
 vim.keymap.set('n', 'gl', function()
-  vim.diagnostic.open_float(DIAGNOSTIC_FLOAT_STYLE)
+  vim.diagnostic.open_float()
 end)
 
 vim.diagnostic.config({
   jump = {
     on_jump = function()
-      vim.diagnostic.open_float(DIAGNOSTIC_FLOAT_STYLE)
+      vim.diagnostic.open_float()
     end,
   },
 })

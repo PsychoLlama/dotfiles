@@ -17,8 +17,10 @@ in
 
   config = lib.mkIf cfg.enable {
     lsp.servers.typescript = {
-      server = "${cfg.package}/bin/typescript-language-server";
-      args = [ "--stdio" ];
+      cmd = [
+        "${cfg.package}/bin/typescript-language-server"
+        "--stdio"
+      ];
       filetypes = [
         "typescript"
         "typescriptreact"
@@ -26,7 +28,7 @@ in
         "javascriptreact"
       ];
 
-      root.patterns = [
+      root_markers = [
         "tsconfig.json"
         ".git/"
       ];

@@ -61,13 +61,7 @@ in
           lua << CORE_FRAMEWORK
           require('core.settings').apply(${lua config.settings})
           require('core.pkg._loader').set_manifest(${lua config.core.manifest})
-          do
-            local _servers = ${lua config.core.lsp.servers}
-            for _name, _cfg in pairs(_servers) do
-              vim.lsp.config(_name, _cfg)
-            end
-            vim.lsp.enable(vim.tbl_keys(_servers))
-          end
+          require('core.lsp').setup(${lua config.core.lsp.servers})
           CORE_FRAMEWORK
 
           source ${configFile}

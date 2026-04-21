@@ -12,15 +12,9 @@ in
       readOnly = true;
       internal = true;
       default = lib.mapAttrs (
-        _: server:
-        lib.filterAttrs (_: v: v != null) {
-          cmd = server.command;
-          filetypes = server.filetypes;
-          root_markers = server.root.patterns;
-          settings = server.settings;
-        }
+        _: server: lib.filterAttrs (_: v: v != null) (removeAttrs server [ "enabled" ])
       ) (lib.filterAttrs (_: server: server.enabled) cfg.servers);
-      description = "Language server configs in vim.lsp.config() shape";
+      description = "Enabled language server configs passed to vim.lsp.config().";
     };
 
     lsp = {
@@ -29,82 +23,55 @@ in
       servers = lib.mkOption {
         default = { };
         description = ''
-          Configuration for neovim LSP clients.
+          Configuration for neovim LSP clients. Fields mirror `vim.lsp.Config`
+          (see `:help vim.lsp.Config`), so presets can set `cmd`,
+          `root_markers`, `filetypes`, and `settings` directly.
         '';
 
         type = types.attrsOf (
-          types.submodule (
-            { name, config, ... }:
-            {
-              options.enabled = lib.mkOption {
-                type = types.bool;
-                default = true;
-                description = ''
-                  Enable the language server.
-                '';
-              };
+          types.submodule {
+            options.enabled = lib.mkOption {
+              type = types.bool;
+              default = true;
+              description = ''
+                Enable the language server.
+              '';
+            };
 
-              options.name = lib.mkOption {
-                type = types.str;
-                default = name;
-                description = ''
-                  Unique name for the client. Clients with the same name and
-                  root directory are shared across buffers.
-                '';
-              };
+            options.cmd = lib.mkOption {
+              type = types.listOf (types.either types.str types.path);
+              description = ''
+                Command used to launch the language server. First element is
+                the executable; remaining elements are passed as arguments.
+              '';
+            };
 
-              options.server = lib.mkOption {
-                type = types.str;
-                description = ''
-                  Binary that starts the language server.
-                '';
-              };
+            options.filetypes = lib.mkOption {
+              type = types.listOf types.str;
+              default = [ ];
+              description = ''
+                Automatically attach the language server for these filetypes.
+              '';
+            };
 
-              options.args = lib.mkOption {
-                type = types.listOf (types.either types.str types.path);
-                default = [ ];
-                description = ''
-                  Arguments to pass to the language server. It must listen on
-                  stdin.
-                '';
-              };
+            options.settings = lib.mkOption {
+              type = types.nullOr (types.attrsOf types.anything);
+              default = null;
+              description = ''
+                Settings to pass to the language server.
+              '';
+            };
 
-              options.command = lib.mkOption {
-                type = types.listOf (types.either types.str types.path);
-                default = [ config.server ] ++ config.args;
-                readOnly = true;
-                description = ''
-                  Generated command that executes the language server.
-                '';
-              };
-
-              options.filetypes = lib.mkOption {
-                type = types.listOf types.str;
-                default = [ ];
-                description = ''
-                  Automatically attach the language server for these filetypes.
-                '';
-              };
-
-              options.settings = lib.mkOption {
-                type = types.nullOr (types.attrsOf types.anything);
-                default = null;
-                description = ''
-                  Settings to pass to the language server.
-                '';
-              };
-
-              options.root.patterns = lib.mkOption {
-                type = types.listOf types.str;
-                default = [ ];
-                description = ''
-                  Search upward for files or directories matching these
-                  patterns. If found, it becomes the workspace for the language
-                  server.
-                '';
-              };
-            }
-          )
+            options.root_markers = lib.mkOption {
+              type = types.listOf types.str;
+              default = [ ];
+              description = ''
+                Search upward for files or directories matching these markers.
+                If found, the directory becomes the workspace root for the
+                language server.
+              '';
+            };
+          }
         );
       };
     };

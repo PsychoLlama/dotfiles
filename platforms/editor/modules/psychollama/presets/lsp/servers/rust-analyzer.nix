@@ -17,9 +17,9 @@ in
 
   config = lib.mkIf cfg.enable {
     lsp.servers.rust-analyzer = {
-      server = "${cfg.package}/bin/rust-analyzer";
+      cmd = [ "${cfg.package}/bin/rust-analyzer" ];
       filetypes = [ "rust" ];
-      root.patterns = [ "Cargo.toml" ];
+      root_markers = [ "Cargo.toml" ];
     };
 
     extraPackages = [

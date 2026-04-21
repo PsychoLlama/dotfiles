@@ -114,6 +114,7 @@ in
       pumheight = 10;
       pumblend = 20;
       pumborder = "rounded";
+      winborder = "rounded";
       winblend = 0;
       ignorecase = true;
       smartcase = true;

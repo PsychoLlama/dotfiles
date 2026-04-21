@@ -23,8 +23,8 @@ in
   };
 
   config.lsp.servers.clangd = lib.mkIf cfg.enable {
-    server = if cfg.system then "clangd" else "${cfg.package}/bin/clangd";
-    root.patterns = [ "compile_commands.json" ];
+    cmd = [ (if cfg.system then "clangd" else "${cfg.package}/bin/clangd") ];
+    root_markers = [ "compile_commands.json" ];
     filetypes = [
       "c"
       "cpp"

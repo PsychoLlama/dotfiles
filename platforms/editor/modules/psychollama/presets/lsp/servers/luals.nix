@@ -16,9 +16,9 @@ in
   };
 
   config.lsp.servers.luals = lib.mkIf cfg.enable {
-    server = "${cfg.package}/bin/lua-language-server";
+    cmd = [ "${cfg.package}/bin/lua-language-server" ];
     filetypes = [ "lua" ];
-    root.patterns = [
+    root_markers = [
       ".git/"
       ".luarc.json"
     ];
