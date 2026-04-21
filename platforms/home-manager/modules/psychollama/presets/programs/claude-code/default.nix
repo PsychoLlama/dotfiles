@@ -56,10 +56,13 @@ in
       commands.repo-update = ./commands/repo-update.md;
 
       settings = {
-        includeCoAuthoredBy = false;
         theme = "dark";
-        autoUpdates = false;
         preferredNotifChannel = "terminal_bell";
+
+        attribution = {
+          commit = "";
+          pr = "";
+        };
 
         env = {
           # I don't want uncommitted memory affecting Claude's decisions.
