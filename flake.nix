@@ -244,6 +244,7 @@
               agenix.packages.${system}.default
               pkgs.just
               pkgs.lua-language-server
+              pkgs.moon
               pkgs.luajitPackages.luacheck
               pkgs.luajitPackages.vusted
               pkgs.nix-update

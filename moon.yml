@@ -1,0 +1,104 @@
+$schema: './.moon/cache/schemas/project.json'
+
+type: application
+language: bash
+
+tasks:
+  build:
+    command:
+      - bash
+      - '-c'
+      - 'nixos-rebuild --log-format internal-json -v build --flake . 2>&1 | nom --json'
+    type: build
+    inputs:
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'hosts/**/*'
+      - 'lib/**/*'
+      - 'pkgs/**/*'
+      - 'platforms/**/*'
+    options:
+      outputStyle: stream
+
+  build-docs:
+    command: nix
+    args: ['build', '.#docs-website']
+    type: build
+    inputs:
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'docs/**/*'
+      - 'lib/**/*.nix'
+      - 'pkgs/**/*.nix'
+      - 'platforms/**/*.nix'
+
+  build-editor:
+    command:
+      - bash
+      - '-c'
+      # result-editor doubles as a nix GC root; .editor-path is the path moon
+      # archives for cache hydration.
+      - 'nix build .#editor --out-link result-editor --print-out-paths > .editor-path'
+    type: build
+    inputs:
+      - 'flake.nix'
+      - 'flake.lock'
+      - 'lib/**/*'
+      - 'pkgs/**/*'
+      - 'platforms/editor/**/*'
+    outputs:
+      - '.editor-path'
+
+  fmt-check:
+    command: treefmt
+    args: ['--ci']
+    type: test
+    inputs:
+      - 'treefmt.toml'
+      - '**/*.nix'
+      - '**/*.lua'
+      - '**/*.md'
+
+  lint:
+    command: luacheck
+    args: ['pkgs', 'platforms']
+    type: test
+    inputs:
+      - '.luacheckrc'
+      - 'pkgs/**/*.lua'
+      - 'platforms/**/*.lua'
+
+  typecheck:
+    script: |
+      set -euo pipefail
+      export VIMRUNTIME=$(nvim --clean --headless --cmd 'echo $VIMRUNTIME | q' 2>&1)
+      lua-language-server --check . --checklevel=Warning
+    type: test
+    inputs:
+      - '.luarc.json'
+      - '**/*.lua'
+
+  unit-test:
+    command: vusted
+    args: ['pkgs', 'platforms']
+    type: test
+    inputs:
+      - '.busted'
+      - 'pkgs/**/*.lua'
+      - 'platforms/**/*.lua'
+
+  unit-test-built:
+    deps:
+      - build-editor
+    script: |
+      set -euo pipefail
+      editor=$(cat .editor-path)
+      packdir=$(grep -oP "packpath\^=\K[^\"]+" "$editor/bin/nvim")
+      lab_nvim=$(readlink -f "$packdir/pack/managed-by-nix/opt/lab.nvim")
+      PATH="$editor/bin:$PATH" vusted --lpath="$lab_nvim/lua/?.lua;$lab_nvim/lua/?/init.lua" pkgs platforms
+    type: test
+    inputs:
+      - '.busted'
+      - '.editor-path'
+      - 'pkgs/**/*.lua'
+      - 'platforms/**/*.lua'

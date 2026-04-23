@@ -3,7 +3,7 @@ description: Update flake inputs and custom packages, then address deprecations.
 disable-model-invocation: true
 ---
 
-!`just update`
+Run `just update` to update all flake inputs and custom packages, then work through the steps below.
 
 ## Steps
 

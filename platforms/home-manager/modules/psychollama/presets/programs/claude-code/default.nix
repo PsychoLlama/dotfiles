@@ -170,6 +170,7 @@ in
 
             # Generic Project Tools
             "Bash(just:*)"
+            "Bash(moon:*)"
             "Bash(prek:*)"
             "Bash(prettier:*)"
             "Bash(treefmt:*)"

@@ -1,5 +1,8 @@
+.editor-path
 .ls-check/
 .luarc.check.lua
+.moon/cache/
+.moon/docker/
 result
 result-*
 templates/*/flake.lock

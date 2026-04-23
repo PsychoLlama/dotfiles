@@ -1,0 +1,10 @@
+$schema: './cache/schemas/workspace.json'
+
+telemetry: false
+
+vcs:
+  manager: git
+  defaultBranch: main
+
+projects:
+  dotfiles: '.'
