@@ -8,7 +8,7 @@ tasks:
     command:
       - bash
       - '-c'
-      - 'nixos-rebuild --log-format internal-json -v build --flake . 2>&1 | nom --json'
+      - 'nixos-rebuild --log-format internal-json -v --print-build-logs build --flake . 2>&1 | nom --json'
     type: build
     inputs:
       - 'flake.nix'
