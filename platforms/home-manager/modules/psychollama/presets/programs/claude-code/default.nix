@@ -238,6 +238,7 @@ in
 
     programs.git = lib.mkIf cfg.enable {
       ignores = [
+        "**/.claude/*.lock"
         "**/.claude/settings.local.json"
         "**/.claude/worktrees"
         "**/CLAUDE.local.md"
