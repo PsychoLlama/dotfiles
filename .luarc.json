@@ -12,6 +12,6 @@
       "platforms/editor/runtime",
       "packages/ext.nvim"
     ],
-    "ignoreDir": [".direnv"]
+    "ignoreDir": [".direnv", ".claude"]
   }
 }

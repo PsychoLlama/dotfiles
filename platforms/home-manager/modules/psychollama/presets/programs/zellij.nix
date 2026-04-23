@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -17,6 +18,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.zellij = {
       enable = true;
+      package = pkgs.unstable.zellij;
 
       settings = {
         default_shell = "${nu}/bin/nu";
