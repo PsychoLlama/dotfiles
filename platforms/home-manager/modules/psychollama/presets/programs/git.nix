@@ -36,22 +36,57 @@ in
       push = {
         autoSetupRemote = true;
         default = "current";
+        followTags = true;
       };
 
       fetch = {
         prune = true;
         pruneTags = true;
+        writeCommitGraph = true;
+        negotiationAlgorithm = "skipping";
+      };
+
+      pull = {
+        rebase = true;
+        ff = "only";
       };
 
       init.defaultBranch = "main";
-      pull.rebase = true;
       rebase.autoStash = true;
       interactive.singleKey = true;
+
+      feature.manyFiles = true;
 
       core = {
         editor = "nvim";
         untrackedCache = true;
-        fsmonitor = true;
+      };
+
+      index.skipHash = true;
+      pack.useBitmapBoundaryTraversal = true;
+      transfer.fsckObjects = true;
+
+      diff = {
+        algorithm = "histogram";
+        colorMoved = "default";
+        colorMovedWS = "allow-indentation-change";
+      };
+
+      merge.conflictStyle = "zdiff3";
+
+      rerere = {
+        enabled = true;
+        autoUpdate = true;
+      };
+
+      branch.sort = "-committerdate";
+      tag.sort = "version:refname";
+      column.ui = "auto";
+      log.date = "iso";
+
+      submodule = {
+        recurse = true;
+        fetchJobs = 0;
       };
     };
 
