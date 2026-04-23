@@ -29,10 +29,6 @@ in
         - Prefer `fd` over `find`.
         - Prefer `rg` over `grep`.
 
-        # Git Conventions
-
-        - Branch naming: `jesse.gibson/<ticket-id>/<slug>` (with ticket) or `jesse.gibson/<slug>` (without ticket).
-
         # Commit Messages
 
         - Imperative title, descriptive body (markdown).
@@ -59,6 +55,11 @@ in
         theme = "dark";
         preferredNotifChannel = "terminal_bell";
 
+        # settings.json is a read-only symlink into the Nix store, so Claude
+        # Code's "don't ask again" toggle for auto mode can never persist.
+        # Opt out of the confirmation up front.
+        skipAutoPermissionPrompt = true;
+
         attribution = {
           commit = "";
           pr = "";
@@ -70,7 +71,7 @@ in
         };
 
         permissions = {
-          defaultMode = "acceptEdits";
+          defaultMode = "auto";
 
           additionalDirectories = [
             "${config.home.homeDirectory}/projects/psychollama"
