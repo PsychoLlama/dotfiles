@@ -45,6 +45,7 @@ in
       '';
 
       skills = {
+        codex-review = ./skills/codex-review;
         using-neovim = ./skills/using-neovim;
         using-nix = ./skills/using-nix;
       };
