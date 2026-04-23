@@ -3,3 +3,4 @@
 result
 result-*
 templates/*/flake.lock
+.claude/*.lock
