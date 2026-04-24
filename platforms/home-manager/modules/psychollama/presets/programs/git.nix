@@ -1,11 +1,22 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.psychollama.presets.programs.git;
+  fsmonitor = config.programs.git.fsmonitor;
 in
 
 {
   config = lib.mkIf cfg.enable {
+    programs.git.fsmonitor = {
+      enable = lib.mkDefault true;
+      package = lib.mkDefault pkgs.unstable.watchman;
+    };
+
     home.shellAliases = {
       g = "git";
       b = "git branch";
@@ -31,6 +42,9 @@ in
         ss = "stash push --staged --message";
         pl = "pull origin";
         amend = "commit --amend";
+
+        watch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.watchScript}";
+        unwatch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.unwatchScript}";
       };
 
       push = {
