@@ -12,6 +12,7 @@
   zlib,
   gcc,
   ripgrep,
+  bubblewrap,
 }:
 let
   stdenv = stdenvNoCC;
@@ -59,7 +60,9 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   postFixup = ''
-    wrapProgram $out/bin/codex --prefix PATH : ${lib.makeBinPath [ ripgrep ]}
+    wrapProgram $out/bin/codex --prefix PATH : ${
+      lib.makeBinPath ([ ripgrep ] ++ lib.optionals stdenv.hostPlatform.isLinux [ bubblewrap ])
+    }
   '';
 
   meta = {
