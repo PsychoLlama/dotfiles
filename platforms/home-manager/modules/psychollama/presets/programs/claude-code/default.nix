@@ -41,7 +41,9 @@ in
         # Authoring Agent Files
 
         - `AGENTS.md` is the source of truth. `CLAUDE.md` should only contain `@AGENTS.md`.
-        - Author `AGENTS.md` with short, declarative statements.
+        - Use short, declarative statements or lists of instructions.
+        - Each item should be 2 sentences or less.
+        - Use these guidelines when authoring skills, commands, or other files intended solely for agents.
       '';
 
       skills = {
