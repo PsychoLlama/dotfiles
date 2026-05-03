@@ -20,7 +20,7 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.claude-code.plugins.typescript-lsp = {
-      description = "TypeScript Language Server for Claude Code";
+      description = "TypeScript Language Server for Claude Code.";
 
       lsp.servers.typescript = {
         command = tsLanguageServer;

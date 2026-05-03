@@ -27,7 +27,12 @@ let
           inherit (plugin) description;
         }
       } $out/.claude-plugin/plugin.json
-      ln -s ${json.generate "lsp.json" plugin.lsp.servers} $out/.lsp.json
+      ${lib.optionalString (plugin.lsp.servers != { }) ''
+        ln -s ${json.generate "lsp.json" plugin.lsp.servers} $out/.lsp.json
+      ''}
+      ${lib.optionalString (plugin.mcp.servers != { }) ''
+        ln -s ${json.generate "mcp.json" plugin.mcp.servers} $out/.mcp.json
+      ''}
     '';
 
   marketplace = pkgs.runCommand "claude-marketplace-dotfiles" { } ''
@@ -85,41 +90,6 @@ in
       );
     };
 
-    servers = lib.mkOption {
-      default = { };
-      description = "MCP server configurations. The attribute name becomes the server name.";
-
-      type = lib.types.attrsOf (
-        lib.types.submodule (
-          { name, ... }:
-          {
-            options = {
-              enable = lib.mkOption {
-                type = lib.types.bool;
-                default = true;
-                description = "Whether to enable this MCP server.";
-              };
-
-              settings = lib.mkOption {
-                type = json.type;
-                default = { };
-                description = "MCP server configuration (passed through to mcpServers).";
-              };
-
-              permissions.allow = lib.mkOption {
-                type = lib.types.listOf lib.types.str;
-                default = [ ];
-                description = ''
-                  Tool names exposed by this server to allow.
-                  Each entry generates a `mcp__{server}__{tool}` permission.
-                '';
-              };
-            };
-          }
-        )
-      );
-    };
-
     plugins = lib.mkOption {
       default = { };
       description = ''
@@ -145,7 +115,13 @@ in
             lsp.servers = lib.mkOption {
               type = json.type;
               default = { };
-              description = "LSP server configurations (maps to lspServers in plugin manifest).";
+              description = "LSP server configurations (rendered to .lsp.json at the plugin root).";
+            };
+
+            mcp.servers = lib.mkOption {
+              type = json.type;
+              default = { };
+              description = "MCP server configurations (rendered to .mcp.json at the plugin root).";
             };
           };
         }
@@ -255,22 +231,6 @@ in
           (lib.filterAttrs (_: script: script.allow))
           (lib.mapAttrsToList (_: script: "Bash(${script.path}:*)"))
         ];
-      }
-
-      # Servers: register MCP servers and their permissions
-      {
-        programs.claude-code = {
-          mcpServers = lib.pipe cfg.servers [
-            (lib.filterAttrs (_: server: server.enable))
-            (lib.mapAttrs (_: server: server.settings))
-          ];
-
-          settings.permissions.allow = lib.pipe cfg.servers [
-            (lib.filterAttrs (_: server: server.enable))
-            (lib.mapAttrsToList (name: server: map (tool: "mcp__${name}__${tool}") server.permissions.allow))
-            lib.concatLists
-          ];
-        };
       }
 
       # Plugins: generate a local directory marketplace
