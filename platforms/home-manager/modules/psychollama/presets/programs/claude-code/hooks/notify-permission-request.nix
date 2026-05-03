@@ -23,7 +23,7 @@ let
         title="Claude Code"
       fi
 
-      exec ${config.programs.claude-code.scripts.notify.path} --title "$title" --icon dialog-question "$message"
+      exec ${config.programs.claude-code.scripts.notify} --title "$title" --icon dialog-question "$message"
     '';
   };
 in

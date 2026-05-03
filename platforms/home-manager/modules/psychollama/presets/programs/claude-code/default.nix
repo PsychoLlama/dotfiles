@@ -36,7 +36,7 @@ in
 
         # Capabilities
 
-        - `${config.programs.claude-code.scripts.notify.path} <message>` sends a desktop notification. Use it to get my attention after completing a long-running task.
+        - `~/.claude/dotfiles/bin/notify <message>` sends a desktop notification. Use it to get my attention after completing a long-running task.
 
         # Authoring Agent Files
 

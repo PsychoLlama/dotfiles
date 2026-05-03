@@ -60,28 +60,8 @@ in
   options.programs.claude-code = {
     scripts = lib.mkOption {
       default = { };
-      description = "An executable script installed where Claude can use it. The attribute name becomes the script name.";
-
-      type = lib.types.attrsOf (
-        lib.types.submodule (
-          { name, ... }:
-          {
-            options = {
-              source = lib.mkOption {
-                type = lib.types.path;
-                description = "Executable script";
-              };
-
-              path = lib.mkOption {
-                type = lib.types.str;
-                readOnly = true;
-                description = "Full path to the installed script.";
-                default = "~/${scriptsDir}/${name}";
-              };
-            };
-          }
-        )
-      );
+      description = "Executable scripts installed at ~/${scriptsDir}/<name>. The attribute name becomes the script name.";
+      type = lib.types.attrsOf lib.types.path;
     };
 
     plugins = lib.mkOption {
@@ -218,7 +198,7 @@ in
       # Scripts: install to dotfiles bin dir
       {
         home.file = lib.mapAttrs' (
-          name: script: lib.nameValuePair "${scriptsDir}/${name}" { inherit (script) source; }
+          name: source: lib.nameValuePair "${scriptsDir}/${name}" { inherit source; }
         ) cfg.scripts;
       }
 
