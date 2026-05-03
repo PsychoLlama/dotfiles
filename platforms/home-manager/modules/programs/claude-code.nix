@@ -72,12 +72,6 @@ in
                 description = "Executable script";
               };
 
-              allow = lib.mkOption {
-                type = lib.types.bool;
-                default = false;
-                description = "Add this script to the `permissions.allow` list.";
-              };
-
               path = lib.mkOption {
                 type = lib.types.str;
                 readOnly = true;
@@ -221,16 +215,11 @@ in
 
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
-      # Scripts: install to dotfiles bin dir and register permissions
+      # Scripts: install to dotfiles bin dir
       {
         home.file = lib.mapAttrs' (
           name: script: lib.nameValuePair "${scriptsDir}/${name}" { inherit (script) source; }
         ) cfg.scripts;
-
-        programs.claude-code.settings.permissions.allow = lib.pipe cfg.scripts [
-          (lib.filterAttrs (_: script: script.allow))
-          (lib.mapAttrsToList (_: script: "Bash(${script.path}:*)"))
-        ];
       }
 
       # Plugins: generate a local directory marketplace

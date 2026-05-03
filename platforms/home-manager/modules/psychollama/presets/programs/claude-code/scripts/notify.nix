@@ -48,9 +48,6 @@ in
 
 {
   config = lib.mkIf cfg.enable {
-    programs.claude-code.scripts.notify = {
-      source = lib.getExe notify;
-      allow = true;
-    };
+    programs.claude-code.scripts.notify.source = lib.getExe notify;
   };
 }

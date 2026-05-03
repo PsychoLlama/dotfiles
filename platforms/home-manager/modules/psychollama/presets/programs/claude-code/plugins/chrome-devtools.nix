@@ -21,38 +21,6 @@ let
       exec ${lib.getExe pkgs.chrome-devtools-mcp} "''${args[@]}" "$@"
     '';
   };
-
-  tools = [
-    "click"
-    "close_page"
-    "drag"
-    "emulate"
-    "evaluate_script"
-    "fill"
-    "fill_form"
-    "get_console_message"
-    "get_network_request"
-    "handle_dialog"
-    "hover"
-    "lighthouse_audit"
-    "list_console_messages"
-    "list_network_requests"
-    "list_pages"
-    "navigate_page"
-    "new_page"
-    "performance_analyze_insight"
-    "performance_start_trace"
-    "performance_stop_trace"
-    "press_key"
-    "resize_page"
-    "select_page"
-    "take_memory_snapshot"
-    "take_screenshot"
-    "take_snapshot"
-    "type_text"
-    "upload_file"
-    "wait_for"
-  ];
 in
 
 {
@@ -63,13 +31,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.claude-code = {
-      plugins.chrome-devtools = {
-        description = "Chrome DevTools MCP server for Claude Code.";
-        mcp.servers.chrome-devtools.command = lib.getExe wrapper;
-      };
-
-      settings.permissions.allow = map (tool: "mcp__chrome-devtools__${tool}") tools;
+    programs.claude-code.plugins.chrome-devtools = {
+      description = "Chrome DevTools MCP server for Claude Code.";
+      mcp.servers.chrome-devtools.command = lib.getExe wrapper;
     };
   };
 }
