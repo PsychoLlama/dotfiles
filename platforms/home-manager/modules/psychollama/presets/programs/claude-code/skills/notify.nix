@@ -29,25 +29,21 @@ let
       fi
 
       message="$*"
-
-      case "$(uname)" in
-        Darwin)
-          osascript -e "display notification \"$message\" with title \"$title\""
-          ;;
-        *)
-          notify-send \
-            --urgency=normal \
-            --icon="$icon" \
-            "$title" \
-            "$message"
-          ;;
-      esac
+      notify-send --urgency=normal --icon="$icon" "$title" "$message"
     '';
   };
 in
 
 {
+  # We want the skill directory to bundle SKILL.md alongside the `notify`
+  # wrapper, but home-manager's `programs.claude-code.skills.<name>` accepts
+  # only `lines` or a Nix `path`. Its `lib.isPath` branch rejects derivation
+  # outputs (which are strings), so a `runCommand` that assembles both files
+  # can't go through the option. Wire up `home.file` directly instead.
   config = lib.mkIf cfg.enable {
-    programs.claude-code.scripts.notify = lib.getExe notify;
+    home.file = {
+      ".claude/skills/notify/SKILL.md".source = ./notify/SKILL.md;
+      ".claude/skills/notify/notify".source = lib.getExe notify;
+    };
   };
 }

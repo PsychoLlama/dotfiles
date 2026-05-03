@@ -10,7 +10,10 @@ let
 
   notifyPermissionRequest = pkgs.writeShellApplication {
     name = "notify-permission-request";
-    runtimeInputs = [ pkgs.jq ];
+    runtimeInputs = [
+      pkgs.jq
+      pkgs.libnotify
+    ];
     text = ''
       input=$(cat)
       message=$(echo "$input" | jq -r '.message // "Permission requested"')
@@ -23,7 +26,7 @@ let
         title="Claude Code"
       fi
 
-      exec ${config.programs.claude-code.scripts.notify} --title "$title" --icon dialog-question "$message"
+      notify-send --urgency=normal --icon=dialog-question "$title" "$message"
     '';
   };
 in

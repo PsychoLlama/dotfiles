@@ -34,10 +34,6 @@ in
         - Imperative title, descriptive body (markdown).
         - Capture context not otherwise available (goal, failed approaches, decisions, etc).
 
-        # Capabilities
-
-        - `~/.claude/dotfiles/bin/notify <message>` sends a desktop notification. Use it to get my attention after completing a long-running task.
-
         # Authoring Agent Files
 
         - `AGENTS.md` is the source of truth. `CLAUDE.md` should only contain `@AGENTS.md`.
