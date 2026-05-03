@@ -95,7 +95,6 @@ in
 
       branch.sort = "-committerdate";
       tag.sort = "version:refname";
-      column.ui = "auto";
       log.date = "iso";
 
       submodule = {
