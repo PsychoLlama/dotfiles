@@ -5,5 +5,8 @@ let
 in
 
 {
-  config.plugins.markdown-preview-nvim = lib.mkIf cfg.enable { };
+  config = lib.mkIf cfg.enable {
+    # markdown-preview-nvim runs a Node.js server to render the preview.
+    withNodeJs = true;
+  };
 }
