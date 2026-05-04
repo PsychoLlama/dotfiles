@@ -80,12 +80,7 @@ in
       pack.useBitmapBoundaryTraversal = true;
       transfer.fsckObjects = true;
 
-      diff = {
-        algorithm = "histogram";
-        colorMoved = "default";
-        colorMovedWS = "allow-indentation-change";
-      };
-
+      diff.algorithm = "histogram";
       merge.conflictStyle = "zdiff3";
 
       rerere = {
