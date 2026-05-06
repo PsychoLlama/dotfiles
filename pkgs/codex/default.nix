@@ -19,8 +19,8 @@ let
   manifest = lib.importJSON ./manifest.json;
   platformKey =
     {
-      "x86_64-linux" = "x86_64-unknown-linux-gnu";
-      "aarch64-linux" = "aarch64-unknown-linux-gnu";
+      "x86_64-linux" = "x86_64-unknown-linux-musl";
+      "aarch64-linux" = "aarch64-unknown-linux-musl";
       "x86_64-darwin" = "x86_64-apple-darwin";
       "aarch64-darwin" = "aarch64-apple-darwin";
     }
