@@ -27,7 +27,6 @@ in
 
     linters = {
       eslint = mkExeOption pkgs.unstable.eslint_d "eslint_d";
-      ruff = mkExeOption pkgs.unstable.ruff "ruff";
       shellcheck = mkExeOption pkgs.unstable.shellcheck "shellcheck";
 
       # Assumes this is installed in the local dev shell.
@@ -35,7 +34,6 @@ in
     };
 
     formatters = {
-      black = mkExeOption pkgs.unstable.black "black";
       eslint = mkExeOption pkgs.unstable.eslint_d "eslint_d";
       nixfmt = mkExeOption pkgs.unstable.nixfmt "nixfmt";
       prettier = mkExeOption pkgs.unstable.prettierd "prettierd";
@@ -47,7 +45,6 @@ in
       jsonls = mkExeOption pkgs.unstable.vscode-langservers-extracted "vscode-json-language-server";
       luals = mkExeOption pkgs.unstable.lua-language-server "lua-language-server";
       nil = mkExeOption pkgs.unstable.nil "nil";
-      pyright = mkExeOption pkgs.unstable.pyright "pyright-langserver";
       rust-analyzer = mkExeOption pkgs.unstable.rust-analyzer "rust-analyzer";
       tsserver = mkExeOption pkgs.unstable.typescript-language-server "typescript-language-server";
       clangd =
@@ -124,11 +121,6 @@ in
         value = cfg.formatters.stylua;
       };
 
-      "my/formatter-black" = {
-        description = "Executable for `black`.";
-        value = cfg.formatters.black;
-      };
-
       # Language servers
       "my/lsp-nil" = {
         description = "Executable for the Nil (nix) language server.";
@@ -165,11 +157,6 @@ in
         value = cfg.languageServers.clangd;
       };
 
-      "my/lsp-pyright" = {
-        description = "Executable for the Pyright language server.";
-        value = cfg.languageServers.pyright;
-      };
-
       # Linters
       "my/linter-shellcheck" = {
         description = "Executable for `shellcheck`.";
@@ -184,11 +171,6 @@ in
       "my/linter-luacheck" = {
         description = "Executable for `luacheck`.";
         value = cfg.linters.luacheck;
-      };
-
-      "my/linter-ruff" = {
-        description = "Executable for `ruff`.";
-        value = cfg.linters.ruff;
       };
     };
   };

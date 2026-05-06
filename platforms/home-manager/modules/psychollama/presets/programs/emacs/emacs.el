@@ -177,7 +177,6 @@
                    "-"))
 
         (rustfmt . ("rustfmt" "--emit=stdout"))
-        (black . (,my/formatter-black "--quiet" "--fast" "-"))
         (gofmt . ("gofmt"))))
 
 (setq apheleia-mode-alist	       ; Map major modes to formatters
@@ -191,7 +190,6 @@
         (json-ts-mode . (prettier))
         (nix-ts-mode . (nixfmt))
         (lua-ts-mode . (stylua))
-        (python-ts-mode . (black))
         (go-ts-mode . (gofmt))))
 
 
@@ -208,7 +206,6 @@
         (json-ts-mode . (,my/lsp-jsonls "--stdio"))
         (go-ts-mode . (,my/lsp-gopls "-remote=auto"))
         (rust-mode . (,my/lsp-rust-analyzer))
-        (python-ts-mode . (,my/lsp-pyright "--stdio"))
         (nushell-ts-mode . ("nu" "--lsp"))))
 
 (add-hook 'go-ts-mode-hook #'eglot-ensure)
@@ -217,7 +214,6 @@
 (add-hook 'nix-ts-mode-hook #'eglot-ensure)
 (add-hook 'nushell-ts-mode-hook #'eglot-ensure)
 (add-hook 'rust-mode-hook #'eglot-ensure)
-(add-hook 'python-ts-mode-hook #'eglot-ensure)
 (add-hook 'typescript-ts-mode-hook #'eglot-ensure)
 
 (evil-define-key 'normal prog-mode-map (kbd "SPC r n") 'eglot-rename) ; Rename symbol under cursor.
@@ -230,7 +226,6 @@
 (setq-default flycheck-javascript-eslint-executable my/linter-eslint)
 (setq-default flycheck-sh-shellcheck-executable my/linter-shellcheck)
 (setq-default flycheck-lua-luacheck-executable my/linter-luacheck)
-(setq-default flycheck-python-ruff-executable my/linter-ruff)
 
 (setq-default flycheck-disabled-checkers
 	      '(emacs-lisp-checkdoc emacs-lisp)) ; Too many false errors.
