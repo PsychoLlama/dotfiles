@@ -1,4 +1,0 @@
-$schema: './cache/schemas/tasks.json'
-
-taskOptions:
-  outputStyle: buffer-only-failure

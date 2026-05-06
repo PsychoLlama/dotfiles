@@ -74,6 +74,10 @@ nvim --headless -c 'echo $VIMRUNTIME | qa'
 
 Tests use `busted`/`vusted` framework with `*_spec.lua` naming pattern. Keep tests under `tests/`.
 
+```bash
+just unit-test  # Run Lua unit tests
+```
+
 E2E test changes by running the editor:
 
 ```bash
@@ -92,8 +96,9 @@ nix build '.#docs-website'
 
 All programs are declaratively managed through this repo. When asked to change configuration for a program (e.g. Claude Code settings, shell aliases, git config), edit the corresponding Nix module -- never the dotfiles directly.
 
-- Keep checks green before committing.
-- `moon` drives cached verification tasks; `just` drives stateful operations like activation and updates.
+- Run `just check` before committing. Keep everything passing.
+- Run `just fmt` to apply code formatting.
+- Run `just build` to verify the NixOS configuration compiles.
 - When refactoring, use `nix eval` to verify settings are applied correctly.
 - New files must be `git add`-ed before Nix can discover them.
 - Nix modules in this repo are discovered and imported automatically. No need for module `imports`.
