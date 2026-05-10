@@ -6,7 +6,7 @@
 }:
 
 let
-  inherit (config.psychollama.settings) username;
+  inherit (config.psychollama.identity) username name email;
   shell = config.home-manager.users.${username}.programs.nushell.package;
 in
 
@@ -33,8 +33,7 @@ in
 
     users.users.${username} = {
       isNormalUser = true;
-      name = "overlord";
-      description = "Jesse Gibson";
+      description = name;
       shell = shell;
       extraGroups = [
         "networkmanager"
@@ -80,8 +79,7 @@ in
       };
 
       programs.git.settings.user = {
-        name = "Jesse Gibson";
-        email = "JesseTheGibson@gmail.com";
+        inherit name email;
       };
 
       psychollama.profiles = {
@@ -91,7 +89,11 @@ in
     };
 
     psychollama = {
-      settings.username = "overlord";
+      identity = {
+        username = "overlord";
+        name = "Jesse Gibson";
+        email = "JesseTheGibson@gmail.com";
+      };
 
       profiles = {
         full.enable = true;

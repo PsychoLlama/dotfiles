@@ -6,7 +6,7 @@
 }:
 
 let
-  inherit (config.psychollama.settings) username;
+  inherit (config.psychollama.identity) username;
   inherit (config.home-manager.users.${username}.home) homeDirectory;
   cfg = config.psychollama.presets.services.syncthing;
 in

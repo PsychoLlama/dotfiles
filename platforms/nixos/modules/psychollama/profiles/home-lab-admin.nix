@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  inherit (config.psychollama.settings) username;
+  inherit (config.psychollama.identity) username;
   cfg = config.psychollama.profiles.home-lab-admin;
 
   hosts = {

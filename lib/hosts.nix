@@ -110,6 +110,7 @@ let
           agenix.homeManagerModules.default
           self.nixosModules.home-manager-platform
           self.nixosModules.home-manager-configs
+          self.nixosModules.identity
           self.nixosModules.theme
           editor-program
 
@@ -119,6 +120,9 @@ let
               name = lib.mkDefault config.theme.name;
               palettes = lib.mkDefault config.theme.palettes;
             };
+
+            # Inherit identity from host platform.
+            psychollama.identity = lib.mapAttrs (_: lib.mkDefault) config.psychollama.identity;
           }
         ];
       };
@@ -135,6 +139,7 @@ in
         home-manager.nixosModules.home-manager
         self.nixosModules.nixos-platform
         self.nixosModules.nixos-configs
+        self.nixosModules.identity
         self.nixosModules.theme
 
         nixpkgs-config
@@ -151,6 +156,7 @@ in
     nix-darwin.lib.darwinSystem {
       modules = modules ++ [
         home-manager.darwinModules.home-manager
+        self.nixosModules.identity
         self.nixosModules.theme
 
         nixpkgs-config
@@ -176,6 +182,7 @@ in
         agenix.homeManagerModules.default
         self.nixosModules.home-manager-platform
         self.nixosModules.home-manager-configs
+        self.nixosModules.identity
         self.nixosModules.theme
         nix-flakes
         editor-program

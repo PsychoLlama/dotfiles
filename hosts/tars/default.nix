@@ -1,7 +1,19 @@
+{ config, ... }:
+
+let
+  inherit (config.psychollama.identity) username name email;
+in
+
 {
-  home = {
+  psychollama.identity = {
     username = "overlord";
-    homeDirectory = "/home/overlord";
+    name = "Jesse Gibson";
+    email = "JesseTheGibson@gmail.com";
+  };
+
+  home = {
+    inherit username;
+    homeDirectory = "/home/${username}";
     stateVersion = "22.11";
   };
 
@@ -9,8 +21,8 @@
     home-manager.enable = true;
 
     git = {
-      userName = "Jesse Gibson";
-      userEmail = "JesseTheGibson@gmail.com";
+      userName = name;
+      userEmail = email;
     };
   };
 }

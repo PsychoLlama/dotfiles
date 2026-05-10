@@ -85,6 +85,7 @@
       };
 
       nixosModules = {
+        identity = import ./platforms/universal/modules/identity.nix;
         theme = import ./platforms/universal/modules/theme.nix;
 
         editor-platform = {
