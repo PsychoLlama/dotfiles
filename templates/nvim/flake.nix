@@ -17,7 +17,7 @@
       inherit (nixpkgs) lib;
 
       eachSystem = lib.flip lib.mapAttrs (
-        lib.genAttrs (import systems) (system: nixpkgs.legacyPackages.${system})
+        lib.genAttrs (import systems) (system: import nixpkgs { inherit system; })
       );
     in
 
