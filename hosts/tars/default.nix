@@ -20,9 +20,8 @@ in
   programs = {
     home-manager.enable = true;
 
-    git = {
-      userName = name;
-      userEmail = email;
+    git.settings.user = {
+      inherit name email;
     };
   };
 }
