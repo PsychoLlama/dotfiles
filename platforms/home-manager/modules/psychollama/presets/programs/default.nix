@@ -50,6 +50,7 @@ in
     (mkUnstablePreset "parted")
     (mkUnstablePreset "playerctl")
     (mkUnstablePreset "slurp")
+    (mkUnstablePreset "somo")
     (mkUnstablePreset "starship")
     (mkUnstablePreset "swaylock")
     (mkUnstablePreset "termshark")
