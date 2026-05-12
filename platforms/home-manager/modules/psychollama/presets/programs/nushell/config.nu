@@ -159,4 +159,5 @@ def research [...args] {
 
 # Custom libraries
 use dotfiles/repo *
+use dotfiles/swizzle *
 use dotfiles/x *
