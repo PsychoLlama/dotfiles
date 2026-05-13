@@ -20,6 +20,8 @@ in
       whitelist.prefix = [
         "${config.home.homeDirectory}/projects/psychollama"
         "${config.home.homeDirectory}/projects/@learn"
+        "${config.home.homeDirectory}/projects/retreon"
+        "${config.home.homeDirectory}/projects/ambient-computer"
       ];
     };
   };
