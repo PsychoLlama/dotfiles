@@ -48,15 +48,6 @@ def n [...files: path] {
   }
 }
 
-# Launch emacs without a GUI.
-def e [...files: path] {
-  emacsclient --no-window-system ...(if ($files | is-empty) {
-    [ ./ ]
-  } else {
-    $files
-  })
-}
-
 # Fuzzy find and edit a file.
 def nf [] {
   let selected_file = fd --type file | fzf

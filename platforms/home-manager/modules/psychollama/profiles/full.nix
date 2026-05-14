@@ -28,7 +28,6 @@ in
         dive.enable = mkDefault true;
         doggo.enable = mkDefault true;
         editor.enable = mkDefault true;
-        emacs.enable = mkDefault true;
         fd.enable = mkDefault true;
         fzf.enable = mkDefault true;
         gh.enable = mkDefault true;
@@ -52,7 +51,6 @@ in
       };
 
       services = {
-        emacs.enable = mkDefault true;
         auth-agent.enable = mkDefault true;
       };
     };
