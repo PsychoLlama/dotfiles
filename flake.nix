@@ -172,7 +172,8 @@
       };
 
       packages = eachSystem (
-        system: pkgs: rec {
+        system: pkgs:
+        rec {
           nixos-configs-doc = pkgs.callPackage lib.dotfiles.generateMarkdownDocs {
             platform = "nixos";
             prefix = "psychollama.";
@@ -236,6 +237,16 @@
 
           inherit (pkgs) chrome-devtools-mcp claude-code-bin codex;
         }
+        // lib.optionalAttrs (system == "x86_64-linux") (
+          let
+            ava = self.nixosConfigurations.ava.config;
+          in
+
+          rec {
+            emacs = ava.home-manager.users.${ava.psychollama.identity.username}.programs.emacs.finalPackage;
+            default = emacs;
+          }
+        )
       );
 
       devShells = eachSystem (
