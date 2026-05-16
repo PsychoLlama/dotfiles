@@ -2,13 +2,15 @@
 
 use ./core.nu *
 
-# Swap a nix-managed file for a writable local copy.
+# Swap a nix-managed file for a writable local copy in the current directory.
 export def 'main' [
   path: string@'nu-complete-swizzle-targets'
 ] {
   let absolute = ($path | path expand --no-symlink)
+  let dest = ($env.PWD | path join ($absolute | path basename))
   let state = (gather-state $absolute)
-  let plan = (plan-swizzle $state $absolute)
+    | merge { dest_exists: ((do --ignore-errors { $dest | path type }) != null) }
+  let plan = (plan-swizzle $state $absolute $dest)
 
   if 'error' in $plan {
     error make { msg: $plan.error }
@@ -19,11 +21,12 @@ export def 'main' [
 
 # Restore a swizzled file to its nix-managed symlink.
 export def 'swizzle revert' [
-  path: string@'nu-complete-swizzle-targets'
+  path: string@'nu-complete-swizzled-targets'
+  --force (-f) # Discard edits when the editable copy differs from the backup.
 ] {
   let absolute = ($path | path expand --no-symlink)
   let state = (gather-state $absolute)
-  let plan = (plan-unswizzle $state $absolute)
+  let plan = (plan-unswizzle $state $absolute $force)
 
   if 'error' in $plan {
     error make { msg: $plan.error }
@@ -66,6 +69,25 @@ def 'gather-state' [path: string]: nothing -> record {
   let main = (do $probe $path)
   let bak = (do $probe $sidecars.backup)
 
+  # When swizzled, the editable copy lives at the symlink target. Resolve
+  # relative targets against the link's directory so callers can treat
+  # `copy_path` as absolute.
+  let copy_path = if $main.is_symlink {
+    if ($main.link_target | str starts-with '/') {
+      $main.link_target
+    } else {
+      ($path | path dirname | path join $main.link_target)
+    }
+  } else { '' }
+
+  let copy_exists = ($copy_path != '') and (
+    (do --ignore-errors { $copy_path | path type }) != null
+  )
+
+  let files_differ = if $copy_exists and $bak.exists {
+    (open --raw $copy_path) != (open --raw $sidecars.backup)
+  } else { false }
+
   {
     exists: $main.exists
     is_symlink: $main.is_symlink
@@ -73,7 +95,8 @@ def 'gather-state' [path: string]: nothing -> record {
     bak_exists: $bak.exists
     bak_is_symlink: $bak.is_symlink
     bak_link_target: $bak.link_target
-    copy_exists: ((do --ignore-errors { $sidecars.copy | path type }) != null)
+    copy_path: $copy_path
+    files_differ: $files_differ
   }
 }
 
@@ -103,6 +126,24 @@ def 'manifest-paths' []: nothing -> list<string> {
     | where { |p| $p != $manifest }
 }
 
+# Compress an absolute path to use `~` when it lives under $HOME.
+def 'tilde-path' [p: string]: nothing -> string {
+  let home = $env.HOME
+  if ($p | str starts-with $"($home)/") {
+    '~' + ($p | str substring ($home | str length)..)
+  } else if $p == $home {
+    '~'
+  } else {
+    $p
+  }
+}
+
 def 'nu-complete-swizzle-targets' []: nothing -> list<string> {
+  manifest-paths | each { tilde-path $in }
+}
+
+def 'nu-complete-swizzled-targets' []: nothing -> list<string> {
   manifest-paths
+    | where { |p| (classify (gather-state $p)) == 'swizzled' }
+    | each { tilde-path $in }
 }

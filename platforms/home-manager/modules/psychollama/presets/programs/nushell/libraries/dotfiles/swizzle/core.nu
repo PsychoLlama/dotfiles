@@ -3,10 +3,7 @@
 
 # Derive sidecar paths from a target path.
 export def 'sidecar-paths' [path: string]: nothing -> record {
-  {
-    backup: $"($path).bak"
-    copy: $"($path).swizzled"
-  }
+  { backup: $"($path).bak" }
 }
 
 # Classify the current shape of a target.
@@ -47,43 +44,55 @@ export def 'classify' [state: record]: nothing -> string {
 
 # Plan the action list to swizzle a target.
 #
-# `state` carries the same fields as `classify` plus `copy_exists`. Returns
-# `{ actions: [...] }` on success or `{ error: <message> }` on refusal.
-export def 'plan-swizzle' [state: record, path: string]: nothing -> record {
+# `state` carries the same fields as `classify` plus `dest_exists`. `dest`
+# is where the editable copy will live (typically `$PWD/(basename path)`).
+# Returns `{ actions: [...] }` on success or `{ error: <message> }` on refusal.
+export def 'plan-swizzle' [state: record, path: string, dest: string]: nothing -> record {
   let kind = (classify $state)
 
   if $kind != 'nix-managed' {
     return { error: $"Cannot swizzle: ($path) is ($kind), expected nix-managed." }
   }
 
-  let sidecars = (sidecar-paths $path)
-
-  if ($state.copy_exists? | default false) {
-    return { error: $"Cannot swizzle: ($sidecars.copy) already exists." }
+  if ($state.dest_exists? | default false) {
+    return { error: $"Cannot swizzle: ($dest) already exists." }
   }
+
+  let sidecars = (sidecar-paths $path)
 
   {
     actions: [
-      { op: 'copy-content', from: $path,             to: $sidecars.copy }
-      { op: 'move',         from: $path,             to: $sidecars.backup }
-      { op: 'symlink',      target: ($sidecars.copy | path basename), link_path: $path }
+      { op: 'copy-content', from: $path, to: $dest }
+      { op: 'move',         from: $path, to: $sidecars.backup }
+      { op: 'symlink',      target: $dest, link_path: $path }
     ]
   }
 }
 
 # Plan the action list to revert a swizzled target.
-export def 'plan-unswizzle' [state: record, path: string]: nothing -> record {
+#
+# `state.copy_path` is the absolute path of the editable copy (resolved from
+# the symlink target). `state.files_differ` is true when the editable copy
+# and the backup have different contents; when true, `force` must be set or
+# revert is refused so the user's edits aren't silently discarded.
+export def 'plan-unswizzle' [state: record, path: string, force: bool]: nothing -> record {
   let kind = (classify $state)
 
   if $kind != 'swizzled' {
     return { error: $"Cannot revert: ($path) is ($kind), expected swizzled." }
   }
 
+  if (not $force) and ($state.files_differ? | default false) {
+    return {
+      error: $"Refusing to revert: the editable copy of ($path) has unsaved edits. Re-run with --force to discard them."
+    }
+  }
+
   let sidecars = (sidecar-paths $path)
 
   {
     actions: [
-      { op: 'remove', path: $sidecars.copy }
+      { op: 'remove', path: $state.copy_path }
       { op: 'remove', path: $path }
       { op: 'move',   from: $sidecars.backup, to: $path }
     ]
