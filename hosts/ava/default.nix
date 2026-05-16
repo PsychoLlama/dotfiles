@@ -36,6 +36,7 @@ in
       description = name;
       shell = shell;
       extraGroups = [
+        "dialout"
         "networkmanager"
         "podman"
         "wheel"
