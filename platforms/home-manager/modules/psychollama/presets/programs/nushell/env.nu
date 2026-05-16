@@ -28,3 +28,18 @@ $env.PROMPT_INDICATOR = { || "" }
 $env.PROMPT_INDICATOR_VI_INSERT = { || "" }
 $env.PROMPT_INDICATOR_VI_NORMAL = { || "" }
 $env.PROMPT_MULTILINE_INDICATOR = { || "" }
+
+# Auto-navigate new tmux sessions to the zoxide-resolved directory matching
+# the session name. Only the first shell in a fresh session sees one pane.
+if ($env.TMUX? | is-not-empty) {
+  let pane_count = tmux list-panes -s -F '#{pane_id}' | lines | length
+  let session = tmux display -p '#{session_name}'
+
+  # Skip tmux's default numeric session names.
+  if $pane_count == 1 and not ($session =~ '^\d+$') {
+    let target = do --ignore-errors { zoxide query $session | str trim }
+    if ($target | is-not-empty) {
+      cd $target
+    }
+  }
+}
