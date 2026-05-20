@@ -20,6 +20,12 @@ let
     networking.hostName = lib.mkDefault hostName;
   };
 
+  # Surface this flake's git revision in `nixos-version --json` so the
+  # running system can be traced back to the source commit.
+  configuration-revision = {
+    system.configurationRevision = self.rev or self.dirtyRev or null;
+  };
+
   nixpkgs-config.nixpkgs = {
     overlays = [
       self.overlays.latest-packages
@@ -145,6 +151,7 @@ in
         nixpkgs-config
         nix-flakes
         hm-substrate
+        configuration-revision
 
         (manage-system-name hostName)
       ];
@@ -162,6 +169,7 @@ in
         nixpkgs-config
         nix-flakes
         hm-substrate
+        configuration-revision
 
         (manage-system-name hostName)
       ];
