@@ -53,7 +53,7 @@ in
       term = "wezterm";
 
       color_scheme = "OneDarkPro";
-      window_background_opacity = 0.85;
+      window_background_opacity = 0.9;
       hide_tab_bar_if_only_one_tab = true;
 
       font = inline "wezterm.font('FiraCode Nerd Font', { weight = 'Light' })";
