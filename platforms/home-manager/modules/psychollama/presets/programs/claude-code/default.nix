@@ -20,6 +20,10 @@ in
     programs.claude-code = {
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.claude-code-bin;
+      python3 = {
+        enable = true;
+        package = lib.mkDefault pkgs.unstable.python3;
+      };
 
       memory.text = ''
         # Environment

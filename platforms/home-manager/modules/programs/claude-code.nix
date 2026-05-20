@@ -102,6 +102,11 @@ in
       );
     };
 
+    python3 = {
+      enable = lib.mkEnableOption "Python 3 in the user environment for Claude Code to use";
+      package = lib.mkPackageOption pkgs "python3" { };
+    };
+
     agentManifest = lib.mkOption {
       default = { };
       description = ''
@@ -212,6 +217,11 @@ in
 
           enabledPlugins = lib.mapAttrs' (name: _: lib.nameValuePair "${name}@dotfiles" true) enabledPlugins;
         };
+      })
+
+      # Python 3: ship an interpreter Claude can reach for.
+      (lib.mkIf cfg.python3.enable {
+        home.packages = [ cfg.python3.package ];
       })
 
       # Agent manifest: generate agents.json for use with --agents
