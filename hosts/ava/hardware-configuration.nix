@@ -8,7 +8,14 @@
     "sdhci_pci"
   ];
 
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [
+    "kvm-intel"
+
+    # Bluetooth HID Profile. Without this, BT keyboards/mice connect at the
+    # L2CAP layer but never attach to the kernel input subsystem (no key
+    # events). BlueZ does not autoload it on this system.
+    "hidp"
+  ];
 
   boot.kernelParams = [
     # Disable nouveau runtime power management. Without this, the NVIDIA GPU
