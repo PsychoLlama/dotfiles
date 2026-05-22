@@ -15,6 +15,9 @@ let
   pamixer = lib.getExe' config.programs.pamixer.package "pamixer";
   waybar = lib.getExe' config.programs.waybar.package "waybar";
   ghostty = lib.getExe' config.programs.ghostty.package "ghostty";
+
+  # Laptop built-in keyboard. Find identifiers with `swaymsg -t get_inputs`.
+  thinkpadKeyboard = "1:1:AT_Translated_Set_2_keyboard";
 in
 
 {
@@ -96,10 +99,11 @@ in
         "${modifier}+e" = "layout toggle split";
         "${modifier}+f" = "fullscreen";
 
-        # Playback control (laptop has no media keys).
-        Insert = "exec ${playerctl} play-pause";
-        Home = "exec ${playerctl} previous";
-        End = "exec ${playerctl} next";
+        # Playback control on the laptop's built-in keyboard only. External keyboards
+        # have their own Home/End/Insert that shouldn't be hijacked.
+        "--input-device=${thinkpadKeyboard} Insert" = "exec ${playerctl} play-pause";
+        "--input-device=${thinkpadKeyboard} Home" = "exec ${playerctl} previous";
+        "--input-device=${thinkpadKeyboard} End" = "exec ${playerctl} next";
 
         XF86AudioPlay = "exec ${playerctl} play-pause";
         XF86AudioPrev = "exec ${playerctl} previous";
