@@ -45,6 +45,7 @@ in
     (makeProgramModule "parted")
     (makeProgramModule "playerctl")
     (makeProgramModule "pv")
+    (makeProgramModule "python3")
     (makeProgramModule "radare2")
     (makeProgramModule "rage")
     (makeProgramModule "signal-desktop")

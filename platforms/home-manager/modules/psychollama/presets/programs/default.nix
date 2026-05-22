@@ -49,6 +49,7 @@ in
     (mkUnstablePreset "pamixer")
     (mkUnstablePreset "parted")
     (mkUnstablePreset "playerctl")
+    (mkUnstablePreset "python3")
     (mkUnstablePreset "slurp")
     (mkUnstablePreset "somo")
     (mkUnstablePreset "starship")

@@ -10,60 +10,50 @@ let
   json = pkgs.formats.json { };
 
   rootDir = ".claude/dotfiles";
-  scriptsDir = "${rootDir}/bin";
 
   enabledPlugins = lib.filterAttrs (_: plugin: plugin.enable) cfg.plugins;
 
-  # HACK: Assembling directory trees with runCommand + mkdir/ln is ugly.
-  # Replace with a proper declarative directory builder (e.g. linkFarm,
-  # pkgs.buildEnv, or a custom lib helper) when one fits.
-  mkPluginDir =
+  pluginEntries =
     name: plugin:
-    pkgs.runCommand "claude-plugin-${name}" { } ''
-      mkdir -p $out/.claude-plugin
-      ln -s ${
-        json.generate "plugin.json" {
+    [
+      {
+        name = "plugins/${name}/.claude-plugin/plugin.json";
+        path = json.generate "plugin.json" {
           inherit name;
           inherit (plugin) description;
-        }
-      } $out/.claude-plugin/plugin.json
-      ${lib.optionalString (plugin.lsp.servers != { }) ''
-        ln -s ${json.generate "lsp.json" plugin.lsp.servers} $out/.lsp.json
-      ''}
-      ${lib.optionalString (plugin.mcp.servers != { }) ''
-        ln -s ${json.generate "mcp.json" plugin.mcp.servers} $out/.mcp.json
-      ''}
-    '';
-
-  marketplace = pkgs.runCommand "claude-marketplace-dotfiles" { } ''
-    mkdir -p $out/.claude-plugin $out/plugins
-    ln -s ${
-      json.generate "marketplace.json" {
-        name = "dotfiles";
-        owner.name = "dotfiles";
-        plugins = lib.mapAttrsToList (name: plugin: {
-          inherit name;
-          inherit (plugin) description;
-          source = "./plugins/${name}";
-        }) enabledPlugins;
+        };
       }
-    } $out/.claude-plugin/marketplace.json
-    ${lib.concatStringsSep "\n" (
-      lib.mapAttrsToList (
-        name: plugin: "ln -s ${mkPluginDir name plugin} $out/plugins/${name}"
-      ) enabledPlugins
-    )}
-  '';
+    ]
+    ++ lib.optional (plugin.lsp.servers != { }) {
+      name = "plugins/${name}/.lsp.json";
+      path = json.generate "lsp.json" plugin.lsp.servers;
+    }
+    ++ lib.optional (plugin.mcp.servers != { }) {
+      name = "plugins/${name}/.mcp.json";
+      path = json.generate "mcp.json" plugin.mcp.servers;
+    };
+
+  marketplace = pkgs.linkFarm "claude-marketplace-dotfiles" (
+    [
+      {
+        name = ".claude-plugin/marketplace.json";
+        path = json.generate "marketplace.json" {
+          name = "dotfiles";
+          owner.name = "dotfiles";
+          plugins = lib.mapAttrsToList (name: plugin: {
+            inherit name;
+            inherit (plugin) description;
+            source = "./plugins/${name}";
+          }) enabledPlugins;
+        };
+      }
+    ]
+    ++ lib.concatLists (lib.mapAttrsToList pluginEntries enabledPlugins)
+  );
 in
 
 {
   options.programs.claude-code = {
-    scripts = lib.mkOption {
-      default = { };
-      description = "Executable scripts installed at ~/${scriptsDir}/<name>. The attribute name becomes the script name.";
-      type = lib.types.attrsOf lib.types.path;
-    };
-
     plugins = lib.mkOption {
       default = { };
       description = ''
@@ -100,11 +90,6 @@ in
           };
         }
       );
-    };
-
-    python3 = {
-      enable = lib.mkEnableOption "Python 3 in the user environment for Claude Code to use";
-      package = lib.mkPackageOption pkgs "python3" { };
     };
 
     agentManifest = lib.mkOption {
@@ -200,14 +185,6 @@ in
 
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
-      # Scripts: install to dotfiles bin dir
-      {
-        home.file = lib.mapAttrs' (
-          name: source: lib.nameValuePair "${scriptsDir}/${name}" { inherit source; }
-        ) cfg.scripts;
-      }
-
-      # Plugins: generate a local directory marketplace
       (lib.mkIf (enabledPlugins != { }) {
         programs.claude-code.settings = {
           extraKnownMarketplaces.dotfiles.source = {
@@ -219,12 +196,6 @@ in
         };
       })
 
-      # Python 3: ship an interpreter Claude can reach for.
-      (lib.mkIf cfg.python3.enable {
-        home.packages = [ cfg.python3.package ];
-      })
-
-      # Agent manifest: generate agents.json for use with --agents
       (lib.mkIf (cfg.agentManifest != { }) {
         home.file."${rootDir}/share/agents.json".source = json.generate "agents.json" (
           lib.mapAttrs (_: agent: lib.filterAttrs (_: v: v != null) agent) cfg.agentManifest
