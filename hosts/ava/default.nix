@@ -23,6 +23,11 @@ in
     # disables password input.
     services.fprintd.enable = lib.mkForce false;
 
+    hardware.keyboard.qmk = {
+      enable = true;
+      keychronSupport = true;
+    };
+
     networking = {
       networkmanager.enable = true;
       hostId = "daf96cd8"; # Random. Required by the ZFS pool.
