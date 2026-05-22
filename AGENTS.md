@@ -4,59 +4,66 @@ NixOS-based configuration-as-code for Linux, macOS (nix-darwin), and home-manage
 
 ## Architecture
 
-This flake is consumed by other flakes (e.g., work machine). Everything defined here should be changeable, disableable, or extendable from the outside.
+This flake is consumed by other flakes. Everything must be changeable, disableable, or extendable from the outside.
 
-Three-tier module system:
+Each platform exposes two flake-output modules:
 
-1. **Platform modules** (`*-platform`) - Extend platforms with new programs/services/DSLs. Keep opinions out of these; they should be upstreamable.
-2. **Config modules** (`*-configs`) - Opinionated configurations under the `psychollama.*` namespace.
-3. **Host configs** - Machine-specific settings only (hardware, disk, display). All generalizable configs belong in presets.
+- `nixosModules.<platform>-platform` — new programs, services, and DSLs extending the platform. Keep opinions out; these should be upstreamable.
+- `nixosModules.<platform>-configs` — opinionated configurations under the `psychollama.*` namespace.
 
-Prefer `home-manager` when possible as the most cross-platform option.
+On disk the split is by subdirectory: `platforms/<platform>/modules/psychollama/` is the configs side; everything else under `modules/` is the platform side.
 
-Prefer `programs.foo.package` over `pkgs.foo` when referencing packages. Presets often use the unstable version, and this avoids installing both.
-
-### Nix Style
-
-- When defining new options, prefer namespacing like `foo.bar` instead of `fooBar`.
-- Use dotted syntax for single-field attrsets (`foo.bar = "baz";`). Expand into a nested block when there are 2+ fields.
-- Always declare `options` with block syntax, even if `enable` is the only field.
-- Prefer `pkgs.writeShellApplication` for shell scripts.
+Hosts (`hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
 
 ## Directory Structure
 
-- `hosts/` - Machine-specific configs
-- `platforms/` - Module definitions for each platform (editor, home-manager, nixos)
-  - `modules/programs/` and `modules/services/` - Platform extensions for programs/services not available upstream
-  - `modules/psychollama/presets/` - Opinionated single-program configs
-  - `modules/psychollama/profiles/` - Groupings of presets
-- `lib/` - Nix utilities (system builders, module discovery, etc.)
+- `hosts/` — Machine-specific configs.
+- `platforms/`
+  - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
+  - `home-manager/` — Home Manager extensions and presets. Platform extensions live under `modules/programs/` and `modules/services/`.
+  - `nixos/` — NixOS-only presets and profiles. No standalone platform extensions today.
+  - `universal/` — Cross-platform options (`identity`, `theme`) consumed by every system substrate.
+- `lib/` — Nix utilities (system builders, module discovery, overlays).
+- `pkgs/` — Custom package derivations.
 
-Module options mirror directory structure: `psychollama.presets.programs.foo` lives at `psychollama/presets/programs/foo.nix` (or `foo/default.nix`).
+Inside `modules/psychollama/`:
 
-## Platform Modules
+- `presets/` — single-program opinionated configs.
+- `profiles/` — groupings of presets.
+
+Module options mirror the directory structure: `psychollama.presets.programs.foo` lives at `psychollama/presets/programs/foo.nix` (or `foo/default.nix`).
+
+## Conventions
+
+### Nix Style
+
+- Namespace new options like `foo.bar`, not `fooBar`.
+- Use dotted syntax for single-field attrsets (`foo.bar = "baz";`). Expand into a nested block when there are 2+ fields.
+- Always declare `options` with block syntax, even when `enable` is the only field.
+- Prefer `pkgs.writeShellApplication` for shell scripts.
+
+### Platform Extensions
 
 - Prefer upstream `home-manager`/`nixos` options. Only add custom modules when upstream lacks support.
+- Prefer `home-manager` over per-OS modules; it's the most cross-platform option.
 - `makeProgramModule` and `mkUnstablePreset` exist for simple programs (enable + package only). Use standalone files when custom options are needed.
 
-## Presets and Profiles
+### Presets
 
-- **Presets**: Single-responsibility, `enable` option only.
-- **Profiles**: Groups of presets.
-- Presets use `pkgs.unstable.*` for the latest package versions.
-- Use `programs.<name>.enable` + `programs.<name>.package`, not `home.packages`.
-- Use `lib.getExe'` for executable paths; bind in `let` at top of file.
+- Single-responsibility, `enable` option only.
+- Install programs via `programs.<name>.enable` + `programs.<name>.package`, not `home.packages`.
+- Reference other programs through their `programs.<name>.package` rather than bare `pkgs.<name>`. Presets often pin `pkgs.unstable.*`, so direct references risk installing both versions.
+- Resolve executable paths with `lib.getExe` (single main binary) or `lib.getExe'` (explicit binary name); bind in `let` at top of file.
 
 ## Editor
 
 Self-contained neovim framework in `platforms/editor/`. No `~/.config` files.
 
-- `modules/` - Plugin system, LSP configuration, settings schema
-- `runtime/lua/core/` - Core modules supporting Nix integration (manifest loading, deferred plugins, settings)
-- `pkgs/lab.nvim/` - Plugin for random neovim utilities beyond `init.vim`
+- `modules/` — plugin system, LSP configuration, settings schema.
+- `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
+- `pkgs/lab.nvim/` — neovim utilities beyond `init.vim`.
 
-Plugin presets: `platforms/editor/modules/psychollama/presets/plugins/`
-LSP servers: `platforms/editor/modules/psychollama/presets/lsp/servers/`
+Plugin presets live under `modules/psychollama/presets/plugins/`; LSP servers under `modules/psychollama/presets/lsp/servers/`.
 
 ### Working with Neovim
 
@@ -72,16 +79,11 @@ nvim --headless -c 'echo $VIMRUNTIME | qa'
 
 ### Testing
 
-Tests use `busted`/`vusted` framework with `*_spec.lua` naming pattern. Keep tests under `tests/`.
+Tests use `busted`/`vusted` with `*_spec.lua` naming. Colocate specs next to the source file they cover (e.g. `lua/git/blame.lua` ↔ `lua/git/blame_spec.lua`).
 
 ```bash
-just unit-test  # Run Lua unit tests
-```
-
-E2E test changes by running the editor:
-
-```bash
-nix run '.#editor'
+just unit-test       # Lua unit tests
+nix run '.#editor'   # E2E: launch the configured editor
 ```
 
 ## Documentation
@@ -94,12 +96,10 @@ nix build '.#docs-website'
 
 ## Developing
 
-All programs are declaratively managed through this repo. When asked to change configuration for a program (e.g. Claude Code settings, shell aliases, git config), edit the corresponding Nix module -- never the dotfiles directly.
+All programs are declaratively managed. When changing configuration for a program (e.g. Claude Code settings, shell aliases, git config), edit the corresponding Nix module — never the dotfiles directly.
 
 - Run `just check` before committing. Keep everything passing.
-- Run `just fmt` to apply code formatting.
-- Run `just build` to verify the NixOS configuration compiles.
-- When refactoring, use `nix eval` to verify settings are applied correctly.
-- New files must be `git add`-ed before Nix can discover them.
-- Nix modules in this repo are discovered and imported automatically. No need for module `imports`.
-- Every `.nix` file under `platforms/` is imported as a module — helper files are not possible. All `.nix` files must be valid NixOS/home-manager modules.
+- Use `nix eval` to verify settings are applied correctly when refactoring.
+- `git add --intent-to-add` new files before Nix can discover them.
+- Nix modules in this repo are discovered and imported automatically. No `imports` needed.
+- Every `.nix` file under `platforms/` is imported as a module. Helper files are not possible; all `.nix` files must be valid NixOS/home-manager modules.
