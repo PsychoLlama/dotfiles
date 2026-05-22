@@ -17,20 +17,10 @@
     "hidp"
   ];
 
-  boot.kernelParams = [
-    # Disable nouveau runtime power management. Without this, the NVIDIA GPU
-    # enters a deep sleep state that corrupts HDMI connector detection after
-    # suspend/hibernate. Trade-off: slightly higher power draw when mobile.
-    "nouveau.runpm=0"
-
-    # Workaround for the WASD V-series TKL (SONiX 0c45:7692). The kernel
-    # silently re-enumerates the keyboard mid-typing, which presents as ~1s
-    # input freezes. Symptom degrades over hours of use; not reproducible by
-    # cable wiggling; persists across two cables and multiple ports. Flags:
-    #   b = USB_QUIRK_RESET_RESUME (full reset on resume instead of signal)
-    #   k = USB_QUIRK_NO_LPM (disable Link Power Management negotiation)
-    "usbcore.quirks=0c45:7692:bk"
-  ];
+  # Disable nouveau runtime power management. Without this, the NVIDIA GPU
+  # enters a deep sleep state that corrupts HDMI connector detection after
+  # suspend/hibernate. Trade-off: slightly higher power draw when mobile.
+  boot.kernelParams = [ "nouveau.runpm=0" ];
   hardware.bluetooth.enable = true;
 
   fileSystems =
