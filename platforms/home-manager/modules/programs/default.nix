@@ -46,7 +46,6 @@ in
     (makeProgramModule "playerctl")
     (makeProgramModule "pv")
     (makeProgramModule "python3")
-    (makeProgramModule "radare2")
     (makeProgramModule "rage")
     (makeProgramModule "signal-desktop")
     (makeProgramModule "slurp")

@@ -63,7 +63,6 @@ in
       lsof.enable = mkDefault true;
       onefetch.enable = mkDefault true;
       parted.enable = mkDefault pkgs.stdenv.isLinux;
-      radare2.enable = mkDefault true;
       rage.enable = mkDefault true;
       ripgrep.enable = mkDefault true;
       tokei.enable = mkDefault true;

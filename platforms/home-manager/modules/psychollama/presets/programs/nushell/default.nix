@@ -35,7 +35,6 @@ in
             "git"
             "glow"
             "nix"
-            "npm"
             "rg"
             "rustup"
             "ssh"
