@@ -19,12 +19,7 @@ in
   config.services.swayidle = lib.mkIf cfg.enable {
     enable = true;
 
-    events = [
-      {
-        event = "before-sleep";
-        command = swaylock;
-      }
-    ];
+    events.before-sleep = swaylock;
 
     # Lock the screen after 15 minutes of inactivity, then turn off the
     # displays after another 2 minutes, and turn back on when resumed.

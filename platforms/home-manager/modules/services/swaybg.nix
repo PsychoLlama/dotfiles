@@ -8,6 +8,12 @@
 let
   inherit (lib) types;
   cfg = config.services.swaybg;
+
+  optionFormat = name: {
+    option = if builtins.stringLength name > 1 then "--${name}" else "-${name}";
+    sep = null;
+    explicitBool = false;
+  };
 in
 
 {
@@ -68,7 +74,7 @@ in
         Type = "simple";
         ExecStart = "${cfg.package}/bin/swaybg ${
           lib.concatStringsSep " " (
-            lib.cli.toGNUCommandLine { } {
+            lib.cli.toCommandLine optionFormat {
               image = cfg.image;
               output = cfg.output;
               mode = cfg.mode;

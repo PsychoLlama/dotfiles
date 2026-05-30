@@ -19,6 +19,10 @@ in
       initrd.supportedFilesystems = [ "zfs" ];
       supportedFilesystems = [ "zfs" ];
 
+      # Don't force-import a pool that wasn't cleanly exported. Reduces the risk
+      # of data loss; this is the default from 26.11 onward.
+      zfs.forceImportRoot = false;
+
       # Use stable kernel. This is the default, but I'd rather be explicit.
       # Using non-LTS kernels may corrupt the drive since ZFS has spotty
       # support for newer kernels.

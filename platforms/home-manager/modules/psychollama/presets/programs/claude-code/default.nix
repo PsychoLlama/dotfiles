@@ -21,7 +21,7 @@ in
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.claude-code-bin;
 
-      memory.text = ''
+      context = ''
         # Environment
 
         - Nix is installed with `nix-command flakes` enabled.

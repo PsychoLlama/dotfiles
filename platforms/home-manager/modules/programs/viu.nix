@@ -7,9 +7,18 @@
 
 let
   cfg = config.programs.viu;
-  pkg = cfg.package.override {
-    withSixel = cfg.withSixelSupport;
-  };
+  pkg = (cfg.package.override { withSixel = cfg.withSixelSupport; }).overrideAttrs (prev: {
+    # viu's `sixel-sys` crate builds a vendored libsixel from source, which
+    # needs the autotools toolchain on PATH. Upstream omits it.
+    nativeBuildInputs =
+      (prev.nativeBuildInputs or [ ])
+      ++ lib.optionals cfg.withSixelSupport [
+        pkgs.autoconf
+        pkgs.automake
+        pkgs.libtool
+        pkgs.pkg-config
+      ];
+  });
 in
 
 {

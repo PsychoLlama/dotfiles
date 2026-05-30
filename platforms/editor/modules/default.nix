@@ -10,6 +10,14 @@ let
   lua = lib.generators.toLua { };
   configFile = pkgs.writeText "user-config.lua" config.extraConfig;
 
+  # `sep = null` keeps the flag and value as separate arguments, which
+  # `makeWrapper` requires to read `--add-flags` and its value.
+  optionFormat = name: {
+    option = if builtins.stringLength name > 1 then "--${name}" else "-${name}";
+    sep = null;
+    explicitBool = false;
+  };
+
   # Isolate the runtime directory so changes elsewhere in the repo don't
   # invalidate the editor derivation.
   runtimeSrc = lib.fileset.toSource {
@@ -49,7 +57,7 @@ in
 
         extraMakeWrapperArgs = lib.concatStringsSep " " [
           "--suffix PATH : ${lib.makeBinPath config.extraPackages}"
-          (lib.cli.toGNUCommandLineShell { } {
+          (lib.cli.toCommandLineShell optionFormat {
             add-flags = [
               ''--cmd "set packpath^=${packdir}"''
               ''--cmd "set rtp^=${packdir}"''

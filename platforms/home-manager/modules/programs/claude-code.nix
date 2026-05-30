@@ -9,7 +9,7 @@ let
   cfg = config.programs.claude-code;
   json = pkgs.formats.json { };
 
-  enabledPlugins = lib.filterAttrs (_: plugin: plugin.enable) cfg.plugins;
+  enabledPlugins = lib.filterAttrs (_: plugin: plugin.enable) cfg.localPlugins;
 
   pluginEntries =
     name: plugin:
@@ -52,11 +52,12 @@ in
 
 {
   options.programs.claude-code = {
-    plugins = lib.mkOption {
+    localPlugins = lib.mkOption {
       default = { };
       description = ''
-        Claude Code plugins. Generates an inline settings marketplace and
-        enables each plugin via settings.json.
+        Locally-defined Claude Code plugins. Generates an inline settings
+        marketplace and enables each plugin via settings.json. Distinct from
+        the upstream `plugins` option, which loads external plugin directories.
       '';
 
       type = lib.types.attrsOf (
