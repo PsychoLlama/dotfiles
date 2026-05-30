@@ -52,7 +52,7 @@ in
       };
 
       services = {
-        auth-agent.enable = mkDefault true;
+        ssh-agent.enable = mkDefault true;
       };
     };
 
