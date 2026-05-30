@@ -2,23 +2,27 @@
   description = "Development environment";
 
   inputs = {
-    rust-overlay.url = "github:oxalica/rust-overlay";
     systems.url = "github:nix-systems/default";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      rust-overlay,
+      fenix,
       systems,
     }:
 
     let
       inherit (nixpkgs) lib;
 
-      overlays = [ (import rust-overlay) ];
+      overlays = [ fenix.overlays.default ];
 
       eachSystem = lib.flip lib.mapAttrs (
         lib.genAttrs (import systems) (
@@ -35,7 +39,8 @@
         system: pkgs: {
           default = pkgs.mkShell {
             packages = [
-              (pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
+              pkgs.fenix.stable.defaultToolchain
+              pkgs.fenix.stable.rust-analyzer
             ];
           };
         }
