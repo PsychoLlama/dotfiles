@@ -93,14 +93,11 @@ in
 
   };
 
-  config = lib.mkIf (cfg.enable && enabledPlugins != { }) {
-    programs.claude-code.settings = {
-      extraKnownMarketplaces.dotfiles.source = {
-        source = "directory";
-        path = "${marketplace}";
-      };
+  config.programs.claude-code = lib.mkIf (cfg.enable && enabledPlugins != { }) {
+    marketplaces.dotfiles = marketplace;
 
-      enabledPlugins = lib.mapAttrs' (name: _: lib.nameValuePair "${name}@dotfiles" true) enabledPlugins;
-    };
+    settings.enabledPlugins = lib.mapAttrs' (
+      name: _: lib.nameValuePair "${name}@dotfiles" true
+    ) enabledPlugins;
   };
 }
