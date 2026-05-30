@@ -7,20 +7,23 @@ description: ALWAYS use this skill for anything related to Nix, NixOS, home-mana
 - Prefer `lib` functions over `builtins` when both exist (e.g. `lib.map` over `builtins.map`).
 - Don't guess hostnames or other configuration names. Use `nix flake show` or `nix repl` to discover them.
 - If you delegate Nix-related work to a subagent, always instruct it to invoke the `using-nix` skill so it has the same context you do.
+- NEVER run `find`, `fd`, `glob`, `grep`, or any broad search against `/nix/store`. It's huge. It will cripple the machine. Instead, resolve store paths first.
 
-# Exploring flake outputs
+## Inspecting
 
-- Use `nix flake show` to see what a flake exposes.
-- Pipe expressions to `nix repl .#` for deeper exploration. Flake outputs are loaded as top-level variables (e.g. `echo 'builtins.attrNames nixosConfigurations' | nix repl .#`).
-
-# Looking up documentation
-
-- Use `man configuration.nix` to explore available NixOS module options.
-- Use `man home-configuration.nix` to explore home-manager module options.
-- Use `echo ':doc lib.mkIf' | nix repl nixpkgs` to check documentation on `lib` functions. Many include type signatures and examples.
-
-# Source-diving
-
+- Use `echo ':doc lib.mkIf' | nix repl nixpkgs` to see function usage and type signatures.
+- Use `nix flake show --json` to see flake exports.
 - Use `EDITOR=cat nix edit nixpkgs#<package>` to view a package's source. Does not work with modules.
-- Use `nix flake metadata <flake> --json | jq -r '.path'` to get a flake's store path, then read files directly from it to source-dive modules and other definitions.
-- NEVER run `find`, `fd`, `glob`, `grep`, or any broad search against `/nix/store`. It contains millions of files and will hang or take an unreasonable amount of time. Always resolve the exact store path you need first (e.g. via `nix flake metadata` or `nix build --print-out-paths`), then read from that path directly.
+- Resolve store paths with `nix flake archive --json [<flake>]` (defaults to `.`): the flake itself is `.path`, a pinned input is `.inputs["<name>"].path`, and transitive inputs nest under `.inputs.<name>.inputs.<child>.path`.
+- Query outputs with `nix eval` (`--apply` to transform, `--json` for clean output):
+
+```sh
+# List an output's attribute names
+nix eval .#nixosConfigurations --apply builtins.attrNames --json
+
+# Read a nested value directly by attribute path
+nix eval .#nixosConfigurations.<host>.config.networking.hostName
+
+# Evaluate an arbitrary expression (--impure unlocks getFlake, <nixpkgs>, getEnv)
+nix eval --impure --expr '(builtins.getFlake (toString ./.)).inputs.nixpkgs.lib.versions.major "1.2.3"'
+```
