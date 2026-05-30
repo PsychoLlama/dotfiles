@@ -16,11 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     alternaut-nvim = {
       url = "github:PsychoLlama/alternaut.nvim";
       inputs = {
@@ -50,7 +45,6 @@
         home-manager.follows = "home-manager";
         nixpkgs.follows = "nixpkgs";
         systems.follows = "systems";
-        darwin.follows = "nix-darwin";
       };
     };
 
@@ -86,7 +80,6 @@
     in
 
     {
-      nixpkgs = pkgsBySystem;
       lib = lib.dotfiles // {
         inherit eachSystem;
       };

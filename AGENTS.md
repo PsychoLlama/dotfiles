@@ -1,6 +1,6 @@
 # Dotfiles
 
-NixOS-based configuration-as-code for Linux, macOS (nix-darwin), and home-manager environments.
+NixOS-based configuration-as-code for Linux and home-manager environments.
 
 ## Architecture
 

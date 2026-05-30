@@ -45,14 +45,8 @@ in
 
     # The default session variable attempts POSIX interpolation, which
     # obviously doesn't work in Nushell.
-    programs.nushell.extraEnv =
-      if pkgs.stdenv.isDarwin then
-        ''
-          $env.TMUX_TMPDIR = "/tmp"
-        ''
-      else
-        ''
-          $env.TMUX_TMPDIR = $env.XDG_RUNTIME_DIR
-        '';
+    programs.nushell.extraEnv = ''
+      $env.TMUX_TMPDIR = $env.XDG_RUNTIME_DIR
+    '';
   };
 }

@@ -1,15 +1,14 @@
 {
   agenix,
   home-manager,
-  nix-darwin,
   nixpkgs,
   nixpkgs-unstable,
   self,
   ...
 }:
 
-# Wraps the system builders for NixOS, Darwin, and Home Manager to inject the
-# dotfiles framework and provide base configuration.
+# Wraps the system builders for NixOS and Home Manager to inject the dotfiles
+# framework and provide base configuration.
 
 let
   inherit (nixpkgs) lib;
@@ -145,24 +144,6 @@ in
         home-manager.nixosModules.home-manager
         self.nixosModules.nixos-platform
         self.nixosModules.nixos-configs
-        self.nixosModules.identity
-        self.nixosModules.theme
-
-        nixpkgs-config
-        nix-flakes
-        hm-substrate
-        configuration-revision
-
-        (manage-system-name hostName)
-      ];
-    }
-  );
-
-  darwin = lib.mapAttrs (
-    hostName: modules:
-    nix-darwin.lib.darwinSystem {
-      modules = modules ++ [
-        home-manager.darwinModules.home-manager
         self.nixosModules.identity
         self.nixosModules.theme
 

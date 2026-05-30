@@ -9,12 +9,11 @@ let
   inherit (config.theme) palette;
   cfg = config.psychollama.presets.programs.ghostty;
   zellij = lib.getExe' config.programs.zellij.package "zellij";
-  ghosttyPkg = pkgs.unstable.${if pkgs.stdenv.isDarwin then "ghostty-bin" else "ghostty"};
 in
 
 {
   config.programs.ghostty = lib.mkIf cfg.enable {
-    package = ghosttyPkg;
+    package = pkgs.unstable.ghostty;
     themes.OneDarkPro = {
       background = palette.normal.black;
       foreground = palette.normal.white;

@@ -22,14 +22,8 @@ in
 
     home.sessionVariables.SSH_AUTH_SOCK = "\${XDG_RUNTIME_DIR-/tmp}/${socketName}";
 
-    programs.nushell.extraEnv =
-      if pkgs.stdenv.isDarwin then
-        ''
-          $env.SSH_AUTH_SOCK = "/tmp/${socketName}"
-        ''
-      else
-        ''
-          $env.SSH_AUTH_SOCK = $"($env.XDG_RUNTIME_DIR)/${socketName}"
-        '';
+    programs.nushell.extraEnv = ''
+      $env.SSH_AUTH_SOCK = $"($env.XDG_RUNTIME_DIR)/${socketName}"
+    '';
   };
 }

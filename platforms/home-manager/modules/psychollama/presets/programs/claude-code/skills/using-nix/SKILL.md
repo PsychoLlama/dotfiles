@@ -1,5 +1,5 @@
 ---
-description: ALWAYS use this skill for anything related to Nix, NixOS, nix-darwin, home-manager, or nixpkgs. This includes writing Nix code, looking up modules/options/packages, answering questions, and debugging Nix errors.
+description: ALWAYS use this skill for anything related to Nix, NixOS, home-manager, or nixpkgs. This includes writing Nix code, looking up modules/options/packages, answering questions, and debugging Nix errors.
 ---
 
 - Use `nix eval` and `nix build` to experiment with your changes.
@@ -15,7 +15,7 @@ description: ALWAYS use this skill for anything related to Nix, NixOS, nix-darwi
 
 # Looking up documentation
 
-- Use `man configuration.nix` to explore available module options. This returns NixOS options on Linux and nix-darwin options on macOS.
+- Use `man configuration.nix` to explore available NixOS module options.
 - Use `man home-configuration.nix` to explore home-manager module options.
 - Use `echo ':doc lib.mkIf' | nix repl nixpkgs` to check documentation on `lib` functions. Many include type signatures and examples.
 
