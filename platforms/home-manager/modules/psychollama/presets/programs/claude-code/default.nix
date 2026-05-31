@@ -56,6 +56,12 @@ in
 
       commands.repo-update = ./commands/repo-update.md;
 
+      keybindings.Chat = {
+        # Default keybind toggles fast mode. Emulator interprets `<esc>o`
+        # as `meta+o`, conflicting with vim mode if I'm typing quickly.
+        "meta+o" = "chat:newline";
+      };
+
       settings = {
         theme = "dark";
         preferredNotifChannel = "terminal_bell";

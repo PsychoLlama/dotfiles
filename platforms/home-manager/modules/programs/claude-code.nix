@@ -11,6 +11,10 @@ let
 
   enabledPlugins = lib.filterAttrs (_: plugin: plugin.enable) cfg.localPlugins;
 
+  keybindingsByContext = lib.mapAttrsToList (context: bindings: {
+    inherit context bindings;
+  }) cfg.keybindings;
+
   pluginEntries =
     name: plugin:
     [
@@ -52,6 +56,27 @@ in
 
 {
   options.programs.claude-code = {
+    keybindings = lib.mkOption {
+      default = { };
+      type = lib.types.attrsOf (lib.types.attrsOf (lib.types.nullOr lib.types.str));
+      description = ''
+        Keybinding overrides for Claude Code, rendered to
+        {file}`keybindings.json` inside {option}`programs.claude-code.configDir`
+        (default {file}`~/.claude/keybindings.json`). Each attribute is a
+        context whose value maps keys to commands. The schema field is added
+        automatically. Bind a key to `null` to unbind it.
+      '';
+
+      example = lib.literalExpression ''
+        {
+          Chat = {
+            "ctrl+e" = "chat:externalEditor";
+            "ctrl+u" = null;
+          };
+        }
+      '';
+    };
+
     localPlugins = lib.mkOption {
       default = { };
       description = ''
@@ -90,14 +115,28 @@ in
         }
       );
     };
-
   };
 
-  config.programs.claude-code = lib.mkIf (cfg.enable && enabledPlugins != { }) {
-    marketplaces.dotfiles = marketplace;
+  config = lib.mkIf cfg.enable (
+    lib.mkMerge [
+      (lib.mkIf (cfg.keybindings != { }) {
+        home.file."${cfg.configDir}/keybindings.json".source =
+          json.generate "claude-code-keybindings.json"
+            {
+              "$schema" = "https://www.schemastore.org/claude-code-keybindings.json";
+              bindings = keybindingsByContext;
+            };
+      })
 
-    settings.enabledPlugins = lib.mapAttrs' (
-      name: _: lib.nameValuePair "${name}@dotfiles" true
-    ) enabledPlugins;
-  };
+      (lib.mkIf (enabledPlugins != { }) {
+        programs.claude-code = {
+          marketplaces.dotfiles = marketplace;
+
+          settings.enabledPlugins = lib.mapAttrs' (
+            name: _: lib.nameValuePair "${name}@dotfiles" true
+          ) enabledPlugins;
+        };
+      })
+    ]
+  );
 }
