@@ -12,10 +12,16 @@ in
 {
   options.psychollama.presets.programs.claude-code = {
     enable = lib.mkEnableOption "Opinionated config for Claude Code";
+
+    voice.package = lib.mkPackageOption pkgs.unstable "sox" {
+      nullable = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
     home.shellAliases.a = "claude"; # `a` short for `agent`
+
+    home.packages = lib.optionals (cfg.voice.package != null) [ cfg.voice.package ];
 
     programs.claude-code = {
       enable = lib.mkDefault true;
@@ -59,17 +65,42 @@ in
         # Opt out of the confirmation up front.
         skipAutoPermissionPrompt = true;
 
+        # Terrible idea and never should've been added.
+        disableDeepLinkRegistration = "disable";
+
+        # Too repetitive.
+        spinnerTipsEnabled = false;
+
+        # Offensive.
+        autoInstallIdeExtension = false;
+
+        # Combat the doorway effect.
+        externalEditorContext = true;
+
+        # I don't want uncommitted memory affecting Claude's decisions.
+        autoMemoryEnabled = false;
+
+        # Default only seems to render what's in the viewport. Tmux sadness.
+        tui = "fullscreen";
+
+        # I'm not their advertising billboard.
         attribution = {
           commit = "";
           pr = "";
         };
 
-        env = {
-          # I don't want uncommitted memory affecting Claude's decisions.
-          CLAUDE_CODE_DISABLE_AUTO_MEMORY = "1";
+        voice = {
+          enabled = cfg.voice.package != null;
+          mode = "hold";
         };
 
-        worktree.symlinkDirectories = [ ".direnv" ];
+        worktree = {
+          baseRef = "head";
+          symlinkDirectories = [
+            ".claude/settings.local.json"
+            ".direnv"
+          ];
+        };
 
         permissions = {
           defaultMode = "auto";
