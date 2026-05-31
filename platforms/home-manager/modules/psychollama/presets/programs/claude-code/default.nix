@@ -69,6 +69,8 @@ in
           CLAUDE_CODE_DISABLE_AUTO_MEMORY = "1";
         };
 
+        worktree.symlinkDirectories = [ ".direnv" ];
+
         permissions = {
           defaultMode = "auto";
 
