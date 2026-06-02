@@ -86,14 +86,6 @@ just unit-test       # Lua unit tests
 nix run '.#editor'   # E2E: launch the configured editor
 ```
 
-## Documentation
-
-Reference docs are generated as an mdbook. Test documentation changes:
-
-```bash
-nix build '.#docs-website'
-```
-
 ## Developing
 
 All programs are declaratively managed. When changing configuration for a program (e.g. Claude Code settings, shell aliases, git config), edit the corresponding Nix module — never the dotfiles directly.

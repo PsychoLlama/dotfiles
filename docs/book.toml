@@ -1,9 +1,0 @@
-[book]
-authors = ["Jesse Gibson"]
-language = "en"
-src = "src"
-title = "Config Reference"
-
-[output.html]
-preferred-dark-theme = "Ayu"
-git-repository-url = "https://github.com/PsychoLlama/dotfiles"
