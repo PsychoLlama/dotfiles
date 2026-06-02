@@ -39,13 +39,6 @@ in
 
         - Imperative title, descriptive body (markdown).
         - Capture context not otherwise available (goal, failed approaches, decisions, etc).
-
-        # Authoring Agent Files
-
-        - `AGENTS.md` is the source of truth. `CLAUDE.md` should only contain `@AGENTS.md`.
-        - Use short, declarative statements or lists of instructions.
-        - Each item should be 2 sentences or less.
-        - Use these guidelines when authoring skills, commands, or other files intended solely for agents.
       '';
 
       skills = {
@@ -55,6 +48,11 @@ in
       };
 
       commands.repo-update = ./commands/repo-update.md;
+
+      rules = {
+        authoring-agent-files = ./rules/authoring-agent-files.md;
+        authoring-memory-files = ./rules/authoring-memory-files.md;
+      };
 
       keybindings.Chat = {
         # Default keybind toggles fast mode. Emulator interprets `<esc>o`
