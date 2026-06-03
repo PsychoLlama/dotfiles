@@ -9,8 +9,6 @@ let
   cfg = config.programs.claude-code;
   json = pkgs.formats.json { };
 
-  enabledPlugins = lib.filterAttrs (_: plugin: plugin.enable) cfg.localPlugins;
-
   keybindingsByContext = lib.mapAttrsToList (context: bindings: {
     inherit context bindings;
   }) cfg.keybindings;
@@ -46,11 +44,11 @@ let
             inherit name;
             inherit (plugin) description;
             source = "./plugins/${name}";
-          }) enabledPlugins;
+          }) cfg.localPlugins;
         };
       }
     ]
-    ++ lib.concatLists (lib.mapAttrsToList pluginEntries enabledPlugins)
+    ++ lib.concatLists (lib.mapAttrsToList pluginEntries cfg.localPlugins)
   );
 in
 
@@ -91,7 +89,12 @@ in
             enable = lib.mkOption {
               type = lib.types.bool;
               default = true;
-              description = "Whether to enable this plugin.";
+              description = ''
+                Default enablement for this plugin. Every plugin is published
+                to the marketplace and provisioned in settings.json regardless;
+                this only sets the default value, which can be overridden
+                per-project through project-level settings.
+              '';
             };
 
             description = lib.mkOption {
@@ -128,13 +131,13 @@ in
             };
       })
 
-      (lib.mkIf (enabledPlugins != { }) {
+      (lib.mkIf (cfg.localPlugins != { }) {
         programs.claude-code = {
           marketplaces.dotfiles = marketplace;
 
           settings.enabledPlugins = lib.mapAttrs' (
-            name: _: lib.nameValuePair "${name}@dotfiles" true
-          ) enabledPlugins;
+            name: plugin: lib.nameValuePair "${name}@dotfiles" plugin.enable
+          ) cfg.localPlugins;
         };
       })
     ]
