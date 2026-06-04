@@ -1,0 +1,134 @@
+*core* manages Neovim's startup environment and core configuration
+
+Author:   Jesse Gibson <JesseTheGibson@gmail.com>
+Homepage: https://github.com/PsychoLlama/dotfiles
+License:  MIT
+
+  Press `gO` to show the table of contents.
+
+==============================================================================
+OVERVIEW                                                       *core-overview*
+
+`core` is a small Lua framework that manages Neovim's startup environment and
+editor configuration. Plugins, treesitter grammars, language-server configs,
+and editor options are described declaratively, and `core` applies each
+through the matching Neovim API at startup.
+
+The framework is organized into a handful of modules, each responsible for one
+kind of value:
+
+- |core.pkg|      Register, load, and query plugins.
+- `core.env`      Source project-local vimrc files (direnv).
+- `core.settings` Apply editor options.
+- `core.lsp`      Register language servers.
+
+Of these, |core.pkg| is the one you call directly to control which plugins
+load. This reference documents it; the rest will follow.
+
+==============================================================================
+PACKAGES                                                            *core.pkg*
+
+A minimal plugin loader built on Neovim's native packages. Plugins are
+installed on `&packpath` as optional ("opt") packages; `core.pkg` decides if,
+when, and how each one loads.
+
+The plugin manifest is the list of plugins `core.pkg` will load. Reshape it --
+adding plugins, overriding sources, deferring loads -- then call
+|core.pkg.load()| once to commit.
+>lua
+  local pkg = require('core.pkg')
+
+  pkg.add('nvim.undotree', {
+    type = 'pack',
+    source = vim.fs.joinpath(vim.env.VIMRUNTIME, 'pack/dist/opt/nvim.undotree'),
+    defer = { cmd = 'Undotree' },
+  })
+
+  pkg.load()
+<
+All manifest changes (`add`, `override`, `add_hook`) MUST happen before
+`load()`. After `load()` the manifest is frozen.
+
+------------------------------------------------------------------------------
+ADD                                                           *core.pkg.add()*
+
+`core.pkg.add({name}, {plugin})`
+
+Register a new plugin in the manifest. `{name}` is a unique identifier;
+`{plugin}` is a |core.pkg.Plugin| spec (its `name` and `opts` fields are
+filled in for you). Must be called before |core.pkg.load()|.
+>lua
+  require('core.pkg').add('my-plugin', {
+    type = 'path',
+    source = '/path/to/plugin',
+  })
+<
+------------------------------------------------------------------------------
+OVERRIDE                                                 *core.pkg.override()*
+
+`core.pkg.override({name}, {replace})`
+
+Replace a plugin matched by `{name}`. `{replace}` receives the existing
+|core.pkg.Plugin| (or `nil` if none matched) and returns its replacement.
+Return `nil` to leave the manifest unchanged. Must be called before
+|core.pkg.load()|.
+
+This is the idiomatic way to point a bundled plugin at a local fork:
+>lua
+  local repo = vim.fn.expand('<sfile>:h')
+
+  require('core.pkg').override('my-plugin', function(plugin)
+    return vim.tbl_extend('force', plugin or {}, {
+      type = 'path',
+      source = repo,
+    })
+  end)
+<
+------------------------------------------------------------------------------
+LOAD                                                         *core.pkg.load()*
+
+`core.pkg.load()`
+
+Load every eager plugin in the manifest and register deferred ones with their
+triggers. Runs all registered hooks first, so call this exactly once, after
+your manifest changes. Returns the list of plugins that were loaded.
+
+Deferred plugins (those with a `defer` spec) are registered but not loaded
+until their trigger fires. See |core.pkg.Plugin| for defer options.
+
+------------------------------------------------------------------------------
+QUERYING                                                      *core.pkg-query*
+
+Read-only helpers for inspecting the manifest:
+>lua
+  -- Find a plugin by exact name. `set` is 'active' (default) or 'bundled'.
+  require('core.pkg').find(name, set)   --> core.pkg.Plugin | nil
+
+  -- All plugins in the manifest, including inactive ones.
+  require('core.pkg').list_bundled()    --> core.pkg.Plugin[]
+
+  -- All plugins that have actually loaded, including custom ones.
+  require('core.pkg').list_active()     --> core.pkg.Plugin[]
+<
+------------------------------------------------------------------------------
+PLUGIN SPEC                                                  *core.pkg.Plugin*
+
+A plugin entry in the manifest. Fields:
+
+- `type` (required)    `'pack'` loads a package from `&packpath` with
+                       `:packadd`; `'path'` prepends a directory to
+                       `&runtimepath`.
+- `source` (required)  Path to the plugin's source.
+- `name`               Unique name. Filled in by |core.pkg.add()|.
+- `config`             A function `fun(opts)`, or a path to a Lua file that
+                       returns one. Run after the plugin loads.
+- `opts`               Table passed to `config`.
+- `defer`              Lazy-load triggers. When set, the plugin loads only
+                       once a trigger fires:
+                         - `event`   autocmd event(s)
+                         - `pattern` pattern for the event
+                         - `ft`      filetype(s) (shorthand for FileType)
+                         - `cmd`     command(s)
+                         - `keys`    keymap(s)
+
+vim: ft=help tw=78:

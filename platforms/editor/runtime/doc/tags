@@ -1,0 +1,8 @@
+core	core.txt	/*core*
+core-overview	core.txt	/*core-overview*
+core.pkg	core.txt	/*core.pkg*
+core.pkg-query	core.txt	/*core.pkg-query*
+core.pkg.Plugin	core.txt	/*core.pkg.Plugin*
+core.pkg.add()	core.txt	/*core.pkg.add()*
+core.pkg.load()	core.txt	/*core.pkg.load()*
+core.pkg.override()	core.txt	/*core.pkg.override()*

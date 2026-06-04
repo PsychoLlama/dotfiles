@@ -1,0 +1,2 @@
+- Keep `doc/` in sync with the public `core` API in `lua/core/`. Document interfaces only; underscore-prefixed modules are internal.
+- Regenerate helptags after editing `doc/*.txt`, then commit the tags file. Run from this directory: `nvim --headless -c 'helptags doc' -c 'qa'`.
