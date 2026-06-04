@@ -1,6 +1,7 @@
 ---
 description: Update flake inputs and custom packages, then address deprecations.
 disable-model-invocation: true
+argument-hint: Instructions
 ---
 
 Run `just update` to update all flake inputs and custom packages, then work through the steps below.
@@ -16,3 +17,5 @@ Run `just update` to update all flake inputs and custom packages, then work thro
 - Use `dix <old-store-path> <new-store-path>` to diff the system's Nix store paths before and after the update.
 - Summarize meaningful package version changes and deprecations from the diff.
 - Do not search the web or dive into source code to identify changes. The `dix` output is your source of truth.
+
+$ARGUMENTS
