@@ -10,16 +10,15 @@ License:  MIT
 OVERVIEW                                                       *core-overview*
 
 `core` is a small Lua framework that manages Neovim's startup environment and
-editor configuration. Plugins, treesitter grammars, language-server configs,
-and editor options are described declaratively, and `core` applies each
-through the matching Neovim API at startup.
+editor configuration. Plugins, treesitter grammars, and language-server
+configs are described declaratively, and `core` applies each through the
+matching Neovim API at startup.
 
 The framework is organized into a handful of modules, each responsible for one
 kind of value:
 
 - |core.pkg|      Register, load, and query plugins.
 - `core.env`      Source project-local vimrc files (direnv).
-- `core.settings` Apply editor options.
 - `core.lsp`      Register language servers.
 
 Of these, |core.pkg| is the one you call directly to control which plugins

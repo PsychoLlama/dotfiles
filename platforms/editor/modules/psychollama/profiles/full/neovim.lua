@@ -1,3 +1,52 @@
+-- Editing settings
+vim.opt.backspace = { 'indent', 'eol', 'start' }
+vim.opt.formatoptions = 'qc1orj'
+vim.opt.fileformat = 'unix'
+vim.opt.fileformats = { 'unix', 'dos', 'mac' }
+vim.opt.textwidth = 78
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 0
+vim.opt.shiftround = true
+
+-- Interaction settings
+vim.opt.wildmenu = true
+vim.opt.wildmode = { 'longest', 'list', 'full' }
+vim.opt.inccommand = 'nosplit'
+vim.opt.wrapscan = false
+vim.opt.pumheight = 10
+vim.opt.pumblend = 20
+vim.opt.pumborder = 'rounded'
+vim.opt.winborder = 'rounded'
+vim.opt.winblend = 0
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.mouse = ''
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+
+-- Display settings
+vim.opt.showcmd = true
+vim.opt.signcolumn = 'yes'
+vim.opt.number = true
+vim.opt.numberwidth = 3
+vim.opt.list = true
+vim.opt.listchars = 'tab:) ,trail:.'
+vim.opt.foldenable = false
+vim.opt.updatetime = 100
+vim.opt.linebreak = true
+vim.opt.cursorline = true
+vim.opt.shortmess:append('I')
+
+-- Storage settings
+vim.opt.backupcopy = 'yes'
+vim.opt.backup = true
+vim.opt.backupdir = vim.fn.stdpath('state') .. '/backup'
+vim.opt.undofile = true
+
+-- Integrations
+vim.opt.clipboard = 'unnamedplus'
+vim.opt.grepprg = 'rg --vimgrep'
+
 require('core.env').source_direnv_vimrc()
 
 -- Built-in opt package shipped with Neovim. Registering it with core.pkg
@@ -10,10 +59,6 @@ require('core.pkg').add('nvim.undotree', {
 })
 
 require('core.pkg').load()
-
--- Operations not yet supported by the Nix binding.
-vim.opt.shortmess:append('I')
-vim.opt.backupdir = vim.fn.stdpath('state') .. '/backup'
 
 -- Visual mode leader nop (normal mode set in Nix extraConfig before sourcing).
 vim.api.nvim_set_keymap('v', '<space>', '<nop>', {})
