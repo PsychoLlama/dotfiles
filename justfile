@@ -8,7 +8,7 @@ activate mode="test":
 
 # Build the NixOS configuration without activating.
 build:
-  nixos-rebuild --log-format internal-json -v build --flake . 2>&1 | nom --json
+  nixos-rebuild build --flake .
 
 # Format all files.
 fmt:

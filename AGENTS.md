@@ -77,20 +77,10 @@ nvim --headless -c 'help <name> | echo expand("%:p") | qa'
 nvim --headless -c 'echo $VIMRUNTIME | qa'
 ```
 
-### Testing
-
-Tests use `busted`/`vusted` with `*_spec.lua` naming. Colocate specs next to the source file they cover (e.g. `lua/git/blame.lua` ↔ `lua/git/blame_spec.lua`).
-
-```bash
-just lua-test        # Lua unit tests
-nix run '.#editor'   # E2E: launch the configured editor
-```
-
 ## Developing
 
 All programs are declaratively managed. When changing configuration for a program (e.g. Claude Code settings, shell aliases, git config), edit the corresponding Nix module — never the dotfiles directly.
 
-- Run `just check` before committing. Keep everything passing.
 - Use `nix eval` to verify settings are applied correctly when refactoring.
 - `git add --intent-to-add` new files before Nix can discover them.
 - Nix modules in this repo are discovered and imported automatically. No `imports` needed.
