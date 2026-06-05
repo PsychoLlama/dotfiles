@@ -1,42 +1,31 @@
 ---
-description: Neovim plugin development guidance, custom framework API, and editor conventions. Use when working on neovim plugins, editing .vimrc.lua, or modifying the editor platform.
+description: Neovim plugin development guidance and the custom `core` startup framework. Use when working on neovim plugins or editing .vimrc.lua.
 ---
 
 # Developing Neovim Plugins
 
-- Use `nvim --headless -c 'help <name> | echo expand("%:p") | qa'` to find plugin help pages.
-- Use `nvim --headless -c 'echo $VIMRUNTIME | qa'` to find the neovim runtime.
-- When editing `.vimrc.lua`, see the framework guide below.
+Discover APIs from the running editor and annotated source. Do not trust memorized signatures; they drift.
 
-# Neovim Framework
+## Discover Neovim APIs
 
-Custom plugin loader via `require('core.pkg')`. Used in `.vimrc.lua` files.
+- Help page path: `nvim --headless -c 'help <name> | echo expand("%:p") | qa'`.
+- Runtime path: `nvim --headless -c 'echo $VIMRUNTIME | qa'`.
+- Neovim version: `nvim --version | head -1`. Target the installed version's API (Lua `vim.*`, not deprecated shims).
+- Read a plugin's `lua/` and `doc/` directories under the runtime path for its real surface.
 
-## API
+## `.vimrc.lua` and the `core` framework
 
-```lua
--- Add a plugin
-pkg.add(name, { type = 'path', source = '...', config? = function(opts) end, opts? = {} })
+`.vimrc.lua` is a project-local hook that runs arbitrary Lua at Neovim startup.
+Use it to do anything on startup — set options, define keymaps and autocommands,
+or reshape the plugin manifest. It's the primary consumer of the `core.*`
+runtime API.
 
--- Override/replace a plugin (receives nil if not found)
-pkg.override(name, function(plugin) return modified_plugin end)
+- Direnv-sourced via `DIRENV_EXTRA_VIMRC`; loaded with a trust prompt by `core.env`.
+- Gitignored — never committed.
 
--- Query plugins
-pkg.find(name, 'active'|'bundled') -> plugin|nil
-pkg.list_active() -> plugin[]
-pkg.list_bundled() -> plugin[]
-```
+Read `:help core` before working in this file to understand what the `core.*`
+runtime API makes possible (plugin management, startup environment, and the rest).
 
-## Example
-
-```lua
--- .vimrc.lua: use local fork of a plugin
-local repo = vim.fn.expand('<sfile>:h')
-
-require('core.pkg').override('my-plugin', function(plugin)
-  return vim.tbl_extend('force', plugin or {}, {
-    source = repo,
-    type = 'path',
-  })
-end)
+```bash
+nvim --headless -c 'help core | echo expand("%:p") | qa'
 ```
