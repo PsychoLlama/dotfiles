@@ -82,7 +82,7 @@ nvim --headless -c 'echo $VIMRUNTIME | qa'
 Tests use `busted`/`vusted` with `*_spec.lua` naming. Colocate specs next to the source file they cover (e.g. `lua/git/blame.lua` ↔ `lua/git/blame_spec.lua`).
 
 ```bash
-just unit-test       # Lua unit tests
+just lua-test        # Lua unit tests
 nix run '.#editor'   # E2E: launch the configured editor
 ```
 

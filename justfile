@@ -15,15 +15,15 @@ fmt:
   treefmt
 
 # Run luacheck on all Lua files.
-lint:
+lua-lint:
   luacheck pkgs platforms
 
 # Run Lua unit tests with vusted.
-unit-test:
+lua-test:
   vusted pkgs platforms
 
 # Run Lua unit tests against the built editor.
-unit-test-built:
+lua-test-built:
   #!/usr/bin/env bash
   set -euo pipefail
   editor=$(nix build '.#editor' --no-link --print-out-paths)
@@ -33,10 +33,10 @@ unit-test-built:
 
 # Check that all files are formatted.
 fmt-check:
-  treefmt --fail-on-change
+  treefmt --ci
 
 # Run lua-language-server type checks.
-typecheck:
+lua-typecheck:
   #!/usr/bin/env bash
   set -euo pipefail
   export VIMRUNTIME=$(nvim --clean --headless --cmd 'echo $VIMRUNTIME | q' 2>&1)
@@ -60,11 +60,11 @@ check:
   echo "--- Checking formatting ---"
   just fmt-check || failed=1
   echo "--- Running linter ---"
-  just lint || failed=1
+  just lua-lint || failed=1
   echo "--- Running type checker ---"
-  just typecheck || failed=1
+  just lua-typecheck || failed=1
   echo "--- Running unit tests ---"
-  just unit-test-built || failed=1
+  just lua-test-built || failed=1
   echo "--- Building NixOS configuration ---"
   just build || failed=1
   exit $failed
