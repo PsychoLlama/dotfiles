@@ -5,20 +5,24 @@ let
 in
 
 /*
-  Recursively find all .nix files in a directory.
+  Recursively find all *.mod.nix files in a directory.
   Returns a list of paths suitable for use in module imports.
+
+  Only files with the `.mod.nix` suffix are discovered, so plain `.nix`
+  files can live alongside modules as helpers, data, or libraries without
+  being imported into the module system.
 
   Type: { directory: Path, exclude?: [Path] } -> [Path]
 
   Example:
     discoverNixFiles { directory = ./platforms/nixos/modules; }
-    => [ /path/to/platforms/nixos/modules/foo.nix /path/to/platforms/nixos/modules/bar/baz.nix ]
+    => [ /path/to/platforms/nixos/modules/foo.mod.nix /path/to/platforms/nixos/modules/bar/baz.mod.nix ]
 
     discoverNixFiles {
       directory = ./platforms/editor/modules;
       exclude = [ ./platforms/editor/modules/psychollama ];
     }
-    => [ /path/to/platforms/editor/modules/foo.nix ] # excludes psychollama subdirectory
+    => [ /path/to/platforms/editor/modules/foo.mod.nix ] # excludes psychollama subdirectory
 */
 {
   directory,
@@ -28,8 +32,8 @@ in
 let
   allFiles = lib.filesystem.listFilesRecursive directory;
 
-  # Filter for .nix files
-  nixFiles = lib.filter (path: lib.hasSuffix ".nix" (toString path)) allFiles;
+  # Filter for .mod.nix files (modules opt in via the suffix)
+  nixFiles = lib.filter (path: lib.hasSuffix ".mod.nix" (toString path)) allFiles;
 
   # Convert exclude paths to strings for comparison
   excludeStrs = map toString exclude;
