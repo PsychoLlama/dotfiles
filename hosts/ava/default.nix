@@ -48,51 +48,56 @@ in
       ];
     };
 
-    home-manager.users.${username} = {
-      home.stateVersion = "22.05";
-      home.packages = [ pkgs.man-pages ];
+    home-manager.users.${username} =
+      { config, pkgs, ... }:
+      {
+        home.stateVersion = "22.05";
+        home.packages = [ pkgs.man-pages ];
 
-      /*
-        TODO: Automate this.
+        /*
+          TODO: Automate this.
 
-        use std/iter *
+          use std/iter *
 
-        let displays = swaymsg -t get_outputs -r | from json
-        let main = $displays | iter find { $in.name == "eDP-1" }
-        let ext = $displays | iter find { $in.model == "LG ULTRAWIDE" }
+          let displays = swaymsg -t get_outputs -r | from json
+          let main = $displays | iter find { $in.name == "eDP-1" }
+          let ext = $displays | iter find { $in.model == "LG ULTRAWIDE" }
 
-        let d = {
-          ext: {
-            x: 0
-            y: 0
+          let d = {
+            ext: {
+              x: 0
+              y: 0
+            }
+            main: {
+              x: (($ext.rect.width / 2) - ($main.rect.width / 2) | into int)
+              y: $ext.rect.height
+            }
           }
-          main: {
-            x: (($ext.rect.width / 2) - ($main.rect.width / 2) | into int)
-            y: $ext.rect.height
-          }
-        }
 
-        let ext_id = $ext | select make model serial | values | str join " "
+          let ext_id = $ext | select make model serial | values | str join " "
 
-        $'
-        output "($ext_id)" position ($d.ext.x) ($d.ext.y)
-        output "($main.name)" position ($d.main.x) ($d.main.y)
-        '
-      */
-      wayland.windowManager.sway.config.output = {
-        "LG Electronics LG ULTRAWIDE 404NTLEDA584".position = "0 0";
-        "eDP-1".position = "760 1440";
+          $'
+          output "($ext_id)" position ($d.ext.x) ($d.ext.y)
+          output "($main.name)" position ($d.main.x) ($d.main.y)
+          '
+        */
+        wayland.windowManager.sway.config.output = {
+          "LG Electronics LG ULTRAWIDE 404NTLEDA584".position = "0 0";
+          "eDP-1".position = "760 1440";
+        };
+
+        programs.git.settings.user = {
+          inherit name email;
+        };
+
+        # Where the flake lives on disk, used by `nh os` / `nh home`.
+        programs.nh.flake = "${config.home.homeDirectory}/projects/psychollama/dotfiles";
+
+        psychollama.profiles = {
+          full.enable = true;
+          linux-desktop.enable = true;
+        };
       };
-
-      programs.git.settings.user = {
-        inherit name email;
-      };
-
-      psychollama.profiles = {
-        full.enable = true;
-        linux-desktop.enable = true;
-      };
-    };
 
     psychollama = {
       identity = {

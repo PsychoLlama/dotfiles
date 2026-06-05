@@ -194,6 +194,7 @@
               pkgs.lua-language-server
               pkgs.luajitPackages.luacheck
               pkgs.luajitPackages.vusted
+              pkgs.nh
               pkgs.nix-update
               pkgs.nixfmt
               pkgs.prettier

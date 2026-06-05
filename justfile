@@ -3,12 +3,11 @@ _:
 
 # Activate the current NixOS configuration.
 activate mode="test":
-  sudo true # Prompt for password
-  sudo nixos-rebuild --log-format internal-json -v {{mode}} --flake . 2>&1 | nom --json
+  nh os {{mode}} .
 
 # Build the NixOS configuration without activating.
 build:
-  nixos-rebuild build --flake .
+  nh os build .
 
 # Format all files.
 fmt:
