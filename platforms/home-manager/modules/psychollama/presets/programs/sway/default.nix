@@ -14,7 +14,6 @@ let
   brightnessctl = lib.getExe' config.programs.brightnessctl.package "brightnessctl";
   pamixer = lib.getExe' config.programs.pamixer.package "pamixer";
   waybar = lib.getExe' config.programs.waybar.package "waybar";
-  ghostty = lib.getExe' config.programs.ghostty.package "ghostty";
 
   # Laptop built-in keyboard. Find identifiers with `swaymsg -t get_inputs`.
   thinkpadKeyboard = "1:1:AT_Translated_Set_2_keyboard";
@@ -43,7 +42,6 @@ in
         "${modifier}+q" = "kill";
 
         "${modifier}+Return" = "exec ${wezterm}";
-        "${modifier}+Shift+Return" = "exec ${ghostty}";
         "${modifier}+space" = "exec ${fuzzel}";
 
         # Emoji picker.

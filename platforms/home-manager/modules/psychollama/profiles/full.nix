@@ -31,7 +31,6 @@ in
         fd.enable = mkDefault true;
         fzf.enable = mkDefault true;
         gh.enable = mkDefault true;
-        ghostty.enable = mkDefault true;
         git.enable = mkDefault true;
         glow.enable = mkDefault true;
         jq.enable = mkDefault true;
@@ -47,7 +46,6 @@ in
         viddy.enable = mkDefault true;
         wezterm.enable = mkDefault true;
         whois.enable = mkDefault true;
-        zellij.enable = mkDefault true;
         zoxide.enable = mkDefault true;
       };
 
