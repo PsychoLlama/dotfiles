@@ -1,134 +1,139 @@
 # Temporarily replace nix-managed config files with editable local copies.
+export def main [] {
+  help modules swizzle
+}
 
-use ./core.nu *
+# Manifest of nix-managed file paths, written by `psychollama.manifest`.
+const MANIFEST = ($nu.home-dir | path join '.config' 'swizzle' 'manifest.json')
 
 # Swap a nix-managed file for a writable local copy in the current directory.
-export def 'main' [
+export def 'swizzle edit' [
   path: string@'nu-complete-swizzle-targets'
 ] {
   let absolute = ($path | path expand --no-symlink)
   let dest = ($env.PWD | path join ($absolute | path basename))
-  let state = (gather-state $absolute)
-    | merge { dest_exists: ((do --ignore-errors { $dest | path type }) != null) }
-  let plan = (plan-swizzle $state $absolute $dest)
 
-  if 'error' in $plan {
-    error make { msg: $plan.error }
+  let kind = (classify $absolute)
+  if $kind != 'nix-managed' {
+    error make {
+      msg: $"Cannot swizzle: ($absolute) is ($kind), expected nix-managed."
+      label: { text: $kind, span: (metadata $path).span }
+    }
   }
 
-  apply-actions $plan.actions
+  if (path-kind $dest) != null {
+    error make {
+      msg: $"Cannot swizzle: ($dest) already exists."
+      label: { text: 'copy already exists here', span: (metadata $path).span }
+    }
+  }
+
+  open --raw $absolute | save --force $dest
+  mv $absolute $"($absolute).bak"
+  ln --symbolic --force $dest $absolute
 }
 
-# Restore a swizzled file to its nix-managed symlink.
+# Restore swizzled files to their nix-managed symlinks, returning the files
+# reverted. Reverts every swizzled file when no path is given.
 export def 'swizzle revert' [
-  path: string@'nu-complete-swizzled-targets'
-  --force (-f) # Discard edits when the editable copy differs from the backup.
-] {
-  let absolute = ($path | path expand --no-symlink)
-  let state = (gather-state $absolute)
-  let plan = (plan-unswizzle $state $absolute $force)
+  path?: string@'nu-complete-swizzled-targets'
+]: nothing -> list<string> {
+  let targets = [$path]
+    | compact
+    | default --empty (manifest-paths | where { |p| (classify $p) == 'swizzled' })
 
-  if 'error' in $plan {
-    error make { msg: $plan.error }
+  mut reverted = []
+  for p in $targets {
+    let absolute = ($p | path expand --no-symlink)
+    let kind = (classify $absolute)
+    if $kind != 'swizzled' {
+      error make {
+        msg: $"Cannot revert: ($absolute) is ($kind), expected swizzled."
+        label: { text: $kind, span: (metadata $path).span }
+      }
+    }
+
+    rm (link-target $absolute)
+    rm $absolute
+    mv $"($absolute).bak" $absolute
+    $reverted = ($reverted | append $absolute)
   }
 
-  apply-actions $plan.actions
+  $reverted
 }
 
-# List currently swizzled files.
+# List every file in the manifest alongside its current state:
+#
+#   nix-managed — symlink into the store; ready to swizzle.
+#   swizzled    — symlink to a local copy, with the store symlink backed up.
+#   foreign     — not in either expected shape (e.g. a real file or stray link).
+#   missing     — nothing exists at the path.
 export def 'swizzle list' [] {
-  manifest-paths
-    | each { |p|
-      { path: $p, state: (classify (gather-state $p)) }
-    }
-    | where state == 'swizzled'
+  manifest-paths | each { |p| { path: $p, state: (classify $p) } }
 }
 
-# Report the current state of a path.
-export def 'swizzle status' [
-  path: string@'nu-complete-swizzle-targets'
-] {
-  let absolute = ($path | path expand --no-symlink)
-  { path: $absolute, state: (classify (gather-state $absolute)) }
+# Resolve a path's type, or null when it doesn't exist.
+def 'path-kind' [path: string]: nothing -> any {
+  do --ignore-errors { $path | path type }
 }
 
-# Probe filesystem state for `classify` / `plan-*`.
-def 'gather-state' [path: string]: nothing -> record {
-  let sidecars = (sidecar-paths $path)
+# Resolve a symlink's target to an absolute path.
+def 'link-target' [path: string]: nothing -> string {
+  let target = (readlink $path | str trim)
+  if ($target | str starts-with '/') {
+    $target
+  } else {
+    ($path | path dirname | path join $target)
+  }
+}
 
-  let probe = { |p|
-    let kind = (do --ignore-errors { $p | path type })
-    let exists = ($kind != null)
-    let is_symlink = ($kind == 'symlink')
-    let target = if $is_symlink {
-      (^readlink $p | str trim)
-    } else { '' }
-    { exists: $exists, is_symlink: $is_symlink, link_target: $target }
+# Classify the shape of a target: 'nix-managed' | 'swizzled' | 'foreign' | 'missing'.
+#
+# A nix-managed file is a symlink into the store with no backup. A swizzled file
+# is a symlink to a local copy whose `.bak` is the original store symlink.
+def 'classify' [path: string]: nothing -> string {
+  if (path-kind $path) == null {
+    return 'missing'
   }
 
-  let main = (do $probe $path)
-  let bak = (do $probe $sidecars.backup)
+  if (path-kind $path) != 'symlink' {
+    return 'foreign'
+  }
 
-  # When swizzled, the editable copy lives at the symlink target. Resolve
-  # relative targets against the link's directory so callers can treat
-  # `copy_path` as absolute.
-  let copy_path = if $main.is_symlink {
-    if ($main.link_target | str starts-with '/') {
-      $main.link_target
-    } else {
-      ($path | path dirname | path join $main.link_target)
-    }
-  } else { '' }
+  let store = '/nix/store/'
+  let bak = $"($path).bak"
 
-  let copy_exists = ($copy_path != '') and (
-    (do --ignore-errors { $copy_path | path type }) != null
+  let points_to_store = ((link-target $path) | str starts-with $store)
+  let bak_points_to_store = (
+    ((path-kind $bak) == 'symlink')
+      and ((link-target $bak) | str starts-with $store)
   )
 
-  let files_differ = if $copy_exists and $bak.exists {
-    (open --raw $copy_path) != (open --raw $sidecars.backup)
-  } else { false }
-
-  {
-    exists: $main.exists
-    is_symlink: $main.is_symlink
-    link_target: $main.link_target
-    bak_exists: $bak.exists
-    bak_is_symlink: $bak.is_symlink
-    bak_link_target: $bak.link_target
-    copy_path: $copy_path
-    files_differ: $files_differ
+  if $points_to_store and ((path-kind $bak) == null) {
+    return 'nix-managed'
   }
-}
 
-# Interpret a plan from `core.nu`. Pure switch on `op`.
-def 'apply-actions' [actions: list] {
-  for action in $actions {
-    match $action.op {
-      'copy-content' => { open --raw $action.from | save --force $action.to }
-      'move'         => { mv $action.from $action.to }
-      'symlink'      => { ^ln --symbolic --force $action.target $action.link_path }
-      'remove'       => { rm $action.path }
-      _              => { error make { msg: $"Unknown action: ($action.op)" } }
-    }
+  if $bak_points_to_store and (not $points_to_store) {
+    return 'swizzled'
   }
+
+  'foreign'
 }
 
 # Paths exported by `psychollama.manifest`, minus the manifest file itself.
 def 'manifest-paths' []: nothing -> list<string> {
-  let manifest = ('~/.config/swizzle/manifest.json' | path expand)
-
-  if not ($manifest | path exists) {
+  if not ($MANIFEST | path exists) {
     return []
   }
 
-  open $manifest
+  open $MANIFEST
     | get path
-    | where { |p| $p != $manifest }
+    | where { |p| $p != $MANIFEST }
 }
 
-# Compress an absolute path to use `~` when it lives under $HOME.
+# Compress an absolute path to use `~` when it lives under the home directory.
 def 'tilde-path' [p: string]: nothing -> string {
-  let home = $env.HOME
+  let home = $nu.home-dir
   if ($p | str starts-with $"($home)/") {
     '~' + ($p | str substring ($home | str length)..)
   } else if $p == $home {
@@ -144,6 +149,6 @@ def 'nu-complete-swizzle-targets' []: nothing -> list<string> {
 
 def 'nu-complete-swizzled-targets' []: nothing -> list<string> {
   manifest-paths
-    | where { |p| (classify (gather-state $p)) == 'swizzled' }
+    | where { |p| (classify $p) == 'swizzled' }
     | each { tilde-path $in }
 }
