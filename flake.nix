@@ -47,7 +47,6 @@
         systems.follows = "systems";
       };
     };
-
   };
 
   outputs =
@@ -140,13 +139,6 @@
           nixpkgs.nixosModules.notDetected
           ./hosts/ava
         ];
-      };
-
-      homeConfigurations = lib.dotfiles.hosts.home-manager {
-        overlord = {
-          system = "x86_64-linux";
-          modules = [ ./hosts/tars ];
-        };
       };
 
       templates = {

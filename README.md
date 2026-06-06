@@ -1,6 +1,6 @@
 ## About
 
-All configs for my Linux and WSL environments. I use [NixOS](https://nixos.org/) modules to manage everything as configuration-as-code. Most of it is cross platform via [home-manager](https://github.com/nix-community/home-manager). NixOS platform bindings handle the rest.
+All configs for my Linux environment. I use [NixOS](https://nixos.org/) modules to manage everything as configuration-as-code. Most of it is cross platform via [home-manager](https://github.com/nix-community/home-manager). NixOS platform bindings handle the rest.
 
 This repo only manages my workstations. Servers live in [home-lab](https://github.com/PsychoLlama/home-lab/).
 

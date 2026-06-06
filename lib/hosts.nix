@@ -156,26 +156,4 @@ in
       ];
     }
   );
-
-  # NOTE: Requires an import of `pkgs` ahead of time. No support for
-  # dynamically importing with `nixpkgs.hostPlatform`.
-  home-manager = lib.mapAttrs (
-    hostName:
-    { system, modules }:
-    home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs nixpkgs-config.nixpkgs // {
-        inherit system;
-      };
-
-      modules = modules ++ [
-        agenix.homeManagerModules.default
-        self.nixosModules.home-manager-platform
-        self.nixosModules.home-manager-configs
-        self.nixosModules.identity
-        self.nixosModules.theme
-        nix-flakes
-        editor-program
-      ];
-    }
-  );
 }
