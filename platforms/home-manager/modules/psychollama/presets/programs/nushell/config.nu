@@ -24,15 +24,6 @@ $env.config.cursor_shape = {
   vi_insert: 'line'
 }
 
-$env.config.completions = {
-  case_sensitive: false
-  partial: false
-  quick: true
-  external: {
-    enable: true
-  }
-}
-
 $env.config.hooks.env_change = {
   PWD: [
     (use nu-hooks/nu-hooks/nuenv/hook.nu; hook setup)
