@@ -22,6 +22,7 @@ in
         bottom.enable = mkDefault true;
         claude-code.enable = mkDefault true;
         codex.enable = mkDefault true;
+        delta.enable = mkDefault true;
         dictation.enable = mkDefault true;
         direnv.enable = mkDefault true;
         dix.enable = mkDefault true;
