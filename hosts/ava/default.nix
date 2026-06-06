@@ -1,12 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
 let
-  inherit (config.psychollama.identity) username name email;
+  inherit (config.psychollama.identity) username name;
   shell = config.home-manager.users.${username}.programs.nushell.package;
 in
 
@@ -84,10 +79,6 @@ in
         wayland.windowManager.sway.config.output = {
           "LG Electronics LG ULTRAWIDE 404NTLEDA584".position = "0 0";
           "eDP-1".position = "760 1440";
-        };
-
-        programs.git.settings.user = {
-          inherit name email;
         };
 
         # Where the flake lives on disk, used by `nh os` / `nh home`.

@@ -27,6 +27,11 @@ in
     };
 
     programs.git.settings = {
+      user = {
+        name = lib.mkDefault config.psychollama.identity.name;
+        email = lib.mkDefault config.psychollama.identity.email;
+      };
+
       alias = {
         a = "add --all";
         d = "diff";
