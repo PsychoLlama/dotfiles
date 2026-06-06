@@ -52,6 +52,7 @@ in
       rules = {
         authoring-agent-files = ./rules/authoring-agent-files.md;
         authoring-memory-files = ./rules/authoring-memory-files.md;
+        nushell-development = ./rules/nushell-development.md;
       };
 
       keybindings.Chat = {
