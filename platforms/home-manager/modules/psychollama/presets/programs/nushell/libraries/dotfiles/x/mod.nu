@@ -63,13 +63,15 @@ export def 'x repl' [] {
 }
 
 # Search for packages
-export def 'x find' [term: string, ...extra_terms: string] {
-  let result = nix search unstable $term ...$extra_terms --json | from json
-
-  $result
-  | transpose pkg meta
-  | upsert pkg { split row . | skip 2 | str join . }
-  | upsert meta { select description version }
+export def 'x find' [
+  term: string # Search query (regex supported by search.nixos.org).
+  ...extra_terms: string # Additional terms to narrow the search.
+] {
+  nh search --json $term ...$extra_terms
+  | from json
+  | get results
+  | select package_attr_name package_pversion package_description
+  | rename pkg version description
 }
 
 export alias 'x s' = x show
