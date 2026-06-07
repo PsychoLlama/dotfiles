@@ -83,6 +83,9 @@ in
         # Combat the doorway effect.
         externalEditorContext = true;
 
+        # Plan iteration munches all my tokens.
+        showClearContextOnPlanAccept = true;
+
         # I don't want uncommitted memory affecting Claude's decisions.
         autoMemoryEnabled = false;
 
