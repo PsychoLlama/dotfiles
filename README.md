@@ -16,7 +16,7 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
 - Terminal: [Wezterm](https://wezfurlong.org/wezterm)
 - Shell: [Nushell](https://www.nushell.sh/)
 - Editor: [Neovim](http://neovim.io/)
-- Browser: [Firefox](https://www.mozilla.org/en-US/firefox/new/)
+- Browser: [Chromium](https://www.chromium.org/Home/)
 
 ## Structure
 
