@@ -25,22 +25,6 @@ in
       libraries = {
         enable = true;
         path = [ ./libraries ];
-
-        nu_scripts = {
-          enable = true;
-          package = pkgs.unstable.nu_scripts;
-
-          completions = [
-            "cargo"
-            "git"
-            "glow"
-            "nix"
-            "rg"
-            "rustup"
-            "ssh"
-            "tar"
-          ];
-        };
       };
 
       # Use the default aliases, except for `ls` overrides. Nushell has
