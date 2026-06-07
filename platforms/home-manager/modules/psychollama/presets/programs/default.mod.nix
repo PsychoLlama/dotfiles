@@ -31,7 +31,6 @@ in
     (mkUnstablePreset "bat")
     (mkUnstablePreset "bottom")
     (mkUnstablePreset "brightnessctl")
-    (mkUnstablePreset "carapace")
     (mkUnstablePreset "delta")
     (mkUnstablePreset "direnv")
     (mkUnstablePreset "dix")

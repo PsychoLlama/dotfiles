@@ -36,6 +36,10 @@ in
       printing.enable = lib.mkDefault true;
     };
 
+    # Build the apropos/whatis cache so `man -k` works. Carapace's native `man`
+    # completer shells out to apropos, which returns nothing without it.
+    documentation.man.cache.enable = lib.mkDefault true;
+
     fonts.enableDefaultPackages = lib.mkDefault true;
   };
 }

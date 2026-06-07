@@ -61,6 +61,7 @@ in
       duf.enable = mkDefault true;
       hexyl.enable = mkDefault true;
       lsof.enable = mkDefault true;
+      man.generateCaches = mkDefault true;
       nh.enable = mkDefault true;
       onefetch.enable = mkDefault true;
       parted.enable = mkDefault pkgs.stdenv.isLinux;
