@@ -19,7 +19,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.shellAliases.a = "claude"; # `a` short for `agent`
+    programs.nushell.abbreviations.a = "claude"; # `a` short for `agent`
 
     home.packages = lib.optionals (cfg.voice.package != null) [ cfg.voice.package ];
 

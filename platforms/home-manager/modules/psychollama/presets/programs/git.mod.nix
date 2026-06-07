@@ -17,13 +17,12 @@ in
       package = lib.mkDefault pkgs.unstable.watchman;
     };
 
-    home.shellAliases = {
+    programs.nushell.abbreviations = {
       g = "git";
       b = "git branch";
       ch = "git checkout";
       h = "git diff HEAD --staged";
       hh = "git diff HEAD~1";
-      hhh = "git diff HEAD~2";
     };
 
     programs.git.settings = {

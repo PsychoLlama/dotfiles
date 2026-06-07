@@ -12,7 +12,7 @@ in
 
 {
   config = lib.mkIf cfg.enable {
-    home.shellAliases.t = "tmux";
+    programs.nushell.abbreviations.t = "tmux";
 
     programs.tmux = {
       customPaneNavigationAndResize = true;
