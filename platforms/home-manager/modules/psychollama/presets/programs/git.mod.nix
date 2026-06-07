@@ -23,6 +23,11 @@ in
       ch = "git checkout";
       h = "git diff HEAD --staged";
       hh = "git diff HEAD~1";
+      gd = "git diff";
+      ga = "git add --all";
+      gr = "git reset";
+      grr = "git reset --hard HEAD";
+      grrr = "git reset --hard HEAD~1";
     };
 
     programs.git.settings = {
@@ -32,14 +37,8 @@ in
       };
 
       alias = {
-        a = "add --all";
-        d = "diff";
-        b = "branch";
         l = "log -1000 --format='%Cgreen%h%Creset: %an (%C(yellow)%ar%Creset)%n%s%n%n%b'";
         f = "fetch origin";
-        r = "reset";
-        rr = "reset --hard HEAD";
-        rrr = "reset --hard HEAD^";
         p = "push --set-upstream origin";
         pf = "push --force-with-lease";
         s = "stash";
