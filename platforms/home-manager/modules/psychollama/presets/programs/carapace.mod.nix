@@ -7,6 +7,26 @@
 
 let
   cfg = config.psychollama.presets.programs.carapace;
+
+  # Carapace's bash bridge runs a bare `bash`, resolved via PATH. Inside nix
+  # devshells that's stdenv's non-interactive bash, which lacks the `complete`
+  # builtin, so the bridge silently produces nothing. Prepend an interactive
+  # bash to carapace's own PATH so its bridge always finds a capable one.
+  # Wrapping the default keeps the package overridable: overlaying
+  # `unstable.carapace` flows through here, and `programs.carapace.package` can
+  # still replace it outright.
+  withBridgeBash =
+    carapace:
+    pkgs.symlinkJoin {
+      name = "carapace-bridge-bash";
+      paths = [ carapace ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/carapace \
+          --prefix PATH : ${lib.makeBinPath [ pkgs.bashInteractive ]}
+      '';
+      meta.mainProgram = "carapace";
+    };
 in
 
 {
@@ -17,18 +37,16 @@ in
   config = lib.mkIf cfg.enable {
     programs.carapace = {
       enable = lib.mkDefault true;
-      package = lib.mkDefault pkgs.unstable.carapace;
+      package = lib.mkDefault (withBridgeBash pkgs.unstable.carapace);
     };
 
     # Fall back to bash completions for commands carapace has no native spec for.
-    #
-    # The bridge runs `bash --rcfile <carapace's file> -i`, which would normally
-    # skip the user's bash setup. On NixOS it still works: `bashInteractive` is
-    # built with `SYS_BASHRC=/etc/bashrc`, so the bridge's bash sources the
-    # system rc regardless of `--rcfile`, and `programs.bash.completion.enable`
-    # (on by default) wires that file to load the bash-completion framework.
-    # The framework then resolves per-command completions from $XDG_DATA_DIRS,
-    # which NixOS already populates. No bridge rcfile of our own is needed.
+    # The bridge runs `bash --rcfile <its own file> -i`; although `--rcfile`
+    # skips the user's `~/.bashrc`, NixOS builds `bashInteractive` with
+    # `SYS_BASHRC=/etc/bashrc`, so the bridge's bash still sources the system rc.
+    # `programs.bash.completion.enable` (on by default) wires that file to load
+    # the bash-completion framework, which resolves per-command completions from
+    # $XDG_DATA_DIRS. No custom bridge rcfile is needed.
     home.sessionVariables.CARAPACE_BRIDGES = "bash";
   };
 }
