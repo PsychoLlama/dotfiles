@@ -19,10 +19,14 @@ let
   };
 
   # Isolate the runtime directory so changes elsewhere in the repo don't
-  # invalidate the editor derivation.
+  # invalidate the editor derivation. Tests (`*_spec.lua`) are excluded: they
+  # pull in vusted/luassert, which aren't present during `buildVimPlugin`'s
+  # require-check and would fail the build.
   runtimeSrc = lib.fileset.toSource {
     root = ../runtime;
-    fileset = ../runtime;
+    fileset = lib.fileset.difference ../runtime (
+      lib.fileset.fileFilter (file: lib.hasSuffix "_spec.lua" file.name) ../runtime
+    );
   };
 
   # This is the generated `&packpath` directory for all plugins.
