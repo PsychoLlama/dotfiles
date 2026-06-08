@@ -52,7 +52,10 @@ describe('core.env._permission', function()
       local ask = stub(permission, 'ask')
       local update = stub(memory, 'update_permission')
 
-      assert.are.equal('allow', permission.check_memory_or_ask('/foo', {}))
+      assert.are.equal(
+        'allow',
+        permission.check_memory_or_ask('/foo/vimrc', {})
+      )
       assert.stub(ask).was.not_called()
       assert.stub(update).was.not_called()
     end)
@@ -61,16 +64,30 @@ describe('core.env._permission', function()
       stub(memory, 'get_permission').returns('deny')
       local ask = stub(permission, 'ask')
 
-      assert.are.equal('deny', permission.check_memory_or_ask('/foo', {}))
+      assert.are.equal(
+        'deny',
+        permission.check_memory_or_ask('/foo/vimrc', {})
+      )
       assert.stub(ask).was.not_called()
     end)
 
-    it('asks and remembers the answer when unknown', function()
+    it('resolves permission against the containing directory', function()
+      local get = stub(memory, 'get_permission').returns('allow')
+
+      permission.check_memory_or_ask('/foo/vimrc', {})
+
+      assert.stub(get).was.called_with('/foo')
+    end)
+
+    it('asks and remembers the answer against the directory', function()
       stub(memory, 'get_permission').returns('unknown')
       stub(permission, 'ask').returns('allow')
       local update = stub(memory, 'update_permission')
 
-      assert.are.equal('allow', permission.check_memory_or_ask('/foo', {}))
+      assert.are.equal(
+        'allow',
+        permission.check_memory_or_ask('/foo/vimrc', {})
+      )
       assert.stub(update).was.called_with('/foo', 'allow')
     end)
   end)

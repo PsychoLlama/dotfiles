@@ -38,20 +38,60 @@ function M.save(settings)
   file:close()
 end
 
---- Remember a permission for a file.
---- @param file_path string
+--- Iterate a path and each of its ancestor directories, nearest first.
+--- @param path string An absolute path.
+--- @return fun(): string|nil
+local function ancestors(path)
+  -- Normalize away trailing slashes and `.`/`..` segments so directory keys
+  -- compare consistently regardless of how the path was spelled.
+  local current = vim.fs.normalize(path)
+  local done = false
+
+  return function()
+    if done then
+      return nil
+    end
+
+    local result = current
+    local parent = vim.fs.dirname(current)
+
+    -- `dirname` is idempotent at the filesystem root; stop once it stops
+    -- climbing to avoid looping forever.
+    if parent == current then
+      done = true
+    else
+      current = parent
+    end
+
+    return result
+  end
+end
+
+--- Remember a permission for a directory. Trust is granted to the directory
+--- containing a vimrc, so worktrees and other files beneath it inherit it.
+--- @param dir string The directory to trust or block.
 --- @param permission core.env.Permission
-function M.update_permission(file_path, permission)
+function M.update_permission(dir, permission)
   local settings = M.load()
-  settings[file_path] = permission
+  settings[vim.fs.normalize(dir)] = permission
   M.save(settings)
 end
 
---- Check if we've approved or denied this file before.
+--- Check whether a directory (or any ancestor) has a remembered permission.
+--- The nearest, most-specific ancestor wins, so a blocked subdirectory can
+--- override a trusted parent.
+--- @param dir string The directory to resolve a permission for.
 --- @return core.env.Permission
-function M.get_permission(file_path)
+function M.get_permission(dir)
   local settings = M.load()
-  return settings[file_path] or 'unknown'
+
+  for ancestor in ancestors(dir) do
+    if settings[ancestor] then
+      return settings[ancestor]
+    end
+  end
+
+  return 'unknown'
 end
 
 return M

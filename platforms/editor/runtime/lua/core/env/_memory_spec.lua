@@ -92,6 +92,15 @@ describe('core.env._memory', function()
         .stub(save).was
         .called_with({ ['/foo'] = 'allow', ['/bar'] = 'deny' })
     end)
+
+    it('normalizes the directory key', function()
+      stub(memory, 'load').returns({})
+      local save = stub(memory, 'save')
+
+      memory.update_permission('/foo/bar/', 'allow')
+
+      assert.stub(save).was.called_with({ ['/foo/bar'] = 'allow' })
+    end)
   end)
 
   describe('get_permission', function()
@@ -101,10 +110,31 @@ describe('core.env._memory', function()
       assert.are.equal('allow', memory.get_permission('/foo'))
     end)
 
-    it('returns "unknown" for files we have not seen', function()
+    it('returns "unknown" for directories we have not seen', function()
       stub(memory, 'load').returns({})
 
       assert.are.equal('unknown', memory.get_permission('/foo'))
+    end)
+
+    it('inherits a trusted ancestor directory', function()
+      stub(memory, 'load').returns({ ['/foo'] = 'allow' })
+
+      assert.are.equal('allow', memory.get_permission('/foo/bar/baz'))
+    end)
+
+    it('lets the nearest ancestor win over a farther one', function()
+      stub(memory, 'load').returns({
+        ['/foo'] = 'allow',
+        ['/foo/bar'] = 'deny',
+      })
+
+      assert.are.equal('deny', memory.get_permission('/foo/bar/baz'))
+    end)
+
+    it('does not leak trust to sibling directories', function()
+      stub(memory, 'load').returns({ ['/foo/bar'] = 'allow' })
+
+      assert.are.equal('unknown', memory.get_permission('/foo/other'))
     end)
   end)
 end)
