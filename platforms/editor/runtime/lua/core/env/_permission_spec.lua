@@ -8,10 +8,13 @@ describe('core.env._permission', function()
 
   before_each(function()
     snapshot = assert:snapshot()
+    -- Trusted prefixes are module-level state the snapshot won't revert.
+    permission.set_trusted_prefixes({})
   end)
 
   after_each(function()
     snapshot:revert()
+    permission.set_trusted_prefixes({})
   end)
 
   describe('ask', function()
@@ -89,6 +92,63 @@ describe('core.env._permission', function()
         permission.check_memory_or_ask('/foo/vimrc', {})
       )
       assert.stub(update).was.called_with('/foo', 'allow')
+    end)
+
+    it('allows a trusted prefix without asking or persisting', function()
+      permission.set_trusted_prefixes({ '/trusted' })
+      local get = stub(memory, 'get_permission')
+      local ask = stub(permission, 'ask')
+      local update = stub(memory, 'update_permission')
+
+      assert.are.equal(
+        'allow',
+        permission.check_memory_or_ask('/trusted/repo/vimrc', {})
+      )
+      assert.stub(get).was.not_called()
+      assert.stub(ask).was.not_called()
+      assert.stub(update).was.not_called()
+    end)
+
+    it('falls back to memory outside trusted prefixes', function()
+      permission.set_trusted_prefixes({ '/trusted' })
+      stub(memory, 'get_permission').returns('unknown')
+      local ask = stub(permission, 'ask').returns('deny')
+
+      assert.are.equal(
+        'deny',
+        permission.check_memory_or_ask('/elsewhere/vimrc', {})
+      )
+      assert.stub(ask).was.called()
+    end)
+  end)
+
+  describe('is_trusted_prefix', function()
+    it('matches the prefix directory itself', function()
+      permission.set_trusted_prefixes({ '/projects' })
+
+      assert.is_true(permission.is_trusted_prefix('/projects'))
+    end)
+
+    it('matches directories beneath the prefix', function()
+      permission.set_trusted_prefixes({ '/projects' })
+
+      assert.is_true(permission.is_trusted_prefix('/projects/app/worktree'))
+    end)
+
+    it('does not match siblings sharing a name prefix', function()
+      permission.set_trusted_prefixes({ '/projects' })
+
+      assert.is_false(permission.is_trusted_prefix('/projects-archive'))
+    end)
+
+    it('returns false when no prefixes are configured', function()
+      assert.is_false(permission.is_trusted_prefix('/projects/app'))
+    end)
+
+    it('normalizes prefixes so trailing slashes still match', function()
+      permission.set_trusted_prefixes({ '/projects/' })
+
+      assert.is_true(permission.is_trusted_prefix('/projects/app'))
     end)
   end)
 end)

@@ -73,6 +73,7 @@ in
           lua << CORE_FRAMEWORK
           require('core.pkg._loader').set_manifest(${lua config.core.manifest})
           require('core.lsp').setup(${lua config.core.lsp.servers})
+          require('core.env').setup(${lua { trusted_prefixes = config.env.trusted; }})
           CORE_FRAMEWORK
 
           source ${configFile}

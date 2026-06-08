@@ -15,6 +15,24 @@ describe('core.env', function()
     snapshot:revert()
   end)
 
+  describe('setup', function()
+    it('forwards trusted prefixes to the permission layer', function()
+      local set = stub(permission, 'set_trusted_prefixes')
+
+      env.setup({ trusted_prefixes = { '/projects' } })
+
+      assert.stub(set).was.called_with({ '/projects' })
+    end)
+
+    it('defaults to an empty prefix list', function()
+      local set = stub(permission, 'set_trusted_prefixes')
+
+      env.setup()
+
+      assert.stub(set).was.called_with({})
+    end)
+  end)
+
   describe('source_direnv_vimrc', function()
     it('does nothing when the env var is unset', function()
       stub(os, 'getenv').returns(nil)

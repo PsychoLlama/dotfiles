@@ -9,6 +9,17 @@ local permission = require('core.env._permission')
 
 local M = {}
 
+--- @class core.env.SetupOptions
+--- @field trusted_prefixes nil|string[] Directories trusted without prompting.
+---
+--- Apply configuration injected from Nix at startup. Safe to call with no
+--- options; it just resets to defaults.
+--- @param opts nil|core.env.SetupOptions
+function M.setup(opts)
+  opts = opts or {}
+  permission.set_trusted_prefixes(opts.trusted_prefixes or {})
+end
+
 --- Check for a direnv vimrc and if it exists, source the file it points to.
 function M.source_direnv_vimrc()
   local env_var = 'DIRENV_EXTRA_VIMRC'
