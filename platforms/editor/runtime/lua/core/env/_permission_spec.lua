@@ -112,6 +112,7 @@ describe('core.env._permission', function()
     it('falls back to memory outside trusted prefixes', function()
       permission.set_trusted_prefixes({ '/trusted' })
       stub(memory, 'get_permission').returns('unknown')
+      stub(memory, 'update_permission')
       local ask = stub(permission, 'ask').returns('deny')
 
       assert.are.equal(
