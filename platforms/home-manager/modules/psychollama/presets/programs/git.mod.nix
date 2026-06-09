@@ -24,7 +24,8 @@ in
       h = "git diff HEAD --staged";
       hh = "git diff HEAD~1";
       gd = "git diff";
-      ga = "git add --all";
+      ga = "git add --intent-to-add .";
+      gaa = "git add --all";
       gr = "git reset";
       grr = "git reset --hard HEAD";
       grrr = "git reset --hard HEAD~1";
