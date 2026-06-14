@@ -21,7 +21,6 @@ vim.opt.winborder = 'rounded'
 vim.opt.winblend = 0
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-vim.opt.mouse = ''
 vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
 -- Display settings
