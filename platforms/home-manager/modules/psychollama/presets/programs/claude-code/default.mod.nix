@@ -33,7 +33,6 @@ in
         - Nix is installed with `nix-command flakes` enabled.
         - Prefer the `nix` command (`nix build` over `nix-build`, `nix shell` over `nix-shell`, etc).
         - Prefer `fd` over `find`.
-        - Prefer `rg` over `grep`.
 
         # Commit Messages
 
