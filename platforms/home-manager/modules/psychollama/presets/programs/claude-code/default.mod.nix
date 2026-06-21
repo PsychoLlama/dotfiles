@@ -7,6 +7,11 @@
 
 let
   cfg = config.psychollama.presets.programs.claude-code;
+
+  # Claude Code needs absolute prefixes; expand a leading `~` to the home dir.
+  toAbsolute =
+    dir:
+    if lib.hasPrefix "~/" dir then "${config.home.homeDirectory}/${lib.removePrefix "~/" dir}" else dir;
 in
 
 {
@@ -113,12 +118,7 @@ in
         permissions = {
           defaultMode = "auto";
 
-          additionalDirectories = [
-            "${config.home.homeDirectory}/projects/psychollama"
-            "${config.home.homeDirectory}/projects/@learn"
-            "${config.home.homeDirectory}/projects/retreon"
-            "${config.home.homeDirectory}/projects/ambient-computer"
-          ];
+          additionalDirectories = map toAbsolute config.psychollama.trusted-directories;
         };
       };
     };

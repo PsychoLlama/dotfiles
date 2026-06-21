@@ -97,6 +97,13 @@ in
         email = "JesseTheGibson@gmail.com";
       };
 
+      trusted-directories = [
+        "~/projects/psychollama"
+        "~/projects/@learn"
+        "~/projects/retreon"
+        "~/projects/ambient-computer"
+      ];
+
       profiles = {
         full.enable = true;
         home-lab-admin.enable = true;

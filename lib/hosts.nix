@@ -95,6 +95,13 @@ let
           modules = [
             self.nixosModules.editor-platform
             self.nixosModules.editor-configs
+            self.nixosModules.universal-platform
+
+            {
+              # Inherit trusted directories from the home-manager platform; the
+              # editor's own namespace derives `env.trusted` from them.
+              psychollama.trusted-directories = lib.mkDefault config.psychollama.trusted-directories;
+            }
           ];
         };
       };
@@ -115,8 +122,7 @@ let
           agenix.homeManagerModules.default
           self.nixosModules.home-manager-platform
           self.nixosModules.home-manager-configs
-          self.nixosModules.identity
-          self.nixosModules.theme
+          self.nixosModules.universal-platform
           editor-program
 
           {
@@ -128,6 +134,9 @@ let
 
             # Inherit identity from host platform.
             psychollama.identity = lib.mapAttrs (_: lib.mkDefault) config.psychollama.identity;
+
+            # Inherit trusted directories from host platform.
+            psychollama.trusted-directories = lib.mkDefault config.psychollama.trusted-directories;
           }
         ];
       };
@@ -144,8 +153,7 @@ in
         home-manager.nixosModules.home-manager
         self.nixosModules.nixos-platform
         self.nixosModules.nixos-configs
-        self.nixosModules.identity
-        self.nixosModules.theme
+        self.nixosModules.universal-platform
 
         nixpkgs-config
         nix-flakes

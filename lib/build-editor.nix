@@ -22,6 +22,7 @@ let
     modules = modules ++ [
       { _module.args.pkgs = pkgs; }
       self.nixosModules.editor-platform
+      self.nixosModules.universal-platform
     ];
   };
 in

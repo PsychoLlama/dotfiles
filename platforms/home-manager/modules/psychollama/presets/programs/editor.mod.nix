@@ -27,15 +27,6 @@ in
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.neovim;
       psychollama.profiles.full.enable = true;
-
-      # Repos I own and clone here; trust their project-local vimrcs (and any
-      # worktrees beneath them) without prompting.
-      env.trusted = [
-        "~/projects/psychollama"
-        "~/projects/@learn"
-        "~/projects/retreon"
-        "~/projects/ambient-computer"
-      ];
     };
   };
 }

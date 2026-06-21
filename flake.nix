@@ -84,8 +84,11 @@
       };
 
       nixosModules = {
-        identity = import ./platforms/universal/modules/identity.nix;
-        theme = import ./platforms/universal/modules/theme.nix;
+        universal-platform = {
+          imports = lib.dotfiles.discoverNixFiles {
+            directory = ./platforms/universal/modules;
+          };
+        };
 
         editor-platform = {
           imports = lib.dotfiles.discoverNixFiles {

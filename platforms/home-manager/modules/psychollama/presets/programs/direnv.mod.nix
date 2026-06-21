@@ -7,6 +7,11 @@
 
 let
   cfg = config.psychollama.presets.programs.direnv;
+
+  # direnv needs absolute prefixes; expand a leading `~` to the home directory.
+  toAbsolute =
+    dir:
+    if lib.hasPrefix "~/" dir then "${config.home.homeDirectory}/${lib.removePrefix "~/" dir}" else dir;
 in
 
 {
@@ -17,12 +22,7 @@ in
     config = {
       global.hide_env_diff = true;
 
-      whitelist.prefix = [
-        "${config.home.homeDirectory}/projects/psychollama"
-        "${config.home.homeDirectory}/projects/@learn"
-        "${config.home.homeDirectory}/projects/retreon"
-        "${config.home.homeDirectory}/projects/ambient-computer"
-      ];
+      whitelist.prefix = map toAbsolute config.psychollama.trusted-directories;
     };
   };
 
