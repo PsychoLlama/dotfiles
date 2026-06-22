@@ -123,6 +123,6 @@ def 'wallpaper set' [image: path] {
 }
 
 # Custom libraries
-use dotfiles/repo *
+use dotfiles/project *
 use dotfiles/swizzle *
 use dotfiles/x *

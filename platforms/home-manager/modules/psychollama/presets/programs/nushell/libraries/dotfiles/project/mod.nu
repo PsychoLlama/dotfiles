@@ -2,16 +2,16 @@
 
 # Show module help.
 export def 'main' [] {
-  help modules repo
+  help modules project
 }
 
 # Clone a GitHub project or open it if it already exists.
-export def --env 'repo open' [
+export def --env 'project open' [
   # A repository owner/project shorthand. Defaults to GitHub.
-  project_id: string@'nu-complete-repos'
+  project_id: string@'nu-complete-projects'
 ] {
-  let project = repo parse $project_id
-  let clone_destination = repo path $project
+  let project = project parse $project_id
+  let clone_destination = project path $project
 
   if not ($clone_destination | path exists) {
     git clone $project.uri $clone_destination
@@ -21,18 +21,18 @@ export def --env 'repo open' [
 }
 
 # Determine where a project should exist on disk.
-export def 'repo path' [
+export def 'project path' [
   project: record
 ] {
   [
-    (repo root | path expand)
+    (project root | path expand)
     ($project.owner | str downcase)
     $project.repo
   ] | path join
 }
 
 # Get the root directory of all projects.
-export def 'repo root' [
+export def 'project root' [
   suggested_root?: string
 ] {
   $suggested_root
@@ -41,8 +41,8 @@ export def 'repo root' [
     | path expand
 }
 
-# Parse a repo address and return metadata.
-export def 'repo parse' [
+# Parse a project address and return metadata.
+export def 'project parse' [
   project_id: string
 ] {
   # "https://github.com/github/docs/blob/main/file"
@@ -78,8 +78,8 @@ export def 'repo parse' [
 }
 
 # List all projects.
-export def 'repo list' [] {
-  fd . --type d --max-depth 2 --min-depth 2 (repo root)
+export def 'project list' [] {
+  fd . --type d --max-depth 2 --min-depth 2 (project root)
     | lines
     | each {
       path split
@@ -88,6 +88,6 @@ export def 'repo list' [] {
     }
 }
 
-def 'nu-complete-repos' [] {
-  repo list | each { $"($in.owner)/($in.repo)" }
+def 'nu-complete-projects' [] {
+  project list | each { $"($in.owner)/($in.repo)" }
 }

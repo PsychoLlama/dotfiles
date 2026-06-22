@@ -27,6 +27,8 @@ in
         path = [ ./libraries ];
       };
 
+      abbreviations.p = "project";
+
       # Use the default aliases, except for `ls` overrides. Nushell has
       # a great `ls` replacement.
       shellAliases = lib.filterAttrs (key: value: key != "l" && key != "ls") config.home.shellAliases // {
