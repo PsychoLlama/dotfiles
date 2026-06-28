@@ -112,6 +112,8 @@ in
           symlinkDirectories = [
             ".claude/settings.local.json"
             ".direnv"
+            ".envrc"
+            ".vimrc.lua"
           ];
         };
 
