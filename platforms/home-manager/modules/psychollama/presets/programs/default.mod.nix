@@ -51,7 +51,6 @@ in
     (mkUnstablePreset "playerctl")
     (mkUnstablePreset "python3")
     (mkUnstablePreset "slurp")
-    (mkUnstablePreset "somo")
     (mkUnstablePreset "starship")
     (mkUnstablePreset "swaylock")
     (mkUnstablePreset "termshark")
