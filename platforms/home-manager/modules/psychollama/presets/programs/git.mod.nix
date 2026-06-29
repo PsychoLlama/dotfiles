@@ -39,6 +39,8 @@ in
 
       alias = {
         l = "log -1000 --format='%Cgreen%h%Creset: %an (%C(yellow)%ar%Creset)%n%s%n%n%b'";
+        c = "commit";
+        review = ''!git diff "$(git merge-base --fork-point origin/HEAD).."'';
         f = "fetch origin";
         p = "push --set-upstream origin";
         pf = "push --force-with-lease";
