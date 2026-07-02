@@ -42,7 +42,6 @@ in
         c = "commit";
         review = ''!git diff "$(git merge-base --fork-point origin/HEAD)"'';
         f = "fetch origin";
-        p = "push --set-upstream origin";
         pf = "push --force-with-lease";
         s = "stash";
         ss = "stash push --staged --message";
