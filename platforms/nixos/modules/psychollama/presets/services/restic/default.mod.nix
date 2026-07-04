@@ -30,7 +30,7 @@ in
         homeDirectory
         "${homeDirectory}/projects/psychollama"
         "${homeDirectory}/projects/taylor1791"
-        "${homeDirectory}/projects/@learn"
+        "${homeDirectory}/projects/@scratch"
       ];
 
       exclude = [

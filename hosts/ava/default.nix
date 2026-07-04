@@ -99,7 +99,7 @@ in
 
       trusted-directories = [
         "~/projects/psychollama"
-        "~/projects/@learn"
+        "~/projects/@scratch"
         "~/projects/retreon"
         "~/projects/ambient-computer"
       ];
