@@ -29,17 +29,25 @@ $env.PROMPT_INDICATOR_VI_INSERT = { || "" }
 $env.PROMPT_INDICATOR_VI_NORMAL = { || "" }
 $env.PROMPT_MULTILINE_INDICATOR = { || "" }
 
-# Auto-navigate new tmux sessions to the zoxide-resolved directory matching
-# the session name. Only the first shell in a fresh session sees one pane.
+# Configure new tmux sessions from their first shell. Only the first shell in a
+# fresh session sees a single pane.
 if ($env.TMUX? | is-not-empty) {
   let pane_count = tmux list-panes -s -F '#{pane_id}' | lines | length
   let session = tmux display -p '#{session_name}'
 
-  # Skip tmux's default numeric session names.
-  if $pane_count == 1 and not ($session =~ '^\d+$') {
-    let target = do --ignore-errors { zoxide query $session | str trim }
-    if ($target | is-not-empty) {
-      cd $target
+  if $pane_count == 1 {
+    # Name the first window consistently. This also disables tmux's automatic
+    # renaming for the window.
+    tmux rename-window main
+
+    # Auto-navigate to the zoxide-resolved directory matching the session name,
+    # skipping tmux's default numeric session names. `complete` captures
+    # zoxide's "no match found" warning instead of leaking it to the terminal.
+    if not ($session =~ '^\d+$') {
+      let match = zoxide query $session | complete
+      if $match.exit_code == 0 {
+        cd ($match.stdout | str trim)
+      }
     }
   }
 }
