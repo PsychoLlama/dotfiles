@@ -80,7 +80,6 @@ in
       core = {
         editor = "nvim";
         untrackedCache = true;
-        pager = "less -R -+F -+X";
       };
 
       index.skipHash = true;
