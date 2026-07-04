@@ -1,0 +1,7 @@
+[formatter.stylua]
+command = "stylua"
+includes = ["*.lua"]
+
+[formatter.nix]
+command = "nixfmt"
+includes = ["*.nix"]

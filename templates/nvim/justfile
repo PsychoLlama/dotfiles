@@ -1,6 +1,14 @@
 _:
   just --list
 
+# Format all code.
+fmt:
+  treefmt
+
+# Check formatting.
+fmt-check:
+  treefmt --ci
+
 # Run luacheck on all Lua files.
 lint:
   luacheck lua
