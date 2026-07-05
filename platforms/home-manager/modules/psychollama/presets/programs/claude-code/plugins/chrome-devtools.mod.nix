@@ -32,7 +32,6 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.claude-code.localPlugins.chrome-devtools = {
-      enable = lib.mkDefault false;
       description = "Chrome DevTools MCP server for Claude Code.";
       mcp.servers.chrome-devtools.command = lib.getExe wrapper;
     };

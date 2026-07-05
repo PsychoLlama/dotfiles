@@ -12,10 +12,10 @@ in
 
 {
   options.psychollama.presets.programs.claude-code.plugins.typescript-lsp = {
+    package = lib.mkPackageOption pkgs.unstable "typescript-language-server" { };
     enable = lib.mkEnableOption "TypeScript LSP for Claude Code" // {
       default = true;
     };
-    package = lib.mkPackageOption pkgs.unstable "typescript-language-server" { };
   };
 
   config = lib.mkIf cfg.enable {

@@ -88,7 +88,7 @@ in
           options = {
             enable = lib.mkOption {
               type = lib.types.bool;
-              default = true;
+              default = false;
               description = ''
                 Default enablement for this plugin. Every plugin is published
                 to the marketplace and provisioned in settings.json regardless;
