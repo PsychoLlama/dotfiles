@@ -15,7 +15,6 @@ let
 
   extraVimPlugins = mapToVimPlugins {
     "deja-view.vim" = inputs.deja-view-vim;
-    "navitron.nvim" = inputs.navitron-nvim;
     "teleport.vim" = inputs.teleport-vim;
   };
 in
@@ -27,5 +26,6 @@ in
     // {
       "lab-nvim" = prev.callPackage ../../pkgs/lab.nvim { };
       "alternaut-nvim" = inputs.alternaut-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
+      "navitron-nvim" = inputs.navitron-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
     };
 }

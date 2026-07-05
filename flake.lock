@@ -37,11 +37,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769956255,
-        "narHash": "sha256-Pn7bYT2QTIC+2nuJlH+p66FtBeGNvTynN57VoxKsLsU=",
+        "lastModified": 1783193791,
+        "narHash": "sha256-KqiYDIYfYtTPKvNRv0EmDLgePB+Oh+xkFkhVMhB3Knw=",
         "owner": "PsychoLlama",
         "repo": "alternaut.nvim",
-        "rev": "580780c91db351208a25baba221ad9e3794786a8",
+        "rev": "702faa97cbfc455ebbcf9bbd6c28870458eef1d1",
         "type": "github"
       },
       "original": {
@@ -110,13 +110,20 @@
       }
     },
     "navitron-nvim": {
-      "flake": false,
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
       "locked": {
-        "lastModified": 1764454959,
-        "narHash": "sha256-0vupdtD9EXvPqOOOe60WkjSyOnRhl9s3V7N+IFYWZr4=",
+        "lastModified": 1783211526,
+        "narHash": "sha256-Awn3Fn1Lq7r9mp8Pi4Pywioq/FtSuUJBUVL2iK1yA6Q=",
         "owner": "PsychoLlama",
         "repo": "navitron.nvim",
-        "rev": "d71dd34c20da55b8cc652d9b3535194891208598",
+        "rev": "97aeccca93ae9cda06119b5f3b43411c0f042d98",
         "type": "github"
       },
       "original": {

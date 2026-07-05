@@ -26,7 +26,10 @@
 
     navitron-nvim = {
       url = "github:PsychoLlama/navitron.nvim";
-      flake = false;
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
     };
 
     deja-view-vim = {
