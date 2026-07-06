@@ -23,9 +23,11 @@ def term-width []: nothing -> int {
 }
 
 # A rate-limit segment: dim label, value colored by how much is consumed.
+# `used_percentage` arrives as a float (e.g. 57.99999999999), so round it for display.
 def rate-limit [label: string, percentage]: nothing -> string {
   let color = if $percentage >= 80 { ansi red } else if $percentage >= 50 { ansi yellow } else { ansi attr_dimmed }
-  $"(ansi attr_dimmed)($label): ($color)($percentage)%(ansi reset)"
+  let rounded = ($percentage | math round)
+  $"(ansi attr_dimmed)($label): ($color)($rounded)%(ansi reset)"
 }
 
 # Left group: context usage + session cost.
