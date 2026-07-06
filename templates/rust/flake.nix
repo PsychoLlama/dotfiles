@@ -39,8 +39,14 @@
         system: pkgs: {
           default = pkgs.mkShell {
             packages = [
-              pkgs.fenix.stable.defaultToolchain
-              pkgs.fenix.stable.rust-analyzer
+              (pkgs.fenix.stable.withComponents [
+                "cargo"
+                "clippy"
+                "rust-analyzer"
+                "rust-src"
+                "rustc"
+                "rustfmt"
+              ])
             ];
           };
         }
