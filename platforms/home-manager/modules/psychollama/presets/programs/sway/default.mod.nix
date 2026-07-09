@@ -17,6 +17,12 @@ let
 
   # Laptop built-in keyboard. Find identifiers with `swaymsg -t get_inputs`.
   thinkpadKeyboard = "1:1:AT_Translated_Set_2_keyboard";
+
+  # Shared by window titles and the bar. Matches waybar's CSS font family.
+  font = {
+    names = [ "Fira Code" ];
+    size = 10.0;
+  };
 in
 
 {
@@ -31,6 +37,8 @@ in
     systemd.enable = true;
 
     config = rec {
+      fonts = font;
+
       modifier = "Mod4";
       terminal = wezterm;
       menu = fuzzel;
@@ -166,6 +174,7 @@ in
         {
           command = waybar;
           position = "top";
+          fonts = font;
         }
       ];
 
