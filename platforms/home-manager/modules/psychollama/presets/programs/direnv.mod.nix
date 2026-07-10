@@ -44,7 +44,8 @@ in
 
   config.programs.git = lib.mkIf cfg.enable {
     ignores = [
-      ".direnv/"
+      # No trailing slash so it also matches the bare symlink worktrees use.
+      ".direnv"
       ".envrc"
     ];
   };
