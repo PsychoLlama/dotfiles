@@ -29,4 +29,27 @@ describe('note.utils', function()
       )
     end)
   end)
+
+  describe('rename_filename', function()
+    it('keeps the timestamp prefix and extension, swaps the slug', function()
+      assert.are.equal(
+        '1699900000-new-title.md',
+        utils.rename_filename('1699900000-old-title.md', 'New Title')
+      )
+    end)
+
+    it('slugifies the new title', function()
+      assert.are.equal(
+        '1699900000-meeting--notes.md',
+        utils.rename_filename('1699900000-old.md', 'Meeting: Notes')
+      )
+    end)
+
+    it('falls back to no prefix when the name has none', function()
+      assert.are.equal(
+        'plain-note.md',
+        utils.rename_filename('whatever.md', 'Plain Note')
+      )
+    end)
+  end)
 end)

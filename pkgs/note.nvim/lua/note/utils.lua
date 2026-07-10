@@ -13,4 +13,16 @@ function M.normalize_title(title)
   return vim.fn.tolower(vim.fn.tr(title, ' :', '--'))
 end
 
+--- Swap the slug of a note filename for one derived from `new_title`, keeping
+--- the leading `<timestamp>-` prefix and the extension so the note's identity
+--- and sort order are preserved.
+--- @param basename string e.g. "1699900000-old-title.md"
+--- @param new_title string
+--- @return string
+function M.rename_filename(basename, new_title)
+  local prefix = basename:match('^(%d+%-)') or ''
+  local ext = basename:match('(%.[^.]+)$') or '.md'
+  return prefix .. M.normalize_title(new_title) .. ext
+end
+
 return M
