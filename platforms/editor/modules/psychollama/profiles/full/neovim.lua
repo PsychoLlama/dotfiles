@@ -102,11 +102,6 @@ end
 vim.keymap.set('n', '<c-w>v', open_split)
 vim.keymap.set('n', '<c-w><c-v>', open_split)
 
--- Zettelkaesten note-taking (note.nvim)
-require('note').setup({
-  slip_box = '~/attic/slip-box',
-})
-
 vim.api.nvim_create_autocmd('FileType', {
   group = vim.api.nvim_create_augroup('docs-page-settings', {}),
   pattern = { 'help', 'man' },

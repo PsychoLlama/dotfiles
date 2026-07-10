@@ -18,6 +18,10 @@ in
     package = pkgs.unstable.neovim;
     lsp.enable = lib.mkDefault true;
 
+    # note.nvim is configured through the manifest opts; its config hook
+    # (presets/plugins/note.lua) forwards these to `require('note').setup`.
+    plugins.note-nvim.opts.path = lib.mkDefault "~/attic/slip-box";
+
     psychollama.presets = {
       lsp.servers = {
         clangd.enable = lib.mkDefault true;
