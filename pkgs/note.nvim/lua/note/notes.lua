@@ -1,5 +1,5 @@
-local config = require('regal.config')
-local utils = require('regal.utils')
+local config = require('note.config')
+local utils = require('note.utils')
 
 local function open()
   vim.cmd.edit(vim.fn.fnameescape(config.slip_box))

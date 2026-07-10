@@ -25,6 +25,7 @@ in
     // extraVimPlugins
     // {
       "lab-nvim" = prev.callPackage ../../pkgs/lab.nvim { };
+      "note-nvim" = prev.callPackage ../../pkgs/note.nvim { };
       "alternaut-nvim" = inputs.alternaut-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
       "navitron-nvim" = inputs.navitron-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
     };

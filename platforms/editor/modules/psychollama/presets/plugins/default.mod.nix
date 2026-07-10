@@ -69,6 +69,7 @@ in
     })
 
     (mkPluginPreset "navitron-nvim" ./navitron.lua)
+    (mkPluginPreset "note-nvim" null)
     (mkPluginPreset "nvim-autopairs" ./autopairs.lua)
     (mkPluginPreset "nvim-cmp" ./nvim-cmp.lua)
     (mkPluginPreset "nvim-lint" ./nvim-lint/config.lua)

@@ -102,8 +102,8 @@ end
 vim.keymap.set('n', '<c-w>v', open_split)
 vim.keymap.set('n', '<c-w><c-v>', open_split)
 
--- Zettelkaesten (hasn't graduated to a real plugin yet)
-require('regal').setup({
+-- Zettelkaesten note-taking (note.nvim)
+require('note').setup({
   slip_box = '~/attic/slip-box',
 })
 

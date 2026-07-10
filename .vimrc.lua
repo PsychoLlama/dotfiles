@@ -6,3 +6,10 @@ require('core.pkg').override('lab.nvim', function(plugin)
     type = 'path',
   })
 end)
+
+require('core.pkg').override('note.nvim', function(plugin)
+  return vim.tbl_extend('force', plugin or {}, {
+    source = vim.fs.joinpath(repo, 'pkgs/note.nvim'),
+    type = 'path',
+  })
+end)
