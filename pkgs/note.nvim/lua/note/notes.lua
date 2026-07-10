@@ -1,4 +1,5 @@
 local config = require('note.config')
+local frontmatter = require('note.frontmatter')
 local utils = require('note.utils')
 
 local M = {}
@@ -28,7 +29,7 @@ function M.create()
 
   -- Deferred one tick to allow the notebook to render.
   vim.schedule(function()
-    vim.ui.input({ prompt = 'Title: ' }, function(title)
+    vim.ui.input({ prompt = 'Note Title: ' }, function(title)
       if title == nil or vim.trim(title) == '' then
         return
       end
@@ -42,14 +43,12 @@ function M.create()
         .. '.md'
       local filepath = vim.fs.joinpath(conf.path, filename)
 
-      vim.fn.writefile({
-        '---',
-        'title: ' .. title,
-        'createdAt: ' .. iso_8601,
-        '---',
-        '',
-        '',
-      }, filepath)
+      local contents = frontmatter.generate({
+        title = title,
+        createdAt = iso_8601,
+      })
+      vim.list_extend(contents, { '', '' })
+      vim.fn.writefile(contents, filepath)
 
       vim.cmd.edit(filepath)
       utils.go_to_last_line()
