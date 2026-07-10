@@ -28,7 +28,8 @@ lua-test-built:
   editor=$(nix build '.#editor' --no-link --print-out-paths)
   packdir=$(grep -oP "packpath\^=\K[^\"]+" "$editor/bin/nvim")
   lab_nvim=$(readlink -f "$packdir/pack/managed-by-nix/opt/lab.nvim")
-  PATH="$editor/bin:$PATH" vusted --lpath="$lab_nvim/lua/?.lua;$lab_nvim/lua/?/init.lua" pkgs platforms
+  note_nvim=$(readlink -f "$packdir/pack/managed-by-nix/opt/note.nvim")
+  PATH="$editor/bin:$PATH" vusted --lpath="$lab_nvim/lua/?.lua;$lab_nvim/lua/?/init.lua;$note_nvim/lua/?.lua;$note_nvim/lua/?/init.lua" pkgs platforms
 
 # Check that all files are formatted.
 fmt-check:

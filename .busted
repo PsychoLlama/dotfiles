@@ -1,5 +1,5 @@
 return {
   _all = {
-    lpath = "pkgs/lab.nvim/lua/?.lua;pkgs/lab.nvim/lua/?/init.lua;platforms/editor/runtime/lua/?.lua;platforms/editor/runtime/lua/?/init.lua",
+    lpath = "pkgs/lab.nvim/lua/?.lua;pkgs/lab.nvim/lua/?/init.lua;pkgs/note.nvim/lua/?.lua;pkgs/note.nvim/lua/?/init.lua;platforms/editor/runtime/lua/?.lua;platforms/editor/runtime/lua/?/init.lua",
   },
 }

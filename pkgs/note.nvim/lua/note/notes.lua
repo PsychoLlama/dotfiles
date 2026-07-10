@@ -1,16 +1,30 @@
 local config = require('note.config')
 local utils = require('note.utils')
 
-local function open()
-  vim.cmd.edit(vim.fn.fnameescape(config.slip_box))
+local M = {}
 
-  -- Natural sort puts the newest notes at the obttom.
+--- Open the slip box notebook with the cursor on the newest note.
+function M.open()
+  local conf = config.get()
+  if not conf then
+    return
+  end
+
+  vim.cmd.edit(vim.fn.fnameescape(conf.path))
+
+  -- Natural sort puts the newest notes at the bottom.
   utils.go_to_last_line()
 end
 
-local function create()
+--- Prompt for a title, then create and open a new note in the slip box.
+function M.create()
+  local conf = config.get()
+  if not conf then
+    return
+  end
+
   -- Start with an open notebook.
-  open()
+  M.open()
 
   -- Deferred one tick to allow the notebook to render.
   vim.schedule(function()
@@ -26,7 +40,7 @@ local function create()
         .. '-'
         .. utils.normalize_title(title)
         .. '.md'
-      local filepath = vim.fs.joinpath(config.slip_box, filename)
+      local filepath = vim.fs.joinpath(conf.path, filename)
 
       vim.fn.writefile({
         '---',
@@ -45,7 +59,4 @@ local function create()
   end)
 end
 
-return {
-  open = open,
-  create = create,
-}
+return M
