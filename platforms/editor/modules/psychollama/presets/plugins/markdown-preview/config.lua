@@ -1,5 +1,5 @@
 return function()
-  vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>MarkdownPreview<cr>', {
+  vim.api.nvim_set_keymap('n', '<leader>mp', '<cmd>MarkdownPreview<cr>', {
     noremap = true,
     silent = true,
     desc = 'Preview Markdown',
