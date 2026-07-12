@@ -43,7 +43,7 @@ in
     (mkPluginPreset "cmp-nvim-lsp" null)
     (mkPluginPreset "cmp-path" null)
     (mkPluginPreset "conform-nvim" ./conform/config.lua)
-    (mkPluginPreset "deja-view-vim" null)
+    (mkPluginPreset "deja-view-nvim" null)
     (mkPluginPreset "lab-nvim" null)
     (mkPluginPreset "fzf-vim" null)
     (mkPluginPreset "gitlinker-nvim" ./gitlinker.lua)

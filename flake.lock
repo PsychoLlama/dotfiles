@@ -72,19 +72,26 @@
         "type": "github"
       }
     },
-    "deja-view-vim": {
-      "flake": false,
+    "deja-view-nvim": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
       "locked": {
-        "lastModified": 1696690077,
-        "narHash": "sha256-+t0/39wRcWRz66YUmPRomY5JQX3YiG+7NlyPHniMDiY=",
+        "lastModified": 1783893228,
+        "narHash": "sha256-s+nhngh5ujECpXvEVaM3CCBE0jJhVt5vkl/VgqC6PZE=",
         "owner": "PsychoLlama",
-        "repo": "deja-view.vim",
-        "rev": "c34e647ddf439c7691253979c25e95109a8841e8",
+        "repo": "deja-view.nvim",
+        "rev": "b995f83bb4116287e7a556bb5b77e40e9893250e",
         "type": "github"
       },
       "original": {
         "owner": "PsychoLlama",
-        "repo": "deja-view.vim",
+        "repo": "deja-view.nvim",
         "type": "github"
       }
     },
@@ -188,7 +195,7 @@
       "inputs": {
         "agenix": "agenix",
         "alternaut-nvim": "alternaut-nvim",
-        "deja-view-vim": "deja-view-vim",
+        "deja-view-nvim": "deja-view-nvim",
         "home-manager": "home-manager",
         "navitron-nvim": "navitron-nvim",
         "nixos-hardware": "nixos-hardware",

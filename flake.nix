@@ -32,9 +32,12 @@
       };
     };
 
-    deja-view-vim = {
-      url = "github:PsychoLlama/deja-view.vim";
-      flake = false;
+    deja-view-nvim = {
+      url = "github:PsychoLlama/deja-view.nvim";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
     };
 
     teleport-vim = {
