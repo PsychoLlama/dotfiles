@@ -15,6 +15,8 @@ let
 
   localInstructionsHook = pkgs.callPackage ./hooks/local-instructions.nix { };
 
+  autoFormatHook = pkgs.callPackage ./hooks/auto-format.nix { };
+
   # A `hooks.SessionStart` matcher group that runs one command hook.
   commandHook = command: {
     hooks = [
@@ -63,6 +65,11 @@ let
       ++ lib.optional (config.psychollama.trusted-directories != [ ]) (
         commandHook trustedDirectoriesHook
       );
+
+    # Format edited files after `apply_patch`, the way Claude Code's auto-format
+    # hook does. Codex surfaces `apply_patch` under the `Write`/`Edit` matcher
+    # aliases, so this matcher mirrors the Claude preset's.
+    hooks.PostToolUse = [ (commandHook autoFormatHook // { matcher = "Edit|Write"; }) ];
   };
 in
 
