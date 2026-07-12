@@ -6,6 +6,7 @@
 }:
 
 let
+  inherit (config.psychollama) agents;
   cfg = config.psychollama.presets.programs.claude-code;
 
   # Claude Code needs absolute prefixes; expand a leading `~` to the home dir.
@@ -32,32 +33,10 @@ in
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.unstable.custom.claude-code-bin;
 
-      context = ''
-        # Environment
-
-        - Nix is installed with `nix-command flakes` enabled.
-        - Prefer the `nix` command (`nix build` over `nix-build`, `nix shell` over `nix-shell`, etc).
-        - Prefer `fd` over `find`.
-
-        # Commit Messages
-
-        - Imperative title, descriptive body (markdown).
-        - Capture context not otherwise available (goal, failed approaches, decisions, etc).
-      '';
-
-      skills = {
+      # Shared stuff across all agent tools.
+      inherit (agents) rules context commands;
+      skills = agents.skills // {
         codex-review = ./skills/codex-review;
-        using-nix = ./skills/using-nix;
-      };
-
-      commands.repo-update = ./commands/repo-update.md;
-
-      rules = {
-        authoring-agent-files = ./rules/authoring-agent-files.md;
-        authoring-memory-files = ./rules/authoring-memory-files.md;
-        neovim-development = ./rules/neovim-development.md;
-        neovim-local-vimrc = ./rules/neovim-local-vimrc.md;
-        nushell-development = ./rules/nushell-development.md;
       };
 
       keybindings.Chat = {

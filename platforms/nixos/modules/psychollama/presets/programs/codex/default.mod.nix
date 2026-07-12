@@ -6,6 +6,7 @@
 }:
 
 let
+  inherit (config.psychollama) agents;
   cfg = config.psychollama.presets.programs.codex;
 
   trustedDirectoriesHook = pkgs.callPackage ./hooks/trusted-directories.nix {
@@ -45,6 +46,12 @@ let
 
     # Memories are a source of hidden, uncommitted behavior. Not a fan.
     features.memories = false;
+
+    # Poor-man's equivalent of `~/.claude/CLAUDE.md`.
+    #
+    # Codex has real support, but since this is a NixOS profile, we can't do
+    # per-user home files. Sad.
+    developer_instructions = agents.context;
 
     hooks.SessionStart =
       # Inject CLAUDE.local.md into context, the way Claude Code does.
