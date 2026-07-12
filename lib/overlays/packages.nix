@@ -1,8 +1,12 @@
 # Third-party packages built from source, plus overrides for broken upstreams.
 _: final: prev: {
-  chrome-devtools-mcp = final.callPackage ../../pkgs/chrome-devtools-mcp { };
-  claude-code-bin = final.callPackage ../../pkgs/claude-code-bin { };
-  codex-bin = final.callPackage ../../pkgs/codex-bin { };
+  # Custom packages live under their own namespace so they never shadow (or get
+  # shadowed by) upstream attributes on `pkgs.*`/`pkgs.unstable.*`.
+  custom = (prev.custom or { }) // {
+    chrome-devtools-mcp = final.callPackage ../../pkgs/chrome-devtools-mcp { };
+    claude-code-bin = final.callPackage ../../pkgs/claude-code-bin { };
+    codex-bin = final.callPackage ../../pkgs/codex-bin { };
+  };
 
   # The 4.10.0 server bundles open with a CommonJS `require("core-js/...")`
   # prelude but also contain an `import.meta` shim further down. Node's module

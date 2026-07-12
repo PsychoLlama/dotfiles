@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }:
 
@@ -25,7 +24,7 @@ let
       # Install the latest version of a vim plugin.
       options.psychollama.presets.plugins.${name} = {
         enable = lib.mkEnableOption "Install vimPlugins.${name}";
-        package = lib.mkPackageOption pkgs.unstable.vimPlugins name { };
+        package = lib.mkPackageOption config.plugin.pkgs name { };
       };
 
       config.plugins.${name} = lib.mkIf cfg.enable {

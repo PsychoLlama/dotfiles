@@ -103,7 +103,38 @@ let
     opts = { };
   });
 in
+
 {
+  options.plugin.sources = mkOption {
+    description = ''
+      Package sets searched, in order, when resolving a plugin package by name.
+      Later sets win on collision, so custom plugins can shadow upstream ones.
+      Merged into `plugin.pkgs`, which the by-name plugin defaults resolve
+      against. Append a set to make additional plugins resolvable by name.
+    '';
+
+    # Opaque attrsets, not `attrsOf package`: upstream `vimPlugins` carries
+    # throw-stub entries (e.g. `SpaceVim`) that per-value checking would force.
+    type = types.listOf types.attrs;
+    default = [
+      pkgs.unstable.vimPlugins
+      pkgs.unstable.custom.vimPlugins
+    ];
+
+    defaultText = lib.literalExpression "[ pkgs.unstable.vimPlugins pkgs.unstable.custom.vimPlugins ]";
+  };
+
+  options.plugin.pkgs = mkOption {
+    description = ''
+      Flattened view of `plugin.sources` used to resolve plugin packages by
+      name. Read-only; derived by merging the sources in order.
+    '';
+    type = types.attrs;
+    readOnly = true;
+    default = lib.mergeAttrsList config.plugin.sources;
+    defaultText = lib.literalExpression "lib.mergeAttrsList config.plugin.sources";
+  };
+
   options.plugins = mkOption {
     description = "Plugins to install indexed by name";
     type = types.attrsOf (
@@ -118,7 +149,7 @@ in
             };
 
             enable = mkEnableOption "Install ${name}";
-            package = lib.mkPackageOption pkgs.vimPlugins name { };
+            package = lib.mkPackageOption config.plugin.pkgs name { };
             extraConfig = mkOption {
               type = types.nullOr (types.either types.path types.lines);
               default = null;

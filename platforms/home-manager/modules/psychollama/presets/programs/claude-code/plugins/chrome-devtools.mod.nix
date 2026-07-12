@@ -18,7 +18,7 @@ let
         args=(${lib.optionalString pkgs.stdenv.isLinux "--executablePath ${chromiumExe}"})
       fi
 
-      exec ${lib.getExe pkgs.chrome-devtools-mcp} "''${args[@]}" "$@"
+      exec ${lib.getExe pkgs.custom.chrome-devtools-mcp} "''${args[@]}" "$@"
     '';
   };
 in

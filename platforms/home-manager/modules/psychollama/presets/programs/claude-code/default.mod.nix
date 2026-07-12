@@ -30,7 +30,7 @@ in
 
     programs.claude-code = {
       enable = lib.mkDefault true;
-      package = lib.mkDefault pkgs.unstable.claude-code-bin;
+      package = lib.mkDefault pkgs.unstable.custom.claude-code-bin;
 
       context = ''
         # Environment

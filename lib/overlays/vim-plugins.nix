@@ -20,13 +20,16 @@ let
 in
 
 {
-  vimPlugins =
-    prev.vimPlugins
-    // extraVimPlugins
-    // {
+  # Custom vim plugins live under `pkgs.custom.vimPlugins` rather than being
+  # merged into `pkgs.vimPlugins`. The editor platform merges them back into the
+  # by-name lookup via its `vimPlugins` option, so presets keep referencing them
+  # by name without polluting the upstream set.
+  custom = (prev.custom or { }) // {
+    vimPlugins = extraVimPlugins // {
       "lab-nvim" = prev.callPackage ../../pkgs/lab.nvim { };
       "note-nvim" = prev.callPackage ../../pkgs/note.nvim { };
       "alternaut-nvim" = inputs.alternaut-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
       "navitron-nvim" = inputs.navitron-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
     };
+  };
 }

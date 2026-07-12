@@ -179,7 +179,7 @@
             ];
           };
 
-          inherit (pkgs) chrome-devtools-mcp claude-code-bin codex;
+          inherit (pkgs.custom) chrome-devtools-mcp claude-code-bin codex-bin;
         }
       );
 
