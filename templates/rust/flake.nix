@@ -47,6 +47,9 @@
                 "rustc"
                 "rustfmt"
               ])
+              pkgs.nixfmt
+              pkgs.prettier
+              pkgs.treefmt
             ];
           };
         }

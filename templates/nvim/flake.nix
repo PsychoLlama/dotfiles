@@ -23,7 +23,8 @@
 
     {
       devShells = eachSystem (
-        system: pkgs: {
+        system: pkgs:
+        let
           default = pkgs.mkShell {
             packages = [
               pkgs.just
@@ -31,9 +32,18 @@
               pkgs.luajitPackages.luacheck
               pkgs.luajitPackages.vusted
               pkgs.nixfmt
+              pkgs.prettier
               pkgs.stylua
               pkgs.treefmt
             ];
+          };
+        in
+        {
+          inherit default;
+
+          ci = pkgs.mkShell {
+            inputsFrom = [ default ];
+            packages = [ pkgs.neovim ];
           };
         }
       );

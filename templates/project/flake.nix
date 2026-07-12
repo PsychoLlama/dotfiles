@@ -25,7 +25,11 @@
       devShells = eachSystem (
         system: pkgs: {
           default = pkgs.mkShell {
-            packages = [ ];
+            packages = [
+              pkgs.nixfmt
+              pkgs.prettier
+              pkgs.treefmt
+            ];
           };
         }
       );

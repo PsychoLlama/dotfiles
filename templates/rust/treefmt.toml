@@ -1,6 +1,6 @@
-[formatter.stylua]
-command = "stylua"
-includes = ["*.lua"]
+[formatter.rustfmt]
+command = "rustfmt"
+includes = ["*.rs"]
 
 [formatter.nix]
 command = "nixfmt"

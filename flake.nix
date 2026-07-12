@@ -153,9 +153,9 @@
           path = ./templates/project;
         };
 
-        js = {
-          description = "Flake environment for building JavaScript projects";
-          path = ./templates/js;
+        typescript = {
+          description = "Flake environment for building TypeScript projects";
+          path = ./templates/typescript;
         };
 
         rust = {

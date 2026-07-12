@@ -26,7 +26,6 @@
         system: pkgs: {
           default = pkgs.mkShell {
             packages = [
-              pkgs.just
               pkgs.nixfmt
               pkgs.nodejs
               pkgs.pnpm
