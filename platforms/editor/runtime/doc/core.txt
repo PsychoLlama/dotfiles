@@ -45,8 +45,8 @@ adding plugins, overriding sources, deferring loads -- then call
 
   pkg.load()
 <
-All manifest changes (`add`, `override`, `add_hook`) MUST happen before
-`load()`. After `load()` the manifest is frozen.
+All manifest changes (`add`, `override`, `remove`, `add_hook`) MUST happen
+before `load()`. After `load()` the manifest is frozen.
 
 ------------------------------------------------------------------------------
 ADD                                                           *core.pkg.add()*
@@ -82,6 +82,18 @@ This is the idiomatic way to point a bundled plugin at a local fork:
       source = repo,
     })
   end)
+<
+------------------------------------------------------------------------------
+REMOVE                                                     *core.pkg.remove()*
+
+`core.pkg.remove({name})`
+
+Drop a plugin from the manifest so it never loads. Matches `{name}` exactly and
+works on eager and deferred plugins alike; a no-op if nothing matches. Must be
+called before |core.pkg.load()|. The plugin stays in |core.pkg.list_bundled()|
+(nix still bundles it) but is absent from |core.pkg.list_active()|.
+>lua
+  require('core.pkg').remove('nvim-treesitter')
 <
 ------------------------------------------------------------------------------
 LOAD                                                         *core.pkg.load()*

@@ -44,7 +44,11 @@ local M = {}
 --- plugins before loading. Deferred plugins are registered but not loaded.
 --- @return core.pkg.Plugin[]
 function M.load()
-  local plugins = loader.get_eager_plugins()
+  -- Reshape a copy of the whole manifest -- eager and deferred alike -- so
+  -- every hook (add, override, remove) sees the same list. Copying leaves the
+  -- nix-provided manifest untouched for `list_bundled()` to report.
+  --- @type core.pkg.Plugin[]
+  local plugins = vim.list_extend({}, loader.get_manifest())
 
   for _, plugin_hook in ipairs(hooks) do
     plugins = plugin_hook(plugins) or plugins
@@ -63,9 +67,6 @@ function M.load()
 
   -- Idempotent operation. This ensures the standard libary evaluates first.
   load_plugin(stdlib)
-
-  -- Register manifest-declared deferred plugins (hook-added ones handled above)
-  loader.register_deferred()
 
   return loaded_plugins
 end
@@ -113,6 +114,19 @@ function M.override(name, replace)
     end
 
     return plugins
+  end)
+end
+
+--- Remove a plugin from the manifest by name. Must be called before `load()`.
+--- Works on eager and deferred plugins alike. No-op if the name isn't found.
+--- The plugin still appears in `list_bundled()` (it remains bundled), just
+--- never loads.
+--- @param name string Name of the plugin to remove.
+function M.remove(name)
+  M.add_hook(function(plugins)
+    return vim.tbl_filter(function(plugin)
+      return plugin.name ~= name
+    end, plugins)
   end)
 end
 

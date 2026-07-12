@@ -6,3 +6,4 @@ core.pkg.Plugin	core.txt	/*core.pkg.Plugin*
 core.pkg.add()	core.txt	/*core.pkg.add()*
 core.pkg.load()	core.txt	/*core.pkg.load()*
 core.pkg.override()	core.txt	/*core.pkg.override()*
+core.pkg.remove()	core.txt	/*core.pkg.remove()*
