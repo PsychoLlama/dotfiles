@@ -53,7 +53,6 @@ in
         nvim-autopairs.enable = lib.mkDefault true;
         nvim-cmp.enable = lib.mkDefault true;
         nvim-lint.enable = lib.mkDefault true;
-        nvim-luapad.enable = lib.mkDefault true;
         nvim-treesitter-textobjects = {
           enable = lib.mkDefault true;
 
@@ -69,7 +68,14 @@ in
             };
           };
         };
-        nvim-treesitter.enable = lib.mkDefault true;
+        nvim-treesitter = {
+          enable = lib.mkDefault true;
+
+          # Bundle every grammar. `withAllGrammars` keeps the `nvim-treesitter`
+          # pname, so this stays a single manifest entry rather than shadowing
+          # a grammar-less copy installed separately.
+          package = pkgs.unstable.vimPlugins.nvim-treesitter.withAllGrammars;
+        };
         onedarkpro-nvim.enable = lib.mkDefault true;
         snacks-nvim.enable = lib.mkDefault true;
         teleport-vim.enable = lib.mkDefault true;
@@ -82,10 +88,6 @@ in
         vim-surround.enable = lib.mkDefault true;
       };
     };
-
-    extraPlugins = [
-      pkgs.unstable.vimPlugins.nvim-treesitter.withAllGrammars
-    ];
 
     extraConfig = ''
       -- Set mapleader before loading plugins so deferred keymaps expand correctly.
