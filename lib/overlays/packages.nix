@@ -2,7 +2,7 @@
 _: final: prev: {
   chrome-devtools-mcp = final.callPackage ../../pkgs/chrome-devtools-mcp { };
   claude-code-bin = final.callPackage ../../pkgs/claude-code-bin { };
-  codex = final.callPackage ../../pkgs/codex { };
+  codex-bin = final.callPackage ../../pkgs/codex-bin { };
 
   # The 4.10.0 server bundles open with a CommonJS `require("core-js/...")`
   # prelude but also contain an `import.meta` shim further down. Node's module

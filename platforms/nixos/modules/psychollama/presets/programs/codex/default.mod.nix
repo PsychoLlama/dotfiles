@@ -65,8 +65,8 @@ in
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = pkgs.unstable.codex;
-      defaultText = lib.literalExpression "pkgs.unstable.codex";
+      default = pkgs.unstable.codex-bin;
+      defaultText = lib.literalExpression "pkgs.unstable.codex-bin";
       description = "The codex package to install.";
     };
   };

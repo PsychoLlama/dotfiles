@@ -27,7 +27,7 @@ let
     .${stdenv.hostPlatform.system};
 in
 stdenv.mkDerivation (finalAttrs: {
-  pname = "codex";
+  pname = "codex-bin";
   inherit (manifest) version;
 
   src = fetchurl {
