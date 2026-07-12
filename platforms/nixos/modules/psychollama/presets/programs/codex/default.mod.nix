@@ -1,0 +1,74 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+
+let
+  cfg = config.psychollama.presets.programs.codex;
+
+  trustedDirectoriesHook = pkgs.callPackage ./hooks/trusted-directories.nix {
+    directories = config.psychollama.trusted-directories;
+  };
+
+  settingsFormat = pkgs.formats.toml { };
+
+  settings = {
+    # Not well supported by TOML, but hey, might as well try.
+    "$schema" = "https://learn.chatgpt.com/docs/config-schema.json";
+
+    # Everything must be vim.
+    tui.vim_mode_default = true;
+
+    # Updates are managed by Nix.
+    check_for_update_on_startup = false;
+
+    # Privacy.
+    analytics.enabled = false;
+    feedback.enabled = false;
+
+    # Default tries VS Code.
+    file_opener = "none";
+
+    # Memories are a source of hidden, uncommitted behavior. Not a fan.
+    features.memories = false;
+  }
+  # Only wire the trust-seeding hook when there's something to trust. That also
+  # guarantees the hook always has a search path (see the hook for why).
+  // lib.optionalAttrs (config.psychollama.trusted-directories != [ ]) {
+    # Seed trust for repos under my trusted directories, so codex stops
+    # prompting in repos I already own.
+    hooks.SessionStart = [
+      {
+        hooks = [
+          {
+            type = "command";
+            command = lib.getExe trustedDirectoriesHook;
+          }
+        ];
+      }
+    ];
+  };
+in
+
+{
+  options.psychollama.presets.programs.codex = {
+    enable = lib.mkEnableOption "Install the latest version of codex";
+
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = pkgs.unstable.codex;
+      defaultText = lib.literalExpression "pkgs.unstable.codex";
+      description = "The codex package to install.";
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = [ cfg.package ];
+
+    # User config is left writable and untracked because codex *insists* on
+    # mutating it. So we provision a system-level config instead.
+    environment.etc."codex/config.toml".source = settingsFormat.generate "codex-config.toml" settings;
+  };
+}
