@@ -72,7 +72,6 @@ in
     (mkPluginPreset "nvim-autopairs" ./autopairs.lua)
     (mkPluginPreset "nvim-cmp" ./nvim-cmp.lua)
     (mkPluginPreset "nvim-lint" ./nvim-lint/config.lua)
-    (mkPluginPreset "nvim-luapad" null)
     (mkPluginPreset "nvim-treesitter" null)
     (mkPluginPreset "nvim-treesitter-textobjects" ./nvim-treesitter-textobjects.lua)
     (mkPluginPreset "onedarkpro-nvim" ./onedarkpro.lua)
