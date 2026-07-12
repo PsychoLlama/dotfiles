@@ -12,6 +12,18 @@ let
     directories = config.psychollama.trusted-directories;
   };
 
+  localInstructionsHook = pkgs.callPackage ./hooks/local-instructions.nix { };
+
+  # A `hooks.SessionStart` matcher group that runs one command hook.
+  commandHook = command: {
+    hooks = [
+      {
+        type = "command";
+        command = lib.getExe command;
+      }
+    ];
+  };
+
   settingsFormat = pkgs.formats.toml { };
 
   settings = {
@@ -33,22 +45,17 @@ let
 
     # Memories are a source of hidden, uncommitted behavior. Not a fan.
     features.memories = false;
-  }
-  # Only wire the trust-seeding hook when there's something to trust. That also
-  # guarantees the hook always has a search path (see the hook for why).
-  // lib.optionalAttrs (config.psychollama.trusted-directories != [ ]) {
-    # Seed trust for repos under my trusted directories, so codex stops
-    # prompting in repos I already own.
-    hooks.SessionStart = [
-      {
-        hooks = [
-          {
-            type = "command";
-            command = lib.getExe trustedDirectoriesHook;
-          }
-        ];
-      }
-    ];
+
+    hooks.SessionStart =
+      # Inject CLAUDE.local.md into context, the way Claude Code does.
+      [ (commandHook localInstructionsHook) ]
+      # Seed trust for repos under my trusted directories, so codex stops
+      # prompting in repos I already own. Only wired when there's something to
+      # trust, which also guarantees the hook always has a search path (see the
+      # hook for why).
+      ++ lib.optional (config.psychollama.trusted-directories != [ ]) (
+        commandHook trustedDirectoriesHook
+      );
   };
 in
 
