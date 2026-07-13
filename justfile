@@ -50,7 +50,7 @@ update:
 # Update all custom packages.
 update-packages:
   nix-update --flake chrome-devtools-mcp --version-regex 'chrome-devtools-mcp-v(.*)'
-  ./pkgs/codex/update.sh
+  ./pkgs/codex-bin/update.sh
   ./pkgs/claude-code-bin/update.sh
 
 # Run all checks, reporting all failures.
