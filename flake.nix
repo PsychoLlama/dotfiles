@@ -40,6 +40,14 @@
       };
     };
 
+    gutenberg-nvim = {
+      url = "github:PsychoLlama/gutenberg.nvim";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
+    };
+
     teleport-vim = {
       url = "github:PsychoLlama/teleport.vim";
       flake = false;

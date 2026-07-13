@@ -47,6 +47,7 @@ in
     (mkPluginPreset "lab-nvim" null)
     (mkPluginPreset "fzf-vim" null)
     (mkPluginPreset "gitlinker-nvim" ./gitlinker.lua)
+    (mkPluginPreset "gutenberg-nvim" ./gutenberg.lua)
 
     # Defer gitsigns until a buffer is read (~18ms saved)
     (mkPluginPresetFull "gitsigns-nvim" {
@@ -56,12 +57,7 @@ in
 
     (mkPluginPreset "lualine-nvim" ./lualine.lua)
 
-    # Defer markdown plugins until markdown files are opened
-    (mkPluginPresetFull "markdown-nvim" {
-      extraConfig = ./markdown.lua;
-      defer.ft = "markdown";
-    })
-
+    # Defer the markdown preview until markdown files are opened
     (mkPluginPresetFull "markdown-preview-nvim" {
       extraConfig = ./markdown-preview/config.lua;
       defer.ft = "markdown";

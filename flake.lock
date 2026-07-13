@@ -95,6 +95,29 @@
         "type": "github"
       }
     },
+    "gutenberg-nvim": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783914324,
+        "narHash": "sha256-4/DHl1c+z0OpR0fOQ5h5GcwkM4h9lJKWj7BjL7WP2R0=",
+        "owner": "PsychoLlama",
+        "repo": "gutenberg.nvim",
+        "rev": "e23f8b691ac29670befab37c8b93c212f7beb259",
+        "type": "github"
+      },
+      "original": {
+        "owner": "PsychoLlama",
+        "repo": "gutenberg.nvim",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -196,6 +219,7 @@
         "agenix": "agenix",
         "alternaut-nvim": "alternaut-nvim",
         "deja-view-nvim": "deja-view-nvim",
+        "gutenberg-nvim": "gutenberg-nvim",
         "home-manager": "home-manager",
         "navitron-nvim": "navitron-nvim",
         "nixos-hardware": "nixos-hardware",

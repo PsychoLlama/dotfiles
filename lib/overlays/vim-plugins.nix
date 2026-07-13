@@ -29,6 +29,7 @@ in
       "note-nvim" = prev.callPackage ../../pkgs/note.nvim { };
       "alternaut-nvim" = inputs.alternaut-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
       "deja-view-nvim" = inputs.deja-view-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
+      "gutenberg-nvim" = inputs.gutenberg-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
       "navitron-nvim" = inputs.navitron-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
     };
   };
