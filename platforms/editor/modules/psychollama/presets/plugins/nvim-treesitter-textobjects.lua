@@ -36,21 +36,9 @@ vim.keymap.set({ 'n', 'x', 'o' }, '[f', function()
     'textobjects'
   )
 end)
-vim.keymap.set({ 'n', 'x', 'o' }, '[c', function()
-  require('nvim-treesitter-textobjects.move').goto_previous_start(
-    '@class.outer',
-    'textobjects'
-  )
-end)
 vim.keymap.set({ 'n', 'x', 'o' }, ']f', function()
   require('nvim-treesitter-textobjects.move').goto_next_start(
     '@function.outer',
-    'textobjects'
-  )
-end)
-vim.keymap.set({ 'n', 'x', 'o' }, ']c', function()
-  require('nvim-treesitter-textobjects.move').goto_next_start(
-    '@class.outer',
     'textobjects'
   )
 end)
