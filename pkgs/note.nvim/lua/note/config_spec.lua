@@ -21,7 +21,7 @@ describe('note.config', function()
 
       config.set(nil)
 
-      assert.stub(notify).was.called()
+      assert.stub(notify).was.called_at_least(1)
       assert.is_nil(config.get())
     end)
 
@@ -30,7 +30,7 @@ describe('note.config', function()
 
       config.set({})
 
-      assert.stub(notify).was.called()
+      assert.stub(notify).was.called_at_least(1)
       assert.is_nil(config.get())
     end)
 
@@ -63,7 +63,7 @@ describe('note.config', function()
       local notify = stub(vim, 'notify')
 
       assert.is_nil(config.get())
-      assert.stub(notify).was.called()
+      assert.stub(notify).was.called_at_least(1)
     end)
 
     it('returns the configured path', function()

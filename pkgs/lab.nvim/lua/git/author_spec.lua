@@ -46,9 +46,9 @@ describe('git.author', function()
     it('returns early for directories', function()
       vim.bo = { modified = false }
       ---@diagnostic disable-next-line: undefined-field
-      stub(vim.fn, 'expand').returns('/some/directory')
+      stub(vim.fn, 'expand', '/some/directory')
       ---@diagnostic disable-next-line: undefined-field
-      stub(vim.fn, 'isdirectory').returns(1)
+      stub(vim.fn, 'isdirectory', 1)
       local print_stub = stub(_G, 'print')
 
       author.command(1, 10)

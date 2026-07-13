@@ -35,7 +35,7 @@ describe('core.env._memory', function()
   describe('get_file', function()
     it('lives under the state directory', function()
       ---@diagnostic disable-next-line: undefined-field
-      stub(vim.fn, 'stdpath').returns('/state')
+      stub(vim.fn, 'stdpath', '/state')
 
       assert.are.equal('/state/dynamic-sources.json', memory.get_file())
     end)
@@ -43,14 +43,14 @@ describe('core.env._memory', function()
 
   describe('load', function()
     it('returns an empty table when the file is missing', function()
-      stub(io, 'open').returns(nil)
+      stub(io, 'open', nil)
 
       assert.are.same({}, memory.load())
     end)
 
     it('decodes the stored JSON', function()
       local handle = fake_file('{"/foo":"allow","/bar":"deny"}')
-      stub(io, 'open').returns(handle)
+      stub(io, 'open', handle)
 
       assert.are.same(
         { ['/foo'] = 'allow', ['/bar'] = 'deny' },
@@ -62,7 +62,7 @@ describe('core.env._memory', function()
   describe('save', function()
     it('writes the settings as JSON', function()
       local handle = fake_file('')
-      stub(io, 'open').returns(handle)
+      stub(io, 'open', handle)
 
       memory.save({ ['/foo'] = 'allow' })
 
@@ -71,19 +71,19 @@ describe('core.env._memory', function()
     end)
 
     it('warns instead of throwing when the file cannot be opened', function()
-      stub(io, 'open').returns(nil)
+      stub(io, 'open', nil)
       local notify = stub(vim, 'notify')
 
       assert.has_no_error(function()
         memory.save({ ['/foo'] = 'allow' })
       end)
-      assert.stub(notify).was.called()
+      assert.stub(notify).was.called_at_least(1)
     end)
   end)
 
   describe('update_permission', function()
     it('merges the new permission into existing memory', function()
-      stub(memory, 'load').returns({ ['/foo'] = 'allow' })
+      stub(memory, 'load', { ['/foo'] = 'allow' })
       local save = stub(memory, 'save')
 
       memory.update_permission('/bar', 'deny')
@@ -94,7 +94,7 @@ describe('core.env._memory', function()
     end)
 
     it('normalizes the directory key', function()
-      stub(memory, 'load').returns({})
+      stub(memory, 'load', {})
       local save = stub(memory, 'save')
 
       memory.update_permission('/foo/bar/', 'allow')
@@ -105,25 +105,25 @@ describe('core.env._memory', function()
 
   describe('get_permission', function()
     it('returns the remembered permission', function()
-      stub(memory, 'load').returns({ ['/foo'] = 'allow' })
+      stub(memory, 'load', { ['/foo'] = 'allow' })
 
       assert.are.equal('allow', memory.get_permission('/foo'))
     end)
 
     it('returns "unknown" for directories we have not seen', function()
-      stub(memory, 'load').returns({})
+      stub(memory, 'load', {})
 
       assert.are.equal('unknown', memory.get_permission('/foo'))
     end)
 
     it('inherits a trusted ancestor directory', function()
-      stub(memory, 'load').returns({ ['/foo'] = 'allow' })
+      stub(memory, 'load', { ['/foo'] = 'allow' })
 
       assert.are.equal('allow', memory.get_permission('/foo/bar/baz'))
     end)
 
     it('lets the nearest ancestor win over a farther one', function()
-      stub(memory, 'load').returns({
+      stub(memory, 'load', {
         ['/foo'] = 'allow',
         ['/foo/bar'] = 'deny',
       })
@@ -132,7 +132,7 @@ describe('core.env._memory', function()
     end)
 
     it('does not leak trust to sibling directories', function()
-      stub(memory, 'load').returns({ ['/foo/bar'] = 'allow' })
+      stub(memory, 'load', { ['/foo/bar'] = 'allow' })
 
       assert.are.equal('unknown', memory.get_permission('/foo/other'))
     end)

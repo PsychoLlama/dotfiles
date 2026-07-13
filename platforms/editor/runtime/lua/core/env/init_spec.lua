@@ -35,7 +35,7 @@ describe('core.env', function()
 
   describe('source_direnv_vimrc', function()
     it('does nothing when the env var is unset', function()
-      stub(os, 'getenv').returns(nil)
+      stub(os, 'getenv', nil)
       local load = stub(env, 'load')
 
       env.source_direnv_vimrc()
@@ -44,7 +44,7 @@ describe('core.env', function()
     end)
 
     it('loads the file the env var points at', function()
-      stub(os, 'getenv').returns('/foo/vimrc')
+      stub(os, 'getenv', '/foo/vimrc')
       local load = stub(env, 'load')
 
       env.source_direnv_vimrc()
@@ -54,7 +54,7 @@ describe('core.env', function()
     end)
 
     it('loads every colon-separated path', function()
-      stub(os, 'getenv').returns('/foo/vimrc:/bar/vimrc')
+      stub(os, 'getenv', '/foo/vimrc:/bar/vimrc')
       local load = stub(env, 'load')
 
       env.source_direnv_vimrc()
@@ -67,7 +67,7 @@ describe('core.env', function()
 
   describe('load', function()
     it('sources the file when permission is granted', function()
-      stub(permission, 'check_memory_or_ask').returns('allow')
+      stub(permission, 'check_memory_or_ask', 'allow')
       local source = stub(vim.cmd, 'source')
 
       env.load('/foo/vimrc', {})
@@ -76,7 +76,7 @@ describe('core.env', function()
     end)
 
     it('does not source the file when permission is denied', function()
-      stub(permission, 'check_memory_or_ask').returns('deny')
+      stub(permission, 'check_memory_or_ask', 'deny')
       local source = stub(vim.cmd, 'source')
 
       env.load('/foo/vimrc', {})
@@ -85,8 +85,8 @@ describe('core.env', function()
     end)
 
     it('warns instead of throwing when sourcing fails', function()
-      stub(permission, 'check_memory_or_ask').returns('allow')
-      stub(vim.cmd, 'source').invokes(function()
+      stub(permission, 'check_memory_or_ask', 'allow')
+      stub(vim.cmd, 'source', function()
         error('boom')
       end)
       local notify = stub(vim, 'notify')

@@ -20,28 +20,28 @@ describe('core.env._permission', function()
   describe('ask', function()
     it('maps the first choice to "allow"', function()
       ---@diagnostic disable-next-line: undefined-field
-      stub(vim.fn, 'inputlist').returns(1)
+      stub(vim.fn, 'inputlist', 1)
 
       assert.are.equal('allow', permission.ask('/foo', {}))
     end)
 
     it('maps the second choice to "deny"', function()
       ---@diagnostic disable-next-line: undefined-field
-      stub(vim.fn, 'inputlist').returns(2)
+      stub(vim.fn, 'inputlist', 2)
 
       assert.are.equal('deny', permission.ask('/foo', {}))
     end)
 
     it('treats any other choice as "unknown"', function()
       ---@diagnostic disable-next-line: undefined-field
-      stub(vim.fn, 'inputlist').returns(0)
+      stub(vim.fn, 'inputlist', 0)
 
       assert.are.equal('unknown', permission.ask('/foo', {}))
     end)
 
     it('does not require opts', function()
       ---@diagnostic disable-next-line: undefined-field
-      stub(vim.fn, 'inputlist').returns(1)
+      stub(vim.fn, 'inputlist', 1)
 
       assert.has_no_error(function()
         permission.ask('/foo')
@@ -51,7 +51,7 @@ describe('core.env._permission', function()
 
   describe('check_memory_or_ask', function()
     it('honours a remembered "allow" without asking', function()
-      stub(memory, 'get_permission').returns('allow')
+      stub(memory, 'get_permission', 'allow')
       local ask = stub(permission, 'ask')
       local update = stub(memory, 'update_permission')
 
@@ -64,7 +64,7 @@ describe('core.env._permission', function()
     end)
 
     it('honours a remembered "deny" without asking', function()
-      stub(memory, 'get_permission').returns('deny')
+      stub(memory, 'get_permission', 'deny')
       local ask = stub(permission, 'ask')
 
       assert.are.equal(
@@ -75,7 +75,7 @@ describe('core.env._permission', function()
     end)
 
     it('resolves permission against the containing directory', function()
-      local get = stub(memory, 'get_permission').returns('allow')
+      local get = stub(memory, 'get_permission', 'allow')
 
       permission.check_memory_or_ask('/foo/vimrc', {})
 
@@ -83,8 +83,8 @@ describe('core.env._permission', function()
     end)
 
     it('asks and remembers the answer against the directory', function()
-      stub(memory, 'get_permission').returns('unknown')
-      stub(permission, 'ask').returns('allow')
+      stub(memory, 'get_permission', 'unknown')
+      stub(permission, 'ask', 'allow')
       local update = stub(memory, 'update_permission')
 
       assert.are.equal(
@@ -111,15 +111,15 @@ describe('core.env._permission', function()
 
     it('falls back to memory outside trusted prefixes', function()
       permission.set_trusted_prefixes({ '/trusted' })
-      stub(memory, 'get_permission').returns('unknown')
+      stub(memory, 'get_permission', 'unknown')
       stub(memory, 'update_permission')
-      local ask = stub(permission, 'ask').returns('deny')
+      local ask = stub(permission, 'ask', 'deny')
 
       assert.are.equal(
         'deny',
         permission.check_memory_or_ask('/elsewhere/vimrc', {})
       )
-      assert.stub(ask).was.called()
+      assert.stub(ask).was.called_at_least(1)
     end)
   end)
 
