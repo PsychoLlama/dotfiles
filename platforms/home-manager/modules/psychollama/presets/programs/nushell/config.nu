@@ -80,22 +80,6 @@ def s [] {
   }
 }
 
-# Search files with ripgrep and format results as structured data.
-def --wrapped search [...args] {
-  rg ...$args --json
-  | from jsonl
-  | where type == 'match'
-  | get data
-  | group-by path.text
-  | transpose file matches
-  | upsert matches {
-      select lines.text line_number absolute_offset submatches
-      | upsert submatches { select match.text start end | rename match }
-      | rename content line column captures
-      | upsert content { str trim }
-    }
-}
-
 # Encrypt stdin using public keys from GitHub.
 def encrypt [
   username: string # Any GitHub username.

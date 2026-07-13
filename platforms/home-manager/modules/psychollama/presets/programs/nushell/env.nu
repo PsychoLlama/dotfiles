@@ -1,8 +1,12 @@
 use std "path add"
-use std formats *
+use std/formats *
 use std/util repeat
 use std/iter
-use std/clip copy
+
+# I really wish nushell supported `use 'foo' as 'bar'`.
+use std/clip "copy52"
+alias copy = copy52
+hide copy52
 
 # NixOS does not manage nushell and will not automatically add system paths to
 # the RC. I have to add them manually.

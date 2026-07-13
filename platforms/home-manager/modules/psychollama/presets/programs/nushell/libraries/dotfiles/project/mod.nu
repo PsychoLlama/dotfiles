@@ -26,7 +26,7 @@ export def 'project path' [
 ] {
   [
     (project root | path expand)
-    ($project.owner | str downcase)
+    ($project.owner | str lowercase)
     $project.repo
   ] | path join
 }
