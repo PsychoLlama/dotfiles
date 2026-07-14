@@ -24,7 +24,13 @@ vim.keymap.set('n', '<c-space>', function()
 end)
 
 vim.keymap.set('n', '<leader>f', function()
-  require('telescope.builtin').find_files()
+  require('telescope.builtin').find_files({
+    -- Match behavior of navitron.
+    find_command = require('navitron.fd').command({
+      '--type',
+      'file',
+    }),
+  })
 end)
 
 vim.keymap.set('n', '<leader>b', function()
