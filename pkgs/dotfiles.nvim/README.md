@@ -1,4 +1,4 @@
-# lab.nvim
+# dotfiles.nvim
 
 A collection of small plugins and one-off utilities for my editor.
 

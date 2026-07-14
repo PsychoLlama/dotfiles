@@ -1,8 +1,8 @@
 local repo = vim.fn.expand('<sfile>:h')
 
-require('core.pkg').override('lab.nvim', function(plugin)
+require('core.pkg').override('dotfiles.nvim', function(plugin)
   return vim.tbl_extend('force', plugin or {}, {
-    source = vim.fs.joinpath(repo, 'pkgs/lab.nvim'),
+    source = vim.fs.joinpath(repo, 'pkgs/dotfiles.nvim'),
     type = 'path',
   })
 end)

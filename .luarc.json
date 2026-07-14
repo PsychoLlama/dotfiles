@@ -10,7 +10,7 @@
       "${3rd}/busted/library",
       "${3rd}/luassert/library",
       "platforms/editor/runtime",
-      "pkgs/lab.nvim",
+      "pkgs/dotfiles.nvim",
       "pkgs/note.nvim"
     ],
     "ignoreDir": [".direnv", ".claude"]

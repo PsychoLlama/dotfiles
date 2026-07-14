@@ -25,7 +25,7 @@ in
   # by name without polluting the upstream set.
   custom = (prev.custom or { }) // {
     vimPlugins = extraVimPlugins // {
-      "lab-nvim" = prev.callPackage ../../pkgs/lab.nvim { };
+      "dotfiles-nvim" = prev.callPackage ../../pkgs/dotfiles.nvim { };
       "note-nvim" = prev.callPackage ../../pkgs/note.nvim { };
       "alternaut-nvim" = inputs.alternaut-nvim.packages.${prev.stdenv.hostPlatform.system}.default;
       "deja-view-nvim" = inputs.deja-view-nvim.packages.${prev.stdenv.hostPlatform.system}.default;

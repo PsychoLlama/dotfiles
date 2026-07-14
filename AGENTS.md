@@ -61,7 +61,7 @@ Self-contained neovim framework in `platforms/editor/`. No `~/.config` files.
 
 - `modules/` — plugin system, LSP configuration, settings schema.
 - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
-- `pkgs/lab.nvim/` — neovim utilities beyond `init.vim`.
+- `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.
 
 Plugin presets live under `modules/psychollama/presets/plugins/`; LSP servers under `modules/psychollama/presets/lsp/servers/`.
 

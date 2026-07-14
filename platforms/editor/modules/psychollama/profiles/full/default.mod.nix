@@ -41,11 +41,11 @@ in
         cmp-path.enable = lib.mkDefault true;
         conform-nvim.enable = lib.mkDefault true;
         deja-view-nvim.enable = lib.mkDefault true;
+        dotfiles-nvim.enable = lib.mkDefault true;
         fzf-vim.enable = lib.mkDefault true;
         gitlinker-nvim.enable = lib.mkDefault true;
         gitsigns-nvim.enable = lib.mkDefault true;
         gutenberg-nvim.enable = lib.mkDefault true;
-        lab-nvim.enable = lib.mkDefault true;
         lualine-nvim.enable = lib.mkDefault true;
         markdown-preview-nvim.enable = lib.mkDefault true;
         navitron-nvim.enable = lib.mkDefault true;

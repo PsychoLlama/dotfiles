@@ -1,7 +1,7 @@
 { lib, vimUtils }:
 
 vimUtils.buildVimPlugin {
-  pname = "lab.nvim";
+  pname = "dotfiles.nvim";
   version = "latest";
   src = lib.fileset.toSource {
     root = ./.;
