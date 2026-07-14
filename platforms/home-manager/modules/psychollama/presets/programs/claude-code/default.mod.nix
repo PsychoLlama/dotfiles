@@ -75,6 +75,9 @@ in
         # Default only seems to render what's in the viewport. Tmux sadness.
         tui = "fullscreen";
 
+        # What could go wrong.
+        remoteControlAtStartup = true;
+
         # I'm not their advertising billboard.
         attribution = {
           commit = "";
