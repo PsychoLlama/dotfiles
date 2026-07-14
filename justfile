@@ -3,6 +3,8 @@ _:
 
 # Activate the current NixOS configuration.
 activate mode="test":
+  #!/usr/bin/env bash
+  sudo true # Prompt for sudo up front.
   nh os {{mode}} .
 
 # Build the NixOS configuration without activating.
