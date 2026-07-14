@@ -29,7 +29,7 @@ def n [...files: path] {
 
 # Fuzzy find and edit a file.
 def nf [] {
-  let selected_file = fd --type file | fzf
+  let selected_file = fd --hidden --type file | fzf
 
   if ($selected_file | str length) > 0 {
     nvim ($selected_file | str trim)
@@ -38,7 +38,7 @@ def nf [] {
 
 # Fuzzy find and open a directory.
 def nt [] {
-  let selected_dir = fd --type directory | fzf
+  let selected_dir = fd --hidden --type directory | fzf
 
   if ($selected_dir | str length) > 0 {
     nvim ($selected_dir | str trim)
@@ -47,7 +47,7 @@ def nt [] {
 
 # Fuzzy find and open a directory.
 def --env cf [] {
-  let selected_dir = fd --type directory | fzf
+  let selected_dir = fd --hidden --type directory | fzf
 
   cd (if ($selected_dir | str length) > 0 {
     $selected_dir | str trim
