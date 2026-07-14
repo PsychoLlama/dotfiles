@@ -105,11 +105,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783962208,
-        "narHash": "sha256-yVeLAX8VnvKjaHUv58vDsQQJzqXxup1WJC2oxBKY/xI=",
+        "lastModified": 1784040681,
+        "narHash": "sha256-OwGg9U+CENKDe+A+kli1WG++dK5QQ4Ryyyes5Ggm8G8=",
         "owner": "PsychoLlama",
         "repo": "gutenberg.nvim",
-        "rev": "c6eeb787254c371c5edfe21c0ad3df7b758a597f",
+        "rev": "a173fc1ecef5fbb1181454cbce2434c499d42941",
         "type": "github"
       },
       "original": {
@@ -149,11 +149,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783272703,
-        "narHash": "sha256-RJcBtFdpalOsszAOtXm5VN6CUdwkFYuxIFEbGwTwbn8=",
+        "lastModified": 1784046198,
+        "narHash": "sha256-LLT4ANFXN0Yy3kjnJ/jAt9aTSbLrxZQlvabMwOSrW6w=",
         "owner": "PsychoLlama",
         "repo": "navitron.nvim",
-        "rev": "2027b1bb31bf45858a9fc7950dc05012dd9e6835",
+        "rev": "8c75e5287594f8b161c23c5c0e2640c81253ed55",
         "type": "github"
       },
       "original": {
