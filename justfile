@@ -3,7 +3,7 @@ _:
 
 # Activate the current NixOS configuration.
 activate mode="test":
-  #!/usr/bin/env bash
+  #!/usr/bin/env -S bash -eu
   sudo true # Prompt for sudo up front.
   nh os {{mode}} .
 
