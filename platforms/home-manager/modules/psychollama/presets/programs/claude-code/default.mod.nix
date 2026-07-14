@@ -78,6 +78,9 @@ in
         # What could go wrong.
         remoteControlAtStartup = true;
 
+        # I never want these by default.
+        disableClaudeAiConnectors = true;
+
         # I'm not their advertising billboard.
         attribution = {
           commit = "";
