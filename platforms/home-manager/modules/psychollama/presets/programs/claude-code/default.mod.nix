@@ -82,6 +82,7 @@ in
         attribution = {
           commit = "";
           pr = "";
+          sessionUrl = false;
         };
 
         voice = {
