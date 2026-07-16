@@ -24,10 +24,7 @@ function M.create()
     return
   end
 
-  -- Start with an open notebook.
-  M.open()
-
-  -- Deferred one tick to allow the notebook to render.
+  -- Deferred one tick so the prompt doesn't interrupt the triggering mapping.
   vim.schedule(function()
     vim.ui.input({ prompt = 'Note Title: ' }, function(title)
       if title == nil or vim.trim(title) == '' then
