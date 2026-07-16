@@ -1,149 +1,117 @@
 local blame = require('git.blame')
 
+-- Blocks as `git blame --line-porcelain` emits them: a sha header, then
+-- `key value` lines, then the tab-prefixed source line.
+local function block(sha, author, time, summary, contents)
+  return {
+    sha .. ' 1 1 1',
+    'author ' .. author,
+    'author-mail <' .. author .. '@example.com>',
+    'author-time ' .. time,
+    'author-tz -0800',
+    'committer ' .. author,
+    'committer-mail <' .. author .. '@example.com>',
+    'committer-time ' .. time,
+    'committer-tz -0800',
+    'summary ' .. summary,
+    'filename test.lua',
+    '\t' .. contents,
+  }
+end
+
+local function concat(...)
+  local out = {}
+  for _, block_lines in ipairs({ ... }) do
+    for _, line in ipairs(block_lines) do
+      table.insert(out, line)
+    end
+  end
+  return out
+end
+
 describe('git.blame', function()
-  describe('parse', function()
-    it('parses a single line blame', function()
-      local output = {
-        'abcd1234567890abcd1234567890abcd12345678 1 1 1',
-        'author John Doe',
-        'author-mail <john@example.com>',
-        'author-time 1699900000',
-        'author-tz -0800',
-        'committer Jane Smith',
-        'committer-mail <jane@example.com>',
-        'committer-time 1699900100',
-        'committer-tz -0800',
-        'summary Initial commit',
-        'filename test.lua',
-        '\tlocal x = 1',
-      }
+  describe('count_authors', function()
+    it('counts lines per author', function()
+      local output = concat(
+        block('aaaa', 'Alice', '1699900000', 'First', 'line one'),
+        block('bbbb', 'Bob', '1699900100', 'Second', 'line two'),
+        block('cccc', 'Alice', '1699900200', 'Third', 'line three')
+      )
 
-      local result = blame.parse(output, 'Test User')
+      local counts = blame.count_authors(output, 'Test User')
 
-      assert.are.equal(1, #result)
+      assert.are.equal(2, counts['Alice'])
+      assert.are.equal(1, counts['Bob'])
+    end)
+
+    it('attributes uncommitted lines to the given name', function()
+      local output = block(
+        '0000000000000000000000000000000000000000',
+        'Not Committed Yet',
+        '1699900000',
+        'Uncommitted',
+        'local x = 1'
+      )
+
+      local counts = blame.count_authors(output, 'My Name')
+
+      assert.are.equal(1, counts['My Name'])
+      assert.is_nil(counts['Not Committed Yet'])
+    end)
+
+    it(
+      'does not mistake author-mail/-time/-tz for the author header',
+      function()
+        local output =
+          block('aaaa', 'Alice', '1699900000', 'First', 'line one')
+
+        local counts = blame.count_authors(output, 'Test User')
+
+        -- One author header per line, nothing leaked from the sibling headers.
+        assert.are.equal(1, counts['Alice'])
+        assert.are.same({ Alice = 1 }, counts)
+      end
+    )
+  end)
+
+  describe('line_details', function()
+    it('extracts sha, author, time, and summary', function()
+      local output = block(
+        'abcd1234567890abcd1234567890abcd12345678',
+        'John Doe',
+        '1699900000',
+        'Initial commit',
+        'local x = 1'
+      )
+
+      local details = assert(blame.line_details(output, 'Test User'))
+
       assert.are.equal(
         'abcd1234567890abcd1234567890abcd12345678',
-        result[1].sha
+        details.sha
       )
-      assert.are.equal('John Doe', result[1].author.name)
-      assert.are.equal('john@example.com', result[1].author.email)
-      assert.are.equal(1699900000, result[1].author.time)
-      assert.are.equal('-0800', result[1].author.zone)
-      assert.are.equal('Jane Smith', result[1].committer.name)
-      assert.are.equal('jane@example.com', result[1].committer.email)
-      assert.are.equal('Initial commit', result[1].summary)
-      assert.are.equal(1, result[1].line.number)
-      assert.are.equal(1, result[1].line.prev_number)
-      assert.are.equal('local x = 1', result[1].line.contents)
+      assert.are.equal('John Doe', details.name)
+      assert.are.equal(1699900000, details.time)
+      assert.are.equal('Initial commit', details.summary)
     end)
 
-    it('parses multiple lines', function()
-      local output = {
-        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa 1 1 1',
-        'author Alice',
-        'author-mail <alice@example.com>',
-        'author-time 1699900000',
-        'author-tz -0800',
-        'committer Alice',
-        'committer-mail <alice@example.com>',
-        'committer-time 1699900000',
-        'committer-tz -0800',
-        'summary First line',
-        'filename test.lua',
-        '\tline one',
-        'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb 2 2 1',
-        'author Bob',
-        'author-mail <bob@example.com>',
-        'author-time 1699900100',
-        'author-tz -0800',
-        'committer Bob',
-        'committer-mail <bob@example.com>',
-        'committer-time 1699900100',
-        'committer-tz -0800',
-        'summary Second line',
-        'filename test.lua',
-        '\tline two',
-      }
-
-      local result = blame.parse(output, 'Test User')
-
-      assert.are.equal(2, #result)
-      assert.are.equal('Alice', result[1].author.name)
-      assert.are.equal('line one', result[1].line.contents)
-      assert.are.equal(1, result[1].line.number)
-      assert.are.equal('Bob', result[2].author.name)
-      assert.are.equal('line two', result[2].line.contents)
-      assert.are.equal(2, result[2].line.number)
-    end)
-
-    it('handles uncommitted changes with current user name', function()
-      local output = {
-        '0000000000000000000000000000000000000000 1 1 1',
-        'author Not Committed Yet',
-        'author-mail <not.committed.yet>',
-        'author-time 1699900000',
-        'author-tz -0800',
-        'committer Not Committed Yet',
-        'committer-mail <not.committed.yet>',
-        'committer-time 1699900000',
-        'committer-tz -0800',
-        'summary Uncommitted changes',
-        'filename test.lua',
-        '\tlocal x = 1',
-      }
-
-      local result = blame.parse(output, 'My Name')
-
-      assert.are.equal('My Name', result[1].author.name)
-    end)
-
-    it('parses previous commit info', function()
-      local output = {
-        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa 5 10 1',
-        'author John',
-        'author-mail <john@example.com>',
-        'author-time 1699900000',
-        'author-tz -0800',
-        'committer John',
-        'committer-mail <john@example.com>',
-        'committer-time 1699900000',
-        'committer-tz -0800',
-        'summary Some commit',
-        'previous bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb old_name.lua',
-        'filename new_name.lua',
-        '\tcontent',
-      }
-
-      local result = blame.parse(output, 'Test User')
-
-      assert.are.equal(
-        'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
-        result[1].prev_sha
+    it('attributes uncommitted lines to the given name', function()
+      local output = block(
+        '0000000000000000000000000000000000000000',
+        'Not Committed Yet',
+        '1699900000',
+        'Uncommitted',
+        'local x = 1'
       )
-      assert.are.equal('old_name.lua', result[1].prev_filename)
-      assert.are.equal(5, result[1].line.prev_number)
-      assert.are.equal(10, result[1].line.number)
+
+      local details = assert(blame.line_details(output, 'My Name'))
+
+      assert.are.equal('My Name', details.name)
     end)
 
-    it('handles empty content lines', function()
-      local output = {
-        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa 1 1 1',
-        'author John',
-        'author-mail <john@example.com>',
-        'author-time 1699900000',
-        'author-tz -0800',
-        'committer John',
-        'committer-mail <john@example.com>',
-        'committer-time 1699900000',
-        'committer-tz -0800',
-        'summary Some commit',
-        'filename test.lua',
-        '\t',
-      }
-
-      local result = blame.parse(output, 'Test User')
-
-      assert.are.equal('', result[1].line.contents)
+    it('returns nil without a sha header', function()
+      assert.is_nil(blame.line_details({}, 'Test User'))
+      assert.is_nil(blame.line_details({ 'author John Doe' }, 'Test User'))
     end)
   end)
 end)
