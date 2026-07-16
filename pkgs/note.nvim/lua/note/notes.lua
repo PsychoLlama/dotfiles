@@ -34,10 +34,7 @@ function M.create()
       local timestamp = vim.fn.localtime()
       local iso_8601 = vim.fn.strftime('%Y-%m-%dT%H:%M:%SZ', timestamp)
 
-      local filename = timestamp
-        .. '-'
-        .. utils.normalize_title(title)
-        .. '.md'
+      local filename = utils.make_filename(timestamp, title)
       local filepath = vim.fs.joinpath(conf.path, filename)
 
       local contents = frontmatter.generate({
