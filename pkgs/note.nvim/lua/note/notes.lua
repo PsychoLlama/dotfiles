@@ -1,8 +1,13 @@
 local config = require('note.config')
 local frontmatter = require('note.frontmatter')
-local utils = require('note.utils')
+local slug = require('note.slug')
 
 local M = {}
+
+--- Move the cursor to the last line of the current buffer.
+local function go_to_last_line()
+  vim.fn.cursor(vim.fn.line('$'), 1)
+end
 
 --- Open the slip box notebook with the cursor on the newest note.
 function M.open()
@@ -14,7 +19,7 @@ function M.open()
   vim.cmd.edit(vim.fn.fnameescape(conf.path))
 
   -- Natural sort puts the newest notes at the bottom.
-  utils.go_to_last_line()
+  go_to_last_line()
 end
 
 --- Prompt for a title, then create and open a new note in the slip box.
@@ -34,7 +39,7 @@ function M.create()
       local timestamp = vim.fn.localtime()
       local iso_8601 = vim.fn.strftime('%Y-%m-%dT%H:%M:%SZ', timestamp)
 
-      local filename = utils.make_filename(timestamp, title)
+      local filename = slug.make_filename(timestamp, title)
       local filepath = vim.fs.joinpath(conf.path, filename)
 
       local contents = frontmatter.generate({
@@ -45,7 +50,7 @@ function M.create()
       vim.fn.writefile(contents, filepath)
 
       vim.cmd.edit(filepath)
-      utils.go_to_last_line()
+      go_to_last_line()
 
       vim.api.nvim_feedkeys('I', 'n', true)
     end)
@@ -59,7 +64,7 @@ end
 local function rename_to(old_path, new_title)
   local dir = vim.fs.dirname(old_path)
   local new_basename =
-    utils.rename_filename(vim.fs.basename(old_path), new_title)
+    slug.rename_filename(vim.fs.basename(old_path), new_title)
   local new_path = vim.fs.joinpath(dir, new_basename)
 
   -- Never clobber a different note that already claims the target name.

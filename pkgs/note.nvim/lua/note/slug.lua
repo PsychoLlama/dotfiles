@@ -1,10 +1,5 @@
 local M = {}
 
---- Move the cursor to the last line of the current buffer.
-function M.go_to_last_line()
-  vim.fn.cursor(vim.fn.line('$'), 1)
-end
-
 --- Fallback slug for titles with no alphanumeric characters, so we never
 --- produce an empty (or hidden, or all-separator) filename component.
 local FALLBACK_SLUG = 'untitled'
