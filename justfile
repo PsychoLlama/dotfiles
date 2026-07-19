@@ -49,11 +49,28 @@ update:
   nix flake update
   @just update-packages
 
+# Update the chrome-devtools-mcp package.
+update-chrome-devtools-mcp-package:
+  nix-update --flake chrome-devtools-mcp --version-regex 'chrome-devtools-mcp-v(.*)'
+
+# Update the codex-bin package.
+update-codex-bin-package:
+  ./pkgs/codex-bin/update.sh
+
+# Update the claude-code-bin package.
+update-claude-code-bin-package:
+  ./pkgs/claude-code-bin/update.sh
+
+# Update the nvim-rs package.
+update-nvim-package:
+  ./pkgs/nvim-rs/update.sh
+
 # Update all custom packages.
 update-packages:
-  nix-update --flake chrome-devtools-mcp --version-regex 'chrome-devtools-mcp-v(.*)'
-  ./pkgs/codex-bin/update.sh
-  ./pkgs/claude-code-bin/update.sh
+  @just update-chrome-devtools-mcp-package
+  @just update-codex-bin-package
+  @just update-claude-code-bin-package
+  @just update-nvim-package
 
 # Run all checks, reporting all failures.
 check:
