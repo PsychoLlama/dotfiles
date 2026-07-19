@@ -4,17 +4,17 @@ set default-list := true
 update-chrome-devtools-mcp:
   ./chrome-devtools-mcp/update.sh
 
-# Update the codex-bin package.
-update-codex-bin:
-  ./codex-bin/update.sh
+# Update the codex package.
+update-codex:
+  ./codex/update.sh
 
-# Update the claude-code-bin package.
-update-claude-code-bin:
-  ./claude-code-bin/update.sh
+# Update the claude-code package.
+update-claude-code:
+  ./claude-code/update.sh
 
 # Update the nvim-rs package.
 update-nvim:
   ./nvim-rs/update.sh
 
 # Update all custom packages.
-update: update-chrome-devtools-mcp update-codex-bin update-claude-code-bin update-nvim
+update: update-chrome-devtools-mcp update-codex update-claude-code update-nvim

@@ -4,8 +4,8 @@ _: final: prev: {
   # shadowed by) upstream attributes on `pkgs.*`/`pkgs.unstable.*`.
   custom = (prev.custom or { }) // {
     chrome-devtools-mcp = final.callPackage ../../pkgs/chrome-devtools-mcp { };
-    claude-code-bin = final.callPackage ../../pkgs/claude-code-bin { };
-    codex-bin = final.callPackage ../../pkgs/codex-bin { };
+    claude-code-bin = final.callPackage ../../pkgs/claude-code { };
+    codex-bin = final.callPackage ../../pkgs/codex { };
     nvim-rs = final.wrapNeovim (final.callPackage ../../pkgs/nvim-rs { }) { };
   };
 
