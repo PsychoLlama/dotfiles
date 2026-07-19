@@ -6,6 +6,7 @@ _: final: prev: {
     chrome-devtools-mcp = final.callPackage ../../pkgs/chrome-devtools-mcp { };
     claude-code-bin = final.callPackage ../../pkgs/claude-code-bin { };
     codex-bin = final.callPackage ../../pkgs/codex-bin { };
+    nvim-rs = final.wrapNeovim (final.callPackage ../../pkgs/nvim-rs { }) { };
   };
 
   # The 4.10.0 server bundles open with a CommonJS `require("core-js/...")`

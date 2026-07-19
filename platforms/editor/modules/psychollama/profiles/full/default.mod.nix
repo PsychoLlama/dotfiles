@@ -15,7 +15,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    package = pkgs.unstable.neovim;
+    package = if pkgs.stdenv.hostPlatform.isLinux then pkgs.custom.nvim-rs else pkgs.unstable.neovim;
+
     lsp.enable = lib.mkDefault true;
 
     # note.nvim is configured through the manifest opts; its config hook
