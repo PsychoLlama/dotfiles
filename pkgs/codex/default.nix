@@ -17,6 +17,7 @@
 let
   stdenv = stdenvNoCC;
   manifest = lib.importJSON ./manifest.json;
+  inherit (manifest) repo;
   platformKey =
     {
       "x86_64-linux" = "x86_64-unknown-linux-musl";
@@ -31,7 +32,7 @@ stdenv.mkDerivation (finalAttrs: {
   inherit (manifest) version;
 
   src = fetchurl {
-    url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-${platformKey}.tar.gz";
+    url = "https://github.com/${repo}/releases/download/rust-v${finalAttrs.version}/codex-${platformKey}.tar.gz";
     hash = manifest.platforms.${platformKey};
   };
 
@@ -67,8 +68,8 @@ stdenv.mkDerivation (finalAttrs: {
 
   meta = {
     description = "Lightweight coding agent that runs in your terminal";
-    homepage = "https://github.com/openai/codex";
-    changelog = "https://raw.githubusercontent.com/openai/codex/refs/tags/rust-v${finalAttrs.version}/CHANGELOG.md";
+    homepage = "https://github.com/${repo}";
+    changelog = "https://raw.githubusercontent.com/${repo}/refs/tags/rust-v${finalAttrs.version}/CHANGELOG.md";
     license = lib.licenses.asl20;
     mainProgram = "codex";
     platforms = [

@@ -1,9 +1,10 @@
 {
-  "version": "0.144.3",
+  "repo": "openai/codex",
+  "version": "0.144.6",
   "platforms": {
-    "x86_64-unknown-linux-musl": "sha256-ubSujptWHGTfvF71LGMZy6dQrIfePH9ViFAmIx466ok=",
-    "aarch64-unknown-linux-musl": "sha256-3XbP1aLPm88OMiSv4o4jBlz9JyYuBuD/vI+kA0PwkFo=",
-    "x86_64-apple-darwin": "sha256-igGRESKH4GhqqvGz2uz0y78jvg4BNPo8ibD2i+vcqqI=",
-    "aarch64-apple-darwin": "sha256-JJqvEmRK3Th250CZjLoOrI19F16QOt2MvI2Oqh8C4rU="
+    "x86_64-unknown-linux-musl": "sha256-ap3vUaCtjOpmhNjrO/AzyJ8z47xc/kkvGh4KcYRRocY=",
+    "aarch64-unknown-linux-musl": "sha256-jt2uXmwAnf+bpRrhv+O92f9MHMyTpIzGhg2xzZ/fEb4=",
+    "x86_64-apple-darwin": "sha256-djyBpWuiSk9sL9JW7X7hd1yuzNIlN9KIh96PaGSsWUc=",
+    "aarch64-apple-darwin": "sha256-AjWQ+Ci8lQesYRMu415008XTP7W6Phyk/C4BOi9xo9c="
   }
 }
