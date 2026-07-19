@@ -1,5 +1,5 @@
-_:
-  just --list
+set indentation := "  "
+set default-list
 
 # Format all code.
 fmt:

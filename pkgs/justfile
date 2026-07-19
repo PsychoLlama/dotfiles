@@ -1,4 +1,5 @@
-set default-list := true
+set default-list
+set indentation := "  "
 
 # Update the chrome-devtools-mcp package.
 update-chrome-devtools-mcp:

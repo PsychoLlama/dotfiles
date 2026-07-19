@@ -1,12 +1,13 @@
 mod packages 'pkgs/justfile'
 
-set default-list := true
+set indentation := "  "
+set default-list
 
 # Activate the current NixOS configuration.
 activate mode="test":
   #!/usr/bin/env -S bash -eu
   sudo true # Prompt for sudo up front.
-  nh os {{mode}} .
+  nh os {{ mode }} .
 
 # Build the NixOS configuration without activating.
 build:

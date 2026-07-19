@@ -10,3 +10,9 @@ includes = ["*.lua"]
 command = "prettier"
 options = ["--write"]
 includes = ["*.md"]
+
+[formatter.just]
+command = "just"
+options = ["--fmt", "--justfile"]
+includes = ["justfile", "**/justfile", "*.just"]
+no-positional-arg-support = true

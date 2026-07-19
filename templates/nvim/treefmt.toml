@@ -10,3 +10,9 @@ includes = ["*.nix"]
 command = "prettier"
 options = ["--write"]
 includes = ["*.md"]
+
+[formatter.just]
+command = "just"
+options = ["--fmt", "--justfile"]
+includes = ["justfile"]
+no-positional-arg-support = true
