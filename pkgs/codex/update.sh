@@ -7,20 +7,27 @@ repo=$(jq -r .repo "$manifest")
 release=$(gh release view --repo "$repo" --json tagName,assets)
 version=$(jq -er '.tagName | ltrimstr("rust-v")' <<<"$release")
 
+# Upstream names release assets by Rust target triple. Translate here so the
+# derivation can index `platforms` by Nix system directly.
+declare -A targets=(
+  [x86_64-linux]=x86_64-unknown-linux-musl
+  [aarch64-linux]=aarch64-unknown-linux-musl
+  [x86_64-darwin]=x86_64-apple-darwin
+  [aarch64-darwin]=aarch64-apple-darwin
+)
+
 platforms=$(jq -n '{}')
-for platform in \
-  x86_64-unknown-linux-musl \
-  aarch64-unknown-linux-musl \
-  x86_64-apple-darwin \
-  aarch64-apple-darwin; do
-  asset="codex-$platform.tar.gz"
+for system in "${!targets[@]}"; do
+  target="${targets[$system]}"
+  asset="codex-$target.tar.gz"
   digest=$(jq -er --arg asset "$asset" \
     '.assets[] | select(.name == $asset) | .digest' <<<"$release") || {
     echo "error: latest $repo release ($version) has no digest for $asset" >&2
     exit 1
   }
   hash=$(nix hash convert --hash-algo sha256 --to sri "${digest#sha256:}")
-  platforms=$(jq --arg p "$platform" --arg h "$hash" '.[$p] = $h' <<<"$platforms")
+  platforms=$(jq --arg s "$system" --arg t "$target" --arg h "$hash" \
+    '.[$s] = { target: $t, hash: $h }' <<<"$platforms")
 done
 
 tmp=$(mktemp)

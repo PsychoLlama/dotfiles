@@ -2,9 +2,21 @@
   "repo": "openai/codex",
   "version": "0.144.6",
   "platforms": {
-    "x86_64-unknown-linux-musl": "sha256-ap3vUaCtjOpmhNjrO/AzyJ8z47xc/kkvGh4KcYRRocY=",
-    "aarch64-unknown-linux-musl": "sha256-jt2uXmwAnf+bpRrhv+O92f9MHMyTpIzGhg2xzZ/fEb4=",
-    "x86_64-apple-darwin": "sha256-djyBpWuiSk9sL9JW7X7hd1yuzNIlN9KIh96PaGSsWUc=",
-    "aarch64-apple-darwin": "sha256-AjWQ+Ci8lQesYRMu415008XTP7W6Phyk/C4BOi9xo9c="
+    "aarch64-linux": {
+      "target": "aarch64-unknown-linux-musl",
+      "hash": "sha256-jt2uXmwAnf+bpRrhv+O92f9MHMyTpIzGhg2xzZ/fEb4="
+    },
+    "x86_64-linux": {
+      "target": "x86_64-unknown-linux-musl",
+      "hash": "sha256-ap3vUaCtjOpmhNjrO/AzyJ8z47xc/kkvGh4KcYRRocY="
+    },
+    "x86_64-darwin": {
+      "target": "x86_64-apple-darwin",
+      "hash": "sha256-djyBpWuiSk9sL9JW7X7hd1yuzNIlN9KIh96PaGSsWUc="
+    },
+    "aarch64-darwin": {
+      "target": "aarch64-apple-darwin",
+      "hash": "sha256-AjWQ+Ci8lQesYRMu415008XTP7W6Phyk/C4BOi9xo9c="
+    }
   }
 }

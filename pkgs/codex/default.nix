@@ -18,22 +18,15 @@ let
   stdenv = stdenvNoCC;
   manifest = lib.importJSON ./manifest.json;
   inherit (manifest) repo;
-  platformKey =
-    {
-      "x86_64-linux" = "x86_64-unknown-linux-musl";
-      "aarch64-linux" = "aarch64-unknown-linux-musl";
-      "x86_64-darwin" = "x86_64-apple-darwin";
-      "aarch64-darwin" = "aarch64-apple-darwin";
-    }
-    .${stdenv.hostPlatform.system};
+  inherit (manifest.platforms.${stdenv.hostPlatform.system}) target hash;
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "codex-bin";
   inherit (manifest) version;
 
   src = fetchurl {
-    url = "https://github.com/${repo}/releases/download/rust-v${finalAttrs.version}/codex-${platformKey}.tar.gz";
-    hash = manifest.platforms.${platformKey};
+    url = "https://github.com/${repo}/releases/download/rust-v${finalAttrs.version}/codex-${target}.tar.gz";
+    inherit hash;
   };
 
   sourceRoot = ".";
@@ -56,7 +49,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   installPhase = ''
     runHook preInstall
-    install -Dm755 codex-${platformKey} $out/bin/codex
+    install -Dm755 codex-${target} $out/bin/codex
     runHook postInstall
   '';
 
