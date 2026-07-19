@@ -1,10 +1,18 @@
-#!/usr/bin/env nix
-#!nix shell --ignore-environment nixpkgs#cacert nixpkgs#curl nixpkgs#bash --command bash
-
+#!/usr/bin/env bash
 set -euo pipefail
 
-BASE_URL="https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases"
+manifest="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/manifest.json"
+base_url=$(jq -r .baseUrl "$manifest")
 
-VERSION=$(curl -fsSL "$BASE_URL/latest")
+version=$(curl -fsSL "$base_url/latest")
+upstream=$(curl -fsSL "$base_url/$version/manifest.json")
 
-curl -fsSL "$BASE_URL/$VERSION/manifest.json" --output pkgs/claude-code/manifest.json
+tmp=$(mktemp)
+jq --arg baseUrl "$base_url" '{
+  baseUrl: $baseUrl,
+  version,
+  platforms: (.platforms | map_values(.checksum)),
+}' <<<"$upstream" > "$tmp"
+
+mv "$tmp" "$manifest"
+echo "Updated manifest.json to $version"
