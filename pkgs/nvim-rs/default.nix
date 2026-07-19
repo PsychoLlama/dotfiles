@@ -8,7 +8,7 @@
 }:
 
 let
-  inherit (lib.importJSON ./manifest.json) version hash;
+  inherit (lib.importJSON ./manifest.json) repo version hash;
 in
 
 stdenv.mkDerivation (finalAttrs: {
@@ -16,7 +16,7 @@ stdenv.mkDerivation (finalAttrs: {
   inherit version;
 
   src = fetchurl {
-    url = "https://github.com/PsychoLlama/nvim.rs/releases/download/${version}/nvim-${version}-x86_64-linux.tar.gz";
+    url = "https://github.com/${repo}/releases/download/${version}/nvim-${version}-x86_64-linux.tar.gz";
     inherit hash;
   };
 
@@ -48,7 +48,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   meta = neovim-unwrapped.meta // {
     description = "Rust rewrite of neovim";
-    homepage = "https://github.com/PsychoLlama/nvim.rs";
+    homepage = "https://github.com/${repo}";
     sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
 
     # Only compiled for Linux, sadly. `c2rust` baked in some target assumptions.
