@@ -1,5 +1,6 @@
-_:
-  just --list
+mod packages 'pkgs/justfile'
+
+set default-list := true
 
 # Activate the current NixOS configuration.
 activate mode="test":
@@ -47,30 +48,7 @@ lua-typecheck:
 # Update all flake inputs and custom packages.
 update:
   nix flake update
-  @just update-packages
-
-# Update the chrome-devtools-mcp package.
-update-chrome-devtools-mcp-package:
-  nix-update --flake chrome-devtools-mcp --version-regex 'chrome-devtools-mcp-v(.*)'
-
-# Update the codex-bin package.
-update-codex-bin-package:
-  ./pkgs/codex-bin/update.sh
-
-# Update the claude-code-bin package.
-update-claude-code-bin-package:
-  ./pkgs/claude-code-bin/update.sh
-
-# Update the nvim-rs package.
-update-nvim-package:
-  ./pkgs/nvim-rs/update.sh
-
-# Update all custom packages.
-update-packages:
-  @just update-chrome-devtools-mcp-package
-  @just update-codex-bin-package
-  @just update-claude-code-bin-package
-  @just update-nvim-package
+  @just packages update
 
 # Run all checks, reporting all failures.
 check:
