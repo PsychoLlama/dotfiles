@@ -29,31 +29,28 @@ function M.create()
     return
   end
 
-  -- Deferred one tick so the prompt doesn't interrupt the triggering mapping.
-  vim.schedule(function()
-    vim.ui.input({ prompt = 'Note Title: ' }, function(title)
-      if title == nil or vim.trim(title) == '' then
-        return
-      end
+  vim.ui.input({ prompt = 'Note Title: ' }, function(title)
+    if title == nil or vim.trim(title) == '' then
+      return
+    end
 
-      local timestamp = vim.fn.localtime()
-      local iso_8601 = vim.fn.strftime('%Y-%m-%dT%H:%M:%SZ', timestamp)
+    local timestamp = vim.fn.localtime()
+    local iso_8601 = vim.fn.strftime('%Y-%m-%dT%H:%M:%SZ', timestamp)
 
-      local filename = slug.make_filename(timestamp, title)
-      local filepath = vim.fs.joinpath(conf.path, filename)
+    local filename = slug.make_filename(timestamp, title)
+    local filepath = vim.fs.joinpath(conf.path, filename)
 
-      local contents = frontmatter.generate({
-        title = title,
-        createdAt = iso_8601,
-      })
-      vim.list_extend(contents, { '', '' })
-      vim.fn.writefile(contents, filepath)
+    local contents = frontmatter.generate({
+      title = title,
+      createdAt = iso_8601,
+    })
+    vim.list_extend(contents, { '', '' })
+    vim.fn.writefile(contents, filepath)
 
-      vim.cmd.edit(filepath)
-      go_to_last_line()
+    vim.cmd.edit(filepath)
+    go_to_last_line()
 
-      vim.api.nvim_feedkeys('I', 'n', true)
-    end)
+    vim.api.nvim_feedkeys('I', 'n', true)
   end)
 end
 
