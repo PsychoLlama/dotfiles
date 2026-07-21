@@ -149,11 +149,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784046198,
-        "narHash": "sha256-LLT4ANFXN0Yy3kjnJ/jAt9aTSbLrxZQlvabMwOSrW6w=",
+        "lastModified": 1784651216,
+        "narHash": "sha256-XgFPZEUMMEX+tDrFnkp8trt9+w3TTzYzbwZzXy6V3D0=",
         "owner": "PsychoLlama",
         "repo": "navitron.nvim",
-        "rev": "8c75e5287594f8b161c23c5c0e2640c81253ed55",
+        "rev": "82a0a9ea8be138ba603d1f0ac9bac375728d75c2",
         "type": "github"
       },
       "original": {
