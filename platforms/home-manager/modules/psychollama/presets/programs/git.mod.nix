@@ -24,6 +24,7 @@ in
       h = "git diff HEAD --staged";
       hh = "git diff HEAD~1";
       gd = "git diff";
+      gl = "git log";
       gp = "git push";
       ga = "git add --intent-to-add .";
       gaa = "git add --all";
@@ -39,7 +40,6 @@ in
       };
 
       alias = {
-        l = "log -1000 --format='%Cgreen%h%Creset: %an (%C(yellow)%ar%Creset)%n%s%n%n%b'";
         c = "commit";
         review = ''!git diff "$(git merge-base --fork-point origin/HEAD)"'';
         f = "fetch origin";
