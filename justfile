@@ -25,6 +25,10 @@ fmt:
 fmt-check:
   treefmt --ci
 
+# Test the meta-module system.
+test-modules:
+  ./lib/module/tests/report.nu
+
 # Update all flake inputs and custom packages.
 update:
   nix flake update
@@ -42,6 +46,8 @@ check:
   just lua typecheck || failed=1
   echo "--- Running unit tests ---"
   just lua test || failed=1
+  echo "--- Running module tests ---"
+  just test-modules || failed=1
   echo "--- Building NixOS configuration ---"
   just build || failed=1
   exit $failed
