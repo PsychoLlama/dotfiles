@@ -42,8 +42,8 @@ def render-left [session]: nothing -> string {
   } else {
     let used = ($context_window.total_input_tokens? | default 0)
     let percentage = ($context_window.used_percentage? | default 0)
-    # Dim while there's plenty of room; warn past 15%, alarm past 25%.
-    let color = if $percentage < 15 { ansi attr_dimmed } else if $percentage < 25 { ansi yellow } else { ansi red }
+    # Dim while there's plenty of room; warn past 15%, alarm past 30%.
+    let color = if $percentage < 15 { ansi attr_dimmed } else if $percentage < 30 { ansi yellow } else { ansi red }
     $"($color)(humanize $used)/(humanize $size)(ansi reset)"
   }
 
