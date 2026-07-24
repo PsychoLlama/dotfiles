@@ -73,9 +73,7 @@
         no analogue); those that don't simply ignore them.
       '';
 
-      default = {
-        repo-update = ./commands/repo-update.md;
-      };
+      default = { };
     };
   };
 }
