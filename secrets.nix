@@ -11,6 +11,5 @@ let
 in
 
 {
-  "platforms/nixos/modules/psychollama/presets/services/restic/env.age".publicKeys =
-    allUsers ++ allHosts;
+  "modules/presets/services/restic/env.age".publicKeys = allUsers ++ allHosts;
 }

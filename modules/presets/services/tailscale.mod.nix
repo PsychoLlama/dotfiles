@@ -1,15 +1,5 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.psychollama.presets.services.tailscale;
-in
-
 {
-  options.psychollama.presets.services.tailscale = {
-    enable = lib.mkEnableOption "Connect to Tailscale VPN";
-  };
-
-  config = lib.mkIf cfg.enable {
+  platforms.nixos = {
     services.tailscale = {
       enable = true;
       extraUpFlags = [ "--advertise-tags=tag:laptop" ];

@@ -1,20 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-let
-  cfg = config.psychollama.presets.services.zfs;
-in
+{ pkgs, ... }:
 
 {
-  options.psychollama.presets.services.zfs = {
-    enable = lib.mkEnableOption "Enable ZFS and perform automatic maintenance";
-  };
-
-  config = lib.mkIf cfg.enable {
+  platforms.nixos = {
     boot = {
       initrd.supportedFilesystems = [ "zfs" ];
       supportedFilesystems = [ "zfs" ];

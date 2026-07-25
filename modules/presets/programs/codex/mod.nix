@@ -1,16 +1,18 @@
 {
-  config,
+  self,
+  global,
+  cfg,
   lib,
   pkgs,
   ...
 }:
 
 let
-  inherit (config.psychollama) agents;
-  cfg = config.psychollama.presets.programs.codex;
+  agents = global."${self.agents}";
+  trustedDirectories = global."${self.trusted-directories}".paths;
 
   trustedDirectoriesHook = pkgs.callPackage ./hooks/trusted-directories.nix {
-    directories = config.psychollama.trusted-directories;
+    directories = trustedDirectories;
   };
 
   localInstructionsHook = pkgs.callPackage ./hooks/local-instructions.nix { };
@@ -62,9 +64,7 @@ let
       # prompting in repos I already own. Only wired when there's something to
       # trust, which also guarantees the hook always has a search path (see the
       # hook for why).
-      ++ lib.optional (config.psychollama.trusted-directories != [ ]) (
-        commandHook trustedDirectoriesHook
-      );
+      ++ lib.optional (trustedDirectories != [ ]) (commandHook trustedDirectoriesHook);
 
     # Format edited files after `apply_patch`, the way Claude Code's auto-format
     # hook does. Codex surfaces `apply_patch` under the `Write`/`Edit` matcher
@@ -74,9 +74,7 @@ let
 in
 
 {
-  options.psychollama.presets.programs.codex = {
-    enable = lib.mkEnableOption "Install the latest version of codex";
-
+  options = {
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.unstable.custom.codex-bin;
@@ -85,11 +83,11 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    environment.systemPackages = [ cfg.package ];
+  platforms.nixos.environment = {
+    systemPackages = [ cfg.package ];
 
     # User config is left writable and untracked because codex *insists* on
     # mutating it. So we provision a system-level config instead.
-    environment.etc."codex/config.toml".source = settingsFormat.generate "codex-config.toml" settings;
+    etc."codex/config.toml".source = settingsFormat.generate "codex-config.toml" settings;
   };
 }

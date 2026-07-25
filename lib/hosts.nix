@@ -142,8 +142,6 @@ in
       modules = modules ++ [
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager
-        self.nixosModules.nixos-platform
-        self.nixosModules.nixos-configs
         self.nixosModules.universal-platform
 
         # Mounts every meta-module's options into this root's fixpoint and

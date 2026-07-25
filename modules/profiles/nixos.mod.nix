@@ -16,41 +16,35 @@ in
     "${self.presets.gtk}".enable = mkDefault true;
     "${self.presets.sound-theme}".enable = mkDefault true;
 
+    "${self.presets.programs.codex}".enable = mkDefault true;
     "${self.presets.programs.sway}".enable = mkDefault true;
     "${self.presets.programs.swaylock}".enable = mkDefault true;
     "${self.presets.programs.waybar}".enable = mkDefault true;
+    "${self.presets.programs.wireshark}".enable = mkDefault true;
     "${self.presets.programs.zathura}".enable = mkDefault true;
 
+    "${self.presets.services.agenix}".enable = mkDefault true;
+    "${self.presets.services.avahi}".enable = mkDefault true;
     "${self.presets.services.dunst}".enable = mkDefault true;
     "${self.presets.services.gammastep}".enable = mkDefault true;
     "${self.presets.services.greetd}".enable = mkDefault true;
     "${self.presets.services.pipewire}".enable = mkDefault true;
+    "${self.presets.services.podman}".enable = mkDefault true;
+    "${self.presets.services.restic}".enable = mkDefault true;
     "${self.presets.services.swaybg}".enable = mkDefault true;
     "${self.presets.services.swayidle}".enable = mkDefault true;
+    "${self.presets.services.syncthing}".enable = mkDefault true;
+    "${self.presets.services.tailscale}".enable = mkDefault true;
+    "${self.presets.services.zfs}".enable = mkDefault true;
   };
 
-  # Presets that still live in the old `psychollama.presets.*` namespace.
-  # A platform block reaches the host's own options directly, so the two
-  # systems can coexist for as long as the migration takes.
+  # Host settings small enough that they never earned a preset of their own,
+  # plus (under home-manager) presets that still live in the old
+  # `psychollama.presets.*` namespace. A platform block reaches the host's own
+  # options directly, so the two systems can coexist for as long as the
+  # migration takes.
   platforms = {
     nixos = {
-      psychollama.presets = {
-        services = {
-          agenix.enable = mkDefault true;
-          avahi.enable = mkDefault true;
-          podman.enable = mkDefault true;
-          restic.enable = mkDefault true;
-          syncthing.enable = mkDefault true;
-          tailscale.enable = mkDefault true;
-          zfs.enable = mkDefault true;
-        };
-
-        programs = {
-          codex.enable = mkDefault true;
-          wireshark.enable = mkDefault true;
-        };
-      };
-
       services = {
         automatic-timezoned.enable = mkDefault true;
         printing.enable = mkDefault true;

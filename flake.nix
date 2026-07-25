@@ -133,19 +133,6 @@
             directory = ./platforms/home-manager/modules/psychollama;
           };
         };
-
-        nixos-platform = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ./platforms/nixos/modules;
-            exclude = [ ./platforms/nixos/modules/psychollama ];
-          };
-        };
-
-        nixos-configs = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ./platforms/nixos/modules/psychollama;
-          };
-        };
       };
 
       overlays = {
