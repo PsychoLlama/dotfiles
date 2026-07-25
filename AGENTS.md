@@ -35,13 +35,6 @@ Module options mirror the directory structure: `psychollama.presets.programs.foo
 
 ## Conventions
 
-### Nix Style
-
-- Namespace new options like `foo.bar`, not `fooBar`.
-- Use dotted syntax for single-field attrsets (`foo.bar = "baz";`). Expand into a nested block when there are 2+ fields.
-- Always declare `options` with block syntax, even when `enable` is the only field.
-- Prefer `pkgs.writeShellApplication` for shell scripts.
-
 ### Platform Extensions
 
 - Prefer upstream `home-manager`/`nixos` options. Only add custom modules when upstream lacks support.
