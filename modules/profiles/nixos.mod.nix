@@ -16,15 +16,25 @@ in
     "${self.presets.gtk}".enable = mkDefault true;
     "${self.presets.sound-theme}".enable = mkDefault true;
 
+    "${self.presets.programs.acpi}".enable = mkDefault true;
     "${self.presets.programs.bemoji}".enable = mkDefault true;
+    "${self.presets.programs.brightnessctl}".enable = mkDefault true;
     "${self.presets.programs.chromium}".enable = mkDefault true;
     "${self.presets.programs.codex}".enable = mkDefault true;
     "${self.presets.programs.firefox}".enable = mkDefault true;
     "${self.presets.programs.fuzzel}".enable = mkDefault true;
+    "${self.presets.programs.grim}".enable = mkDefault true;
+    "${self.presets.programs.pamixer}".enable = mkDefault true;
+    "${self.presets.programs.parted}".enable = mkDefault true;
+    "${self.presets.programs.playerctl}".enable = mkDefault true;
+    "${self.presets.programs.slurp}".enable = mkDefault true;
     "${self.presets.programs.sway}".enable = mkDefault true;
     "${self.presets.programs.swaylock}".enable = mkDefault true;
     "${self.presets.programs.waybar}".enable = mkDefault true;
+    "${self.presets.programs.wf-recorder}".enable = mkDefault true;
+    "${self.presets.programs.wireplumber}".enable = mkDefault true;
     "${self.presets.programs.wireshark}".enable = mkDefault true;
+    "${self.presets.programs.wl-clipboard}".enable = mkDefault true;
     "${self.presets.programs.zathura}".enable = mkDefault true;
 
     "${self.presets.services.agenix}".enable = mkDefault true;
@@ -42,11 +52,8 @@ in
     "${self.presets.services.zfs}".enable = mkDefault true;
   };
 
-  # Host settings small enough that they never earned a preset of their own,
-  # plus (under home-manager) presets that still live in the old
-  # `psychollama.presets.*` namespace. A platform block reaches the host's own
-  # options directly, so the two systems can coexist for as long as the
-  # migration takes.
+  # Host settings small enough that they never earned a preset of their own. A
+  # platform block reaches the host's own options directly.
   platforms = {
     nixos = {
       services = {
@@ -61,21 +68,6 @@ in
       fonts.enableDefaultPackages = mkDefault true;
     };
 
-    home-manager = {
-      programs.signal-desktop.enable = mkDefault true;
-
-      psychollama.presets.programs = {
-        acpi.enable = mkDefault true;
-        brightnessctl.enable = mkDefault true;
-        grim.enable = mkDefault true;
-        pamixer.enable = mkDefault true;
-        parted.enable = mkDefault true;
-        playerctl.enable = mkDefault true;
-        slurp.enable = mkDefault true;
-        wf-recorder.enable = mkDefault true;
-        wireplumber.enable = mkDefault true;
-        wl-clipboard.enable = mkDefault true;
-      };
-    };
+    home-manager.programs.signal-desktop.enable = mkDefault true;
   };
 }
