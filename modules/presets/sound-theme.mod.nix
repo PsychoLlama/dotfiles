@@ -1,13 +1,6 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 
 let
-  cfg = config.psychollama.presets.sound-theme;
-
   oceanSounds = "${pkgs.unstable.kdePackages.ocean-sound-theme}/share/sounds/ocean/stereo";
 
   playSound = pkgs.writeShellApplication {
@@ -25,9 +18,7 @@ let
 in
 
 {
-  options.psychollama.presets.sound-theme = {
-    enable = lib.mkEnableOption "Enable the ocean sound theme and play-sound CLI";
-
+  options = {
     play = lib.mkOption {
       type = lib.types.str;
       readOnly = true;
@@ -36,7 +27,7 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  platforms.home-manager = {
     home.packages = [ playSound ];
 
     dconf.settings."org/gnome/desktop/sound" = {

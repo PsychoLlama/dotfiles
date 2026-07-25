@@ -1,17 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 
-let
-  cfg = config.psychollama.presets.gtk;
-in
 {
-  options.psychollama.presets.gtk.enable = lib.mkEnableOption "Configure GTK with dark theme";
-
-  config = lib.mkIf cfg.enable {
+  platforms.home-manager = {
     gtk = {
       enable = true;
       colorScheme = "dark";

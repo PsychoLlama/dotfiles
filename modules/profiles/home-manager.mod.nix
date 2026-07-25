@@ -1,21 +1,16 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
+
+# Every dotfiles program and service that isn't tied to a desktop. Was the
+# home-manager `full` profile.
 
 let
   inherit (lib) mkDefault;
-  cfg = config.psychollama.profiles.full;
 in
 
 {
-  options.psychollama.profiles.full = {
-    enable = lib.mkEnableOption "Enable all dotfiles programs and services";
-  };
-
-  config = lib.mkIf cfg.enable {
+  # Nothing here has migrated into the plugin yet, so the whole profile is
+  # still a platform block.
+  platforms.home-manager = {
     psychollama.presets = {
       programs = {
         bat.enable = mkDefault true;
@@ -49,9 +44,7 @@ in
         zoxide.enable = mkDefault true;
       };
 
-      services = {
-        ssh-agent.enable = mkDefault true;
-      };
+      services.ssh-agent.enable = mkDefault true;
     };
 
     programs = {

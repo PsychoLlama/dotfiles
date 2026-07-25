@@ -1,18 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-let
-  cfg = config.psychollama.presets.services.greetd;
-in
+{ lib, pkgs, ... }:
 
 {
-  options.psychollama.presets.services.greetd.enable = lib.mkEnableOption "Use TUI greeter";
-
-  config = lib.mkIf cfg.enable {
+  platforms.nixos = {
     services.greetd = {
       enable = true;
       settings.default_session = {

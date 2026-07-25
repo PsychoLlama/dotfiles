@@ -1,8 +1,12 @@
-{ config, lib, ... }:
+{
+  self,
+  global,
+  lib,
+  ...
+}:
 
 let
-  inherit (config.psychollama.identity) username;
-  cfg = config.psychollama.profiles.home-lab-admin;
+  inherit (global."${self.identity}") username;
 
   hosts = {
     nas-001 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOx6MIH8pVfBi0dckuIgssJO5JzlnEKrJrhNSPs7giTR";
@@ -13,14 +17,14 @@ let
 in
 
 {
-  options.psychollama.profiles.home-lab-admin = {
+  options = {
     enable = lib.mkEnableOption ''
       Configure the machine as an admin to the home lab.
       See: https://github.com/PsychoLlama/home-lab/
     '';
   };
 
-  config = lib.mkIf cfg.enable {
+  platforms.nixos = {
     nix.settings = {
       trusted-users = [ username ]; # Needed by `colmena`.
       builders-use-substitutes = true;

@@ -1,13 +1,16 @@
 {
-  config,
+  self,
+  global,
   lib,
   pkgs,
   ...
 }:
 
 let
-  cfg = config.psychollama.presets.services.dunst;
-  soundTheme = config.psychollama.presets.sound-theme;
+  # `play` is a readOnly option on the sound-theme module. Reading it needs
+  # that module mounted, not enabled — visibility and activation are
+  # separate concerns.
+  soundTheme = global."${self.presets.sound-theme}";
 
   notificationSound = pkgs.writeShellApplication {
     name = "dunst-notification-sound";
@@ -20,11 +23,9 @@ let
     '';
   };
 in
-{
-  options.psychollama.presets.services.dunst.enable =
-    lib.mkEnableOption "Use the dunst notification daemon";
 
-  config.services.dunst = lib.mkIf cfg.enable {
+{
+  platforms.home-manager.services.dunst = {
     enable = true;
     package = pkgs.unstable.dunst;
 
@@ -36,7 +37,7 @@ in
 
     settings = {
       global = {
-        script = "${notificationSound}/bin/dunst-notification-sound";
+        script = lib.getExe notificationSound;
         follow = "keyboard";
         font = "Monospace 12";
         frame_color = "#3f3f3f";

@@ -97,6 +97,10 @@
         inherit eachSystem;
       };
 
+      # Meta-modules: one module per program carrying payloads for every
+      # platform it touches. Mount with `lib.module.roots.<class>`.
+      plugin = lib.dotfiles.module.plugin { src = ./modules; };
+
       nixosModules = {
         universal-platform = {
           imports = lib.dotfiles.discoverNixFiles {

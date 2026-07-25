@@ -52,17 +52,14 @@ in
     (mkUnstablePreset "python3")
     (mkUnstablePreset "slurp")
     (mkUnstablePreset "starship")
-    (mkUnstablePreset "swaylock")
     (mkUnstablePreset "termshark")
     (mkUnstablePreset "tmux")
     (mkUnstablePreset "viddy")
-    (mkUnstablePreset "waybar")
     (mkUnstablePreset "wezterm")
     (mkUnstablePreset "wf-recorder")
     (mkUnstablePreset "whois")
     (mkUnstablePreset "wireplumber")
     (mkUnstablePreset "wl-clipboard")
-    (mkUnstablePreset "zathura")
     (mkUnstablePreset "zoxide")
   ];
 }

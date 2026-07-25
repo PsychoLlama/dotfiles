@@ -1,16 +1,10 @@
-{ config, lib, ... }:
+{ cfg, lib, ... }:
 
-# Defines a centralized color palette that I can use in other configs.
-# There are nix modules I can install that do something similar, but I'm not
-# ready to try those yet.
-#
-# TODO: Try some alternatives.
-# - https://github.com/Misterio77/nix-colors
-# - https://github.com/danth/stylix
+# A centralized color palette. Pure data: no configuration of its own,
+# just options that other modules read off `global`.
 
 let
   inherit (lib) types mkOption;
-  cfg = config.theme;
 
   colors-type = types.submodule {
     options = {
@@ -39,8 +33,17 @@ let
     };
   };
 in
+
 {
-  options.theme = {
+  options = {
+    # Data, not an effect. Reading through `global` never needs `enable`;
+    # only the legacy export below does.
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Whether to publish the theme to platforms that still read `config.theme`.";
+    };
+
     name = mkOption {
       type = types.enum (lib.attrNames cfg.palettes);
       default = "one-dark";
@@ -57,11 +60,18 @@ in
     palettes = mkOption {
       description = "All color palettes";
       type = types.attrsOf palette-type;
-
-      # Transitional: the theme meta-module owns this table and publishes it
-      # to nixos and home-manager. Evals with no meta layer (the editor) fall
-      # back to the same source, so `name` never faces an empty enum.
-      default = import ../../../modules/theme/palettes.nix { inherit lib; };
+      default = import ./palettes.nix { inherit lib; };
     };
   };
+
+  # Transitional. Presets that haven't moved into the plugin still read
+  # `config.theme` from their own eval. Delete when the last one migrates.
+  platforms =
+    let
+      publish.theme = { inherit (cfg) name palettes; };
+    in
+    {
+      nixos = publish;
+      home-manager = publish;
+    };
 }

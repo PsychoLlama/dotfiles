@@ -110,37 +110,24 @@ let
     };
 
   # Set reasonable defaults for home-manager as a submodule.
-  hm-substrate =
-    { config, ... }:
-    {
-      home-manager = {
-        useGlobalPkgs = lib.mkDefault true;
-        useUserPackages = lib.mkDefault true;
+  # `theme`, `identity` and `trusted-directories` used to be copied down
+  # from the host platform here; the meta layer now publishes them to both
+  # evals directly.
+  hm-substrate = {
+    home-manager = {
+      useGlobalPkgs = lib.mkDefault true;
+      useUserPackages = lib.mkDefault true;
 
-        # Add custom dotfiles modules to the HM framework.
-        sharedModules = [
-          agenix.homeManagerModules.default
-          self.nixosModules.home-manager-platform
-          self.nixosModules.home-manager-configs
-          self.nixosModules.universal-platform
-          editor-program
-
-          {
-            # Inherit theme config from host platform.
-            theme = {
-              name = lib.mkDefault config.theme.name;
-              palettes = lib.mkDefault config.theme.palettes;
-            };
-
-            # Inherit identity from host platform.
-            psychollama.identity = lib.mapAttrs (_: lib.mkDefault) config.psychollama.identity;
-
-            # Inherit trusted directories from host platform.
-            psychollama.trusted-directories = lib.mkDefault config.psychollama.trusted-directories;
-          }
-        ];
-      };
+      # Add custom dotfiles modules to the HM framework.
+      sharedModules = [
+        agenix.homeManagerModules.default
+        self.nixosModules.home-manager-platform
+        self.nixosModules.home-manager-configs
+        self.nixosModules.universal-platform
+        editor-program
+      ];
     };
+  };
 
 in
 
@@ -148,12 +135,20 @@ in
   nixos = lib.mapAttrs (
     hostName: modules:
     lib.nixosSystem {
+      # Handles for the meta-module namespace, so host configuration can
+      # address plugin modules: `config."${dotfiles.profiles.foo}"`.
+      specialArgs.dotfiles = self.plugin;
+
       modules = modules ++ [
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager
         self.nixosModules.nixos-platform
         self.nixosModules.nixos-configs
         self.nixosModules.universal-platform
+
+        # Mounts every meta-module's options into this root's fixpoint and
+        # routes home-manager fragments onto `sharedModules`.
+        (self.lib.module.roots.nixos { dotfiles = self.plugin; })
 
         nixpkgs-config
         nix-flakes

@@ -1,14 +1,7 @@
-{ config, lib, ... }:
+{ lib, ... }:
 
-let
-  cfg = config.psychollama.presets.services.pipewire;
-in
 {
-  options.psychollama.presets.services.pipewire = {
-    enable = lib.mkEnableOption "Use pipewire for audio";
-  };
-
-  config = lib.mkIf cfg.enable {
+  platforms.nixos = {
     # Used by Pipewire to get real-time thread priority.
     security.rtkit.enable = lib.mkDefault true;
 

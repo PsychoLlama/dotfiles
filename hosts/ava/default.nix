@@ -1,7 +1,12 @@
-{ config, lib, ... }:
+{
+  config,
+  dotfiles,
+  lib,
+  ...
+}:
 
 let
-  inherit (config.psychollama.identity) username name;
+  inherit (config."${dotfiles.identity}") username name;
   shell = config.home-manager.users.${username}.programs.nushell.package;
 in
 
@@ -65,31 +70,24 @@ in
         # Where the flake lives on disk, used by `nh os` / `nh home`.
         programs.nh.flake = "${config.home.homeDirectory}/projects/psychollama/dotfiles";
 
-        psychollama.profiles = {
-          full.enable = true;
-          linux-desktop.enable = true;
-        };
       };
 
-    psychollama = {
-      identity = {
-        username = "overlord";
-        name = "Jesse Gibson";
-        email = "JesseTheGibson@gmail.com";
-      };
-
-      trusted-directories = [
-        "~/projects/psychollama"
-        "~/projects/@scratch"
-        "~/projects/retreon"
-        "~/projects/ambient-computer"
-      ];
-
-      profiles = {
-        full.enable = true;
-        home-lab-admin.enable = true;
-      };
+    "${dotfiles.identity}" = {
+      username = "overlord";
+      name = "Jesse Gibson";
+      email = "JesseTheGibson@gmail.com";
     };
+
+    "${dotfiles.trusted-directories}".paths = [
+      "~/projects/psychollama"
+      "~/projects/@scratch"
+      "~/projects/retreon"
+      "~/projects/ambient-computer"
+    ];
+
+    "${dotfiles.profiles.nixos}".enable = true;
+    "${dotfiles.profiles.home-manager}".enable = true;
+    "${dotfiles.profiles.home-lab-admin}".enable = true;
 
     system.stateVersion = "20.09";
   };
