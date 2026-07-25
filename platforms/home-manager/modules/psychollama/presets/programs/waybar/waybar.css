@@ -59,6 +59,6 @@ window {
   color: @normal-red;
 }
 
-#idle_inhibitor.activated {
+#custom-idle-lock.disabled {
   color: @normal-red;
 }

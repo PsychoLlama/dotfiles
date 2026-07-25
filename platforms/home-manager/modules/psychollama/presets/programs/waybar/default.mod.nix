@@ -1,7 +1,53 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.psychollama.presets.programs.waybar;
+  swayidle = config.psychollama.presets.services.swayidle;
+
+  # Sway ignores every idle inhibitor that isn't attached to the lock surface
+  # while a session lock is held (`sway_idle_inhibit_v1_is_active`), so waybar's
+  # built-in `idle_inhibitor` silently stops working the moment the screen
+  # locks. Toggling the unit is the only lever that survives the lock screen.
+  idleLock = pkgs.writeShellApplication {
+    name = "waybar-idle-lock";
+    runtimeInputs = [
+      pkgs.systemd
+      pkgs.procps
+    ];
+
+    text = ''
+      case "''${1-status}" in
+        toggle)
+          if systemctl --user --quiet is-active swayidle; then
+            systemctl --user stop swayidle
+          else
+            systemctl --user start swayidle
+          fi
+
+          # Redraw now rather than waiting out the poll interval.
+          pkill -RTMIN+8 waybar || true
+          ;;
+
+        status)
+          if systemctl --user --quiet is-active swayidle; then
+            printf '{"text":"enabled","alt":"enabled","tooltip":"Automatic lock enabled"}\n'
+          else
+            printf '{"text":"disabled","alt":"disabled","class":"disabled","tooltip":"Automatic lock disabled"}\n'
+          fi
+          ;;
+
+        *)
+          echo "usage: waybar-idle-lock [status|toggle]" >&2
+          exit 1
+          ;;
+      esac
+    '';
+  };
 
   # Convert the color palette to a flat list of colors.
   # { bright-red = "<hex>"; normal-red = "<hex>"; ... }
@@ -48,16 +94,23 @@ in
         "backlight"
         "battery"
         "clock"
-        "idle_inhibitor"
-      ];
+      ]
+      ++ lib.optional swayidle.enable "custom/idle-lock";
 
-      idle_inhibitor = {
+      "custom/idle-lock" = lib.mkIf swayidle.enable {
         format = "{icon}";
-        tooltip-format-activated = "Automatic lock enabled";
-        tooltip-format-deactivated = "Automatic lock disabled";
+        return-type = "json";
+        exec = "${lib.getExe idleLock} status";
+        on-click = "${lib.getExe idleLock} toggle";
+
+        # `signal` handles the redraw after a click; the interval only catches
+        # the unit being stopped or started from elsewhere.
+        signal = 8;
+        interval = 30;
+
         format-icons = {
-          activated = "";
-          deactivated = "";
+          enabled = "";
+          disabled = "";
         };
       };
 
