@@ -48,7 +48,6 @@
         authoring-memory-files = ./rules/authoring-memory-files.md;
         neovim-development = ./rules/neovim-development.md;
         neovim-local-vimrc = ./rules/neovim-local-vimrc.md;
-        nushell-development = ./rules/nushell-development.md;
       };
     };
 
@@ -61,6 +60,7 @@
       '';
 
       default = {
+        nushell-development = ./skills/nushell-development;
         using-nix = ./skills/using-nix;
       };
     };
