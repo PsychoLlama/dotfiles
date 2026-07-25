@@ -1,13 +1,11 @@
 {
-  config,
+  cfg,
   lib,
   pkgs,
   ...
 }:
 
 let
-  cfg = config.psychollama.presets.programs.dictation;
-
   recordCommand = ''pw-record "$audio_file"'';
 
   dictation = pkgs.writeShellApplication {
@@ -59,9 +57,7 @@ let
 in
 
 {
-  options.psychollama.presets.programs.dictation = {
-    enable = lib.mkEnableOption "Speech-to-text using local Whisper";
-
+  options = {
     model = lib.mkOption {
       type = lib.types.str;
       default = "base.en";
@@ -69,7 +65,5 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    home.packages = [ dictation ];
-  };
+  platforms.home-manager.home.packages = [ dictation ];
 }

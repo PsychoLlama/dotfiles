@@ -1,4 +1,4 @@
-{ cfg, lib, ... }:
+{ lib, ... }:
 
 # Shared configuration for coding agents (Claude Code, codex, ...). This is
 # *pure data*: it declares the canonical memory, rules, and skills once and
@@ -6,8 +6,15 @@
 # Each agent preset reads it off `global` and decides how to render it into its
 # own native shape.
 
-let
-  shared-options = {
+{
+  options = {
+    # Data, not an effect. See `theme` for the reasoning.
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to publish the shared agent data.";
+    };
+
     context = lib.mkOption {
       type = lib.types.lines;
       description = ''
@@ -70,35 +77,6 @@ let
       '';
 
       default = { };
-    };
-  };
-in
-
-{
-  options = {
-    # Data, not an effect. See `theme` for the reasoning.
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Whether to publish the data to platforms that still read `psychollama.agents`.";
-    };
-  }
-  // shared-options;
-
-  # Transitional. The claude-code preset still reads `psychollama.agents` from
-  # its own eval, and nothing declares those options there any more. A
-  # foreign-class fragment is a full deferred module, so it carries the
-  # declarations along with the values. Delete when claude-code migrates.
-  platforms.home-manager = {
-    options.psychollama.agents = shared-options;
-
-    config.psychollama.agents = {
-      inherit (cfg)
-        context
-        rules
-        skills
-        commands
-        ;
     };
   };
 }
