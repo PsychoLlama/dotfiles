@@ -1,13 +1,6 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 
 let
-  cfg = config.psychollama.presets.programs.carapace;
-
   # Carapace's bash bridge runs a bare `bash`, resolved via PATH. Inside nix
   # devshells that's stdenv's non-interactive bash, which lacks the `complete`
   # builtin, so the bridge silently produces nothing. Prepend an interactive
@@ -30,11 +23,7 @@ let
 in
 
 {
-  options.psychollama.presets.programs.carapace = {
-    enable = lib.mkEnableOption "Multi-shell command argument completer";
-  };
-
-  config = lib.mkIf cfg.enable {
+  platforms.home-manager = {
     programs.carapace = {
       enable = lib.mkDefault true;
       package = lib.mkDefault (withBridgeBash pkgs.unstable.carapace);

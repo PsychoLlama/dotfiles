@@ -1,11 +1,10 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.psychollama.presets.programs.starship;
-in
+{ lib, pkgs, ... }:
 
 {
-  config.programs.starship = lib.mkIf cfg.enable {
+  platforms.home-manager.programs.starship = {
+    enable = lib.mkDefault true;
+    package = lib.mkDefault pkgs.unstable.starship;
+
     settings = {
       add_newline = false;
 

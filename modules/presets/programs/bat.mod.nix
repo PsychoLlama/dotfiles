@@ -1,14 +1,13 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.psychollama.presets.programs.bat;
-in
+{ lib, pkgs, ... }:
 
 {
-  config = lib.mkIf cfg.enable {
+  platforms.home-manager = {
     home.shellAliases.cat = "bat";
 
     programs.bat = {
+      enable = lib.mkDefault true;
+      package = lib.mkDefault pkgs.unstable.bat;
+
       config = {
         theme = "TwoDark";
         style = "changes";

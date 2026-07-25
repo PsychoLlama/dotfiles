@@ -1,13 +1,14 @@
 {
-  config,
+  self,
+  global,
   lib,
   pkgs,
   ...
 }:
 
 let
-  inherit (config.theme) palette;
-  cfg = config.psychollama.presets.programs.fuzzel;
+  inherit (global."${self.theme}") palette;
+
   rgba = hex: alpha: "${lib.substring 1 (-1) hex}${lib.toHexString (builtins.ceil (alpha * 255))}";
   opaque = hex: rgba hex 1.0;
 
@@ -16,13 +17,10 @@ let
 in
 
 {
-  options.psychollama.presets.programs.fuzzel = {
-    enable = lib.mkEnableOption "Install the latest version of fuzzel";
-  };
-
-  config.programs.fuzzel = lib.mkIf cfg.enable {
+  platforms.home-manager.programs.fuzzel = {
     enable = true;
     package = pkgs.unstable.fuzzel;
+
     settings = {
       main = {
         horizontal-pad = 16;

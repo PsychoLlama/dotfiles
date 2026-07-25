@@ -16,7 +16,11 @@ in
     "${self.presets.gtk}".enable = mkDefault true;
     "${self.presets.sound-theme}".enable = mkDefault true;
 
+    "${self.presets.programs.bemoji}".enable = mkDefault true;
+    "${self.presets.programs.chromium}".enable = mkDefault true;
     "${self.presets.programs.codex}".enable = mkDefault true;
+    "${self.presets.programs.firefox}".enable = mkDefault true;
+    "${self.presets.programs.fuzzel}".enable = mkDefault true;
     "${self.presets.programs.sway}".enable = mkDefault true;
     "${self.presets.programs.swaylock}".enable = mkDefault true;
     "${self.presets.programs.waybar}".enable = mkDefault true;
@@ -62,11 +66,7 @@ in
 
       psychollama.presets.programs = {
         acpi.enable = mkDefault true;
-        bemoji.enable = mkDefault true;
         brightnessctl.enable = mkDefault true;
-        chromium.enable = mkDefault true;
-        firefox.enable = mkDefault true;
-        fuzzel.enable = mkDefault true;
         grim.enable = mkDefault true;
         pamixer.enable = mkDefault true;
         parted.enable = mkDefault true;
