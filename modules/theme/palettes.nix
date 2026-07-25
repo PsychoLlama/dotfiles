@@ -1,8 +1,8 @@
 { lib }:
 
-# The palette table. A plain `.nix` helper, not a module: the theme
-# meta-module owns it, and `platforms/universal` imports it directly so
-# evals with no meta layer (the editor) still see a valid palette set.
+# The palette table. A plain `.nix` helper, not a module: pure data with no
+# schema of its own, kept out of `mod.nix` so that file reads as the theme's
+# shape rather than its contents.
 
 let
   inherit (lib) mkDefault;

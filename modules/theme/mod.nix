@@ -2,6 +2,10 @@
 
 # A centralized color palette. Pure data: no configuration of its own,
 # just options that other modules read off `global`.
+#
+# TODO: Try some alternatives.
+# - https://github.com/Misterio77/nix-colors
+# - https://github.com/danth/stylix
 
 let
   inherit (lib) types mkOption;
@@ -36,12 +40,13 @@ in
 
 {
   options = {
-    # Data, not an effect. Reading through `global` never needs `enable`;
-    # only the legacy export below does.
+    # Data, not an effect: publishing a table configures nothing, and reads
+    # through `global` never consult `enable`. There is nothing to opt into,
+    # so it defaults on.
     enable = mkOption {
       type = types.bool;
       default = true;
-      description = "Whether to publish the theme to platforms that still read `config.theme`.";
+      description = "Whether to publish the theme.";
     };
 
     name = mkOption {
@@ -63,15 +68,4 @@ in
       default = import ./palettes.nix { inherit lib; };
     };
   };
-
-  # Transitional. Presets that haven't moved into the plugin still read
-  # `config.theme` from their own eval. Delete when the last one migrates.
-  platforms =
-    let
-      publish.theme = { inherit (cfg) name palettes; };
-    in
-    {
-      nixos = publish;
-      home-manager = publish;
-    };
 }

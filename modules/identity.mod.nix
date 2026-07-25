@@ -1,4 +1,4 @@
-{ cfg, lib, ... }:
+{ lib, ... }:
 
 # Personal identity for the system's primary user. Required and shared across
 # platforms; consumed by anything that needs to address or attribute the owner
@@ -10,7 +10,7 @@
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Whether to publish identity to platforms that still read `psychollama.identity`.";
+      description = "Whether to publish the owner's identity.";
     };
 
     username = lib.mkOption {
@@ -27,11 +27,5 @@
       type = lib.types.str;
       description = "Email address of the system's owner.";
     };
-  };
-
-  # Transitional. See `theme`.
-  platforms = {
-    nixos.psychollama.identity = { inherit (cfg) username name email; };
-    home-manager.psychollama.identity = { inherit (cfg) username name email; };
   };
 }

@@ -110,9 +110,9 @@ let
     };
 
   # Set reasonable defaults for home-manager as a submodule.
-  # `theme`, `identity` and `trusted-directories` used to be copied down
-  # from the host platform here; the meta layer now publishes them to both
-  # evals directly.
+  # `theme`, `identity` and `trusted-directories` used to be copied down from
+  # the host platform here. They are meta-modules now: consumers read them off
+  # `global`, and only the editor still needs a copy (see above).
   hm-substrate = {
     home-manager = {
       useGlobalPkgs = lib.mkDefault true;
@@ -135,10 +135,6 @@ in
   nixos = lib.mapAttrs (
     hostName: modules:
     lib.nixosSystem {
-      # Handles for the meta-module namespace, so host configuration can
-      # address plugin modules: `config."${dotfiles.profiles.foo}"`.
-      specialArgs.dotfiles = self.plugin;
-
       modules = modules ++ [
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager

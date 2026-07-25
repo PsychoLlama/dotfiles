@@ -143,9 +143,12 @@
 
       nixosConfigurations = lib.dotfiles.hosts.nixos {
         ava = [
+          # Flake inputs can only be imported at the assembly site; a
+          # meta-module has no `imports`.
           nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
           nixpkgs.nixosModules.notDetected
-          ./hosts/ava
+
+          { "${self.plugin.hosts.ava}".enable = true; }
         ];
       };
 

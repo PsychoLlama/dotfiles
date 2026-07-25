@@ -20,13 +20,13 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
 
 ## Structure
 
-- `hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized.
+- `modules/`: Opinionated config. One module per program, carrying a payload for every platform it touches.
+  - `modules/hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized.
+  - `modules/presets/`: Opinionated config for a specific program or service.
+  - `modules/profiles/`: Groupings of presets.
 - `platforms/`: Modules extending other platforms with new programs and services. Many of these could be upstreamed.
   - [`home-manager/`](https://github.com/nix-community/home-manager)
-  - [`nixos/`](https://nixos.org/)
   - `editor/` (My equivalent of [nixvim](https://nix-community.github.io/nixvim/). Self-contained, no `~/.config` files.)
-- `platforms/*/modules/presets/`: Opinionated config for a specific program or service.
-- `platforms/*/modules/profiles/`: Groupings of presets.
 
 ## Composition
 
@@ -35,13 +35,20 @@ Everything in this repo can be used piecemeal in other flakes. Modules have no s
 Modules are divided into **platforms** and **configs**.
 
 - `dotfiles.nixosModules.*-platform`: Extends platforms with new programs, services, and DSLs.
-- `dotfiles.nixosModules.*-config`: Opinionated configurations for programs and services.
+- `dotfiles.nixosModules.*-configs`: Opinionated configs bound to one platform's `psychollama.*` namespace. Mostly the editor.
+- `dotfiles.plugin`: Everything else. Opinionated config for programs, services, and whole machines.
 
-Configs are available under the `psychollama.*` namespace.
+Mount the plugin on a NixOS system, then enable modules by handle.
 
 ```nix
-# Use my opinionated starship prompt.
-config.psychollama.presets.starship.enable = true;
+{
+  imports = [
+    (dotfiles.lib.module.roots.nixos { inherit (dotfiles) plugin; })
+  ];
+
+  # Use my opinionated starship prompt.
+  "${dotfiles.plugin.presets.programs.starship}".enable = true;
+}
 ```
 
 ## Editor (neovim)

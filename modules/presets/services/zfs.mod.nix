@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   platforms.nixos = {
@@ -17,7 +17,11 @@
 
       # ZFS doesn't support freeze/thaw APIs. Hibernation could corrupt files.
       # https://github.com/openzfs/zfs/issues/260
-      kernelParams = [
+      #
+      # `mkBefore` pins it to the front of the command line. The kernel is
+      # indifferent to the order, but without an anchor the params reshuffle
+      # whenever a module moves in the fixpoint, which rewrites the boot entry.
+      kernelParams = lib.mkBefore [
         "nohibernate"
       ];
 

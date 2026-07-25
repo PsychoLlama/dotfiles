@@ -15,7 +15,7 @@
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Whether to publish the list to platforms that still read `psychollama.trusted-directories`.";
+      description = "Whether to publish the list to the home-manager eval for the editor.";
     };
 
     paths = lib.mkOption {
@@ -31,10 +31,10 @@
     };
   };
 
-  # Transitional. See `theme`. The editor inherits its copy from the
-  # home-manager eval, so it needs no export of its own.
-  platforms = {
-    nixos.psychollama.trusted-directories = cfg.paths;
-    home-manager.psychollama.trusted-directories = cfg.paths;
-  };
+  # Transitional, and the last export of its kind. The editor is not a
+  # platform class yet: `programs.editor` is a submodule of the home-manager
+  # eval, and `lib/hosts.nix` copies this list down into it to derive
+  # `env.trusted`. Nothing in the NixOS eval reads it. Delete when the editor
+  # gains a class and can read `global` like every other consumer.
+  platforms.home-manager.psychollama.trusted-directories = cfg.paths;
 }
