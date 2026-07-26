@@ -50,9 +50,7 @@ in
         }))
       '';
 
-      # Ordered after the editor's entry, which is where these sat when direnv
-      # was still an ordinary home-manager preset.
-      programs.git.ignores = lib.mkAfter [
+      programs.git.ignores = [
         # No trailing slash so it also matches the bare symlink worktrees use.
         ".direnv"
         ".envrc"

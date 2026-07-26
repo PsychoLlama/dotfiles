@@ -185,10 +185,7 @@ in
         };
       };
 
-      # Meta-module fragments merge ahead of the presets still in the old tree,
-      # which would reshuffle the generated ignore file against the editor's
-      # and direnv's entries. Pinned last to keep it stable.
-      programs.git.ignores = lib.mkAfter [
+      programs.git.ignores = [
         "**/.claude/*.lock"
         "**/.claude/settings.local.json"
         "**/.claude/worktrees"
