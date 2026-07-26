@@ -7,6 +7,7 @@
     let
       tmux = lib.getExe' config.programs.tmux.package "tmux";
       nu = lib.getExe' config.programs.nushell.package "nu";
+      fzf = lib.getExe config.programs.fzf.package;
     in
 
     {
@@ -26,7 +27,7 @@
 
           bind-key C-s display-popup -E ${pkgs.writers.writeBash "tmux-jump" ''
             sessions="$(${tmux} list-sessions -F "#{session_name}")"
-            session_name="$(echo -e "$sessions" | ${lib.getExe pkgs.fzf})"
+            session_name="$(echo -e "$sessions" | ${fzf})"
 
             if [[ -n "$session_name" ]]; then
               ${tmux} switch-client -t "$session_name"
