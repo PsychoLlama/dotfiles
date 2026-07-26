@@ -10,7 +10,7 @@ Each platform exposes a flake-output module:
 
 - `nixosModules.<platform>-platform` — new programs, services, and DSLs extending the platform. Keep opinions out; these should be upstreamable.
 
-Opinionated configuration lives in the top-level `modules/` plugin. The one holdout is `platforms/home-manager/modules/psychollama/manifest.mod.nix`, exported as `nixosModules.home-manager-configs`; everything else under `platforms/<platform>/modules/` is the platform side.
+Opinionated configuration lives entirely in the top-level `modules/` plugin. Everything under `platforms/<platform>/modules/` is the platform side.
 
 Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
 

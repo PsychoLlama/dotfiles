@@ -128,7 +128,6 @@ let
       sharedModules = [
         agenix.homeManagerModules.default
         self.nixosModules.home-manager-platform
-        self.nixosModules.home-manager-configs
         editor-program
       ];
     };

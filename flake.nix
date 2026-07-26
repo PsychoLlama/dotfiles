@@ -114,13 +114,6 @@
         home-manager-platform = {
           imports = lib.dotfiles.discoverNixFiles {
             directory = ./platforms/home-manager/modules;
-            exclude = [ ./platforms/home-manager/modules/psychollama ];
-          };
-        };
-
-        home-manager-configs = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ./platforms/home-manager/modules/psychollama;
           };
         };
       };
