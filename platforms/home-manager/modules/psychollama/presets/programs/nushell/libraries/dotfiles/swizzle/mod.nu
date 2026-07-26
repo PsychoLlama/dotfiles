@@ -3,7 +3,7 @@ export def main [] {
   help modules swizzle
 }
 
-# Manifest of nix-managed file paths, written by `psychollama.manifest`.
+# Manifest of nix-managed file paths, written by the swizzle preset.
 const MANIFEST = ($nu.home-dir | path join '.config' 'swizzle' 'manifest.json')
 
 # Swap a nix-managed file for a writable local copy in the current directory.
@@ -120,7 +120,7 @@ def 'classify' [path: string]: nothing -> string {
   'foreign'
 }
 
-# Paths exported by `psychollama.manifest`, minus the manifest file itself.
+# Paths exported by the manifest, minus the manifest file itself.
 def 'manifest-paths' []: nothing -> list<string> {
   if not ($MANIFEST | path exists) {
     return []
