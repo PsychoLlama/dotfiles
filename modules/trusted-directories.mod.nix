@@ -15,7 +15,7 @@
     enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Whether to publish the list to the home-manager eval for the editor.";
+      description = "Whether to publish the list to the editor evaluation.";
     };
 
     paths = lib.mkOption {
@@ -31,10 +31,9 @@
     };
   };
 
-  # Transitional, and the last export of its kind. The editor is not a
-  # platform class yet: `programs.editor` is a submodule of the home-manager
-  # eval, and `lib/hosts.nix` copies this list down into it to derive
-  # `env.trusted`. Nothing in the NixOS eval reads it. Delete when the editor
-  # gains a class and can read `global` like every other consumer.
-  platforms.home-manager.psychollama.trusted-directories = cfg.paths;
+  # The editor's env framework sources a project-local vimrc without prompting
+  # when the file sits beneath one of these prefixes. A standalone
+  # `packages.editor` has no host to inherit from and trusts nothing, which is
+  # the right default for a portable editor.
+  platforms.editor.env.trusted = cfg.paths;
 }

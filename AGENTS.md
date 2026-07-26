@@ -6,12 +6,11 @@ NixOS-based configuration-as-code for Linux and home-manager environments.
 
 This flake is consumed by other flakes. Everything must be changeable, disableable, or extendable from the outside.
 
-Each platform exposes two flake-output modules:
+Each platform exposes a flake-output module:
 
 - `nixosModules.<platform>-platform` — new programs, services, and DSLs extending the platform. Keep opinions out; these should be upstreamable.
-- `nixosModules.<platform>-configs` — opinionated configurations under the `psychollama.*` namespace.
 
-On disk the split is by subdirectory: `platforms/<platform>/modules/psychollama/` is the configs side; everything else under `platforms/<platform>/modules/` is the platform side. Most of the configs side now lives in the top-level `modules/` plugin; what remains is what the meta layer cannot reach yet (the editor, and home-manager's `manifest`).
+Opinionated configuration lives in the top-level `modules/` plugin. The one holdout is `platforms/home-manager/modules/psychollama/manifest.mod.nix`, exported as `nixosModules.home-manager-configs`; everything else under `platforms/<platform>/modules/` is the platform side.
 
 Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
 
@@ -24,11 +23,10 @@ Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, di
 - `platforms/`
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
   - `home-manager/` — Home Manager extensions. Platform extensions live under `modules/programs/` and `modules/services/`.
-  - `universal/` — Cross-platform options consumed by every system substrate.
 - `lib/` — Nix utilities (system builders, module discovery, meta-module system, overlays).
 - `pkgs/` — Custom package derivations.
 
-Meta-modules are addressed by handle, not option path: `modules/presets/programs/foo.mod.nix` is `self.presets.programs.foo`. Platform modules still mirror their option namespace: `psychollama.presets.plugins.foo` lives at `psychollama/presets/plugins/foo.mod.nix` (or `foo/default.mod.nix`).
+Meta-modules are addressed by handle, not option path: `modules/presets/programs/foo.mod.nix` is `self.presets.programs.foo`.
 
 ## Conventions
 
@@ -53,7 +51,7 @@ Self-contained neovim framework in `platforms/editor/`. No `~/.config` files.
 - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
 - `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.
 
-Plugin presets live under `modules/psychollama/presets/plugins/`; LSP servers under `modules/psychollama/presets/lsp/servers/`.
+Plugin and language-server presets are meta-modules carrying an `editor` payload: `modules/presets/plugins/<plugin>/` and `modules/presets/lsp/servers/<server>.mod.nix`. `modules/profiles/editor/` groups them into the editor this repo ships.
 
 ### Working with Neovim
 

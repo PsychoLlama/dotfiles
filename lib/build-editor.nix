@@ -23,7 +23,6 @@ let
     modules = modules ++ [
       { _module.args.pkgs = pkgs; }
       self.nixosModules.editor-platform
-      self.nixosModules.universal-platform
 
       # No outer root to route fragments down from, so the plugin mounts
       # here. `class = "editor"` makes editor payloads merge inline; the

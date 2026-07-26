@@ -93,17 +93,7 @@ let
             inherit pkgs;
           };
 
-          modules = [
-            self.nixosModules.editor-platform
-            self.nixosModules.editor-configs
-            self.nixosModules.universal-platform
-
-            {
-              # Inherit trusted directories from the home-manager platform; the
-              # editor's own namespace derives `env.trusted` from them.
-              psychollama.trusted-directories = lib.mkDefault config.psychollama.trusted-directories;
-            }
-          ];
+          modules = [ self.nixosModules.editor-platform ];
         };
       };
 
@@ -128,7 +118,7 @@ let
   # Set reasonable defaults for home-manager as a submodule.
   # `theme`, `identity` and `trusted-directories` used to be copied down from
   # the host platform here. They are meta-modules now: consumers read them off
-  # `global`, and only the editor still needs a copy (see above).
+  # `global`, including the editor.
   hm-substrate = {
     home-manager = {
       useGlobalPkgs = lib.mkDefault true;
@@ -139,7 +129,6 @@ let
         agenix.homeManagerModules.default
         self.nixosModules.home-manager-platform
         self.nixosModules.home-manager-configs
-        self.nixosModules.universal-platform
         editor-program
       ];
     };
@@ -154,7 +143,6 @@ in
       modules = modules ++ [
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager
-        self.nixosModules.universal-platform
 
         # Mounts every meta-module's options into this root's fixpoint and
         # routes home-manager fragments onto `sharedModules`.

@@ -105,22 +105,9 @@
       };
 
       nixosModules = {
-        universal-platform = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ./platforms/universal/modules;
-          };
-        };
-
         editor-platform = {
           imports = lib.dotfiles.discoverNixFiles {
             directory = ./platforms/editor/modules;
-            exclude = [ ./platforms/editor/modules/psychollama ];
-          };
-        };
-
-        editor-configs = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ./platforms/editor/modules/psychollama;
           };
         };
 
@@ -181,10 +168,7 @@
         system: pkgs: {
           editor = lib.dotfiles.buildEditor {
             inherit pkgs;
-            modules = [
-              self.nixosModules.editor-configs
-              { psychollama.profiles.full.enable = true; }
-            ];
+            modules = [ { "${self.plugin.profiles.editor}".enable = true; } ];
           };
 
           inherit (pkgs.custom) chrome-devtools-mcp claude-code-bin codex-bin;

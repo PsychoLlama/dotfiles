@@ -1,6 +1,13 @@
-{ lib, pkgs, ... }:
+{
+  self,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
+  config."${self.profiles.editor}".enable = true;
+
   platforms.home-manager =
     { config, ... }:
 
@@ -19,7 +26,6 @@
       programs.editor = {
         enable = lib.mkDefault true;
         package = lib.mkDefault pkgs.unstable.neovim;
-        psychollama.profiles.full.enable = true;
       };
     };
 }
