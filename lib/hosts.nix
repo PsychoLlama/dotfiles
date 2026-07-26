@@ -88,6 +88,7 @@ let
         description = "Configure and install Neovim";
         default = { };
         type = lib.types.submoduleWith {
+          class = "editor";
           specialArgs = {
             inherit pkgs;
           };
@@ -107,6 +108,21 @@ let
       };
 
       config.home.packages = lib.mkIf cfg.enable [ cfg.neovim ];
+    };
+
+  # Routes the `editor` class. `programs.editor` is a submodule of the
+  # home-manager eval, so fragments ride `sharedModules` down to it and land
+  # as definitions — a submodule definition is a module, so it may carry
+  # `imports`. Nothing here touches the option's *type*, which would make the
+  # declaration depend on config and recurse.
+  editor-installer =
+    { config, ... }:
+    {
+      _meta.routed = [ "editor" ];
+
+      home-manager.sharedModules = [
+        { programs.editor.imports = config._meta.fragments.editor; }
+      ];
     };
 
   # Set reasonable defaults for home-manager as a submodule.
@@ -143,6 +159,7 @@ in
         # Mounts every meta-module's options into this root's fixpoint and
         # routes home-manager fragments onto `sharedModules`.
         (self.lib.module.roots.nixos { dotfiles = self.plugin; })
+        editor-installer
 
         nixpkgs-config
         nix-flakes
