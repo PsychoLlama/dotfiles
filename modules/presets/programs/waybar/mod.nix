@@ -1,6 +1,5 @@
 {
   self,
-  global,
   lib,
   pkgs,
   ...
@@ -9,8 +8,8 @@
 let
   # Validated references to peer modules, not stringly-typed option paths.
   # Reading them only requires those modules to be mounted.
-  swayidle = global."${self.presets.services.swayidle}";
-  inherit (global."${self.theme}") palette;
+  swayidle = self.presets.services.swayidle;
+  inherit (self.theme) palette;
 
   # Convert the color palette to a flat list of colors.
   # { bright-red = "<hex>"; normal-red = "<hex>"; ... }

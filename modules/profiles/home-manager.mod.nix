@@ -13,40 +13,42 @@ let
 in
 
 {
-  # Writes addressed by handle. A typo here is an eval error at the
-  # reference, not a silently-ignored option path.
-  config = {
-    "${self.presets.programs.bat}".enable = mkDefault true;
-    "${self.presets.programs.bottom}".enable = mkDefault true;
-    "${self.presets.programs.carapace}".enable = mkDefault true;
-    "${self.presets.programs.claude-code}".enable = mkDefault true;
-    "${self.presets.programs.delta}".enable = mkDefault true;
-    "${self.presets.programs.dictation}".enable = mkDefault true;
-    "${self.presets.programs.direnv}".enable = mkDefault true;
-    "${self.presets.programs.dive}".enable = mkDefault true;
-    "${self.presets.programs.dix}".enable = mkDefault true;
-    "${self.presets.programs.doggo}".enable = mkDefault true;
-    "${self.presets.programs.editor}".enable = mkDefault true;
-    "${self.presets.programs.fd}".enable = mkDefault true;
-    "${self.presets.programs.fzf}".enable = mkDefault true;
-    "${self.presets.programs.gh}".enable = mkDefault true;
-    "${self.presets.programs.git}".enable = mkDefault true;
-    "${self.presets.programs.glow}".enable = mkDefault true;
-    "${self.presets.programs.jq}".enable = mkDefault true;
-    "${self.presets.programs.miniserve}".enable = mkDefault true;
-    "${self.presets.programs.nix-output-monitor}".enable = mkDefault true;
-    "${self.presets.programs.nushell}".enable = mkDefault true;
-    "${self.presets.programs.python3}".enable = mkDefault true;
-    "${self.presets.programs.spotify}".enable = mkDefault true;
-    "${self.presets.programs.starship}".enable = mkDefault true;
-    "${self.presets.programs.termshark}".enable = mkDefault true;
-    "${self.presets.programs.tmux}".enable = mkDefault true;
-    "${self.presets.programs.viddy}".enable = mkDefault true;
-    "${self.presets.programs.wezterm}".enable = mkDefault true;
-    "${self.presets.programs.whois}".enable = mkDefault true;
-    "${self.presets.programs.zoxide}".enable = mkDefault true;
+  # Writes nest under the plugin handle. A typo here is an unknown-option
+  # error from the merge machinery, not a silently-ignored option path.
+  config."${self}".presets = {
+    programs = {
+      bat.enable = mkDefault true;
+      bottom.enable = mkDefault true;
+      carapace.enable = mkDefault true;
+      claude-code.enable = mkDefault true;
+      delta.enable = mkDefault true;
+      dictation.enable = mkDefault true;
+      direnv.enable = mkDefault true;
+      dive.enable = mkDefault true;
+      dix.enable = mkDefault true;
+      doggo.enable = mkDefault true;
+      editor.enable = mkDefault true;
+      fd.enable = mkDefault true;
+      fzf.enable = mkDefault true;
+      gh.enable = mkDefault true;
+      git.enable = mkDefault true;
+      glow.enable = mkDefault true;
+      jq.enable = mkDefault true;
+      miniserve.enable = mkDefault true;
+      nix-output-monitor.enable = mkDefault true;
+      nushell.enable = mkDefault true;
+      python3.enable = mkDefault true;
+      spotify.enable = mkDefault true;
+      starship.enable = mkDefault true;
+      termshark.enable = mkDefault true;
+      tmux.enable = mkDefault true;
+      viddy.enable = mkDefault true;
+      wezterm.enable = mkDefault true;
+      whois.enable = mkDefault true;
+      zoxide.enable = mkDefault true;
+    };
 
-    "${self.presets.services.ssh-agent}".enable = mkDefault true;
+    services.ssh-agent.enable = mkDefault true;
   };
 
   # Platform extensions that never had a preset. A platform block reaches the

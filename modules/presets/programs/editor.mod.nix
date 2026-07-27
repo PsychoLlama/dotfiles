@@ -6,7 +6,7 @@
 }:
 
 {
-  config."${self.profiles.editor}".enable = true;
+  config."${self}".profiles.editor.enable = true;
 
   platforms.home-manager =
     { config, ... }:

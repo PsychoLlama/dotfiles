@@ -1,6 +1,5 @@
 {
   self,
-  global,
   cfg,
   lib,
   pkgs,
@@ -8,8 +7,8 @@
 }:
 
 let
-  agents = global."${self.agents}";
-  trustedDirectories = global."${self.trusted-directories}".paths;
+  agents = self.agents;
+  trustedDirectories = self.trusted-directories.paths;
 
   trustedDirectoriesHook = pkgs.callPackage ./hooks/trusted-directories.nix {
     directories = trustedDirectories;

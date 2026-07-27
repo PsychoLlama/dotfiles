@@ -1,12 +1,11 @@
 {
   self,
-  global,
   pkgs,
   ...
 }:
 
 let
-  inherit (global."${self.identity}") username;
+  inherit (self.identity) username;
 in
 
 {

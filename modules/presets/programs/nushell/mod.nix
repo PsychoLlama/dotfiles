@@ -14,7 +14,7 @@ in
 {
   # The swizzle manifest is only useful once nushell is installed, and it used
   # to share this preset's `enable`.
-  config."${self.presets.programs.nushell.swizzle}".enable = lib.mkDefault true;
+  config."${self}".presets.programs.nushell.swizzle.enable = lib.mkDefault true;
 
   platforms.home-manager =
     { config, ... }:

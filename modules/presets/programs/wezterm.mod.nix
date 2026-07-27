@@ -1,13 +1,12 @@
 {
   self,
-  global,
   lib,
   pkgs,
   ...
 }:
 
 let
-  inherit (global."${self.theme}") palette;
+  inherit (self.theme) palette;
 
   inline = lib.generators.mkLuaInline;
 in

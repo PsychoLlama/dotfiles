@@ -1,13 +1,12 @@
 {
   self,
-  global,
   lib,
   pkgs,
   ...
 }:
 
 let
-  identity = global."${self.identity}";
+  inherit (self) identity;
 in
 
 {

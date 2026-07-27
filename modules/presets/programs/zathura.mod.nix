@@ -1,12 +1,11 @@
 {
   self,
-  global,
   pkgs,
   ...
 }:
 
 let
-  inherit (global."${self.theme}") palette;
+  inherit (self.theme) palette;
 in
 
 {

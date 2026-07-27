@@ -3,7 +3,7 @@
 # Shared configuration for coding agents (Claude Code, codex, ...). This is
 # *pure data*: it declares the canonical memory, rules, and skills once and
 # holds nothing tool-specific. It configures no program and writes no files.
-# Each agent preset reads it off `global` and decides how to render it into its
+# Each agent preset reads it off `self` and decides how to render it into its
 # own native shape.
 
 {

@@ -118,7 +118,7 @@ let
   # Set reasonable defaults for home-manager as a submodule.
   # `theme`, `identity` and `trusted-directories` used to be copied down from
   # the host platform here. They are meta-modules now: consumers read them off
-  # `global`, including the editor.
+  # `self`, including the editor.
   hm-substrate = {
     home-manager = {
       useGlobalPkgs = lib.mkDefault true;

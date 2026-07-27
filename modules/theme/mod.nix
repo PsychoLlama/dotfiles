@@ -1,7 +1,7 @@
 { cfg, lib, ... }:
 
 # A centralized color palette. Pure data: no configuration of its own,
-# just options that other modules read off `global`.
+# just options that other modules read off `self`.
 #
 # TODO: Try some alternatives.
 # - https://github.com/Misterio77/nix-colors
@@ -41,7 +41,7 @@ in
 {
   options = {
     # Data, not an effect: publishing a table configures nothing, and reads
-    # through `global` never consult `enable`. There is nothing to opt into,
+    # through `self` never consult `enable`. There is nothing to opt into,
     # so it defaults on.
     enable = mkOption {
       type = types.bool;

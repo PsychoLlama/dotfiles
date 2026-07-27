@@ -1,6 +1,5 @@
 {
   self,
-  global,
   cfg,
   lib,
   pkgs,
@@ -8,10 +7,8 @@
 }:
 
 let
-  agents = global."${self.agents}";
-  trustedDirectories = global."${self.trusted-directories}".paths;
-
-  inherit (self.presets.programs.claude-code) plugins;
+  agents = self.agents;
+  trustedDirectories = self.trusted-directories.paths;
 
   autoFormatHook = pkgs.callPackage ./hooks/auto-format.nix { };
   blockEnvFilesHook = pkgs.callPackage ./hooks/block-env-files.nix { };
@@ -41,13 +38,13 @@ in
   # The plugins are claude-code's own — they configure it and mean nothing
   # without it. Enabling them from here keeps them on by default while leaving
   # each one individually overridable.
-  config = {
-    "${plugins.chrome-devtools}".enable = lib.mkDefault true;
-    "${plugins.lua-lsp}".enable = lib.mkDefault true;
-    "${plugins.nil-lsp}".enable = lib.mkDefault true;
-    "${plugins.nushell-lsp}".enable = lib.mkDefault true;
-    "${plugins.rust-lsp}".enable = lib.mkDefault true;
-    "${plugins.typescript-lsp}".enable = lib.mkDefault true;
+  config."${self}".presets.programs.claude-code.plugins = {
+    chrome-devtools.enable = lib.mkDefault true;
+    lua-lsp.enable = lib.mkDefault true;
+    nil-lsp.enable = lib.mkDefault true;
+    nushell-lsp.enable = lib.mkDefault true;
+    rust-lsp.enable = lib.mkDefault true;
+    typescript-lsp.enable = lib.mkDefault true;
   };
 
   platforms.home-manager =

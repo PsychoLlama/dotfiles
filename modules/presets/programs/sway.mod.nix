@@ -1,6 +1,5 @@
 {
   self,
-  global,
   lib,
   ...
 }:
@@ -8,7 +7,7 @@
 # SwayWM: the NixOS half enables the compositor and its portal, the
 # home-manager half writes the config. Two platforms, one module.
 let
-  inherit (global."${self.theme}") palette;
+  inherit (self.theme) palette;
 in
 
 {

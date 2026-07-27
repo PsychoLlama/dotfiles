@@ -1,12 +1,11 @@
 {
   self,
-  global,
   pkgs,
   ...
 }:
 
 let
-  inherit (global."${self.theme}") palette;
+  inherit (self.theme) palette;
   semi-black = "${palette.normal.black}d9"; # alpha(0.85)
 in
 

@@ -1,6 +1,5 @@
 {
   self,
-  global,
   lib,
   ...
 }:
@@ -10,27 +9,29 @@
 # person sitting in front of it. See ./README.md for the specs.
 
 let
-  inherit (global."${self.identity}") username name;
+  inherit (self.identity) username name;
 in
 
 {
-  config = {
-    "${self.identity}" = {
+  config."${self}" = {
+    identity = {
       username = "overlord";
       name = "Jesse Gibson";
       email = "JesseTheGibson@gmail.com";
     };
 
-    "${self.trusted-directories}".paths = [
+    trusted-directories.paths = [
       "~/projects/psychollama"
       "~/projects/@scratch"
       "~/projects/retreon"
       "~/projects/ambient-computer"
     ];
 
-    "${self.profiles.nixos}".enable = true;
-    "${self.profiles.home-manager}".enable = true;
-    "${self.profiles.home-lab-admin}".enable = true;
+    profiles = {
+      nixos.enable = true;
+      home-manager.enable = true;
+      home-lab-admin.enable = true;
+    };
   };
 
   # Takes `config` for the login shell: it has to match the package

@@ -1,13 +1,12 @@
 {
   self,
-  global,
   lib,
   pkgs,
   ...
 }:
 
 let
-  trusted = global."${self.trusted-directories}";
+  trusted = self.trusted-directories;
 in
 
 {

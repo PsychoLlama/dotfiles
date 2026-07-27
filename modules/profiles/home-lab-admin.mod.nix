@@ -1,12 +1,11 @@
 {
   self,
-  global,
   lib,
   ...
 }:
 
 let
-  inherit (global."${self.identity}") username;
+  inherit (self.identity) username;
 
   hosts = {
     nas-001 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOx6MIH8pVfBi0dckuIgssJO5JzlnEKrJrhNSPs7giTR";

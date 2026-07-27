@@ -131,7 +131,7 @@
           nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
           nixpkgs.nixosModules.notDetected
 
-          { "${self.plugin.hosts.ava}".enable = true; }
+          { "${self.plugin}".hosts.ava.enable = true; }
         ];
       };
 
@@ -161,7 +161,7 @@
         system: pkgs: {
           editor = lib.dotfiles.buildEditor {
             inherit pkgs;
-            modules = [ { "${self.plugin.profiles.editor}".enable = true; } ];
+            modules = [ { "${self.plugin}".profiles.editor.enable = true; } ];
           };
 
           inherit (pkgs.custom) chrome-devtools-mcp claude-code-bin codex-bin;

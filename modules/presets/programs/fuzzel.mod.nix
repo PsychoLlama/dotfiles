@@ -1,13 +1,12 @@
 {
   self,
-  global,
   lib,
   pkgs,
   ...
 }:
 
 let
-  inherit (global."${self.theme}") palette;
+  inherit (self.theme) palette;
 
   rgba = hex: alpha: "${lib.substring 1 (-1) hex}${lib.toHexString (builtins.ceil (alpha * 255))}";
   opaque = hex: rgba hex 1.0;

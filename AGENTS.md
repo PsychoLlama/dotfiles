@@ -26,7 +26,9 @@ Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, di
 - `lib/` — Nix utilities (system builders, module discovery, meta-module system, overlays).
 - `pkgs/` — Custom package derivations.
 
-Meta-modules are addressed by handle, not option path: `modules/presets/programs/foo.mod.nix` is `self.presets.programs.foo`.
+`self` is the plugin's own config tree and the one handle in the system. Read a sibling by navigating it (`self.presets.programs.foo`); write by nesting under its string form (`config."${self}".presets.programs.foo.enable = true`). `global."${other}"` reaches a different plugin.
+
+Never derive an attribute _name_ from a config read — `"${self}"` is fine, `"${self.presets.programs.foo}"` is not. Attribute names are forced while the option tree is still assembling, so a name that depends on the fixpoint is infinite recursion.
 
 ## Conventions
 
