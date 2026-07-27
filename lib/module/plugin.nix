@@ -9,10 +9,13 @@ in
   Construct a plugin: a collection of meta-modules plus an addressable
   root node.
 
-  The returned value is the plugin's namespace tree (handles for every
-  discovered module) and is itself a handle — its string form mounts the
-  `root` module, so plugin-level settings are ordinary validated config:
+  The returned value is the plugin's namespace tree (the shape of every
+  discovered module) and is itself the plugin's handle — the one string
+  form in the system. It names the whole plugin's mount point, so every
+  module is reached by navigating from it and plugin-level settings are
+  ordinary validated config:
 
+    config."${dotfiles.plugin}".presets.programs.git.enable = true;
     config."${dotfiles.plugin}".identity.email = "...";
 
   Plugins are plain values. Consumers register them with a root guest

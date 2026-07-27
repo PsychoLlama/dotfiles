@@ -1,7 +1,6 @@
 {
   self,
   cfg,
-  global,
   lib,
   ...
 }:
@@ -12,16 +11,23 @@
       default = "hello";
     };
 
-    # Reads another module through `global` — needs it mounted, not enabled.
+    # Reads a sibling module through `self` — needs it mounted, not enabled.
     summary = lib.mkOption {
       type = lib.types.str;
       readOnly = true;
-      default = "${cfg.greeting} on ${global."${self.theme}".palette.background}";
+      default = "${cfg.greeting} on ${self.theme.palette.background}";
+    };
+
+    # `self` covers the plugin's root options too, not just its modules.
+    rootView = lib.mkOption {
+      type = lib.types.str;
+      readOnly = true;
+      default = self.themeName;
     };
   };
 
-  # Enabling a peer is an explicit write to its handle.
-  config."${self.services.beta}" = {
+  # Enabling a peer is an explicit write, addressed from the plugin handle.
+  config."${self}".services.beta = {
     enable = true;
     message = "${cfg.greeting} from alpha";
   };

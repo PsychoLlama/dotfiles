@@ -25,7 +25,32 @@ let
           default = "plain";
         };
 
-        config."${self.theme}".name = cfg.themeName;
+        config."${self}".theme.name = cfg.themeName;
+      };
+  };
+
+  # A second plugin, to prove `global` is keyed by plugin and that two
+  # namespaces coexist without collision.
+  #
+  # Cross-plugin wiring lives in the root node because that is where other
+  # plugins are in scope — a discovered module file has no way to name one.
+  side = plugin {
+    src = ./fixtures/side/modules;
+
+    root =
+      {
+        global,
+        lib,
+        ...
+      }:
+      {
+        options.observed = lib.mkOption {
+          type = lib.types.str;
+          readOnly = true;
+          default = global."${main}".theme.name;
+        };
+
+        config."${main}".services.beta.message = "from the side";
       };
   };
 
@@ -56,7 +81,11 @@ let
   base = evalRoot { inherit main; } [ ];
 
   enabled = evalRoot { inherit main; } [
-    { config."${main.programs.alpha}".enable = true; }
+    { config."${main}".programs.alpha.enable = true; }
+  ];
+
+  paired = evalRoot { inherit main side; } [
+    { config."${side}".probe.enable = true; }
   ];
 
   # A downstream eval consuming collected fragments, the way home-manager
@@ -82,7 +111,7 @@ let
 in
 
 lib.runTests {
-  # ── Discovery and handles ─────────────────────────────────────────────
+  # ── Discovery and the namespace tree ──────────────────────────────────
 
   testNamespaceShape = {
     expr = lib.sort lib.lessThan (
@@ -101,14 +130,21 @@ lib.runTests {
     ];
   };
 
-  testHandleIsModulePath = {
-    expr = lib.hasSuffix "/programs/alpha/mod.nix" "${main.programs.alpha}";
+  testNamespaceNests = {
+    expr = main.programs ? alpha;
     expected = true;
   };
 
+  # The plugin is the only handle: modules are reached by navigating from
+  # it, not by stringifying them.
   testPluginRootIsAddressable = {
     expr = lib.hasSuffix "/main/modules" "${main}";
     expected = true;
+  };
+
+  testModulesAreNotAddressable = {
+    expr = main.programs.alpha ? __toString;
+    expected = false;
   };
 
   testDuplicateMountPointsRejected = {
@@ -119,23 +155,23 @@ lib.runTests {
   # ── Enablement gates effects, not visibility ──────────────────────────
 
   testModulesDisabledByDefault = {
-    expr = base.config."${main.programs.alpha}".enable;
+    expr = base.config."${main}".programs.alpha.enable;
     expected = false;
   };
 
   testDisabledWritesAreInert = {
-    expr = base.config."${main.services.beta}".enable;
+    expr = base.config."${main}".services.beta.enable;
     expected = false;
   };
 
   testEnableCascadesToPeers = {
-    expr = enabled.config."${main.services.beta}".message;
+    expr = enabled.config."${main}".services.beta.message;
     expected = "hello from alpha";
   };
 
   testReadsNeedMountingNotEnabling = {
-    # alpha reads theme through `global` while theme stays disabled.
-    expr = enabled.config."${main.programs.alpha}".summary;
+    # alpha reads theme through `self` while theme stays disabled.
+    expr = enabled.config."${main}".programs.alpha.summary;
     expected = "hello on #000000";
   };
 
@@ -144,15 +180,22 @@ lib.runTests {
   testRootNodeForwardsConfig = {
     expr =
       (evalRoot { inherit main; } [ { config."${main}".themeName = "nord"; } ])
-      .config."${main.theme}".name;
+      .config."${main}".theme.name;
     expected = "nord";
   };
 
   testRootNodeValidatesOptions = {
     expr =
       fails
-        (evalRoot { inherit main; } [ { config."${main}".themeName = 42; } ]).config."${main.theme}".name;
+        (evalRoot { inherit main; } [ { config."${main}".themeName = 42; } ]).config."${main}".theme.name;
     expected = true;
+  };
+
+  # Root options share the plugin's namespace with its modules, so `self`
+  # reaches both.
+  testRootOptionsJoinSelf = {
+    expr = base.config."${main}".programs.alpha.rootView;
+    expected = "plain";
   };
 
   # ── Platform fragments ────────────────────────────────────────────────
@@ -207,7 +250,7 @@ lib.runTests {
     expr =
       (evalRoot { inherit main; } [
         {
-          config."${main.programs.alpha}".enable = true;
+          config."${main}".programs.alpha.enable = true;
           config._meta.routed = [ "widget" ];
         }
       ]).config._meta.unrouted;
@@ -217,7 +260,12 @@ lib.runTests {
   # ── Fencing ───────────────────────────────────────────────────────────
 
   testGlobalHidesRootOptions = {
-    expr = base.config."${main.introspect}".fenced;
+    expr = base.config."${main}".introspect.fenced;
+    expected = true;
+  };
+
+  testSelfAgreesWithGlobal = {
+    expr = base.config."${main}".introspect.reflexive;
     expected = true;
   };
 
@@ -240,5 +288,24 @@ lib.runTests {
       fails
         (evalRoot { bad = plugin { src = ./fixtures/bad-class/modules; }; } [ ]).config._meta.fragments;
     expected = true;
+  };
+
+  # ── Cross-plugin ──────────────────────────────────────────────────────
+
+  testPluginsMountSideBySide = {
+    expr = paired.config."${side}".probe.enable && !paired.config."${main}".programs.alpha.enable;
+    expected = true;
+  };
+
+  # A module addresses another plugin exactly the way it addresses its
+  # own: by that plugin's handle, through `global`.
+  testCrossPluginRead = {
+    expr = paired.config."${side}".observed;
+    expected = "plain";
+  };
+
+  testCrossPluginWrite = {
+    expr = paired.config."${main}".services.beta.message;
+    expected = "from the side";
   };
 }

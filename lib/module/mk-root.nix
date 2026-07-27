@@ -5,8 +5,11 @@ let
 in
 
 /*
-  The root guest: a module that mounts every plugin module's options into
-  the host root's own fixpoint, keyed by handle.
+  The root guest: a module that mounts every plugin into the host root's
+  own fixpoint, keyed by the plugin's handle. A plugin's modules mount as
+  a nested option tree beneath it, mirroring the directory layout:
+
+    options."${dotfiles}".presets.programs.git.enable
 
   There is no separate meta eval. The guest evaluates exactly once, on
   the top-level root — nixos when there is one, home-manager standalone,
@@ -16,7 +19,7 @@ in
 
   Meta modules receive exactly five arguments — `self`, `cfg`, `global`,
   `lib`, `pkgs` — and nothing from the root. `global` is fenced to the
-  mounted handles, so a module can never observe (and grow dependent on)
+  mounted plugins, so a module can never observe (and grow dependent on)
   the host platform it happens to be evaluated in.
 
   Type: { class : String, plugins : AttrSet Plugin } -> Module
@@ -27,7 +30,15 @@ in
 }:
 
 let
-  pluginList = lib.mapAttrsToList (binding: plugin: { inherit binding plugin; }) plugins;
+  # Registering the same plugin under two bindings mounts it once. The
+  # binding name is only ever used for error messages.
+  pluginList = lib.attrValues (
+    lib.listToAttrs (
+      lib.mapAttrsToList (
+        binding: plugin: lib.nameValuePair plugin.__plugin.key { inherit binding plugin; }
+      ) plugins
+    )
+  );
 
   mergeClasses =
     acc: entry:
@@ -45,34 +56,29 @@ let
   classMap = lib.foldl' mergeClasses builtinClasses pluginList;
   classTags = lib.unique (lib.attrValues classMap);
 
-  # One entry per mounted option namespace: every module of every plugin,
-  # plus each plugin's root node. Registering the same plugin under two
-  # bindings dedupes by store path.
-  entries = lib.attrValues (
-    lib.listToAttrs (
-      map (entry: lib.nameValuePair entry.key entry) (
-        lib.concatMap (
-          { binding, plugin }:
-          map (mod: {
-            inherit binding plugin;
-            key = toString mod.file;
-            loader = import mod.file;
-            description = "${binding}.${lib.concatStringsSep "." mod.subpath}";
-            isRoot = false;
-          }) plugin.__plugin.modules
-          ++ lib.optional (plugin.__plugin.root != null) {
-            inherit binding plugin;
-            key = plugin.__plugin.key;
-            loader = plugin.__plugin.root;
-            description = binding;
-            isRoot = true;
-          }
-        ) pluginList
-      )
-    )
-  );
+  pluginKeys = map (entry: entry.plugin.__plugin.key) pluginList;
 
-  handleKeys = map (entry: entry.key) entries;
+  # One entry per mounted option namespace: every module of every plugin,
+  # plus each plugin's root node. `path` is where its options mount.
+  entries = lib.concatMap (
+    { binding, plugin }:
+    map (mod: {
+      inherit binding plugin;
+      path = [ plugin.__plugin.key ] ++ mod.subpath;
+      file = toString mod.file;
+      loader = import mod.file;
+      description = "${binding}.${lib.concatStringsSep "." mod.subpath}";
+      isRoot = false;
+    }) plugin.__plugin.modules
+    ++ lib.optional (plugin.__plugin.root != null) {
+      inherit binding plugin;
+      path = [ plugin.__plugin.key ];
+      file = plugin.__plugin.key;
+      loader = plugin.__plugin.root;
+      description = "${binding} (root node)";
+      isRoot = true;
+    }
+  ) pluginList;
 in
 
 {
@@ -83,30 +89,86 @@ in
 }:
 
 let
-  # The fenced read surface: only mounted handles, never the root's own
-  # options. Reads work on every module that is *mounted* — enablement
-  # gates effects, not visibility.
-  global = lib.genAttrs handleKeys (key: config.${key});
-
-  applyEntry =
-    entry:
-    if !lib.isFunction entry.loader then
-      entry.loader
+  applyModule =
+    description: available: loader:
+    if !lib.isFunction loader then
+      loader
     else
       let
-        args = {
-          self = entry.plugin.__plugin.namespace;
-          cfg = config.${entry.key};
-          inherit global lib pkgs;
-        };
-        unknown = lib.attrNames (removeAttrs (builtins.functionArgs entry.loader) (lib.attrNames args));
+        unknown = lib.attrNames (removeAttrs (builtins.functionArgs loader) (lib.attrNames available));
       in
       if unknown == [ ] then
-        entry.loader (builtins.intersectAttrs (builtins.functionArgs entry.loader) args)
+        loader (builtins.intersectAttrs (builtins.functionArgs loader) available)
       else
-        throw "module system: ${entry.description} requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Meta-modules receive only: ${lib.concatStringsSep ", " (lib.attrNames args)}.";
+        throw "module system: ${description} requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Meta-modules receive only: ${lib.concatStringsSep ", " (lib.attrNames available)}.";
 
-  evaluated = map (entry: entry // { applied = applyEntry entry; }) entries;
+  # The fenced read surface: mounted plugins only, never the root's own
+  # options. Reads work on every module that is *mounted* — enablement
+  # gates effects, not visibility.
+  global = lib.genAttrs pluginKeys (key: config.${key});
+
+  /*
+    `self` is the plugin's own config tree wearing the plugin's handle as
+    its string form. One value, both jobs:
+
+      let inherit (self.theme) palette;             # read
+      config."${self}".services.swayidle.enable     # write
+
+    Its attribute spine comes from load-time discovery — never from the
+    fixpoint. `"${self}"` lands in attribute-name position, and attribute
+    names are forced while the option tree is still being assembled; a
+    spine read out of `config` would make the option tree depend on
+    itself. Only the leaf *values* are lazy fixpoint reads, so navigating
+    past the first hop is an ordinary config read — strict, and loud on
+    typos.
+  */
+  selfWithNames =
+    plugin: names:
+    lib.genAttrs names (name: config.${plugin.__plugin.key}.${name})
+    // {
+      __toString = _: plugin.__plugin.key;
+    };
+
+  # The root node's own options are part of `self` too, so they need to
+  # be named at load time like everything else. They are peeked with a
+  # namespace-only `self`, keeping the spine independent of what the root
+  # declares — a root deriving its option *names* from `self` is the one
+  # thing this cannot support.
+  rootNames =
+    { binding, plugin }:
+    lib.optionals (plugin.__plugin.root != null) (
+      [ "enable" ]
+      ++ lib.attrNames (
+        (applyModule "${binding} (root node)" {
+          self = selfWithNames plugin (lib.attrNames plugin.__plugin.namespace);
+          cfg = config.${plugin.__plugin.key};
+          inherit global lib pkgs;
+        } plugin.__plugin.root).options or { }
+      )
+    );
+
+  selves = lib.listToAttrs (
+    map (
+      entry:
+      lib.nameValuePair entry.plugin.__plugin.key (
+        selfWithNames entry.plugin (
+          lib.unique (lib.attrNames entry.plugin.__plugin.namespace ++ rootNames entry)
+        )
+      )
+    ) pluginList
+  );
+
+  evaluated = map (
+    entry:
+    entry
+    // {
+      applied = applyModule entry.description {
+        self = selves.${lib.head entry.path};
+        cfg = lib.getAttrFromPath entry.path config;
+        inherit global lib pkgs;
+      } entry.loader;
+    }
+  ) entries;
 
   # Every module gets an implicit `enable` (plugin roots default on) that
   # gates its writes and platform blocks — loading is never the cut.
@@ -124,7 +186,7 @@ let
       };
     };
 
-  keyIndex = lib.genAttrs handleKeys (_: true);
+  keyIndex = lib.genAttrs pluginKeys (_: true);
 
   # Find the top-level keys a `config` block writes, looking through the
   # merge machinery a module may legitimately wrap around it.
@@ -140,9 +202,9 @@ let
     else
       lib.attrNames value;
 
-  # A meta-module's `config` block may only address other plugin modules.
-  # Host configuration must go through a `platforms.<class>` block, where
-  # the target platform is explicit.
+  # A meta-module's `config` block may only address mounted plugins. Host
+  # configuration must go through a `platforms.<class>` block, where the
+  # target platform is explicit.
   checkWrites =
     entry: writes:
     let
@@ -151,7 +213,7 @@ let
     if violations == [ ] then
       writes
     else
-      throw "module system: ${entry.description} writes to `${lib.head violations}`, which is not a plugin module. Use a `platforms.<class>` block for host configuration.";
+      throw ''module system: ${entry.description} writes to `${lib.head violations}`, which is not a mounted plugin. Address a plugin by handle (`"''${self}".programs.foo`) or use a `platforms.<class>` block for host configuration.'';
 
   splitPlatforms =
     entry:
@@ -206,7 +268,7 @@ let
   # a fresh eval with full module powers, tagged so importing one into
   # the wrong platform fails loudly.
   wrapFragment = entry: block: fragment: {
-    _file = "${entry.key}#platforms.${block}";
+    _file = "${entry.file}#platforms.${block}";
     _class = classMap.${block};
     imports = [ fragment ];
   };
@@ -216,7 +278,7 @@ let
     let
       split = splitPlatforms entry;
     in
-    lib.mkIf config.${entry.key}.enable (
+    lib.mkIf (lib.getAttrFromPath (entry.path ++ [ "enable" ]) config) (
       lib.mkMerge (
         [ (checkWrites entry (entry.applied.config or { })) ]
         ++ lib.mapAttrsToList (block: fragment: inlineFragment entry block fragment) split.inline
@@ -225,42 +287,48 @@ let
         }) split.foreign
       )
     );
-in
 
-{
-  options =
-    lib.listToAttrs (map (entry: lib.nameValuePair entry.key (optionsFor entry)) evaluated)
-    // {
-      _meta = {
-        fragments = lib.mkOption {
-          type = lib.types.attrsOf (lib.types.listOf lib.types.deferredModule);
-          description = ''
-            Deferred platform fragments per class tag, contributed by
-            enabled modules. Installers route each class into its target
-            eval (e.g. `home-manager.sharedModules`).
-          '';
-        };
+  # Each module mounts as a module of its own, so the stock merge
+  # machinery reports option collisions — and their provenance — for us.
+  mountFor = entry: {
+    _file = entry.file;
+    options = lib.setAttrByPath entry.path (optionsFor entry);
+    config = contributionFor entry;
+  };
 
-        routed = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
-          default = [ ];
-          description = "Class tags claimed by an installer.";
-        };
+  bookkeeping = {
+    options._meta = {
+      fragments = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.listOf lib.types.deferredModule);
+        description = ''
+          Deferred platform fragments per class tag, contributed by
+          enabled modules. Installers route each class into its target
+          eval (e.g. `home-manager.sharedModules`).
+        '';
+      };
 
-        unrouted = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
-          readOnly = true;
-          description = "Class tags holding fragments that no installer claimed.";
-          default = lib.attrNames (
-            lib.filterAttrs (
-              tag: fragments: fragments != [ ] && !(lib.elem tag config._meta.routed)
-            ) config._meta.fragments
-          );
-        };
+      routed = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = "Class tags claimed by an installer.";
+      };
+
+      unrouted = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        readOnly = true;
+        description = "Class tags holding fragments that no installer claimed.";
+        default = lib.attrNames (
+          lib.filterAttrs (
+            tag: fragments: fragments != [ ] && !(lib.elem tag config._meta.routed)
+          ) config._meta.fragments
+        );
       };
     };
 
-  config = lib.mkMerge (
-    [ { _meta.fragments = lib.genAttrs classTags (_: [ ]); } ] ++ map contributionFor evaluated
-  );
+    config._meta.fragments = lib.genAttrs classTags (_: [ ]);
+  };
+in
+
+{
+  imports = map mountFor evaluated ++ [ bookkeeping ];
 }
