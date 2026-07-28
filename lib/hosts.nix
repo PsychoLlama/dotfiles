@@ -118,7 +118,9 @@ let
   # Set reasonable defaults for home-manager as a submodule.
   # `theme`, `identity` and `trusted-directories` used to be copied down from
   # the host platform here. They are meta-modules now: consumers read them off
-  # `self`, including the editor.
+  # `self`, including the editor. The programs and services that used to ride
+  # in on a `home-manager-platform` module are meta-modules too — each one
+  # carries its own home-manager payload.
   hm-substrate = {
     home-manager = {
       useGlobalPkgs = lib.mkDefault true;
@@ -127,7 +129,6 @@ let
       # Add custom dotfiles modules to the HM framework.
       sharedModules = [
         agenix.homeManagerModules.default
-        self.nixosModules.home-manager-platform
         editor-program
       ];
     };

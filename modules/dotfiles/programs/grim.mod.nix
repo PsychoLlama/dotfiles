@@ -1,1 +1,1 @@
-import ./unstable-program.nix "grim"
+import ./packaged-program.nix "grim"

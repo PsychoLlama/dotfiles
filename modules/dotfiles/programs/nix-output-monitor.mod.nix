@@ -1,1 +1,1 @@
-import ./unstable-program.nix "nix-output-monitor"
+import ./packaged-program.nix "nix-output-monitor"

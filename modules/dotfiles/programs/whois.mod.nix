@@ -1,1 +1,1 @@
-import ./unstable-program.nix "whois"
+import ./packaged-program.nix "whois"

@@ -1,20 +1,20 @@
-{ pkgs, ... }:
+{
+  cfg,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
+  options = {
+    package = lib.mkPackageOption pkgs.unstable "bemoji" { };
+  };
+
+  # bemoji types the selected emoji into the focused window through wtype.
+  config.programs.wtype.enable = true;
+
   modules.home-manager = {
-    programs = {
-      bemoji = {
-        enable = true;
-        package = pkgs.unstable.bemoji;
-      };
-
-      # bemoji uses wtype to type the selected emoji into the focused window.
-      wtype = {
-        enable = true;
-        package = pkgs.unstable.wtype;
-      };
-    };
-
+    home.packages = [ cfg.package ];
     home.sessionVariables.BEMOJI_PICKER_CMD = "fuzzel -d";
   };
 }

@@ -1,1 +1,1 @@
-import ./unstable-program.nix "python3"
+import ./packaged-program.nix "python3"

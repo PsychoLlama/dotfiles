@@ -1,1 +1,1 @@
-import ./unstable-program.nix "brightnessctl"
+import ./packaged-program.nix "brightnessctl"

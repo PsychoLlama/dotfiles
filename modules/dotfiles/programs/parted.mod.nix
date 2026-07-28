@@ -1,1 +1,1 @@
-import ./unstable-program.nix "parted"
+import ./packaged-program.nix "parted"

@@ -1,1 +1,1 @@
-import ./unstable-program.nix "wf-recorder"
+import ./packaged-program.nix "wf-recorder"

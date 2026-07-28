@@ -1,1 +1,1 @@
-import ./unstable-program.nix "dive"
+import ./packaged-program.nix "dive"

@@ -1,1 +1,1 @@
-import ./unstable-program.nix "termshark"
+import ./packaged-program.nix "termshark"

@@ -42,7 +42,16 @@ in
       starship.enable = mkDefault true;
       termshark.enable = mkDefault true;
       tmux.enable = mkDefault true;
+      binutils.enable = mkDefault true;
+      duf.enable = mkDefault true;
+      hexyl.enable = mkDefault true;
+      lsof.enable = mkDefault true;
+      onefetch.enable = mkDefault true;
+      parted.enable = mkDefault pkgs.stdenv.isLinux;
+      rage.enable = mkDefault true;
+      tokei.enable = mkDefault true;
       viddy.enable = mkDefault true;
+      viu.enable = mkDefault true;
       wezterm.enable = mkDefault true;
       whois.enable = mkDefault true;
       zoxide.enable = mkDefault true;
@@ -51,20 +60,11 @@ in
     services.ssh-agent.enable = mkDefault true;
   };
 
-  # Platform extensions that never had a preset. A class block reaches that
-  # host's own options directly.
+  # Programs home-manager already models well enough to need no preset. A
+  # class block reaches that host's own options directly.
   modules.home-manager.programs = {
-    binutils.enable = mkDefault true;
-    duf.enable = mkDefault true;
-    hexyl.enable = mkDefault true;
-    lsof.enable = mkDefault true;
     man.generateCaches = mkDefault true;
     nh.enable = mkDefault true;
-    onefetch.enable = mkDefault true;
-    parted.enable = mkDefault pkgs.stdenv.isLinux;
-    rage.enable = mkDefault true;
     ripgrep.enable = mkDefault true;
-    tokei.enable = mkDefault true;
-    viu.enable = mkDefault true;
   };
 }

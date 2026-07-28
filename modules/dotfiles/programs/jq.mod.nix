@@ -1,1 +1,1 @@
-import ./unstable-program.nix "jq"
+import ./hm-program.nix "jq"

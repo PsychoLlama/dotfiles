@@ -1,6 +1,8 @@
 { lib, pkgs, ... }:
 
 {
+  config.programs.nushell.abbreviations.t = "tmux";
+
   modules.home-manager =
     { config, ... }:
 
@@ -11,8 +13,6 @@
     in
 
     {
-      programs.nushell.abbreviations.t = "tmux";
-
       programs.tmux = {
         enable = lib.mkDefault true;
         package = lib.mkDefault pkgs.unstable.tmux;

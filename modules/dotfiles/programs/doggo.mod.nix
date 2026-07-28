@@ -1,1 +1,1 @@
-import ./unstable-program.nix "doggo"
+import ./packaged-program.nix "doggo"

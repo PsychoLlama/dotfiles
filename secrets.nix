@@ -11,5 +11,5 @@ let
 in
 
 {
-  "modules/presets/services/restic/env.age".publicKeys = allUsers ++ allHosts;
+  "modules/dotfiles/services/restic/env.age".publicKeys = allUsers ++ allHosts;
 }

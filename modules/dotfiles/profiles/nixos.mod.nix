@@ -27,8 +27,8 @@ in
       fuzzel.enable = mkDefault true;
       grim.enable = mkDefault true;
       pamixer.enable = mkDefault true;
-      parted.enable = mkDefault true;
       playerctl.enable = mkDefault true;
+      signal-desktop.enable = mkDefault true;
       slurp.enable = mkDefault true;
       sway.enable = mkDefault true;
       swaylock.enable = mkDefault true;
@@ -59,20 +59,16 @@ in
 
   # Host settings small enough that they never earned a preset of their own. A
   # class block reaches that host's own options directly.
-  modules = {
-    nixos = {
-      services = {
-        automatic-timezoned.enable = mkDefault true;
-        printing.enable = mkDefault true;
-      };
-
-      # Build the apropos/whatis cache so `man -k` works. Carapace's native `man`
-      # completer shells out to apropos, which returns nothing without it.
-      documentation.man.cache.enable = mkDefault true;
-
-      fonts.enableDefaultPackages = mkDefault true;
+  modules.nixos = {
+    services = {
+      automatic-timezoned.enable = mkDefault true;
+      printing.enable = mkDefault true;
     };
 
-    home-manager.programs.signal-desktop.enable = mkDefault true;
+    # Build the apropos/whatis cache so `man -k` works. Carapace's native `man`
+    # completer shells out to apropos, which returns nothing without it.
+    documentation.man.cache.enable = mkDefault true;
+
+    fonts.enableDefaultPackages = mkDefault true;
   };
 }

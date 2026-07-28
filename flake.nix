@@ -121,17 +121,9 @@
         };
       };
 
-      nixosModules = {
-        editor-platform = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ./platforms/editor/modules;
-          };
-        };
-
-        home-manager-platform = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ./platforms/home-manager/modules;
-          };
+      nixosModules.editor-platform = {
+        imports = lib.dotfiles.discoverNixFiles {
+          directory = ./platforms/editor/modules;
         };
       };
 

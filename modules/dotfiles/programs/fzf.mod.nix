@@ -1,1 +1,1 @@
-import ./unstable-program.nix "fzf"
+import ./hm-program.nix "fzf"

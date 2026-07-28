@@ -1,1 +1,1 @@
-import ./unstable-program.nix "wireplumber"
+import ./packaged-program.nix "wireplumber"

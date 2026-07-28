@@ -1,1 +1,1 @@
-import ./unstable-program.nix "dix"
+import ./packaged-program.nix "dix"

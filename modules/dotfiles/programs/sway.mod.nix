@@ -28,13 +28,13 @@ in
       swaylock = lib.getExe' config.programs.swaylock.package "swaylock";
       wezterm = lib.getExe' config.programs.wezterm.package "wezterm";
       fuzzel = lib.getExe' config.programs.fuzzel.package "fuzzel";
-      bemoji = lib.getExe' config.programs.bemoji.package "bemoji";
-      grim = lib.getExe' config.programs.grim.package "grim";
-      slurp = lib.getExe' config.programs.slurp.package "slurp";
-      wlCopy = lib.getExe' config.programs."wl-clipboard".package "wl-copy";
-      playerctl = lib.getExe' config.programs.playerctl.package "playerctl";
-      brightnessctl = lib.getExe' config.programs.brightnessctl.package "brightnessctl";
-      pamixer = lib.getExe' config.programs.pamixer.package "pamixer";
+      bemoji = lib.getExe' self.programs.bemoji.package "bemoji";
+      grim = lib.getExe' self.programs.grim.package "grim";
+      slurp = lib.getExe' self.programs.slurp.package "slurp";
+      wlCopy = lib.getExe' self.programs."wl-clipboard".package "wl-copy";
+      playerctl = lib.getExe' self.programs.playerctl.package "playerctl";
+      brightnessctl = lib.getExe' self.programs.brightnessctl.package "brightnessctl";
+      pamixer = lib.getExe' self.programs.pamixer.package "pamixer";
       waybar = lib.getExe' config.programs.waybar.package "waybar";
 
       # Laptop built-in keyboard. Find identifiers with `swaymsg -t get_inputs`.

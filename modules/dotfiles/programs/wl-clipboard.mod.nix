@@ -1,1 +1,1 @@
-import ./unstable-program.nix "wl-clipboard"
+import ./packaged-program.nix "wl-clipboard"

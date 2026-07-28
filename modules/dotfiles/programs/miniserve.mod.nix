@@ -1,1 +1,1 @@
-import ./unstable-program.nix "miniserve"
+import ./packaged-program.nix "miniserve"

@@ -1,1 +1,1 @@
-import ./unstable-program.nix "slurp"
+import ./packaged-program.nix "slurp"

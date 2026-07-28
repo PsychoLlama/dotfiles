@@ -1,1 +1,1 @@
-import ./unstable-program.nix "zoxide"
+import ./hm-program.nix "zoxide"

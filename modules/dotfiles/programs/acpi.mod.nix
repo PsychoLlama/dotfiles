@@ -1,1 +1,1 @@
-import ./unstable-program.nix "acpi"
+import ./packaged-program.nix "acpi"

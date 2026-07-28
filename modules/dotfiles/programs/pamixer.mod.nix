@@ -1,1 +1,1 @@
-import ./unstable-program.nix "pamixer"
+import ./packaged-program.nix "pamixer"

@@ -1,1 +1,1 @@
-import ./unstable-program.nix "playerctl"
+import ./packaged-program.nix "playerctl"

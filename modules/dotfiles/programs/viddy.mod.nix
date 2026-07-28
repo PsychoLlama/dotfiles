@@ -1,1 +1,1 @@
-import ./unstable-program.nix "viddy"
+import ./packaged-program.nix "viddy"
