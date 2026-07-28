@@ -3,5 +3,5 @@
 # work by accident.
 { inputs, ... }:
 {
-  modules.root."${inputs.main}".theme.name = "hijacked";
+  modules.test."${inputs.main}".theme.name = "hijacked";
 }

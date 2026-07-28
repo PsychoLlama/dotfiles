@@ -34,6 +34,10 @@ let
   sideDef = plugin {
     src = ./fixtures/side/modules;
 
+    # Declared here too: a class block names a class, so a plugin that
+    # writes one must know it — mounting a peer is not what supplies it.
+    classes.test = "test";
+
     inputs = {
       main = throw "side: input `main` is required.";
       label = null;
@@ -73,6 +77,7 @@ let
     plugin
       {
         src = ./fixtures/stray/modules;
+        classes.test = "test";
         inputs.main = throw "stray: input `main` is required.";
       }
       {
@@ -105,7 +110,7 @@ let
             default = "";
           };
 
-          options.aliasSetting = lib.mkOption {
+          options.probeSetting = lib.mkOption {
             type = lib.types.str;
             default = "";
           };
@@ -188,16 +193,6 @@ lib.runTests {
     expected = true;
   };
 
-  testReservedRootClassRejected = {
-    expr =
-      fails
-        (plugin {
-          src = ./fixtures/side/modules;
-          classes.root = "sneaky";
-        } { }).__plugin;
-    expected = true;
-  };
-
   # ── Inputs ────────────────────────────────────────────────────────────
 
   # Definition and instantiation are separate calls; the handle comes
@@ -268,7 +263,7 @@ lib.runTests {
       (evalRoot {
         inherit main side;
         again = side;
-      } [ { config."${side}".probe.enable = true; } ]).config.aliasSetting;
+      } [ { config."${side}".probe.enable = true; } ]).config.probeSetting;
     expected = "side";
   };
 
@@ -349,15 +344,14 @@ lib.runTests {
     expected = "";
   };
 
-  # `modules.root` resolves to whichever class the plugin is mounted in,
-  # landing in the same fixpoint as a fragment that named the class.
-  testRootBlockAliasesHostClass = {
-    expr = paired.config.aliasSetting;
+  # Two plugins write the same host from their own class blocks.
+  testSecondPluginFragmentInlines = {
+    expr = paired.config.probeSetting;
     expected = "side";
   };
 
-  testRootBlockAliasGatedByEnable = {
-    expr = (evalRoot { inherit main side; } [ ]).config.aliasSetting;
+  testSecondPluginFragmentGatedByEnable = {
+    expr = (evalRoot { inherit main side; } [ ]).config.probeSetting;
     expected = "";
   };
 

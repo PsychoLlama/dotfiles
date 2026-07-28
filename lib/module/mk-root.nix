@@ -20,7 +20,7 @@ in
   A module has three write blocks, one per target:
 
     config.services.foo.enable = true;                  # its own plugin
-    modules.root.users.bob.shell = ...;                 # the host
+    modules.nixos.users.users.bob.shell = ...;          # a host class
     plugins."${inputs.hosts}".machines.x.enable = true; # a peer plugin
 
   Meta modules receive exactly six arguments — `self`, `cfg`, `inputs`,
@@ -75,12 +75,10 @@ let
       throw "module system: plugin '${entry.binding}' remaps module block `${lib.head (lib.attrNames conflicts)}` to a different class tag.";
 
   # `modules.<block>` key -> `_class` tag, across built-ins and all
-  # plugins. `root` is an alias for whichever class this root evaluates
-  # in, so a module can target its host without naming it — and so it can
-  # reach a peer plugin's namespace, which lives in that same fixpoint.
-  classMap = lib.foldl' mergeClasses builtinClasses pluginList // {
-    root = class;
-  };
+  # plugins. Every block names a real class: a module says which host it
+  # is configuring, and a block for some other class becomes a fragment
+  # for an installer to route (or a warning when nothing claims it).
+  classMap = lib.foldl' mergeClasses builtinClasses pluginList;
 
   classTags = lib.unique (lib.attrValues classMap);
 

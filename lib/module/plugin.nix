@@ -83,8 +83,6 @@ in
 
 if reserved != [ ] then
   throw "module.plugin: module names may not start with `__` (got `${lib.concatStringsSep "." (lib.head reserved).subpath}` in ${toString src})."
-else if classes ? root then
-  throw "module.plugin: the `root` module block is reserved — it aliases whichever class the plugin is mounted in (${toString src})."
 else if unknown != [ ] then
   throw "module.plugin: ${toString src} was given unexpected input(s): ${lib.concatStringsSep ", " unknown}. It declares: ${lib.concatStringsSep ", " (lib.attrNames inputs)}."
 else
