@@ -20,34 +20,34 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
 
 ## Structure
 
-- `modules/`: Opinionated config. One module per program, carrying a payload for every platform it touches.
-  - `modules/hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized.
-  - `modules/presets/`: Opinionated config for a specific program or service.
-  - `modules/profiles/`: Groupings of presets.
+- `modules/`: Two plugins. One module per program, carrying a payload for every platform it touches.
+  - `modules/dotfiles/`: The opinions. One module per program or service, plus `profiles/` grouping them and `editor/` holding the neovim plugin and language server presets.
+  - `modules/hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized. Takes `dotfiles` as a plugin input and configures it.
 - `platforms/`: Modules extending other platforms with new programs and services. Many of these could be upstreamed.
-  - [`home-manager/`](https://github.com/nix-community/home-manager)
   - `editor/` (My equivalent of [nixvim](https://nix-community.github.io/nixvim/). Self-contained, no `~/.config` files.)
 
 ## Composition
 
 Everything in this repo can be used piecemeal in other flakes. Modules have no side effects unless you `.enable` them.
 
-Modules are divided into **platforms** and **configs**.
+- `dotfiles.plugins.dotfiles`: Opinionated config for programs and services.
+- `dotfiles.plugins.hosts`: My machines. You almost certainly don't want this one.
+- `dotfiles.nixosModules.editor-platform`: The editor framework, sans opinions.
 
-- `dotfiles.nixosModules.*-platform`: Extends platforms with new programs, services, and DSLs.
-- `dotfiles.nixosModules.*-configs`: Opinionated configs bound to one platform's `psychollama.*` namespace. Mostly the editor.
-- `dotfiles.plugin`: Everything else. Opinionated config for programs, services, and whole machines.
-
-Mount the plugin on a NixOS system, then enable modules by handle.
+Instantiate a plugin, mount it on a NixOS system, then configure it by handle.
 
 ```nix
+let
+  plugin = dotfiles.plugins.dotfiles { };
+in
+
 {
   imports = [
-    (dotfiles.lib.module.roots.nixos { inherit (dotfiles) plugin; })
+    (dotfiles.lib.module.roots.nixos { inherit plugin; })
   ];
 
   # Use my opinionated starship prompt.
-  "${dotfiles.plugin.presets.programs.starship}".enable = true;
+  "${plugin}".programs.starship.enable = true;
 }
 ```
 
@@ -62,9 +62,13 @@ nix run 'github:PsychoLlama/dotfiles#editor' ./
 You can also build your own variant. It has access to all options from `nixosModules.editor-platform`.
 
 ```nix
-flake.lib.dotfiles.buildEditor {
-  inherit pkgs;
-  modules = [ ];
+let
+  plugin = dotfiles.plugins.dotfiles { };
+in
+
+dotfiles.lib.buildEditor {
+  inherit pkgs plugin;
+  modules = [ { "${plugin}".profiles.editor.enable = true; } ];
 }
 ```
 

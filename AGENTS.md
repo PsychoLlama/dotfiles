@@ -6,31 +6,33 @@ NixOS-based configuration-as-code for Linux and home-manager environments.
 
 This flake is consumed by other flakes. Everything must be changeable, disableable, or extendable from the outside.
 
-Each platform exposes a flake-output module:
+Two plugins ship from `modules/`, both instantiated in `flake.nix` and mounted together:
 
-- `nixosModules.<platform>-platform` — new programs, services, and DSLs extending the platform. Keep opinions out; these should be upstreamable.
+- `plugins.dotfiles` (`modules/dotfiles/`) — the opinions. Knows nothing about hosts.
+- `plugins.hosts` (`modules/hosts/`) — machines. Takes `dotfiles` as an input and writes it through `plugins."${inputs.dotfiles}"`.
 
-Opinionated configuration lives entirely in the top-level `modules/` plugin. Everything under `platforms/<platform>/modules/` is the platform side.
+The editor is the one remaining platform, exposed as `nixosModules.editor-platform`: the framework, no opinions. Every other program carries its own home-manager payload.
 
-Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
+Hosts hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in a preset.
 
 ## Directory Structure
 
-- `modules/` — Meta-module plugin (`lib/module`). One module per program, carrying a payload for every platform it touches.
+- `modules/` — Meta-module plugins (`lib/module`). One module per program, carrying a payload for every platform it touches.
+  - `dotfiles/` — single-program opinionated configs, one file (or directory) per program.
+    - `programs/`, `services/` — the presets.
+    - `editor/{plugins,lsp}/` — neovim plugin and language server presets.
+    - `profiles/` — groupings of presets.
   - `hosts/` — Machine-specific configs.
-  - `presets/` — single-program opinionated configs.
-  - `profiles/` — groupings of presets.
 - `platforms/`
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
-  - `home-manager/` — Home Manager extensions. Platform extensions live under `modules/programs/` and `modules/services/`.
 - `lib/` — Nix utilities (system builders, module discovery, meta-module system, overlays).
 - `pkgs/` — Custom package derivations.
 
-Reads come off `self`, the plugin's own config tree — navigate it to reach a sibling (`self.presets.programs.foo`). `cfg` is this module's own slice; `global."${inputs.<peer>}"` is another plugin's tree.
+Reads come off `self`, the plugin's own config tree — navigate it to reach a sibling (`self.programs.foo`). `cfg` is this module's own slice; `global."${inputs.<peer>}"` is another plugin's tree.
 
 Writes go in one of three blocks, each naming a different target:
 
-- `config` — this plugin's namespace, mount point implied (`config.presets.programs.foo.enable = true`).
+- `config` — this plugin's namespace, mount point implied (`config.programs.foo.enable = true`).
 - `modules.<class>` — a host's own options, for a class this plugin declares or `lib/module` builds in (`nixos`, `darwin`, `home-manager`). A block for a class the root isn't evaluating becomes a fragment for an installer to route.
 - `plugins."${inputs.<peer>}"` — a peer plugin's namespace.
 
@@ -38,18 +40,15 @@ Nothing in attribute-name position comes from the fixpoint. Handles reach a modu
 
 ## Conventions
 
-### Platform Extensions
-
-- Prefer upstream `home-manager`/`nixos` options. Only add custom modules when upstream lacks support.
-- Prefer `home-manager` over per-OS modules; it's the most cross-platform option.
-- `makeProgramModule` exists for simple programs (enable + package only). Use standalone files when custom options are needed.
-
 ### Presets
 
-- Single-responsibility, `enable` option only.
-- Install programs via `programs.<name>.enable` + `programs.<name>.package`, not `home.packages`.
-- Reference other programs through their `programs.<name>.package` rather than bare `pkgs.<name>`. Presets often pin `pkgs.unstable.*`, so direct references risk installing both versions.
+- Single-responsibility. A preset owns one program, on every platform it touches.
+- Prefer upstream `home-manager`/`nixos` options; write them from `modules.<class>`. Prefer `home-manager` over per-OS modules — it's the most cross-platform option.
+- When upstream has no module, declare the options here (`options.package`, and whatever else the program needs) and install it yourself. There is no separate platform layer to declare them in.
+- `import ./hm-program.nix "<name>"` when home-manager models the program; `import ./packaged-program.nix "<name>"` when it doesn't. Spell the module out once it grows real configuration.
+- Reference other programs through `self.programs.<name>.package` (this repo's) or `config.programs.<name>.package` (home-manager's), never bare `pkgs.<name>`. Presets pin `pkgs.unstable.*`, so direct references risk installing both versions.
 - Resolve executable paths with `lib.getExe` (single main binary) or `lib.getExe'` (explicit binary name); bind in `let` at top of file.
+- An option a _peer_ contributes to belongs in this plugin's namespace, not home-manager's — see `programs.nushell.abbreviations`. Peers then write it without caring whether the owning program is enabled.
 
 ## Editor
 
@@ -59,7 +58,7 @@ Self-contained neovim framework in `platforms/editor/`. No `~/.config` files.
 - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
 - `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.
 
-Plugin and language-server presets are meta-modules carrying an `editor` payload: `modules/presets/plugins/<plugin>/` and `modules/presets/lsp/servers/<server>.mod.nix`. `modules/profiles/editor/` groups them into the editor this repo ships.
+Plugin and language-server presets are meta-modules carrying an `editor` payload: `modules/dotfiles/editor/plugins/<plugin>/` and `modules/dotfiles/editor/lsp/servers/<server>.mod.nix`. `modules/dotfiles/profiles/editor/` groups them into the editor this repo ships.
 
 ### Working with Neovim
 
