@@ -24,29 +24,65 @@ let
         # module: `config` is already rooted there.
         config.theme.name = cfg.themeName;
       };
-  };
+  } { };
 
   # A second plugin, to prove `global` is keyed by plugin and that two
   # namespaces coexist without collision.
   #
-  # Cross-plugin wiring lives in the root node because that is where other
-  # plugins are in scope — a discovered module file has no way to name one.
-  side = plugin {
+  # Cross-plugin wiring rides `inputs`: the assembler hands `side` a
+  # reference to its peer, which every module in `side` can then name.
+  sideDef = plugin {
     src = ./fixtures/side/modules;
 
+    inputs = {
+      main = throw "side: input `main` is required.";
+      label = null;
+    };
+
     root =
-      { global, lib, ... }:
+      {
+        global,
+        inputs,
+        lib,
+        ...
+      }:
       {
         options.observed = lib.mkOption {
           type = lib.types.str;
           readOnly = true;
-          default = global."${main}".theme.name;
+          default = global."${inputs.main}".theme.name;
         };
-
-        # Writing a *peer* plugin goes through `modules.root`: the shared
-        # fixpoint every mounted plugin lives in.
-        modules.root."${main}".services.beta.message = "from the side";
       };
+  };
+
+  # `main` redefined with a required input none of its modules read, to
+  # prove declaring one taxes nothing that ignores it.
+  unreadInputDef = plugin {
+    src = ./fixtures/main/modules;
+
+    classes = {
+      test = "test";
+      widget = "widget";
+    };
+
+    inputs.needed = throw "unreadInputDef: forced an input nobody reads.";
+  };
+
+  # Reaches `main` through a class block, which `plugins` now owns.
+  stray =
+    plugin
+      {
+        src = ./fixtures/stray/modules;
+        inputs.main = throw "stray: input `main` is required.";
+      }
+      {
+        inherit main;
+      };
+
+  side = sideDef { inherit main; };
+  sideLabelled = sideDef {
+    inherit main;
+    label = "loud";
   };
 
   # A minimal host root standing in for nixos/home-manager: declares two
@@ -148,7 +184,7 @@ lib.runTests {
   };
 
   testDuplicateMountPointsRejected = {
-    expr = fails (plugin { src = ./fixtures/dup/modules; }).__plugin.modules;
+    expr = fails (plugin { src = ./fixtures/dup/modules; } { }).__plugin.modules;
     expected = true;
   };
 
@@ -158,8 +194,101 @@ lib.runTests {
         (plugin {
           src = ./fixtures/side/modules;
           classes.root = "sneaky";
+        } { }).__plugin;
+    expected = true;
+  };
+
+  # ── Inputs ────────────────────────────────────────────────────────────
+
+  # Definition and instantiation are separate calls; the handle comes
+  # from `src` alone, so it survives instantiation unchanged. That is
+  # what lets two plugins name each other in one `let`.
+  testInstanceKeepsHandle = {
+    expr = "${sideLabelled}" == "${side}";
+    expected = true;
+  };
+
+  # Inputs are handed over untouched, whatever they are: a plugin stays
+  # a plugin, for the module to interpolate.
+  testPluginInputPassedVerbatim = {
+    expr = side.__plugin.inputs.main == main;
+    expected = true;
+  };
+
+  testPlainInputPassedVerbatim = {
+    expr = sideLabelled.__plugin.inputs.label;
+    expected = "loud";
+  };
+
+  testUnsuppliedInputTakesDefault = {
+    expr = side.__plugin.inputs.label;
+    expected = null;
+  };
+
+  # A required input is a `throw` default: instantiating without it is
+  # fine, reading it is not.
+  testRequiredInputThrowsOnUse = {
+    expr = fails (sideDef { }).__plugin.inputs.main;
+    expected = true;
+  };
+
+  # ...and a lone mount never forces one, so the dedupe check stays out
+  # of the way of inputs nothing reads.
+  testUnreadRequiredInputStaysLazy = {
+    expr = (evalRoot { lazy = unreadInputDef { }; } [ ]).config.hostSetting;
+    expected = "";
+  };
+
+  testUnknownInputRejected = {
+    expr =
+      fails
+        (sideDef {
+          inherit main;
+          bogus = 1;
         }).__plugin;
     expected = true;
+  };
+
+  # Two instantiations share one mount point, so mounting both would let
+  # one set of inputs silently win.
+  testConflictingInstancesRejected = {
+    expr =
+      fails
+        (evalRoot {
+          inherit main side;
+          other = sideLabelled;
+        } [ ]).config._meta.fragments;
+    expected = true;
+  };
+
+  # The same instance under two bindings is not a conflict — it mounts
+  # once, and the check never forces the inputs.
+  testSameInstanceMountsOnce = {
+    expr =
+      (evalRoot {
+        inherit main side;
+        again = side;
+      } [ { config."${side}".probe.enable = true; } ]).config.aliasSetting;
+    expected = "side";
+  };
+
+  testInputsReachDiscoveredModules = {
+    expr = paired.config."${side}".probe.label;
+    expected = "unlabelled";
+  };
+
+  testSuppliedInputsReachDiscoveredModules = {
+    expr =
+      (evalRoot
+        {
+          main = main;
+          side = sideLabelled;
+        }
+        [
+          { config."${side}".probe.enable = true; }
+        ]
+      ).config."${side}".probe.label;
+    expected = "loud";
   };
 
   # ── Enablement gates effects, not visibility ──────────────────────────
@@ -296,21 +425,21 @@ lib.runTests {
   testHostWritesRejected = {
     expr =
       fails
-        (evalRoot { bad = plugin { src = ./fixtures/bad-write/modules; }; } [ ]).config._meta.fragments;
+        (evalRoot { bad = plugin { src = ./fixtures/bad-write/modules; } { }; } [ ]).config._meta.fragments;
     expected = true;
   };
 
   testUnknownArgsRejected = {
     expr =
       fails
-        (evalRoot { bad = plugin { src = ./fixtures/bad-args/modules; }; } [ ]).config._meta.fragments;
+        (evalRoot { bad = plugin { src = ./fixtures/bad-args/modules; } { }; } [ ]).config._meta.fragments;
     expected = true;
   };
 
   testUnknownClassBlockRejected = {
     expr =
       fails
-        (evalRoot { bad = plugin { src = ./fixtures/bad-class/modules; }; } [ ]).config._meta.fragments;
+        (evalRoot { bad = plugin { src = ./fixtures/bad-class/modules; } { }; } [ ]).config._meta.fragments;
     expected = true;
   };
 
@@ -327,9 +456,31 @@ lib.runTests {
     expected = "plain";
   };
 
-  # ...and writes it through `modules.root`, the fixpoint they share.
+  # ...and writes it through `plugins`, keyed by the peer's handle.
   testCrossPluginWrite = {
     expr = paired.config."${main}".services.beta.message;
     expected = "from the side";
+  };
+
+  # A peer write names its target, so an unmounted one is caught here
+  # rather than surfacing as a missing option.
+  testUnmountedPeerWriteRejected = {
+    expr =
+      fails
+        (evalRoot { side = sideDef { main = "/nowhere"; }; } [
+          { config."${side}".probe.enable = true; }
+        ]).config._meta.fragments;
+    expected = true;
+  };
+
+  # Peers share the host's fixpoint, so a class block could reach one.
+  # Keeping that to `plugins` leaves `modules.<class>` meaning the host.
+  testPeerWriteViaClassBlockRejected = {
+    expr =
+      fails
+        (evalRoot { inherit main stray; } [
+          { config."${stray}".stray.enable = true; }
+        ]).config._meta.fragments;
+    expected = true;
   };
 }

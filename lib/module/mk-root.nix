@@ -17,10 +17,16 @@ in
   class merge inline; fragments for every other class accumulate in
   `_meta.fragments.<class>` for an installer to route onward.
 
-  Meta modules receive exactly five arguments — `self`, `cfg`, `global`,
-  `lib`, `pkgs` — and nothing from the root. `global` is fenced to the
-  mounted plugins, so a module can never observe (and grow dependent on)
-  the host platform it happens to be evaluated in.
+  A module has three write blocks, one per target:
+
+    config.services.foo.enable = true;                  # its own plugin
+    modules.root.users.bob.shell = ...;                 # the host
+    plugins."${inputs.hosts}".machines.x.enable = true; # a peer plugin
+
+  Meta modules receive exactly six arguments — `self`, `cfg`, `inputs`,
+  `global`, `lib`, `pkgs` — and nothing from the root. `global` is fenced
+  to the mounted plugins, so a module can never observe (and grow
+  dependent on) the host platform it happens to be evaluated in.
 
   Type: { class : String, plugins : AttrSet Plugin } -> Module
 */
@@ -32,11 +38,27 @@ in
 let
   # Registering the same plugin under two bindings mounts it once. The
   # binding name is only ever used for error messages.
-  pluginList = lib.attrValues (
-    lib.listToAttrs (
-      lib.mapAttrsToList (
-        binding: plugin: lib.nameValuePair plugin.__plugin.key { inherit binding plugin; }
-      ) plugins
+  #
+  # Two *instantiations* of one plugin are a genuine conflict: they share
+  # a mount point, so one set of inputs would silently win. Comparing
+  # forces the inputs, which is why a lone binding skips the check — an
+  # unsupplied required input must stay lazy until something reads it.
+  # Inputs are raw values, so this compares by structure: sharing one
+  # instance is the reliable spelling, and the error says so.
+  dedupe =
+    key: group:
+    let
+      inputs = map (entry: entry.plugin.__plugin.inputs) group;
+      bindings = lib.concatStringsSep ", " (map (entry: entry.binding) group);
+    in
+    if lib.length group == 1 || lib.all (given: given == lib.head inputs) inputs then
+      lib.head group
+    else
+      throw "module system: plugin '${key}' is mounted more than once with different inputs (bindings: ${bindings}). Instantiate it once and share the result.";
+
+  pluginList = lib.mapAttrsToList dedupe (
+    lib.groupBy (entry: entry.plugin.__plugin.key) (
+      lib.mapAttrsToList (binding: plugin: { inherit binding plugin; }) plugins
     )
   );
 
@@ -119,10 +141,12 @@ let
     // {
       # `self` is the plugin's own config tree and `cfg` this module's
       # slice of it — both ordinary lazy reads, so navigating past the
-      # first hop is strict and loud on typos.
+      # first hop is strict and loud on typos. `inputs` is load-time
+      # data, the only thing here safe to use as an attribute name.
       applied = applyModule entry.description {
         self = config.${lib.head entry.path};
         cfg = lib.getAttrFromPath entry.path config;
+        inputs = entry.plugin.__plugin.inputs;
         inherit global lib pkgs;
       } entry.loader;
     }
@@ -185,13 +209,20 @@ let
             fragment (builtins.intersectAttrs (builtins.functionArgs fragment) rootArgs)
           else
             throw "module system: ${entry.description}'s `modules.${block}` requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Root-class fragments receive only: ${lib.concatStringsSep ", " (lib.attrNames rootArgs)}.";
+
+      body = if applied ? config then applied.config else applied;
+
+      # Mounted plugins share this fixpoint, so a class block *could*
+      # reach one. That reach is `plugins`' job — keeping it out of here
+      # leaves `modules.<class>` meaning one thing: the host.
+      reached = lib.filter (key: lib.elem key pluginKeys) (lib.attrNames body);
     in
     if applied ? options || applied ? imports then
       throw "module system: ${entry.description}'s `modules.${block}` runs in the live `${class}` fixpoint and cannot declare `options` or `imports`. Move those to the assembly site."
-    else if applied ? config then
-      applied.config
+    else if reached != [ ] then
+      throw "module system: ${entry.description}'s `modules.${block}` writes the plugin mounted at `${lib.head reached}`. Peer plugins go through `plugins`, not a class block."
     else
-      applied;
+      body;
 
   # Fragments for every other class are deferred modules: they cross into
   # a fresh eval with full module powers, tagged so importing one into
@@ -202,9 +233,24 @@ let
     imports = [ fragment ];
   };
 
+  # `plugins.<handle>` writes a peer's namespace. It lands in the same
+  # fixpoint `config` does, but a separate block means the reach is
+  # declared rather than incidental — and an unmounted handle can say so
+  # instead of surfacing as a missing option.
+  peerWritesFor =
+    entry:
+    let
+      writes = entry.applied.plugins or { };
+      unknown = lib.filter (key: !(lib.elem key pluginKeys)) (lib.attrNames writes);
+    in
+    if unknown == [ ] then
+      lib.mapAttrsToList (key: body: { ${key} = body; }) writes
+    else
+      throw "module system: ${entry.description} writes the plugin at `${lib.head unknown}`, which is not mounted. Register it alongside '${entry.binding}'.";
+
   # A module's `config` block is its plugin's namespace — the mount point
-  # is implied, never spelled. Reaching anything else (the host, a peer
-  # plugin) goes through `modules.root`, where the target is explicit.
+  # is implied, never spelled. Reaching out is explicit: `modules.<class>`
+  # for the host, `plugins.<handle>` for a peer.
   contributionFor =
     entry:
     let
@@ -213,6 +259,7 @@ let
     lib.mkIf (lib.getAttrFromPath (entry.path ++ [ "enable" ]) config) (
       lib.mkMerge (
         [ { ${lib.head entry.path} = entry.applied.config or { }; } ]
+        ++ peerWritesFor entry
         ++ lib.mapAttrsToList (block: fragment: inlineFragment entry block fragment) split.inline
         ++ lib.mapAttrsToList (block: fragment: {
           _meta.fragments.${classMap.${block}} = [ (wrapFragment entry block fragment) ];
