@@ -13,19 +13,16 @@ let
     };
 
     root =
-      {
-        self,
-        cfg,
-        lib,
-        ...
-      }:
+      { cfg, lib, ... }:
       {
         options.themeName = lib.mkOption {
           type = lib.types.str;
           default = "plain";
         };
 
-        config."${self}".theme.name = cfg.themeName;
+        # The root node writes into the plugin's namespace like any other
+        # module: `config` is already rooted there.
+        config.theme.name = cfg.themeName;
       };
   };
 
@@ -38,11 +35,7 @@ let
     src = ./fixtures/side/modules;
 
     root =
-      {
-        global,
-        lib,
-        ...
-      }:
+      { global, lib, ... }:
       {
         options.observed = lib.mkOption {
           type = lib.types.str;
@@ -50,13 +43,15 @@ let
           default = global."${main}".theme.name;
         };
 
-        config."${main}".services.beta.message = "from the side";
+        # Writing a *peer* plugin goes through `modules.root`: the shared
+        # fixpoint every mounted plugin lives in.
+        modules.root."${main}".services.beta.message = "from the side";
       };
   };
 
-  # A minimal host root standing in for nixos/home-manager: declares one
-  # native option so tests can watch root-class fragments land (and prove
-  # `global` never exposes it).
+  # A minimal host root standing in for nixos/home-manager: declares two
+  # native options so tests can watch root-class fragments land (and prove
+  # `global` never exposes them).
   evalRoot =
     plugins: modules:
     lib.evalModules {
@@ -70,6 +65,11 @@ let
           config._module.args.pkgs = { };
 
           options.hostSetting = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+          };
+
+          options.aliasSetting = lib.mkOption {
             type = lib.types.str;
             default = "";
           };
@@ -152,6 +152,16 @@ lib.runTests {
     expected = true;
   };
 
+  testReservedRootClassRejected = {
+    expr =
+      fails
+        (plugin {
+          src = ./fixtures/side/modules;
+          classes.root = "sneaky";
+        }).__plugin;
+    expected = true;
+  };
+
   # ── Enablement gates effects, not visibility ──────────────────────────
 
   testModulesDisabledByDefault = {
@@ -198,7 +208,7 @@ lib.runTests {
     expected = "plain";
   };
 
-  # ── Platform fragments ────────────────────────────────────────────────
+  # ── Class fragments ───────────────────────────────────────────────────
 
   testRootClassFragmentInlines = {
     expr = enabled.config.hostSetting;
@@ -207,6 +217,18 @@ lib.runTests {
 
   testRootClassFragmentGatedByEnable = {
     expr = base.config.hostSetting;
+    expected = "";
+  };
+
+  # `modules.root` resolves to whichever class the plugin is mounted in,
+  # landing in the same fixpoint as a fragment that named the class.
+  testRootBlockAliasesHostClass = {
+    expr = paired.config.aliasSetting;
+    expected = "side";
+  };
+
+  testRootBlockAliasGatedByEnable = {
+    expr = (evalRoot { inherit main side; } [ ]).config.aliasSetting;
     expected = "";
   };
 
@@ -264,11 +286,13 @@ lib.runTests {
     expected = true;
   };
 
-  testSelfAgreesWithGlobal = {
-    expr = base.config."${main}".introspect.reflexive;
-    expected = true;
+  testSelfReachesPeers = {
+    expr = base.config."${main}".introspect.peerView;
+    expected = "plain";
   };
 
+  # `config` cannot escape its plugin: a host option name simply lands
+  # inside the namespace, where nothing declares it.
   testHostWritesRejected = {
     expr =
       fails
@@ -283,7 +307,7 @@ lib.runTests {
     expected = true;
   };
 
-  testUnknownPlatformBlockRejected = {
+  testUnknownClassBlockRejected = {
     expr =
       fails
         (evalRoot { bad = plugin { src = ./fixtures/bad-class/modules; }; } [ ]).config._meta.fragments;
@@ -297,13 +321,13 @@ lib.runTests {
     expected = true;
   };
 
-  # A module addresses another plugin exactly the way it addresses its
-  # own: by that plugin's handle, through `global`.
+  # A module reads another plugin by handle, through `global`.
   testCrossPluginRead = {
     expr = paired.config."${side}".observed;
     expected = "plain";
   };
 
+  # ...and writes it through `modules.root`, the fixpoint they share.
   testCrossPluginWrite = {
     expr = paired.config."${main}".services.beta.message;
     expected = "from the side";

@@ -11,12 +11,14 @@ in
 
   The returned value is the plugin's namespace tree (the shape of every
   discovered module) and is itself the plugin's handle — the one string
-  form in the system. It names the whole plugin's mount point, so every
-  module is reached by navigating from it and plugin-level settings are
-  ordinary validated config:
+  form in the system. It names the whole plugin's mount point, so
+  consumers configure it as ordinary validated config:
 
     config."${dotfiles.plugin}".presets.programs.git.enable = true;
     config."${dotfiles.plugin}".identity.email = "...";
+
+  Inside the plugin the handle is implied: a module's own `config` block
+  is already rooted at this namespace.
 
   Plugins are plain values. Consumers register them with a root guest
   (`module.roots.nixos { dotfiles = inputs.dotfiles.plugin; }`); the
@@ -24,7 +26,7 @@ in
 
   Type: {
     src : Path,                    # directory scanned for *.mod.nix / mod.nix
-    classes? : AttrSet,            # extra `platforms.<block>` -> `_class` tags
+    classes? : AttrSet,            # extra `modules.<block>` -> `_class` tags
     root? : Module | null,         # caller-facing options for the whole plugin
   } -> Plugin
 */
@@ -43,6 +45,8 @@ in
 
 if reserved != [ ] then
   throw "module.plugin: module names may not start with `__` (got `${lib.concatStringsSep "." (lib.head reserved).subpath}` in ${toString src})."
+else if classes ? root then
+  throw "module.plugin: the `root` module block is reserved — it aliases whichever class the plugin is mounted in (${toString src})."
 else
   namespace
   // {

@@ -50,10 +50,16 @@ let
     if conflicts == { } then
       acc // entry.plugin.__plugin.classes
     else
-      throw "module system: plugin '${entry.binding}' remaps platform block `${lib.head (lib.attrNames conflicts)}` to a different class tag.";
+      throw "module system: plugin '${entry.binding}' remaps module block `${lib.head (lib.attrNames conflicts)}` to a different class tag.";
 
-  # platform block key -> `_class` tag, across built-ins and all plugins.
-  classMap = lib.foldl' mergeClasses builtinClasses pluginList;
+  # `modules.<block>` key -> `_class` tag, across built-ins and all
+  # plugins. `root` is an alias for whichever class this root evaluates
+  # in, so a module can target its host without naming it — and so it can
+  # reach a peer plugin's namespace, which lives in that same fixpoint.
+  classMap = lib.foldl' mergeClasses builtinClasses pluginList // {
+    root = class;
+  };
+
   classTags = lib.unique (lib.attrValues classMap);
 
   pluginKeys = map (entry: entry.plugin.__plugin.key) pluginList;
@@ -107,63 +113,15 @@ let
   # gates effects, not visibility.
   global = lib.genAttrs pluginKeys (key: config.${key});
 
-  /*
-    `self` is the plugin's own config tree wearing the plugin's handle as
-    its string form. One value, both jobs:
-
-      let inherit (self.theme) palette;             # read
-      config."${self}".services.swayidle.enable     # write
-
-    Its attribute spine comes from load-time discovery — never from the
-    fixpoint. `"${self}"` lands in attribute-name position, and attribute
-    names are forced while the option tree is still being assembled; a
-    spine read out of `config` would make the option tree depend on
-    itself. Only the leaf *values* are lazy fixpoint reads, so navigating
-    past the first hop is an ordinary config read — strict, and loud on
-    typos.
-  */
-  selfWithNames =
-    plugin: names:
-    lib.genAttrs names (name: config.${plugin.__plugin.key}.${name})
-    // {
-      __toString = _: plugin.__plugin.key;
-    };
-
-  # The root node's own options are part of `self` too, so they need to
-  # be named at load time like everything else. They are peeked with a
-  # namespace-only `self`, keeping the spine independent of what the root
-  # declares — a root deriving its option *names* from `self` is the one
-  # thing this cannot support.
-  rootNames =
-    { binding, plugin }:
-    lib.optionals (plugin.__plugin.root != null) (
-      [ "enable" ]
-      ++ lib.attrNames (
-        (applyModule "${binding} (root node)" {
-          self = selfWithNames plugin (lib.attrNames plugin.__plugin.namespace);
-          cfg = config.${plugin.__plugin.key};
-          inherit global lib pkgs;
-        } plugin.__plugin.root).options or { }
-      )
-    );
-
-  selves = lib.listToAttrs (
-    map (
-      entry:
-      lib.nameValuePair entry.plugin.__plugin.key (
-        selfWithNames entry.plugin (
-          lib.unique (lib.attrNames entry.plugin.__plugin.namespace ++ rootNames entry)
-        )
-      )
-    ) pluginList
-  );
-
   evaluated = map (
     entry:
     entry
     // {
+      # `self` is the plugin's own config tree and `cfg` this module's
+      # slice of it — both ordinary lazy reads, so navigating past the
+      # first hop is strict and loud on typos.
       applied = applyModule entry.description {
-        self = selves.${lib.head entry.path};
+        self = config.${lib.head entry.path};
         cfg = lib.getAttrFromPath entry.path config;
         inherit global lib pkgs;
       } entry.loader;
@@ -171,7 +129,7 @@ let
   ) entries;
 
   # Every module gets an implicit `enable` (plugin roots default on) that
-  # gates its writes and platform blocks — loading is never the cut.
+  # gates its writes and module blocks — loading is never the cut.
   optionsFor =
     entry:
     let
@@ -186,39 +144,10 @@ let
       };
     };
 
-  keyIndex = lib.genAttrs pluginKeys (_: true);
-
-  # Find the top-level keys a `config` block writes, looking through the
-  # merge machinery a module may legitimately wrap around it.
-  writtenKeys =
-    value:
-    let
-      kind = value._type or null;
-    in
-    if kind == "if" || kind == "override" || kind == "order" then
-      writtenKeys value.content
-    else if kind == "merge" then
-      lib.concatMap writtenKeys value.contents
-    else
-      lib.attrNames value;
-
-  # A meta-module's `config` block may only address mounted plugins. Host
-  # configuration must go through a `platforms.<class>` block, where the
-  # target platform is explicit.
-  checkWrites =
-    entry: writes:
-    let
-      violations = lib.filter (key: !(keyIndex ? ${key})) (writtenKeys writes);
-    in
-    if violations == [ ] then
-      writes
-    else
-      throw ''module system: ${entry.description} writes to `${lib.head violations}`, which is not a mounted plugin. Address a plugin by handle (`"''${self}".programs.foo`) or use a `platforms.<class>` block for host configuration.'';
-
-  splitPlatforms =
+  splitBlocks =
     entry:
     let
-      blocks = entry.applied.platforms or { };
+      blocks = entry.applied.modules or { };
       unknown = lib.attrNames (removeAttrs blocks (lib.attrNames classMap));
     in
     if unknown == [ ] then
@@ -227,13 +156,13 @@ let
         foreign = lib.filterAttrs (block: _: classMap.${block} != class) blocks;
       }
     else
-      throw "module system: ${entry.description} targets unknown platform block `${lib.head unknown}`. Known blocks: ${lib.concatStringsSep ", " (lib.attrNames classMap)}.";
+      throw "module system: ${entry.description} targets unknown module block `${lib.head unknown}`. Known blocks: ${lib.concatStringsSep ", " (lib.attrNames classMap)}.";
 
   # A fragment for the root's own class merges into the live fixpoint as
-  # config. It gets the root's args (like any platform fragment gets its
-  # platform's args) but cannot declare options or extend imports —
-  # config cannot grow the eval. Anything needing that belongs at the
-  # assembly site.
+  # config. It gets the root's args (like any class fragment gets its
+  # class's args) but cannot declare options or extend imports — config
+  # cannot grow the eval. Anything needing that belongs at the assembly
+  # site.
   inlineFragment =
     entry: block: fragment:
     let
@@ -255,10 +184,10 @@ let
           if unknown == [ ] then
             fragment (builtins.intersectAttrs (builtins.functionArgs fragment) rootArgs)
           else
-            throw "module system: ${entry.description}'s `platforms.${block}` requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Root-class fragments receive only: ${lib.concatStringsSep ", " (lib.attrNames rootArgs)}.";
+            throw "module system: ${entry.description}'s `modules.${block}` requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Root-class fragments receive only: ${lib.concatStringsSep ", " (lib.attrNames rootArgs)}.";
     in
     if applied ? options || applied ? imports then
-      throw "module system: ${entry.description}'s `platforms.${block}` runs in the live `${class}` fixpoint and cannot declare `options` or `imports`. Move those to the assembly site."
+      throw "module system: ${entry.description}'s `modules.${block}` runs in the live `${class}` fixpoint and cannot declare `options` or `imports`. Move those to the assembly site."
     else if applied ? config then
       applied.config
     else
@@ -268,19 +197,22 @@ let
   # a fresh eval with full module powers, tagged so importing one into
   # the wrong platform fails loudly.
   wrapFragment = entry: block: fragment: {
-    _file = "${entry.file}#platforms.${block}";
+    _file = "${entry.file}#modules.${block}";
     _class = classMap.${block};
     imports = [ fragment ];
   };
 
+  # A module's `config` block is its plugin's namespace — the mount point
+  # is implied, never spelled. Reaching anything else (the host, a peer
+  # plugin) goes through `modules.root`, where the target is explicit.
   contributionFor =
     entry:
     let
-      split = splitPlatforms entry;
+      split = splitBlocks entry;
     in
     lib.mkIf (lib.getAttrFromPath (entry.path ++ [ "enable" ]) config) (
       lib.mkMerge (
-        [ (checkWrites entry (entry.applied.config or { })) ]
+        [ { ${lib.head entry.path} = entry.applied.config or { }; } ]
         ++ lib.mapAttrsToList (block: fragment: inlineFragment entry block fragment) split.inline
         ++ lib.mapAttrsToList (block: fragment: {
           _meta.fragments.${classMap.${block}} = [ (wrapFragment entry block fragment) ];
@@ -301,9 +233,9 @@ let
       fragments = lib.mkOption {
         type = lib.types.attrsOf (lib.types.listOf lib.types.deferredModule);
         description = ''
-          Deferred platform fragments per class tag, contributed by
-          enabled modules. Installers route each class into its target
-          eval (e.g. `home-manager.sharedModules`).
+          Deferred class fragments per class tag, contributed by enabled
+          modules. Installers route each class into its target eval (e.g.
+          `home-manager.sharedModules`).
         '';
       };
 

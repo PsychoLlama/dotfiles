@@ -1,4 +1,4 @@
-# Targets a platform block no class map knows about.
+# Targets a module block no class map knows about.
 {
-  platforms.macos.foo = 1;
+  modules.macos.foo = 1;
 }

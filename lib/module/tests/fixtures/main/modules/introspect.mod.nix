@@ -14,12 +14,12 @@
       default = !(global ? hostSetting);
     };
 
-    # `global` is keyed by plugin handle, and `self` is this plugin's own
-    # entry: the two spellings agree.
-    reflexive = lib.mkOption {
-      type = lib.types.bool;
+    # `self` reaches every module in this plugin without naming its mount
+    # point — including ones that stay disabled.
+    peerView = lib.mkOption {
+      type = lib.types.str;
       readOnly = true;
-      default = global."${self}".theme.name == self.theme.name;
+      default = self.theme.name;
     };
   };
 }

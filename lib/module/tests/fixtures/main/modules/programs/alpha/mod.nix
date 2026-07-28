@@ -26,13 +26,14 @@
     };
   };
 
-  # Enabling a peer is an explicit write, addressed from the plugin handle.
-  config."${self}".services.beta = {
+  # `config` is this plugin's namespace: the mount point is implied, so
+  # enabling a peer is a plain write.
+  config.services.beta = {
     enable = true;
     message = "${cfg.greeting} from alpha";
   };
 
-  platforms = {
+  modules = {
     # Root-class fragment: merges into the live fixpoint as config.
     test.hostSetting = "alpha was here";
 
