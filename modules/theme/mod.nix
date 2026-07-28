@@ -8,7 +8,7 @@
 # - https://github.com/danth/stylix
 
 let
-  inherit (lib) types mkOption;
+  inherit (lib) types mkOption mkDefault;
 
   colors-type = types.submodule {
     options = {
@@ -65,7 +65,31 @@ in
     palettes = mkOption {
       description = "All color palettes";
       type = types.attrsOf palette-type;
-      default = import ./palettes.nix { inherit lib; };
+      default = {
+        one-dark = {
+          normal = {
+            black = mkDefault "#1e1e1e";
+            red = mkDefault "#e06c75";
+            green = mkDefault "#98c379";
+            yellow = mkDefault "#e5c07b";
+            blue = mkDefault "#61afef";
+            magenta = mkDefault "#c678dd";
+            cyan = mkDefault "#56b6c2";
+            white = mkDefault "#abb2bf";
+          };
+
+          bright = {
+            black = mkDefault "#3e4451";
+            red = mkDefault "#ff7a85";
+            green = mkDefault "#a8d389";
+            yellow = mkDefault "#f0d08b";
+            blue = mkDefault "#71bfff";
+            magenta = mkDefault "#d688ed";
+            cyan = mkDefault "#66c6d2";
+            white = mkDefault "#ffffff";
+          };
+        };
+      };
     };
   };
 }
