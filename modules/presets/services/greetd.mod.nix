@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 {
-  platforms.nixos = {
+  modules.nixos = {
     services.greetd = {
       enable = true;
       settings.default_session = {

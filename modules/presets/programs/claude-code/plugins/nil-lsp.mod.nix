@@ -14,7 +14,7 @@ in
     package = lib.mkPackageOption pkgs.unstable "nil" { };
   };
 
-  platforms.home-manager.programs.claude-code.localPlugins.nil-lsp = {
+  modules.home-manager.programs.claude-code.localPlugins.nil-lsp = {
     description = "Nil (nix) Language Server for Claude Code.";
 
     lsp.servers.nil = {

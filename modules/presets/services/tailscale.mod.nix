@@ -1,5 +1,5 @@
 {
-  platforms.nixos = {
+  modules.nixos = {
     services.tailscale = {
       enable = true;
       extraUpFlags = [ "--advertise-tags=tag:laptop" ];

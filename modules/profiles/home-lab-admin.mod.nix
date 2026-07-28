@@ -23,7 +23,7 @@ in
     '';
   };
 
-  platforms.nixos = {
+  modules.nixos = {
     nix.settings = {
       trusted-users = [ username ]; # Needed by `colmena`.
       builders-use-substitutes = true;

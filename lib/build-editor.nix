@@ -6,6 +6,7 @@
 }:
 {
   pkgs,
+  plugin,
   modules ? { },
 }:
 
@@ -29,7 +30,7 @@ let
       # nixos and home-manager ones pile up in `_meta.fragments` unread.
       (self.lib.module.mkRoot {
         class = "editor";
-        plugins.dotfiles = self.plugin;
+        plugins.dotfiles = plugin;
       })
     ];
   };

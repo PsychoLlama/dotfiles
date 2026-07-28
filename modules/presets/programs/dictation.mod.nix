@@ -65,5 +65,5 @@ in
     };
   };
 
-  platforms.home-manager.home.packages = [ dictation ];
+  modules.home-manager.home.packages = [ dictation ];
 }

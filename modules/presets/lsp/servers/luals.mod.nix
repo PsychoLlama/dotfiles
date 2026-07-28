@@ -8,7 +8,7 @@
 {
   options.package = lib.mkPackageOption pkgs.unstable "lua-language-server" { };
 
-  platforms.editor.lsp.servers.luals = {
+  modules.editor.lsp.servers.luals = {
     cmd = [ "${cfg.package}/bin/lua-language-server" ];
     filetypes = [ "lua" ];
     root_markers = [

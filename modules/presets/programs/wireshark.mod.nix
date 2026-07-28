@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  platforms.nixos.programs.wireshark = {
+  modules.nixos.programs.wireshark = {
     enable = true;
     package = pkgs.unstable.wireshark;
   };

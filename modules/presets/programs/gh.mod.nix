@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 {
-  platforms.home-manager.programs.gh = {
+  modules.home-manager.programs.gh = {
     enable = lib.mkDefault true;
     package = pkgs.unstable.gh;
 

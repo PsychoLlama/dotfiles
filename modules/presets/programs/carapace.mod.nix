@@ -23,7 +23,7 @@ let
 in
 
 {
-  platforms.home-manager = {
+  modules.home-manager = {
     programs.carapace = {
       enable = lib.mkDefault true;
       package = lib.mkDefault (withBridgeBash pkgs.unstable.carapace);

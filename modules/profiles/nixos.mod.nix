@@ -1,4 +1,4 @@
-{ self, lib, ... }:
+{ lib, ... }:
 
 # Everything a NixOS desktop should have. Absorbs what used to be split
 # between the NixOS `full` profile and the home-manager `linux-desktop`
@@ -9,9 +9,10 @@ let
 in
 
 {
-  # Writes nest under the plugin handle. A typo here is an unknown-option
-  # error from the merge machinery, not a silently-ignored option path.
-  config."${self}".presets = {
+  # `config` is this plugin's own namespace; the mount point is implied. A typo
+  # here is an unknown-option error from the merge machinery, not a
+  # silently-ignored option path.
+  config.presets = {
     fonts.enable = true;
     gtk.enable = mkDefault true;
     sound-theme.enable = mkDefault true;
@@ -57,8 +58,8 @@ in
   };
 
   # Host settings small enough that they never earned a preset of their own. A
-  # platform block reaches the host's own options directly.
-  platforms = {
+  # class block reaches that host's own options directly.
+  modules = {
     nixos = {
       services = {
         automatic-timezoned.enable = mkDefault true;

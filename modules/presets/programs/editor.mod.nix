@@ -1,14 +1,13 @@
 {
-  self,
   lib,
   pkgs,
   ...
 }:
 
 {
-  config."${self}".profiles.editor.enable = true;
+  config.profiles.editor.enable = true;
 
-  platforms.home-manager =
+  modules.home-manager =
     { config, ... }:
 
     let

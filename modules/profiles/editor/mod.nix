@@ -1,5 +1,4 @@
 {
-  self,
   lib,
   pkgs,
   ...
@@ -15,7 +14,7 @@ let
 in
 
 {
-  config."${self}".presets = {
+  config.presets = {
     lsp.servers = {
       clangd.enable = mkDefault true;
       jsonls.enable = mkDefault true;
@@ -84,7 +83,7 @@ in
     };
   };
 
-  platforms.editor = {
+  modules.editor = {
     package = if pkgs.stdenv.hostPlatform.isLinux then pkgs.custom.nvim-rs else pkgs.unstable.neovim;
 
     lsp.enable = mkDefault true;

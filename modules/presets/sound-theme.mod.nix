@@ -27,7 +27,7 @@ in
     };
   };
 
-  platforms.home-manager = {
+  modules.home-manager = {
     home.packages = [ playSound ];
 
     dconf.settings."org/gnome/desktop/sound" = {

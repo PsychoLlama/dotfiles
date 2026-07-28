@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 {
-  platforms.home-manager.programs.starship = {
+  modules.home-manager.programs.starship = {
     enable = lib.mkDefault true;
     package = lib.mkDefault pkgs.unstable.starship;
 

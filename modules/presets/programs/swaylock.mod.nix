@@ -10,7 +10,7 @@ let
 in
 
 {
-  platforms.home-manager.programs.swaylock = {
+  modules.home-manager.programs.swaylock = {
     enable = true;
     package = pkgs.unstable.swaylock;
 

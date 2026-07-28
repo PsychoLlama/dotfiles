@@ -11,7 +11,7 @@ in
 {
   # The hostname and the user's home directory are both owned by the NixOS
   # eval, so this block needs that eval's own `config`.
-  platforms.nixos =
+  modules.nixos =
     { config, ... }:
 
     let

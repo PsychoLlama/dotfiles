@@ -11,7 +11,7 @@ in
 {
   # The user's home directory is owned by the home-manager submodule inside the
   # NixOS eval, so this block needs that eval's own `config`.
-  platforms.nixos =
+  modules.nixos =
     { config, ... }:
 
     let

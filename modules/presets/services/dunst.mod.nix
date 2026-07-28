@@ -24,7 +24,7 @@ let
 in
 
 {
-  platforms.home-manager.services.dunst = {
+  modules.home-manager.services.dunst = {
     enable = true;
     package = pkgs.unstable.dunst;
 

@@ -82,7 +82,7 @@ in
     };
   };
 
-  platforms.nixos.environment = {
+  modules.nixos.environment = {
     systemPackages = [ cfg.package ];
 
     # User config is left writable and untracked because codex *insists* on

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  platforms.home-manager = {
+  modules.home-manager = {
     gtk = {
       enable = true;
       colorScheme = "dark";

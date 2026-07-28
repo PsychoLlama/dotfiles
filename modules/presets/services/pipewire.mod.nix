@@ -1,7 +1,7 @@
 { lib, ... }:
 
 {
-  platforms.nixos = {
+  modules.nixos = {
     # Used by Pipewire to get real-time thread priority.
     security.rtkit.enable = lib.mkDefault true;
 

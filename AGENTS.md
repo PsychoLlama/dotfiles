@@ -26,9 +26,15 @@ Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, di
 - `lib/` — Nix utilities (system builders, module discovery, meta-module system, overlays).
 - `pkgs/` — Custom package derivations.
 
-`self` is the plugin's own config tree and the one handle in the system. Read a sibling by navigating it (`self.presets.programs.foo`); write by nesting under its string form (`config."${self}".presets.programs.foo.enable = true`). `global."${other}"` reaches a different plugin.
+Reads come off `self`, the plugin's own config tree — navigate it to reach a sibling (`self.presets.programs.foo`). `cfg` is this module's own slice; `global."${inputs.<peer>}"` is another plugin's tree.
 
-Never derive an attribute _name_ from a config read — `"${self}"` is fine, `"${self.presets.programs.foo}"` is not. Attribute names are forced while the option tree is still assembling, so a name that depends on the fixpoint is infinite recursion.
+Writes go in one of three blocks, each naming a different target:
+
+- `config` — this plugin's namespace, mount point implied (`config.presets.programs.foo.enable = true`).
+- `modules.<class>` — a host's own options, for a class this plugin declares or `lib/module` builds in (`nixos`, `darwin`, `home-manager`). A block for a class the root isn't evaluating becomes a fragment for an installer to route.
+- `plugins."${inputs.<peer>}"` — a peer plugin's namespace.
+
+Nothing in attribute-name position comes from the fixpoint. Handles reach a module through `inputs`, which is load-time data supplied at instantiation, so config reads stay in value position — arbitrarily deep and lazy.
 
 ## Conventions
 

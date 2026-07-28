@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 {
-  platforms.home-manager = {
+  modules.home-manager = {
     home.shellAliases.cat = "bat";
 
     programs.bat = {

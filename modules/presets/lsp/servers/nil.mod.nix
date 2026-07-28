@@ -8,7 +8,7 @@
 {
   options.package = lib.mkPackageOption pkgs.unstable "nil" { };
 
-  platforms.editor.lsp.servers.nil = {
+  modules.editor.lsp.servers.nil = {
     cmd = [ "${cfg.package}/bin/nil" ];
     filetypes = [ "nix" ];
     root_markers = [ "flake.nix" ];

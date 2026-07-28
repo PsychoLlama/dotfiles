@@ -14,7 +14,7 @@
     '';
   };
 
-  platforms.editor =
+  modules.editor =
     { config, ... }:
 
     {

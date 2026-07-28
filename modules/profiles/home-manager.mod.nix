@@ -1,5 +1,4 @@
 {
-  self,
   lib,
   pkgs,
   ...
@@ -13,9 +12,10 @@ let
 in
 
 {
-  # Writes nest under the plugin handle. A typo here is an unknown-option
-  # error from the merge machinery, not a silently-ignored option path.
-  config."${self}".presets = {
+  # `config` is this plugin's own namespace; the mount point is implied. A typo
+  # here is an unknown-option error from the merge machinery, not a
+  # silently-ignored option path.
+  config.presets = {
     programs = {
       bat.enable = mkDefault true;
       bottom.enable = mkDefault true;
@@ -51,9 +51,9 @@ in
     services.ssh-agent.enable = mkDefault true;
   };
 
-  # Platform extensions that never had a preset. A platform block reaches the
+  # Platform extensions that never had a preset. A class block reaches that
   # host's own options directly.
-  platforms.home-manager.programs = {
+  modules.home-manager.programs = {
     binutils.enable = mkDefault true;
     duf.enable = mkDefault true;
     hexyl.enable = mkDefault true;

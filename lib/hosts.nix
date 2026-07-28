@@ -136,25 +136,31 @@ let
 in
 
 {
-  nixos = lib.mapAttrs (
-    hostName: modules:
-    lib.nixosSystem {
-      modules = modules ++ [
-        agenix.nixosModules.default
-        home-manager.nixosModules.home-manager
+  # The plugin arrives instantiated: mounting it twice with different inputs is
+  # an error, so the assembler owns the one instance.
+  #
+  # Type: Plugin -> { <hostName> = [ Module ]; } -> AttrSet NixosSystem
+  nixos =
+    dotfiles:
+    lib.mapAttrs (
+      hostName: modules:
+      lib.nixosSystem {
+        modules = modules ++ [
+          agenix.nixosModules.default
+          home-manager.nixosModules.home-manager
 
-        # Mounts every meta-module's options into this root's fixpoint and
-        # routes home-manager fragments onto `sharedModules`.
-        (self.lib.module.roots.nixos { dotfiles = self.plugin; })
-        editor-installer
+          # Mounts every meta-module's options into this root's fixpoint and
+          # routes home-manager fragments onto `sharedModules`.
+          (self.lib.module.roots.nixos { inherit dotfiles; })
+          editor-installer
 
-        nixpkgs-config
-        nix-flakes
-        hm-substrate
-        configuration-revision
+          nixpkgs-config
+          nix-flakes
+          hm-substrate
+          configuration-revision
 
-        (manage-system-name hostName)
-      ];
-    }
-  );
+          (manage-system-name hostName)
+        ];
+      }
+    );
 }

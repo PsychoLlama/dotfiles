@@ -12,7 +12,7 @@ let
 in
 
 {
-  platforms.home-manager =
+  modules.home-manager =
     { config, ... }:
 
     let

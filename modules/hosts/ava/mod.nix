@@ -13,7 +13,7 @@ let
 in
 
 {
-  config."${self}" = {
+  config = {
     identity = {
       username = "overlord";
       name = "Jesse Gibson";
@@ -36,15 +36,15 @@ in
 
   # Takes `config` for the login shell: it has to match the package
   # home-manager installs, which is only knowable from the NixOS eval.
-  platforms.nixos =
+  modules.nixos =
     { config, ... }:
 
     let
       shell = config.home-manager.users.${username}.programs.nushell.package;
     in
 
-    # A root-class platform block merges into the live fixpoint and so cannot
-    # declare `imports`. The generated hardware description merges in instead.
+    # A root-class block merges into the live fixpoint and so cannot declare
+    # `imports`. The generated hardware description merges in instead.
     lib.mkMerge [
       (import ./hardware-configuration.nix)
 

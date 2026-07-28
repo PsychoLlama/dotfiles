@@ -90,6 +90,11 @@
 
       # (system: pkgs: a) -> { system -> a }
       eachSystem = lib.flip lib.mapAttrs pkgsBySystem;
+
+      # This flake's own instance of its plugin, mounted by the hosts and the
+      # portable editor below. Consumers instantiate their own the same way:
+      # `inputs.dotfiles.plugin { }`.
+      dotfiles = self.plugin { };
     in
 
     {
@@ -98,7 +103,8 @@
       };
 
       # Meta-modules: one module per program carrying payloads for every
-      # platform it touches. Mount with `lib.module.roots.<class>`.
+      # platform it touches. This is the plugin *definition* — apply it to an
+      # input set to instantiate, then mount with `lib.module.roots.<class>`.
       plugin = lib.dotfiles.module.plugin {
         src = ./modules;
         classes.editor = "editor";
@@ -124,14 +130,14 @@
         vim-plugins = import ./lib/overlays/vim-plugins.nix flake-inputs;
       };
 
-      nixosConfigurations = lib.dotfiles.hosts.nixos {
+      nixosConfigurations = lib.dotfiles.hosts.nixos dotfiles {
         ava = [
           # Flake inputs can only be imported at the assembly site; a
           # meta-module has no `imports`.
           nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
           nixpkgs.nixosModules.notDetected
 
-          { "${self.plugin}".hosts.ava.enable = true; }
+          { "${dotfiles}".hosts.ava.enable = true; }
         ];
       };
 
@@ -161,7 +167,8 @@
         system: pkgs: {
           editor = lib.dotfiles.buildEditor {
             inherit pkgs;
-            modules = [ { "${self.plugin}".profiles.editor.enable = true; } ];
+            plugin = dotfiles;
+            modules = [ { "${dotfiles}".profiles.editor.enable = true; } ];
           };
 
           inherit (pkgs.custom) chrome-devtools-mcp claude-code-bin codex-bin;

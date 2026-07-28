@@ -35,7 +35,7 @@ in
 
   # `plugin.pkgs` only exists in the editor evaluation, so the by-name
   # fallback has to be resolved down there rather than in the option default.
-  platforms.editor =
+  modules.editor =
     { config, ... }:
 
     {

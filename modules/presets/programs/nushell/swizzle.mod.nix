@@ -7,7 +7,7 @@ let
 in
 
 {
-  platforms.home-manager =
+  modules.home-manager =
     { config, lib, ... }:
 
     let

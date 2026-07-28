@@ -10,7 +10,7 @@ name:
 { lib, pkgs, ... }:
 
 {
-  platforms.home-manager.programs.${name} = {
+  modules.home-manager.programs.${name} = {
     enable = lib.mkDefault true;
     package = lib.mkDefault pkgs.unstable.${name};
   };

@@ -5,7 +5,7 @@ let
 in
 
 {
-  platforms.nixos = {
+  modules.nixos = {
     services.openssh = {
       enable = true;
       openFirewall = false;

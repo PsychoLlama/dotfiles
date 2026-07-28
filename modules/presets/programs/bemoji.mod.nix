@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  platforms.home-manager = {
+  modules.home-manager = {
     programs = {
       bemoji = {
         enable = true;

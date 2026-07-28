@@ -1,7 +1,7 @@
 { lib, ... }:
 
 {
-  platforms.nixos.virtualisation.podman = {
+  modules.nixos.virtualisation.podman = {
     enable = lib.mkDefault true;
 
     # Create a `docker` alias for podman.

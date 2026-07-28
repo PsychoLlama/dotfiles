@@ -16,7 +16,7 @@ let
 in
 
 {
-  platforms.home-manager.programs.fuzzel = {
+  modules.home-manager.programs.fuzzel = {
     enable = true;
     package = pkgs.unstable.fuzzel;
 

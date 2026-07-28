@@ -9,7 +9,7 @@ let
 in
 
 {
-  platforms.home-manager.programs.zathura = {
+  modules.home-manager.programs.zathura = {
     enable = true;
     package = pkgs.unstable.zathura;
 

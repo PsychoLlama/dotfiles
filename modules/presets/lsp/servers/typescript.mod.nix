@@ -8,7 +8,7 @@
 {
   options.package = lib.mkPackageOption pkgs.unstable "typescript-language-server" { };
 
-  platforms.editor = {
+  modules.editor = {
     lsp.servers.typescript = {
       cmd = [
         "${cfg.package}/bin/typescript-language-server"

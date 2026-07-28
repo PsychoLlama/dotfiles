@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 {
-  platforms.nixos = {
+  modules.nixos = {
     boot = {
       initrd.supportedFilesystems = [ "zfs" ];
       supportedFilesystems = [ "zfs" ];

@@ -35,5 +35,5 @@
   # when the file sits beneath one of these prefixes. A standalone
   # `packages.editor` has no host to inherit from and trusts nothing, which is
   # the right default for a portable editor.
-  platforms.editor.env.trusted = cfg.paths;
+  modules.editor.env.trusted = cfg.paths;
 }

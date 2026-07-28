@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  platforms.home-manager.services.gammastep = {
+  modules.home-manager.services.gammastep = {
     enable = true;
     package = pkgs.unstable.gammastep;
     dawnTime = "6:30-7:00";

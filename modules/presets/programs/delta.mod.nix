@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 {
-  platforms.home-manager.programs.delta = {
+  modules.home-manager.programs.delta = {
     enable = lib.mkDefault true;
     package = lib.mkDefault pkgs.unstable.delta;
 

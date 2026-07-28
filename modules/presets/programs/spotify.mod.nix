@@ -2,5 +2,5 @@
 
 # The desktop client has no home-manager module, so it ships as a bare package.
 {
-  platforms.home-manager.home.packages = [ pkgs.unstable.spotify ];
+  modules.home-manager.home.packages = [ pkgs.unstable.spotify ];
 }

@@ -11,7 +11,7 @@ let
 in
 
 {
-  platforms.nixos = {
+  modules.nixos = {
     programs.sway.enable = lib.mkDefault true;
 
     # Home-manager generates the real config; suppress the package default.
@@ -21,7 +21,7 @@ in
     xdg.portal.wlr.enable = true;
   };
 
-  platforms.home-manager =
+  modules.home-manager =
     { config, ... }:
 
     let

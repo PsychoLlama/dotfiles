@@ -73,7 +73,7 @@ let
 in
 
 {
-  platforms.home-manager = {
+  modules.home-manager = {
     programs.waybar = {
       enable = true;
       package = pkgs.unstable.waybar;
