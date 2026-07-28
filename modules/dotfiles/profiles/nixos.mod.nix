@@ -12,7 +12,7 @@ in
   # `config` is this plugin's own namespace; the mount point is implied. A typo
   # here is an unknown-option error from the merge machinery, not a
   # silently-ignored option path.
-  config.presets = {
+  config = {
     fonts.enable = true;
     gtk.enable = mkDefault true;
     sound-theme.enable = mkDefault true;

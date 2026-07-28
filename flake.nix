@@ -91,10 +91,11 @@
       # (system: pkgs: a) -> { system -> a }
       eachSystem = lib.flip lib.mapAttrs pkgsBySystem;
 
-      # This flake's own instance of its plugin, mounted by the hosts and the
+      # This flake's own instances, mounted by `nixosConfigurations` and the
       # portable editor below. Consumers instantiate their own the same way:
-      # `inputs.dotfiles.plugin { }`.
-      dotfiles = self.plugin { };
+      # `inputs.dotfiles.plugins.dotfiles { }`.
+      dotfiles = self.plugins.dotfiles { };
+      hosts = self.plugins.hosts { inherit dotfiles; };
     in
 
     {
@@ -103,11 +104,21 @@
       };
 
       # Meta-modules: one module per program carrying payloads for every
-      # platform it touches. This is the plugin *definition* — apply it to an
+      # platform it touches. These are plugin *definitions* — apply one to an
       # input set to instantiate, then mount with `lib.module.roots.<class>`.
-      plugin = lib.dotfiles.module.plugin {
-        src = ./modules;
-        classes.editor = "editor";
+      plugins = {
+        dotfiles = lib.dotfiles.module.plugin {
+          src = ./modules/dotfiles;
+          classes.editor = "editor";
+        };
+
+        # Machine-specific settings. Split from the dotfiles so a consumer can
+        # mount the opinions without inheriting my hardware, and so a host says
+        # which plugin it is configuring rather than sitting inside it.
+        hosts = lib.dotfiles.module.plugin {
+          src = ./modules/hosts;
+          inputs.dotfiles = throw "hosts: input `dotfiles` is required.";
+        };
       };
 
       nixosModules = {
@@ -130,14 +141,14 @@
         vim-plugins = import ./lib/overlays/vim-plugins.nix flake-inputs;
       };
 
-      nixosConfigurations = lib.dotfiles.hosts.nixos dotfiles {
+      nixosConfigurations = lib.dotfiles.hosts.nixos { inherit dotfiles hosts; } {
         ava = [
           # Flake inputs can only be imported at the assembly site; a
           # meta-module has no `imports`.
           nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
           nixpkgs.nixosModules.notDetected
 
-          { "${dotfiles}".hosts.ava.enable = true; }
+          { "${hosts}".ava.enable = true; }
         ];
       };
 

@@ -6,7 +6,7 @@
 
 # An opinionated neovim: the plugin set, language servers and vimrc that turn
 # the editor framework into something usable. Enabled by
-# `presets.programs.editor` on a host, and by the `packages.editor` flake
+# `programs.editor` on a host, and by the `packages.editor` flake
 # output for a portable copy.
 
 let
@@ -14,7 +14,7 @@ let
 in
 
 {
-  config.presets = {
+  config.editor = {
     lsp.servers = {
       clangd.enable = mkDefault true;
       jsonls.enable = mkDefault true;
@@ -89,7 +89,7 @@ in
     lsp.enable = mkDefault true;
 
     # note.nvim is configured through the manifest opts; its config hook
-    # (presets/plugins/note-nvim/config.lua) forwards these to
+    # (editor/plugins/note-nvim/config.lua) forwards these to
     # `require('note').setup`.
     plugins.note-nvim.opts.path = mkDefault "~/attic/slip-box";
 

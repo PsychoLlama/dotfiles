@@ -8,7 +8,7 @@
 let
   # Validated references to peer modules, not stringly-typed option paths.
   # Reading them only requires those modules to be mounted.
-  swayidle = self.presets.services.swayidle;
+  swayidle = self.services.swayidle;
   inherit (self.theme) palette;
 
   # Convert the color palette to a flat list of colors.

@@ -38,7 +38,7 @@ in
   # The plugins are claude-code's own — they configure it and mean nothing
   # without it. Enabling them from here keeps them on by default while leaving
   # each one individually overridable.
-  config.presets.programs.claude-code.plugins = {
+  config.programs.claude-code.plugins = {
     chrome-devtools.enable = lib.mkDefault true;
     lua-lsp.enable = lib.mkDefault true;
     nil-lsp.enable = lib.mkDefault true;

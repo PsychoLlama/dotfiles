@@ -15,7 +15,7 @@ in
   # `config` is this plugin's own namespace; the mount point is implied. A typo
   # here is an unknown-option error from the merge machinery, not a
   # silently-ignored option path.
-  config.presets = {
+  config = {
     programs = {
       bat.enable = mkDefault true;
       bottom.enable = mkDefault true;

@@ -16,7 +16,7 @@ in
   form in the system. It names the whole plugin's mount point, so
   consumers configure it as ordinary validated config:
 
-    config."${dotfiles}".presets.programs.git.enable = true;
+    config."${dotfiles}".programs.git.enable = true;
     config."${dotfiles}".identity.email = "...";
 
   Inside the plugin the handle is implied: a module's own `config` block

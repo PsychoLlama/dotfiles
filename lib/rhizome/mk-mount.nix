@@ -9,7 +9,7 @@ in
   fixpoint, keyed by the plugin's handle. A plugin's modules mount as a
   nested option tree beneath it, mirroring the directory layout:
 
-    options."${dotfiles}".presets.programs.git.enable
+    options."${dotfiles}".programs.git.enable
 
   There is no separate rhizome eval. The mount evaluates exactly once, on
   the top-level host — nixos when there is one, home-manager standalone,

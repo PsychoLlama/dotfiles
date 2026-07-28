@@ -9,7 +9,7 @@ let
   # `play` is a readOnly option on the sound-theme module. Reading it needs
   # that module mounted, not enabled — visibility and activation are
   # separate concerns.
-  soundTheme = self.presets.sound-theme;
+  soundTheme = self.sound-theme;
 
   notificationSound = pkgs.writeShellApplication {
     name = "dunst-notification-sound";

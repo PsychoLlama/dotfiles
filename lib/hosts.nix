@@ -136,12 +136,12 @@ let
 in
 
 {
-  # The plugin arrives instantiated: mounting it twice with different inputs is
-  # an error, so the assembler owns the one instance.
+  # The plugins arrive instantiated: mounting one twice with different inputs
+  # is an error, so the assembler owns the instances.
   #
-  # Type: Plugin -> { <hostName> = [ Module ]; } -> AttrSet NixosSystem
+  # Type: AttrSet Plugin -> { <hostName> = [ Module ]; } -> AttrSet NixosSystem
   nixos =
-    dotfiles:
+    plugins:
     lib.mapAttrs (
       hostName: modules:
       lib.nixosSystem {
@@ -151,7 +151,7 @@ in
 
           # Mounts every meta-module's options into this root's fixpoint and
           # routes home-manager fragments onto `sharedModules`.
-          (self.lib.module.roots.nixos { inherit dotfiles; })
+          (self.lib.module.roots.nixos plugins)
           editor-installer
 
           nixpkgs-config
