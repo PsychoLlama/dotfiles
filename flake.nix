@@ -93,9 +93,9 @@
 
       # This flake's own instances, mounted by `nixosConfigurations` and the
       # portable editor below. Consumers instantiate their own the same way:
-      # `inputs.dotfiles.plugins.dotfiles { }`.
-      dotfiles = self.plugins.dotfiles { };
-      hosts = self.plugins.hosts { inherit dotfiles; };
+      # `inputs.dotfiles.rhizomePlugins.dotfiles { }`.
+      dotfiles = self.rhizomePlugins.dotfiles { };
+      hosts = self.rhizomePlugins.hosts { inherit dotfiles; };
     in
 
     {
@@ -106,7 +106,7 @@
       # Rhizome modules: one module per program carrying payloads for every
       # platform it touches. These are plugin *definitions* — apply one to an
       # input set to instantiate, then mount with `lib.rhizome.mounts.<class>`.
-      plugins = {
+      rhizomePlugins = {
         dotfiles = lib.dotfiles.rhizome.plugin {
           src = ./modules/dotfiles;
           classes.editor = "editor";
@@ -169,8 +169,7 @@
       packages = eachSystem (
         system: pkgs: {
           editor = lib.dotfiles.buildEditor {
-            inherit pkgs;
-            plugin = dotfiles;
+            inherit pkgs dotfiles;
             modules = [ { "${dotfiles}".profiles.editor.enable = true; } ];
           };
 

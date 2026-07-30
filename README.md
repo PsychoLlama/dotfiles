@@ -37,12 +37,12 @@ You can also build your own variant. It has access to all options from `nixosMod
 
 ```nix
 let
-  plugin = dotfiles.plugins.dotfiles { };
+  dotfiles = inputs.dotfiles.rhizomePlugins.dotfiles { };
 in
 
-dotfiles.lib.buildEditor {
-  inherit pkgs plugin;
-  modules = [ { "${plugin}".profiles.editor.enable = true; } ];
+inputs.dotfiles.lib.buildEditor {
+  inherit pkgs dotfiles;
+  modules = [ { "${dotfiles}".profiles.editor.enable = true; } ];
 }
 ```
 

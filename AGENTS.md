@@ -8,8 +8,8 @@ This flake is consumed by other flakes. Everything must be changeable, disableab
 
 Two plugins ship from `modules/`, both instantiated in `flake.nix` and mounted together:
 
-- `plugins.dotfiles` (`modules/dotfiles/`) — the opinions. Knows nothing about hosts.
-- `plugins.hosts` (`modules/hosts/`) — machines. Takes `dotfiles` as an input and writes it through `plugins."${inputs.dotfiles}"`.
+- `rhizomePlugins.dotfiles` (`modules/dotfiles/`) — the opinions. Knows nothing about hosts.
+- `rhizomePlugins.hosts` (`modules/hosts/`) — machines. Takes `dotfiles` as an input and writes it through `peers."${inputs.dotfiles}"`.
 
 The editor is the one remaining platform, exposed as `nixosModules.editor`: the framework, no opinions. Every other program carries its own home-manager payload.
 

@@ -6,7 +6,7 @@
 }:
 {
   pkgs,
-  plugin,
+  dotfiles,
   modules ? { },
 }:
 
@@ -31,7 +31,7 @@ let
       # home to configure, which is the whole point of shipping it this way.
       (self.lib.rhizome.mkMount {
         class = "editor";
-        plugins.dotfiles = plugin;
+        plugins = { inherit dotfiles; };
       })
       {
         rhizome.dropped = [
