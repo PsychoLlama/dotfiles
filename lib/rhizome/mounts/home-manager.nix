@@ -12,16 +12,24 @@ let
     { config, ... }:
     {
       config = {
+        # Home-manager is the top-level host here, so neither OS class can
+        # apply. Both are discarded by this root rather than by the class
+        # table, which stays free of stack policy.
+        rhizome.dropped = [
+          "nixos"
+          "darwin"
+        ];
+
         assertions = [
           {
             assertion = !(config.rhizome.hosted or false);
             message = "rhizome: this home-manager configuration is already managed by the OS host above it. Remove the standalone home-manager mount.";
           }
-        ];
-
-        warnings = map (
-          tag: "rhizome: fragments for class '${tag}' have no router and were dropped."
-        ) config.rhizome.unrouted;
+        ]
+        ++ map (tag: {
+          assertion = false;
+          message = "rhizome: class '${tag}' produced fragments, but no router claimed them. Carry it with `rhizome.routed = [ \"${tag}\" ];` after wiring the fragments into a `${tag}` eval, or discard it deliberately with `rhizome.dropped = [ \"${tag}\" ];`.";
+        }) config.rhizome.unrouted;
       };
     };
 in

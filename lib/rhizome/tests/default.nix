@@ -402,6 +402,39 @@ lib.runTests {
     expected = [ ];
   };
 
+  # A root discards the classes that can never apply to its stack. That
+  # is a claim like routing is: what remains unrouted is an oversight.
+  testDroppedClassesClearUnrouted = {
+    expr =
+      (evalHost { inherit main; } [
+        {
+          config."${main}".programs.alpha.enable = true;
+          config.rhizome.dropped = [ "widget" ];
+        }
+      ]).config.rhizome.unrouted;
+    expected = [ ];
+  };
+
+  # Claiming a tag nothing declares is the same silence as not claiming
+  # it at all, so it fails instead.
+  testUnknownRoutedTagRejected = {
+    expr =
+      fails
+        (evalHost { inherit main; } [
+          { config.rhizome.routed = [ "widgit" ]; }
+        ]).config.rhizome.unrouted;
+    expected = true;
+  };
+
+  testUnknownDroppedTagRejected = {
+    expr =
+      fails
+        (evalHost { inherit main; } [
+          { config.rhizome.dropped = [ "widgit" ]; }
+        ]).config.rhizome.unrouted;
+    expected = true;
+  };
+
   # ── Fencing ───────────────────────────────────────────────────────────
 
   testGlobalHidesHostOptions = {

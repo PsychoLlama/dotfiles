@@ -291,15 +291,40 @@ let
         description = "Class tags claimed by a router.";
       };
 
+      dropped = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = ''
+          Class tags whose fragments are deliberately discarded. A root
+          declares the classes that can never apply to its stack — a nixos
+          host has no use for darwin fragments — so that whatever is left
+          over reads as an oversight rather than a choice.
+        '';
+      };
+
       unrouted = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         readOnly = true;
-        description = "Class tags holding fragments that no router claimed.";
-        default = lib.attrNames (
-          lib.filterAttrs (
-            tag: fragments: fragments != [ ] && !(lib.elem tag config.rhizome.routed)
-          ) config.rhizome.fragments
-        );
+        description = ''
+          Class tags holding fragments that no router claimed and no root
+          discarded: configuration that was written and then went nowhere.
+        '';
+        default =
+          let
+            claimed = config.rhizome.routed ++ config.rhizome.dropped;
+
+            # A typo here would silently fail to claim, which is the exact
+            # silence the assertion downstream exists to remove.
+            unknown = lib.subtractLists classTags claimed;
+          in
+          if unknown != [ ] then
+            throw "rhizome: `rhizome.routed`/`rhizome.dropped` names unknown class tag(s): ${lib.concatStringsSep ", " unknown}. Known tags: ${lib.concatStringsSep ", " classTags}."
+          else
+            lib.attrNames (
+              lib.filterAttrs (
+                tag: fragments: fragments != [ ] && !(lib.elem tag claimed)
+              ) config.rhizome.fragments
+            );
       };
     };
 
