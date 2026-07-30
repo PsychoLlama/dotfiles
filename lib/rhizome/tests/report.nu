@@ -1,11 +1,11 @@
 #!/usr/bin/env -S nu --stdin
 
-# Evaluate the meta-module test suite and report the results.
+# Evaluate the rhizome test suite and report the results.
 #
 # `lib.runTests` returns only the failures; an empty list means every
 # test passed.
 export def main [] {
-  let failures = nix eval '.#lib.module.tests' --json | from json
+  let failures = nix eval '.#lib.rhizome.tests' --json | from json
 
   if ($failures | is-empty) {
     print "All module tests passed."

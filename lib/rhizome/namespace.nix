@@ -8,7 +8,7 @@
   options mount. Consumers get an introspectable map of what a plugin
   ships without touching the fixpoint.
 
-  Only the plugin root is addressable as a string (see `plugin.nix`).
+  Only the plugin itself is addressable as a string (see `plugin.nix`).
   Modules are reached by navigating from it — `self.programs.foo` to read
   a peer, `config.programs.foo` to write one.
 

@@ -5,28 +5,29 @@ let
 in
 
 /*
-  The root guest: a module that mounts every plugin into the host root's
-  own fixpoint, keyed by the plugin's handle. A plugin's modules mount as
-  a nested option tree beneath it, mirroring the directory layout:
+  The mount: a module that installs every plugin into the host's own
+  fixpoint, keyed by the plugin's handle. A plugin's modules mount as a
+  nested option tree beneath it, mirroring the directory layout:
 
     options."${dotfiles}".presets.programs.git.enable
 
-  There is no separate meta eval. The guest evaluates exactly once, on
-  the top-level root — nixos when there is one, home-manager standalone,
-  or any custom `evalModules` (the editor). Fragments for the root's own
+  There is no separate rhizome eval. The mount evaluates exactly once, on
+  the top-level host — nixos when there is one, home-manager standalone,
+  or any custom `evalModules` (the editor). Fragments for the host's own
   class merge inline; fragments for every other class accumulate in
-  `_meta.fragments.<class>` for an installer to route onward.
+  `rhizome.fragments.<class>` for a router to carry onward.
 
   A module has three write blocks, one per target:
 
-    config.services.foo.enable = true;                  # its own plugin
-    modules.nixos.users.users.bob.shell = ...;          # a host class
-    plugins."${inputs.hosts}".machines.x.enable = true; # a peer plugin
+    config.services.foo.enable = true;                # its own plugin
+    modules.nixos.users.users.bob.shell = ...;        # a host class
+    peers."${inputs.hosts}".machines.x.enable = true; # a peer plugin
 
-  Meta modules receive exactly six arguments — `self`, `cfg`, `inputs`,
-  `global`, `lib`, `pkgs` — and nothing from the root. `global` is fenced
-  to the mounted plugins, so a module can never observe (and grow
-  dependent on) the host platform it happens to be evaluated in.
+  Rhizome modules receive exactly six arguments — `self`, `cfg`,
+  `inputs`, `global`, `lib`, `pkgs` — and nothing from the host.
+  `global` is fenced to the mounted plugins, so a module can never
+  observe (and grow dependent on) the host platform it happens to be
+  evaluated in.
 
   Type: { class : String, plugins : AttrSet Plugin } -> Module
 */
@@ -54,7 +55,7 @@ let
     if lib.length group == 1 || lib.all (given: given == lib.head inputs) inputs then
       lib.head group
     else
-      throw "module system: plugin '${key}' is mounted more than once with different inputs (bindings: ${bindings}). Instantiate it once and share the result.";
+      throw "rhizome: plugin '${key}' is mounted more than once with different inputs (bindings: ${bindings}). Instantiate it once and share the result.";
 
   pluginList = lib.mapAttrsToList dedupe (
     lib.groupBy (entry: entry.plugin.__plugin.key) (
@@ -72,12 +73,12 @@ let
     if conflicts == { } then
       acc // entry.plugin.__plugin.classes
     else
-      throw "module system: plugin '${entry.binding}' remaps module block `${lib.head (lib.attrNames conflicts)}` to a different class tag.";
+      throw "rhizome: plugin '${entry.binding}' remaps module block `${lib.head (lib.attrNames conflicts)}` to a different class tag.";
 
   # `modules.<block>` key -> `_class` tag, across built-ins and all
   # plugins. Every block names a real class: a module says which host it
   # is configuring, and a block for some other class becomes a fragment
-  # for an installer to route (or a warning when nothing claims it).
+  # for a router to carry (or a warning when nothing claims it).
   classMap = lib.foldl' mergeClasses builtinClasses pluginList;
 
   classTags = lib.unique (lib.attrValues classMap);
@@ -85,7 +86,7 @@ let
   pluginKeys = map (entry: entry.plugin.__plugin.key) pluginList;
 
   # One entry per mounted option namespace: every module of every plugin,
-  # plus each plugin's root node. `path` is where its options mount.
+  # plus each plugin's own node. `path` is where its options mount.
   entries = lib.concatMap (
     { binding, plugin }:
     map (mod: {
@@ -94,15 +95,15 @@ let
       file = toString mod.file;
       loader = import mod.file;
       description = "${binding}.${lib.concatStringsSep "." mod.subpath}";
-      isRoot = false;
+      isNode = false;
     }) plugin.__plugin.modules
-    ++ lib.optional (plugin.__plugin.root != null) {
+    ++ lib.optional (plugin.__plugin.node != null) {
       inherit binding plugin;
       path = [ plugin.__plugin.key ];
       file = plugin.__plugin.key;
-      loader = plugin.__plugin.root;
-      description = "${binding} (root node)";
-      isRoot = true;
+      loader = plugin.__plugin.node;
+      description = "${binding} (plugin node)";
+      isNode = true;
     }
   ) pluginList;
 in
@@ -126,9 +127,9 @@ let
       if unknown == [ ] then
         loader (builtins.intersectAttrs (builtins.functionArgs loader) available)
       else
-        throw "module system: ${description} requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Meta-modules receive only: ${lib.concatStringsSep ", " (lib.attrNames available)}.";
+        throw "rhizome: ${description} requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Modules receive only: ${lib.concatStringsSep ", " (lib.attrNames available)}.";
 
-  # The fenced read surface: mounted plugins only, never the root's own
+  # The fenced read surface: mounted plugins only, never the host's own
   # options. Reads work on every module that is *mounted* — enablement
   # gates effects, not visibility.
   global = lib.genAttrs pluginKeys (key: config.${key});
@@ -150,7 +151,7 @@ let
     }
   ) entries;
 
-  # Every module gets an implicit `enable` (plugin roots default on) that
+  # Every module gets an implicit `enable` (plugin nodes default on) that
   # gates its writes and module blocks — loading is never the cut.
   optionsFor =
     entry:
@@ -161,7 +162,7 @@ let
     // lib.optionalAttrs (!(declared ? enable)) {
       enable = lib.mkOption {
         type = lib.types.bool;
-        default = entry.isRoot;
+        default = entry.isNode;
         description = "Whether to activate `${entry.description}`.";
       };
     };
@@ -178,17 +179,17 @@ let
         foreign = lib.filterAttrs (block: _: classMap.${block} != class) blocks;
       }
     else
-      throw "module system: ${entry.description} targets unknown module block `${lib.head unknown}`. Known blocks: ${lib.concatStringsSep ", " (lib.attrNames classMap)}.";
+      throw "rhizome: ${entry.description} targets unknown module block `${lib.head unknown}`. Known blocks: ${lib.concatStringsSep ", " (lib.attrNames classMap)}.";
 
-  # A fragment for the root's own class merges into the live fixpoint as
-  # config. It gets the root's args (like any class fragment gets its
+  # A fragment for the host's own class merges into the live fixpoint as
+  # config. It gets the host's args (like any class fragment gets its
   # class's args) but cannot declare options or extend imports — config
   # cannot grow the eval. Anything needing that belongs at the assembly
   # site.
   inlineFragment =
     entry: block: fragment:
     let
-      rootArgs = {
+      hostArgs = {
         inherit
           config
           options
@@ -201,24 +202,24 @@ let
           fragment
         else
           let
-            unknown = lib.attrNames (removeAttrs (builtins.functionArgs fragment) (lib.attrNames rootArgs));
+            unknown = lib.attrNames (removeAttrs (builtins.functionArgs fragment) (lib.attrNames hostArgs));
           in
           if unknown == [ ] then
-            fragment (builtins.intersectAttrs (builtins.functionArgs fragment) rootArgs)
+            fragment (builtins.intersectAttrs (builtins.functionArgs fragment) hostArgs)
           else
-            throw "module system: ${entry.description}'s `modules.${block}` requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Root-class fragments receive only: ${lib.concatStringsSep ", " (lib.attrNames rootArgs)}.";
+            throw "rhizome: ${entry.description}'s `modules.${block}` requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Host-class fragments receive only: ${lib.concatStringsSep ", " (lib.attrNames hostArgs)}.";
 
       body = if applied ? config then applied.config else applied;
 
       # Mounted plugins share this fixpoint, so a class block *could*
-      # reach one. That reach is `plugins`' job — keeping it out of here
+      # reach one. That reach is `peers`' job — keeping it out of here
       # leaves `modules.<class>` meaning one thing: the host.
       reached = lib.filter (key: lib.elem key pluginKeys) (lib.attrNames body);
     in
     if applied ? options || applied ? imports then
-      throw "module system: ${entry.description}'s `modules.${block}` runs in the live `${class}` fixpoint and cannot declare `options` or `imports`. Move those to the assembly site."
+      throw "rhizome: ${entry.description}'s `modules.${block}` runs in the live `${class}` fixpoint and cannot declare `options` or `imports`. Move those to the assembly site."
     else if reached != [ ] then
-      throw "module system: ${entry.description}'s `modules.${block}` writes the plugin mounted at `${lib.head reached}`. Peer plugins go through `plugins`, not a class block."
+      throw "rhizome: ${entry.description}'s `modules.${block}` writes the plugin mounted at `${lib.head reached}`. Peer plugins go through `peers`, not a class block."
     else
       body;
 
@@ -231,24 +232,24 @@ let
     imports = [ fragment ];
   };
 
-  # `plugins.<handle>` writes a peer's namespace. It lands in the same
+  # `peers.<handle>` writes a peer's namespace. It lands in the same
   # fixpoint `config` does, but a separate block means the reach is
   # declared rather than incidental — and an unmounted handle can say so
   # instead of surfacing as a missing option.
   peerWritesFor =
     entry:
     let
-      writes = entry.applied.plugins or { };
+      writes = entry.applied.peers or { };
       unknown = lib.filter (key: !(lib.elem key pluginKeys)) (lib.attrNames writes);
     in
     if unknown == [ ] then
       lib.mapAttrsToList (key: body: { ${key} = body; }) writes
     else
-      throw "module system: ${entry.description} writes the plugin at `${lib.head unknown}`, which is not mounted. Register it alongside '${entry.binding}'.";
+      throw "rhizome: ${entry.description} writes the plugin at `${lib.head unknown}`, which is not mounted. Register it alongside '${entry.binding}'.";
 
   # A module's `config` block is its plugin's namespace — the mount point
   # is implied, never spelled. Reaching out is explicit: `modules.<class>`
-  # for the host, `plugins.<handle>` for a peer.
+  # for the host, `peers.<handle>` for a peer.
   contributionFor =
     entry:
     let
@@ -260,7 +261,7 @@ let
         ++ peerWritesFor entry
         ++ lib.mapAttrsToList (block: fragment: inlineFragment entry block fragment) split.inline
         ++ lib.mapAttrsToList (block: fragment: {
-          _meta.fragments.${classMap.${block}} = [ (wrapFragment entry block fragment) ];
+          rhizome.fragments.${classMap.${block}} = [ (wrapFragment entry block fragment) ];
         }) split.foreign
       )
     );
@@ -274,12 +275,12 @@ let
   };
 
   bookkeeping = {
-    options._meta = {
+    options.rhizome = {
       fragments = lib.mkOption {
         type = lib.types.attrsOf (lib.types.listOf lib.types.deferredModule);
         description = ''
           Deferred class fragments per class tag, contributed by enabled
-          modules. Installers route each class into its target eval (e.g.
+          modules. Routers carry each class into its target eval (e.g.
           `home-manager.sharedModules`).
         '';
       };
@@ -287,22 +288,22 @@ let
       routed = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         default = [ ];
-        description = "Class tags claimed by an installer.";
+        description = "Class tags claimed by a router.";
       };
 
       unrouted = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         readOnly = true;
-        description = "Class tags holding fragments that no installer claimed.";
+        description = "Class tags holding fragments that no router claimed.";
         default = lib.attrNames (
           lib.filterAttrs (
-            tag: fragments: fragments != [ ] && !(lib.elem tag config._meta.routed)
-          ) config._meta.fragments
+            tag: fragments: fragments != [ ] && !(lib.elem tag config.rhizome.routed)
+          ) config.rhizome.fragments
         );
       };
     };
 
-    config._meta.fragments = lib.genAttrs classTags (_: [ ]);
+    config.rhizome.fragments = lib.genAttrs classTags (_: [ ]);
   };
 in
 

@@ -6,9 +6,10 @@ let
 in
 
 /*
-  Define a plugin: a collection of meta-modules plus an addressable root
-  node. Definition and instantiation are separate calls — this returns a
-  function, and applying it to an input set yields the mountable plugin.
+  Define a plugin: a collection of rhizome modules plus an addressable node
+  of its own. Definition and instantiation are separate calls — this
+  returns a function, and applying it to an input set yields the
+  mountable plugin.
 
   The instance is the plugin's namespace tree (the shape of every
   discovered module) and is itself the plugin's handle — the one string
@@ -22,7 +23,7 @@ in
   is already rooted at this namespace.
 
   `inputs` declares the values a plugin expects from whoever assembles
-  the root, as an attrset of defaults. Every module in the plugin
+  the mount, as an attrset of defaults. Every module in the plugin
   receives them as an `inputs` argument, verbatim — usually a reference
   to a peer plugin, but any value works, and none of them are inspected
   or transformed. Required inputs default to `throw`; optional ones to
@@ -34,9 +35,9 @@ in
     };
 
   A plugin arrives as a plugin, so a module names its peer the same way
-  a consumer does — by interpolating it into the `plugins` block:
+  a consumer does — by interpolating it into the `peers` block:
 
-    plugins."${inputs.hosts}".machines.laptop.enable = true;
+    peers."${inputs.hosts}".machines.laptop.enable = true;
 
   Inputs are load-time by construction: their job is to appear in
   attribute-name position, which options cannot do without forcing the
@@ -44,13 +45,13 @@ in
   — a plugin never instantiates another.
 
   Plugins are plain values. Consumers instantiate, then register them
-  with a root guest:
+  with a mount:
 
     let
       hosts = inputs.hosts.plugin { };
       dotfiles = inputs.dotfiles.plugin { inherit hosts; };
     in
-    module.roots.nixos { inherit dotfiles hosts; }
+    rhizome.mounts.nixos { inherit dotfiles hosts; }
 
   The binding name is used only for error messages.
 
@@ -58,14 +59,14 @@ in
     src : Path,                    # directory scanned for *.mod.nix / mod.nix
     classes? : AttrSet,            # extra `modules.<block>` -> `_class` tags
     inputs? : AttrSet,             # expected inputs -> default values
-    root? : Module | null,         # caller-facing options for the whole plugin
+    node? : Module | null,         # caller-facing options for the whole plugin
   } -> AttrSet -> Plugin
 */
 {
   src,
   classes ? { },
   inputs ? { },
-  root ? null,
+  node ? null,
 }:
 
 let
@@ -82,9 +83,9 @@ let
 in
 
 if reserved != [ ] then
-  throw "module.plugin: module names may not start with `__` (got `${lib.concatStringsSep "." (lib.head reserved).subpath}` in ${toString src})."
+  throw "rhizome: module names may not start with `__` (got `${lib.concatStringsSep "." (lib.head reserved).subpath}` in ${toString src})."
 else if unknown != [ ] then
-  throw "module.plugin: ${toString src} was given unexpected input(s): ${lib.concatStringsSep ", " unknown}. It declares: ${lib.concatStringsSep ", " (lib.attrNames inputs)}."
+  throw "rhizome: ${toString src} was given unexpected input(s): ${lib.concatStringsSep ", " unknown}. It declares: ${lib.concatStringsSep ", " (lib.attrNames inputs)}."
 else
   namespace
   // {
@@ -94,7 +95,7 @@ else
       inherit
         src
         classes
-        root
+        node
         modules
         namespace
         ;

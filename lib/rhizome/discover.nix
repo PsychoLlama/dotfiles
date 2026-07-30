@@ -1,7 +1,7 @@
 { lib }:
 
 /*
-  Recursively find meta-module files under a source directory.
+  Recursively find rhizome module files under a source directory.
 
   `foo.mod.nix` mounts at `foo`; `foo/mod.nix` mounts at `foo`. Plain
   `.nix` files are helpers and never discovered. A file and a directory
@@ -22,7 +22,7 @@ let
           walk (subpath ++ [ name ]) (directory + "/${name}")
         else if name == "mod.nix" then
           if subpath == [ ] then
-            throw "module.plugin: `mod.nix` cannot sit at the root of ${toString src}. The root node is reserved for the plugin itself."
+            throw "rhizome: `mod.nix` cannot sit at the top of ${toString src}. That mount point is reserved for the plugin's own node."
           else
             [
               {
@@ -54,4 +54,4 @@ in
 if duplicates == [ ] then
   modules
 else
-  throw "module.plugin: multiple files mount at `${lib.head duplicates}` in ${toString src}. Use either `<name>.mod.nix` or `<name>/mod.nix`, not both."
+  throw "rhizome: multiple files mount at `${lib.head duplicates}` in ${toString src}. Use either `<name>.mod.nix` or `<name>/mod.nix`, not both."

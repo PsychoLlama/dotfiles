@@ -28,5 +28,5 @@
 
   # A peer gets its own block. Inputs arrive verbatim, so naming one is
   # the same gesture a consumer would use: interpolate the plugin.
-  plugins."${inputs.main}".services.beta.message = "from the side";
+  peers."${inputs.main}".services.beta.message = "from the side";
 }

@@ -6,8 +6,8 @@
 }:
 {
   options = {
-    # `global` must expose mounted plugins only — never the root's own
-    # options (`hostSetting` is declared by the test harness's root eval).
+    # `global` must expose mounted plugins only — never the host's own
+    # options (`hostSetting` is declared by the test harness's host eval).
     fenced = lib.mkOption {
       type = lib.types.bool;
       readOnly = true;

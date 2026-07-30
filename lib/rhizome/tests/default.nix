@@ -2,7 +2,7 @@
 
 let
   plugin = import ../plugin.nix { inherit lib; };
-  mkRoot = import ../mk-root.nix { inherit lib; };
+  mkMount = import ../mk-mount.nix { inherit lib; };
 
   main = plugin {
     src = ./fixtures/main/modules;
@@ -12,7 +12,7 @@ let
       widget = "widget";
     };
 
-    root =
+    node =
       { cfg, lib, ... }:
       {
         options.themeName = lib.mkOption {
@@ -20,8 +20,8 @@ let
           default = "plain";
         };
 
-        # The root node writes into the plugin's namespace like any other
-        # module: `config` is already rooted there.
+        # The plugin node writes into the plugin's namespace like any
+        # other module: `config` is already rooted there.
         config.theme.name = cfg.themeName;
       };
   } { };
@@ -43,7 +43,7 @@ let
       label = null;
     };
 
-    root =
+    node =
       {
         global,
         inputs,
@@ -72,7 +72,7 @@ let
     inputs.needed = throw "unreadInputDef: forced an input nobody reads.";
   };
 
-  # Reaches `main` through a class block, which `plugins` now owns.
+  # Reaches `main` through a class block, which `peers` now owns.
   stray =
     plugin
       {
@@ -90,15 +90,15 @@ let
     label = "loud";
   };
 
-  # A minimal host root standing in for nixos/home-manager: declares two
-  # native options so tests can watch root-class fragments land (and prove
+  # A minimal host standing in for nixos/home-manager: declares two
+  # native options so tests can watch host-class fragments land (and prove
   # `global` never exposes them).
-  evalRoot =
+  evalHost =
     plugins: modules:
     lib.evalModules {
       class = "test";
       modules = [
-        (mkRoot {
+        (mkMount {
           class = "test";
           inherit plugins;
         })
@@ -119,13 +119,13 @@ let
       ++ modules;
     };
 
-  base = evalRoot { inherit main; } [ ];
+  base = evalHost { inherit main; } [ ];
 
-  enabled = evalRoot { inherit main; } [
+  enabled = evalHost { inherit main; } [
     { config."${main}".programs.alpha.enable = true; }
   ];
 
-  paired = evalRoot { inherit main side; } [
+  paired = evalHost { inherit main side; } [
     { config."${side}".probe.enable = true; }
   ];
 
@@ -178,7 +178,7 @@ lib.runTests {
 
   # The plugin is the only handle: modules are reached by navigating from
   # it, not by stringifying them.
-  testPluginRootIsAddressable = {
+  testPluginIsAddressable = {
     expr = lib.hasSuffix "/main/modules" "${main}";
     expected = true;
   };
@@ -230,7 +230,7 @@ lib.runTests {
   # ...and a lone mount never forces one, so the dedupe check stays out
   # of the way of inputs nothing reads.
   testUnreadRequiredInputStaysLazy = {
-    expr = (evalRoot { lazy = unreadInputDef { }; } [ ]).config.hostSetting;
+    expr = (evalHost { lazy = unreadInputDef { }; } [ ]).config.hostSetting;
     expected = "";
   };
 
@@ -249,10 +249,10 @@ lib.runTests {
   testConflictingInstancesRejected = {
     expr =
       fails
-        (evalRoot {
+        (evalHost {
           inherit main side;
           other = sideLabelled;
-        } [ ]).config._meta.fragments;
+        } [ ]).config.rhizome.fragments;
     expected = true;
   };
 
@@ -260,7 +260,7 @@ lib.runTests {
   # once, and the check never forces the inputs.
   testSameInstanceMountsOnce = {
     expr =
-      (evalRoot {
+      (evalHost {
         inherit main side;
         again = side;
       } [ { config."${side}".probe.enable = true; } ]).config.probeSetting;
@@ -274,7 +274,7 @@ lib.runTests {
 
   testSuppliedInputsReachDiscoveredModules = {
     expr =
-      (evalRoot
+      (evalHost
         {
           main = main;
           side = sideLabelled;
@@ -309,37 +309,37 @@ lib.runTests {
     expected = "hello on #000000";
   };
 
-  # ── The plugin root node ──────────────────────────────────────────────
+  # ── The plugin node ──────────────────────────────────────────────────
 
-  testRootNodeForwardsConfig = {
+  testPluginNodeForwardsConfig = {
     expr =
-      (evalRoot { inherit main; } [ { config."${main}".themeName = "nord"; } ])
+      (evalHost { inherit main; } [ { config."${main}".themeName = "nord"; } ])
       .config."${main}".theme.name;
     expected = "nord";
   };
 
-  testRootNodeValidatesOptions = {
+  testPluginNodeValidatesOptions = {
     expr =
       fails
-        (evalRoot { inherit main; } [ { config."${main}".themeName = 42; } ]).config."${main}".theme.name;
+        (evalHost { inherit main; } [ { config."${main}".themeName = 42; } ]).config."${main}".theme.name;
     expected = true;
   };
 
-  # Root options share the plugin's namespace with its modules, so `self`
+  # Node options share the plugin's namespace with its modules, so `self`
   # reaches both.
-  testRootOptionsJoinSelf = {
-    expr = base.config."${main}".programs.alpha.rootView;
+  testPluginNodeOptionsJoinSelf = {
+    expr = base.config."${main}".programs.alpha.nodeView;
     expected = "plain";
   };
 
   # ── Class fragments ───────────────────────────────────────────────────
 
-  testRootClassFragmentInlines = {
+  testHostClassFragmentInlines = {
     expr = enabled.config.hostSetting;
     expected = "alpha was here";
   };
 
-  testRootClassFragmentGatedByEnable = {
+  testHostClassFragmentGatedByEnable = {
     expr = base.config.hostSetting;
     expected = "";
   };
@@ -351,24 +351,24 @@ lib.runTests {
   };
 
   testSecondPluginFragmentGatedByEnable = {
-    expr = (evalRoot { inherit main side; } [ ]).config.probeSetting;
+    expr = (evalHost { inherit main side; } [ ]).config.probeSetting;
     expected = "";
   };
 
   testForeignFragmentsCollected = {
-    expr = lib.length enabled.config._meta.fragments.widget;
+    expr = lib.length enabled.config.rhizome.fragments.widget;
     expected = 1;
   };
 
   testForeignFragmentsGatedByEnable = {
-    expr = base.config._meta.fragments.widget;
+    expr = base.config.rhizome.fragments.widget;
     expected = [ ];
   };
 
   testFragmentEvaluatesInTargetClass = {
     # The deferred fragment takes the widget eval's args (`prefix`) while
-    # closing over meta scope (`cfg.greeting`).
-    expr = (buildWidget enabled.config._meta.fragments.widget).config.label;
+    # closing over rhizome scope (`cfg.greeting`).
+    expr = (buildWidget enabled.config.rhizome.fragments.widget).config.label;
     expected = "W: hello";
   };
 
@@ -379,32 +379,32 @@ lib.runTests {
       fails
         (lib.evalModules {
           class = "nixos";
-          modules = enabled.config._meta.fragments.widget;
+          modules = enabled.config.rhizome.fragments.widget;
         }).config;
     expected = true;
   };
 
-  # ── Installer bookkeeping ─────────────────────────────────────────────
+  # ── Router bookkeeping ───────────────────────────────────────────────
 
   testUnroutedClassesReported = {
-    expr = enabled.config._meta.unrouted;
+    expr = enabled.config.rhizome.unrouted;
     expected = [ "widget" ];
   };
 
   testRoutedClassesClearUnrouted = {
     expr =
-      (evalRoot { inherit main; } [
+      (evalHost { inherit main; } [
         {
           config."${main}".programs.alpha.enable = true;
-          config._meta.routed = [ "widget" ];
+          config.rhizome.routed = [ "widget" ];
         }
-      ]).config._meta.unrouted;
+      ]).config.rhizome.unrouted;
     expected = [ ];
   };
 
   # ── Fencing ───────────────────────────────────────────────────────────
 
-  testGlobalHidesRootOptions = {
+  testGlobalHidesHostOptions = {
     expr = base.config."${main}".introspect.fenced;
     expected = true;
   };
@@ -419,21 +419,24 @@ lib.runTests {
   testHostWritesRejected = {
     expr =
       fails
-        (evalRoot { bad = plugin { src = ./fixtures/bad-write/modules; } { }; } [ ]).config._meta.fragments;
+        (evalHost { bad = plugin { src = ./fixtures/bad-write/modules; } { }; } [ ])
+        .config.rhizome.fragments;
     expected = true;
   };
 
   testUnknownArgsRejected = {
     expr =
       fails
-        (evalRoot { bad = plugin { src = ./fixtures/bad-args/modules; } { }; } [ ]).config._meta.fragments;
+        (evalHost { bad = plugin { src = ./fixtures/bad-args/modules; } { }; } [ ])
+        .config.rhizome.fragments;
     expected = true;
   };
 
   testUnknownClassBlockRejected = {
     expr =
       fails
-        (evalRoot { bad = plugin { src = ./fixtures/bad-class/modules; } { }; } [ ]).config._meta.fragments;
+        (evalHost { bad = plugin { src = ./fixtures/bad-class/modules; } { }; } [ ])
+        .config.rhizome.fragments;
     expected = true;
   };
 
@@ -450,7 +453,7 @@ lib.runTests {
     expected = "plain";
   };
 
-  # ...and writes it through `plugins`, keyed by the peer's handle.
+  # ...and writes it through `peers`, keyed by the peer's handle.
   testCrossPluginWrite = {
     expr = paired.config."${main}".services.beta.message;
     expected = "from the side";
@@ -461,20 +464,20 @@ lib.runTests {
   testUnmountedPeerWriteRejected = {
     expr =
       fails
-        (evalRoot { side = sideDef { main = "/nowhere"; }; } [
+        (evalHost { side = sideDef { main = "/nowhere"; }; } [
           { config."${side}".probe.enable = true; }
-        ]).config._meta.fragments;
+        ]).config.rhizome.fragments;
     expected = true;
   };
 
   # Peers share the host's fixpoint, so a class block could reach one.
-  # Keeping that to `plugins` leaves `modules.<class>` meaning the host.
+  # Keeping that to `peers` leaves `modules.<class>` meaning the host.
   testPeerWriteViaClassBlockRejected = {
     expr =
       fails
-        (evalRoot { inherit main stray; } [
+        (evalHost { inherit main stray; } [
           { config."${stray}".stray.enable = true; }
-        ]).config._meta.fragments;
+        ]).config.rhizome.fragments;
     expected = true;
   };
 }

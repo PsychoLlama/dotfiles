@@ -18,8 +18,8 @@
       default = "${cfg.greeting} on ${self.theme.palette.background}";
     };
 
-    # `self` covers the plugin's root options too, not just its modules.
-    rootView = lib.mkOption {
+    # `self` covers the plugin node's options too, not just its modules.
+    nodeView = lib.mkOption {
       type = lib.types.str;
       readOnly = true;
       default = self.themeName;
@@ -38,7 +38,7 @@
     test.hostSetting = "alpha was here";
 
     # Foreign-class fragment: deferred, takes the widget eval's own args
-    # while closing over meta scope.
+    # while closing over rhizome scope.
     widget =
       { prefix, ... }:
       {
