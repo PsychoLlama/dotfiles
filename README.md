@@ -20,35 +20,10 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
 
 ## Structure
 
-- `modules/`: Two plugins. One module per program, carrying a payload for every platform it touches.
-  - `modules/dotfiles/`: The opinions. One module per program or service, plus `profiles/` grouping them and `editor/` holding the neovim plugin and language server presets.
-  - `modules/hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized. Takes `dotfiles` as a plugin input and configures it.
+- `modules/`: Two [Rhizome](./lib/rhizome/README.md) plugins:
+  - `modules/dotfiles/`: Opinionated modules per program/service, plus `profiles/` grouping them.
+  - `modules/hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized.
 - `editor/`: The neovim framework. My equivalent of [nixvim](https://nix-community.github.io/nixvim/). Self-contained, no `~/.config` files.
-
-## Composition
-
-Everything in this repo can be used piecemeal in other flakes. Modules have no side effects unless you `.enable` them.
-
-- `dotfiles.plugins.dotfiles`: Opinionated config for programs and services.
-- `dotfiles.plugins.hosts`: My machines. You almost certainly don't want this one.
-- `dotfiles.nixosModules.editor`: The editor framework, sans opinions.
-
-Instantiate a plugin, mount it on a NixOS system, then configure it by handle.
-
-```nix
-let
-  plugin = dotfiles.plugins.dotfiles { };
-in
-
-{
-  imports = [
-    (dotfiles.lib.rhizome.mounts.nixos { inherit plugin; })
-  ];
-
-  # Use my opinionated starship prompt.
-  "${plugin}".programs.starship.enable = true;
-}
-```
 
 ## Editor (neovim)
 
@@ -71,4 +46,4 @@ dotfiles.lib.buildEditor {
 }
 ```
 
-I don't expect anyone to use these. I break stuff often. It's mostly for my own experiments.
+I don't expect anyone to use it. I break stuff often. It's mostly for my own experiments.
