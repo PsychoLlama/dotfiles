@@ -31,7 +31,7 @@ Everything in this repo can be used piecemeal in other flakes. Modules have no s
 
 - `dotfiles.plugins.dotfiles`: Opinionated config for programs and services.
 - `dotfiles.plugins.hosts`: My machines. You almost certainly don't want this one.
-- `dotfiles.nixosModules.editor-platform`: The editor framework, sans opinions.
+- `dotfiles.nixosModules.editor`: The editor framework, sans opinions.
 
 Instantiate a plugin, mount it on a NixOS system, then configure it by handle.
 
@@ -58,7 +58,7 @@ You can try my editor without installing it because it's built as a standalone p
 nix run 'github:PsychoLlama/dotfiles#editor' ./
 ```
 
-You can also build your own variant. It has access to all options from `nixosModules.editor-platform`.
+You can also build your own variant. It has access to all options from `nixosModules.editor`.
 
 ```nix
 let

@@ -11,7 +11,7 @@ Two plugins ship from `modules/`, both instantiated in `flake.nix` and mounted t
 - `plugins.dotfiles` (`modules/dotfiles/`) — the opinions. Knows nothing about hosts.
 - `plugins.hosts` (`modules/hosts/`) — machines. Takes `dotfiles` as an input and writes it through `plugins."${inputs.dotfiles}"`.
 
-The editor is the one remaining platform, exposed as `nixosModules.editor-platform`: the framework, no opinions. Every other program carries its own home-manager payload.
+The editor is the one remaining platform, exposed as `nixosModules.editor`: the framework, no opinions. Every other program carries its own home-manager payload.
 
 Hosts hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in a preset.
 

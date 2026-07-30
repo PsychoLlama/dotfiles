@@ -93,7 +93,7 @@ let
             inherit pkgs;
           };
 
-          modules = [ self.nixosModules.editor-platform ];
+          modules = [ self.nixosModules.editor ];
         };
       };
 

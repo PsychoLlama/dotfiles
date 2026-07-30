@@ -23,7 +23,7 @@ let
     class = "editor";
     modules = modules ++ [
       { _module.args.pkgs = pkgs; }
-      self.nixosModules.editor-platform
+      self.nixosModules.editor
 
       # No outer host to route fragments down from, so the plugin mounts
       # here. `class = "editor"` makes editor payloads merge inline; every

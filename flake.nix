@@ -121,7 +121,7 @@
         };
       };
 
-      nixosModules.editor-platform = {
+      nixosModules.editor = {
         imports = lib.dotfiles.discoverNixFiles {
           directory = ./editor/modules;
         };
