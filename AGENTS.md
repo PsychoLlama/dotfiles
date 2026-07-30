@@ -23,8 +23,7 @@ Hosts hold machine-specific settings only (hardware, disk, display). All general
     - `editor/{plugins,lsp}/` — neovim plugin and language server presets.
     - `profiles/` — groupings of presets.
   - `hosts/` — Machine-specific configs.
-- `platforms/`
-  - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
+- `editor/` — Self-contained neovim framework (see [Editor](#editor)).
 - `lib/` — Nix utilities (system builders, module discovery, the rhizome module system, overlays).
 - `pkgs/` — Custom package derivations.
 
@@ -52,7 +51,7 @@ Nothing in attribute-name position comes from the fixpoint. Handles reach a modu
 
 ## Editor
 
-Self-contained neovim framework in `platforms/editor/`. No `~/.config` files.
+Self-contained neovim framework in `editor/`. No `~/.config` files.
 
 - `modules/` — plugin system, LSP configuration, settings schema.
 - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
@@ -79,5 +78,5 @@ All programs are declaratively managed. When changing configuration for a progra
 - Use `nix eval` to verify settings are applied correctly when refactoring.
 - `git add --intent-to-add` new files before Nix can discover them.
 - Nix modules in this repo are discovered and imported automatically. No `imports` needed.
-- Only `*.mod.nix` files are discovered. Under `platforms/`, a directory entrypoint is `default.mod.nix`; under `modules/` it is `mod.nix`.
+- Only `*.mod.nix` files are discovered. Under `editor/`, a directory entrypoint is `default.mod.nix`; under `modules/` it is `mod.nix`.
 - Plain `.nix` files are free to be helpers, data, or libraries — `import` them explicitly where needed.

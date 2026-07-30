@@ -123,7 +123,7 @@
 
       nixosModules.editor-platform = {
         imports = lib.dotfiles.discoverNixFiles {
-          directory = ./platforms/editor/modules;
+          directory = ./editor/modules;
         };
       };
 

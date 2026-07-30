@@ -23,8 +23,7 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
 - `modules/`: Two plugins. One module per program, carrying a payload for every platform it touches.
   - `modules/dotfiles/`: The opinions. One module per program or service, plus `profiles/` grouping them and `editor/` holding the neovim plugin and language server presets.
   - `modules/hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized. Takes `dotfiles` as a plugin input and configures it.
-- `platforms/`: Modules extending other platforms with new programs and services. Many of these could be upstreamed.
-  - `editor/` (My equivalent of [nixvim](https://nix-community.github.io/nixvim/). Self-contained, no `~/.config` files.)
+- `editor/`: The neovim framework. My equivalent of [nixvim](https://nix-community.github.io/nixvim/). Self-contained, no `~/.config` files.
 
 ## Composition
 

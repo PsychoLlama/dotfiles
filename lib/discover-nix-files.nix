@@ -15,14 +15,14 @@ in
   Type: { directory: Path, exclude?: [Path] } -> [Path]
 
   Example:
-    discoverNixFiles { directory = ./platforms/nixos/modules; }
-    => [ /path/to/platforms/nixos/modules/foo.mod.nix /path/to/platforms/nixos/modules/bar/baz.mod.nix ]
+    discoverNixFiles { directory = ./editor/modules; }
+    => [ /path/to/editor/modules/foo.mod.nix /path/to/editor/modules/lsp/baz.mod.nix ]
 
     discoverNixFiles {
-      directory = ./platforms/editor/modules;
-      exclude = [ ./platforms/editor/modules/psychollama ];
+      directory = ./editor/modules;
+      exclude = [ ./editor/modules/psychollama ];
     }
-    => [ /path/to/platforms/editor/modules/foo.mod.nix ] # excludes psychollama subdirectory
+    => [ /path/to/editor/modules/foo.mod.nix ] # excludes psychollama subdirectory
 */
 {
   directory,
