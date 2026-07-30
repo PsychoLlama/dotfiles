@@ -17,7 +17,7 @@ in
 {
   config.ava.hardware.enable = true;
 
-  plugins."${inputs.dotfiles}" = {
+  peers."${inputs.dotfiles}" = {
     identity = {
       username = "overlord";
       name = "Jesse Gibson";

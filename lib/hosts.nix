@@ -105,22 +105,22 @@ let
   # as definitions — a submodule definition is a module, so it may carry
   # `imports`. Nothing here touches the option's *type*, which would make the
   # declaration depend on config and recurse.
-  editor-installer =
+  editor-router =
     { config, ... }:
     {
-      _meta.routed = [ "editor" ];
+      rhizome.routed = [ "editor" ];
 
       home-manager.sharedModules = [
-        { programs.editor.imports = config._meta.fragments.editor; }
+        { programs.editor.imports = config.rhizome.fragments.editor; }
       ];
     };
 
   # Set reasonable defaults for home-manager as a submodule.
   # `theme`, `identity` and `trusted-directories` used to be copied down from
-  # the host platform here. They are meta-modules now: consumers read them off
-  # `self`, including the editor. The programs and services that used to ride
-  # in on a `home-manager-platform` module are meta-modules too — each one
-  # carries its own home-manager payload.
+  # the host platform here. They are rhizome modules now: consumers read them
+  # off `self`, including the editor. The programs and services that used to
+  # ride in on a `home-manager-platform` module are rhizome modules too — each
+  # one carries its own home-manager payload.
   hm-substrate = {
     home-manager = {
       useGlobalPkgs = lib.mkDefault true;
@@ -150,10 +150,10 @@ in
           agenix.nixosModules.default
           home-manager.nixosModules.home-manager
 
-          # Mounts every meta-module's options into this root's fixpoint and
+          # Mounts every rhizome module's options into this host's fixpoint and
           # routes home-manager fragments onto `sharedModules`.
-          (self.lib.module.roots.nixos plugins)
-          editor-installer
+          (self.lib.rhizome.mounts.nixos plugins)
+          editor-router
 
           nixpkgs-config
           nix-flakes

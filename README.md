@@ -43,7 +43,7 @@ in
 
 {
   imports = [
-    (dotfiles.lib.module.roots.nixos { inherit plugin; })
+    (dotfiles.lib.rhizome.mounts.nixos { inherit plugin; })
   ];
 
   # Use my opinionated starship prompt.

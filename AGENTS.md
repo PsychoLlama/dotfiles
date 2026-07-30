@@ -17,7 +17,7 @@ Hosts hold machine-specific settings only (hardware, disk, display). All general
 
 ## Directory Structure
 
-- `modules/` — Meta-module plugins (`lib/module`). One module per program, carrying a payload for every platform it touches.
+- `modules/` — Rhizome plugins (`lib/rhizome`). One module per program, carrying a payload for every platform it touches.
   - `dotfiles/` — single-program opinionated configs, one file (or directory) per program.
     - `programs/`, `services/` — the presets.
     - `editor/{plugins,lsp}/` — neovim plugin and language server presets.
@@ -25,7 +25,7 @@ Hosts hold machine-specific settings only (hardware, disk, display). All general
   - `hosts/` — Machine-specific configs.
 - `platforms/`
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
-- `lib/` — Nix utilities (system builders, module discovery, meta-module system, overlays).
+- `lib/` — Nix utilities (system builders, module discovery, the rhizome module system, overlays).
 - `pkgs/` — Custom package derivations.
 
 Reads come off `self`, the plugin's own config tree — navigate it to reach a sibling (`self.programs.foo`). `cfg` is this module's own slice; `global."${inputs.<peer>}"` is another plugin's tree.
@@ -33,8 +33,8 @@ Reads come off `self`, the plugin's own config tree — navigate it to reach a s
 Writes go in one of three blocks, each naming a different target:
 
 - `config` — this plugin's namespace, mount point implied (`config.programs.foo.enable = true`).
-- `modules.<class>` — a host's own options, for a class this plugin declares or `lib/module` builds in (`nixos`, `darwin`, `home-manager`). A block for a class the root isn't evaluating becomes a fragment for an installer to route.
-- `plugins."${inputs.<peer>}"` — a peer plugin's namespace.
+- `modules.<class>` — a host's own options, for a class this plugin declares or `lib/rhizome` builds in (`nixos`, `darwin`, `home-manager`). A block for a class the mount isn't evaluating becomes a fragment for a router to carry.
+- `peers."${inputs.<peer>}"` — a peer plugin's namespace.
 
 Nothing in attribute-name position comes from the fixpoint. Handles reach a module through `inputs`, which is load-time data supplied at instantiation, so config reads stay in value position — arbitrarily deep and lazy.
 
@@ -58,7 +58,7 @@ Self-contained neovim framework in `platforms/editor/`. No `~/.config` files.
 - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
 - `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.
 
-Plugin and language-server presets are meta-modules carrying an `editor` payload: `modules/dotfiles/editor/plugins/<plugin>/` and `modules/dotfiles/editor/lsp/servers/<server>.mod.nix`. `modules/dotfiles/profiles/editor/` groups them into the editor this repo ships.
+Plugin and language-server presets are rhizome modules carrying an `editor` payload: `modules/dotfiles/editor/plugins/<plugin>/` and `modules/dotfiles/editor/lsp/servers/<server>.mod.nix`. `modules/dotfiles/profiles/editor/` groups them into the editor this repo ships.
 
 ### Working with Neovim
 

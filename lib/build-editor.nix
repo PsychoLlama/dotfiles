@@ -25,13 +25,21 @@ let
       { _module.args.pkgs = pkgs; }
       self.nixosModules.editor-platform
 
-      # No outer root to route fragments down from, so the plugin mounts
-      # here. `class = "editor"` makes editor payloads merge inline; the
-      # nixos and home-manager ones pile up in `_meta.fragments` unread.
-      (self.lib.module.mkRoot {
+      # No outer host to route fragments down from, so the plugin mounts
+      # here. `class = "editor"` makes editor payloads merge inline; every
+      # other class is discarded on purpose — a portable editor has no OS or
+      # home to configure, which is the whole point of shipping it this way.
+      (self.lib.rhizome.mkMount {
         class = "editor";
         plugins.dotfiles = plugin;
       })
+      {
+        rhizome.dropped = [
+          "nixos"
+          "darwin"
+          "homeManager"
+        ];
+      }
     ];
   };
 in

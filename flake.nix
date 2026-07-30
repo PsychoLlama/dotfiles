@@ -103,11 +103,11 @@
         inherit eachSystem;
       };
 
-      # Meta-modules: one module per program carrying payloads for every
+      # Rhizome modules: one module per program carrying payloads for every
       # platform it touches. These are plugin *definitions* — apply one to an
-      # input set to instantiate, then mount with `lib.module.roots.<class>`.
+      # input set to instantiate, then mount with `lib.rhizome.mounts.<class>`.
       plugins = {
-        dotfiles = lib.dotfiles.module.plugin {
+        dotfiles = lib.dotfiles.rhizome.plugin {
           src = ./modules/dotfiles;
           classes.editor = "editor";
         };
@@ -115,7 +115,7 @@
         # Machine-specific settings. Split from the dotfiles so a consumer can
         # mount the opinions without inheriting my hardware, and so a host says
         # which plugin it is configuring rather than sitting inside it.
-        hosts = lib.dotfiles.module.plugin {
+        hosts = lib.dotfiles.rhizome.plugin {
           src = ./modules/hosts;
           inputs.dotfiles = throw "hosts: input `dotfiles` is required.";
         };
@@ -136,7 +136,7 @@
       nixosConfigurations = lib.dotfiles.hosts.nixos { inherit dotfiles hosts; } {
         ava = [
           # Flake inputs can only be imported at the assembly site; a
-          # meta-module has no `imports`.
+          # rhizome module has no `imports`.
           nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
           nixpkgs.nixosModules.notDetected
 
