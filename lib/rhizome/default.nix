@@ -23,8 +23,4 @@ in
     nixos = import ./mounts/nixos.nix { inherit lib mkMount; };
     home-manager = import ./mounts/home-manager.nix { inherit lib mkMount; };
   };
-
-  # Unit tests (lib.runTests): empty list means success.
-  #   nix eval .#lib.rhizome.tests --json
-  tests = import ./tests { inherit lib; };
 }

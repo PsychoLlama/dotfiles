@@ -27,7 +27,7 @@ fmt-check:
 
 # Test the rhizome module system.
 test-modules:
-  ./lib/rhizome/tests/report.nu
+  nix build --no-link -L ".#checks.$(nix eval --impure --raw --expr builtins.currentSystem).rhizome"
 
 # Update all flake inputs and custom packages.
 update:

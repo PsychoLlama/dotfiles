@@ -158,6 +158,12 @@
         };
       };
 
+      checks = eachSystem (
+        system: pkgs: {
+          rhizome = import ./lib/rhizome/tests/check.nix { inherit lib pkgs; };
+        }
+      );
+
       packages = eachSystem (
         system: pkgs: {
           editor = lib.dotfiles.buildEditor {
