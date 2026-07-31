@@ -57,11 +57,11 @@ let
     else
       throw "rhizome: plugin '${key}' is mounted more than once with different inputs (bindings: ${bindings}). Instantiate it once and share the result.";
 
-  pluginList = lib.mapAttrsToList dedupe (
-    lib.groupBy (entry: entry.plugin.__plugin.key) (
-      lib.mapAttrsToList (binding: plugin: { inherit binding plugin; }) plugins
-    )
-  );
+  pluginList = lib.pipe plugins [
+    (lib.mapAttrsToList (binding: plugin: { inherit binding plugin; }))
+    (lib.groupBy (entry: entry.plugin.__plugin.key))
+    (lib.mapAttrsToList dedupe)
+  ];
 
   mergeClasses =
     acc: entry:
@@ -320,11 +320,10 @@ let
           if unknown != [ ] then
             throw "rhizome: `rhizome.routed`/`rhizome.dropped` names unknown class tag(s): ${lib.concatStringsSep ", " unknown}. Known tags: ${lib.concatStringsSep ", " classTags}."
           else
-            lib.attrNames (
-              lib.filterAttrs (
-                tag: fragments: fragments != [ ] && !(lib.elem tag claimed)
-              ) config.rhizome.fragments
-            );
+            lib.pipe config.rhizome.fragments [
+              (lib.filterAttrs (tag: fragments: fragments != [ ] && !(lib.elem tag claimed)))
+              lib.attrNames
+            ];
       };
     };
 

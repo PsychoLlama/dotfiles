@@ -15,8 +15,8 @@ src:
 let
   walk =
     subpath: directory:
-    lib.concatLists (
-      lib.mapAttrsToList (
+    lib.pipe (lib.readDir directory) [
+      (lib.mapAttrsToList (
         name: kind:
         if kind == "directory" then
           walk (subpath ++ [ name ]) (directory + "/${name}")
@@ -39,16 +39,17 @@ let
           ]
         else
           [ ]
-      ) (lib.readDir directory)
-    );
+      ))
+      lib.concatLists
+    ];
 
   modules = walk [ ] src;
 
-  duplicates = lib.attrNames (
-    lib.filterAttrs (_: entries: lib.length entries > 1) (
-      lib.groupBy (mod: lib.concatStringsSep "." mod.subpath) modules
-    )
-  );
+  duplicates = lib.pipe modules [
+    (lib.groupBy (mod: lib.concatStringsSep "." mod.subpath))
+    (lib.filterAttrs (_: entries: lib.length entries > 1))
+    lib.attrNames
+  ];
 in
 
 if duplicates == [ ] then
