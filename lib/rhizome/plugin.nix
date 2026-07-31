@@ -5,7 +5,7 @@ let
   buildNamespace = import ./namespace.nix { inherit lib; };
 in
 
-/*
+/**
   Define a plugin: a collection of rhizome modules plus an addressable node
   of its own. Definition and instantiation are separate calls — this
   returns a function, and applying it to an input set yields the
@@ -16,8 +16,10 @@ in
   form in the system. It names the whole plugin's mount point, so
   consumers configure it as ordinary validated config:
 
-    config."${dotfiles}".programs.git.enable = true;
-    config."${dotfiles}".identity.email = "...";
+  ```nix
+  config."${dotfiles}".programs.git.enable = true;
+  config."${dotfiles}".identity.email = "...";
+  ```
 
   Inside the plugin the handle is implied: a module's own `config` block
   is already rooted at this namespace.
@@ -29,15 +31,19 @@ in
   or transformed. Required inputs default to `throw`; optional ones to
   `null`, for the plugin to detect:
 
-    inputs = {
-      hosts = throw "dotfiles: input `hosts` is required.";
-      secrets = null;
-    };
+  ```nix
+  inputs = {
+    hosts = throw "dotfiles: input `hosts` is required.";
+    secrets = null;
+  };
+  ```
 
   A plugin arrives as a plugin, so a module names its peer the same way
   a consumer does — by interpolating it into the `peers` block:
 
-    peers."${inputs.hosts}".machines.laptop.enable = true;
+  ```nix
+  peers."${inputs.hosts}".machines.laptop.enable = true;
+  ```
 
   Inputs are load-time by construction: their job is to appear in
   attribute-name position, which options cannot do without forcing the
@@ -47,20 +53,26 @@ in
   Plugins are plain values. Consumers instantiate, then register them
   with a mount:
 
-    let
-      hosts = inputs.hosts.plugin { };
-      dotfiles = inputs.dotfiles.plugin { inherit hosts; };
-    in
-    rhizome.mounts.nixos { inherit dotfiles hosts; }
+  ```nix
+  let
+    hosts = inputs.hosts.plugin { };
+    dotfiles = inputs.dotfiles.plugin { inherit hosts; };
+  in
+  rhizome.mounts.nixos { inherit dotfiles hosts; }
+  ```
 
   The binding name is used only for error messages.
 
-  Type: {
+  # Type
+
+  ```
+  plugin :: {
     src : Path,                    # directory scanned for *.mod.nix / mod.nix
     classes? : AttrSet,            # extra `modules.<block>` -> `_class` tags
     inputs? : AttrSet,             # expected inputs -> default values
     node? : Module | null,         # caller-facing options for the whole plugin
   } -> AttrSet -> Plugin
+  ```
 */
 {
   src,

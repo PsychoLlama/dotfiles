@@ -1,6 +1,6 @@
 { lib }:
 
-/*
+/**
   Build the namespace tree for a set of discovered modules.
 
   The tree is shape, not identity: every module becomes an (empty) leaf
@@ -12,7 +12,11 @@
   Modules are reached by navigating from it — `self.programs.foo` to read
   a peer, `config.programs.foo` to write one.
 
-  Type: [ { subpath : [String], file : Path } ] -> AttrSet
+  # Type
+
+  ```
+  buildNamespace :: [ { subpath : [String], file : Path } ] -> AttrSet
+  ```
 */
 
 modules:

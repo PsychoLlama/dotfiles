@@ -1,14 +1,22 @@
 { lib, mkMount }:
 
-# The nixos edition of the mount. Installs the plugins and ships the
-# default routers: home-manager fragments ride `sharedModules` (when the
-# home-manager module is present), and the hosted marker stops a nested
-# standalone mount from installing the rhizome layer twice.
-#
-# Custom classes (e.g. an editor) are routed by ordinary user config:
-# read `config.rhizome.fragments.<class>`, claim it in `rhizome.routed`.
-# A class this root neither carries nor knowingly discards is a failure —
-# it means a module's configuration was written and then went nowhere.
+/**
+  The nixos edition of the mount. Installs the plugins and ships the
+  default routers: home-manager fragments ride `sharedModules` (when the
+  home-manager module is present), and the hosted marker stops a nested
+  standalone mount from installing the rhizome layer twice.
+
+  Custom classes (e.g. an editor) are routed by ordinary user config:
+  read `config.rhizome.fragments.<class>`, claim it in `rhizome.routed`.
+  A class this root neither carries nor knowingly discards is a failure —
+  it means a module's configuration was written and then went nowhere.
+
+  # Type
+
+  ```
+  mounts.nixos :: AttrSet Plugin -> Module
+  ```
+*/
 
 plugins:
 

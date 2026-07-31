@@ -1,13 +1,17 @@
 { lib }:
 
-/*
+/**
   Recursively find rhizome module files under a source directory.
 
   `foo.mod.nix` mounts at `foo`; `foo/mod.nix` mounts at `foo`. Plain
   `.nix` files are helpers and never discovered. A file and a directory
   competing for the same mount point is an error.
 
-  Type: Path -> [ { subpath : [String], file : Path } ]
+  # Type
+
+  ```
+  discover :: Path -> [ { subpath : [String], file : Path } ]
+  ```
 */
 
 src:

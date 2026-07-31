@@ -4,12 +4,14 @@ let
   builtinClasses = import ./classes.nix;
 in
 
-/*
+/**
   The mount: a module that installs every plugin into the host's own
   fixpoint, keyed by the plugin's handle. A plugin's modules mount as a
   nested option tree beneath it, mirroring the directory layout:
 
-    options."${dotfiles}".programs.git.enable
+  ```nix
+  options."${dotfiles}".programs.git.enable
+  ```
 
   There is no separate rhizome eval. The mount evaluates exactly once, on
   the top-level host — nixos when there is one, home-manager standalone,
@@ -19,9 +21,11 @@ in
 
   A module has three write blocks, one per target:
 
-    config.services.foo.enable = true;                # its own plugin
-    modules.nixos.users.users.bob.shell = ...;        # a host class
-    peers."${inputs.hosts}".machines.x.enable = true; # a peer plugin
+  ```nix
+  config.services.foo.enable = true;                # its own plugin
+  modules.nixos.users.users.bob.shell = ...;        # a host class
+  peers."${inputs.hosts}".machines.x.enable = true; # a peer plugin
+  ```
 
   Rhizome modules receive exactly six arguments — `self`, `cfg`,
   `inputs`, `global`, `lib`, `pkgs` — and nothing from the host.
@@ -29,7 +33,27 @@ in
   observe (and grow dependent on) the host platform it happens to be
   evaluated in.
 
-  Type: { class : String, plugins : AttrSet Plugin } -> Module
+  Two record shapes recur below. A `Binding` is a plugin under the name
+  the assembler registered it as; an `Entry` is one mounted option
+  namespace — a module, or a plugin's own node:
+
+  ```
+  Binding = { binding : String, plugin : Plugin }
+
+  Entry = Binding // {
+    path : [String],        # where its options mount, key first
+    file : String,          # `_file` for module-system provenance
+    loader : Module,        # the unapplied module
+    description : String,   # human-facing name, for errors
+    isNode : Bool,          # plugin node, rather than a module
+  }
+  ```
+
+  # Type
+
+  ```
+  mkMount :: { class : String, plugins : AttrSet Plugin } -> Module
+  ```
 */
 {
   class,
@@ -37,15 +61,24 @@ in
 }:
 
 let
-  # Registering the same plugin under two bindings mounts it once. The
-  # binding name is only ever used for error messages.
-  #
-  # Two *instantiations* of one plugin are a genuine conflict: they share
-  # a mount point, so one set of inputs would silently win. Comparing
-  # forces the inputs, which is why a lone binding skips the check — an
-  # unsupplied required input must stay lazy until something reads it.
-  # Inputs are raw values, so this compares by structure: sharing one
-  # instance is the reliable spelling, and the error says so.
+  /**
+    Collapse every binding that names one plugin into a single mount.
+    Registering the same plugin under two bindings mounts it once; the
+    binding name is only ever used for error messages.
+
+    Two *instantiations* of one plugin are a genuine conflict: they share
+    a mount point, so one set of inputs would silently win. Comparing
+    forces the inputs, which is why a lone binding skips the check — an
+    unsupplied required input must stay lazy until something reads it.
+    Inputs are raw values, so this compares by structure: sharing one
+    instance is the reliable spelling, and the error says so.
+
+    # Type
+
+    ```
+    dedupe :: String -> [ Binding ] -> Binding
+    ```
+  */
   dedupe =
     key: group:
     let
@@ -57,12 +90,34 @@ let
     else
       throw "rhizome: plugin '${key}' is mounted more than once with different inputs (bindings: ${bindings}). Instantiate it once and share the result.";
 
+  /**
+    The mounted plugins, one entry each, keyed off the handle rather than
+    the binding.
+
+    # Type
+
+    ```
+    pluginList :: [ Binding ]
+    ```
+  */
   pluginList = lib.pipe plugins [
     (lib.mapAttrsToList (binding: plugin: { inherit binding plugin; }))
     (lib.groupBy (entry: entry.plugin.__plugin.key))
     (lib.mapAttrsToList dedupe)
   ];
 
+  /**
+    Fold one plugin's extra `modules.<block>` keys into the class table.
+    Adding a block is how a plugin declares a new class; remapping one
+    that is already spoken for is not, since a module's block would then
+    mean different things depending on who else is mounted.
+
+    # Type
+
+    ```
+    mergeClasses :: AttrSet String -> Binding -> AttrSet String
+    ```
+  */
   mergeClasses =
     acc: entry:
     let
@@ -75,18 +130,55 @@ let
     else
       throw "rhizome: plugin '${entry.binding}' remaps module block `${lib.head (lib.attrNames conflicts)}` to a different class tag.";
 
-  # `modules.<block>` key -> `_class` tag, across built-ins and all
-  # plugins. Every block names a real class: a module says which host it
-  # is configuring, and a block for some other class becomes a fragment
-  # for a router to carry (or a warning when nothing claims it).
+  /**
+    `modules.<block>` key -> `_class` tag, across built-ins and all
+    plugins. Every block names a real class: a module says which host it
+    is configuring, and a block for some other class becomes a fragment
+    for a router to carry (or a warning when nothing claims it).
+
+    # Type
+
+    ```
+    classMap :: AttrSet String
+    ```
+  */
   classMap = lib.foldl' mergeClasses builtinClasses pluginList;
 
+  /**
+    Every class reachable from this mount, deduplicated: several blocks
+    may tag the same class. Routers claim tags, not blocks.
+
+    # Type
+
+    ```
+    classTags :: [ String ]
+    ```
+  */
   classTags = lib.unique (lib.attrValues classMap);
 
+  /**
+    The mounted handles. Doubles as the fence for `global` and the guest
+    list `peers` writes are checked against.
+
+    # Type
+
+    ```
+    pluginKeys :: [ String ]
+    ```
+  */
   pluginKeys = lib.map (entry: entry.plugin.__plugin.key) pluginList;
 
-  # One entry per mounted option namespace: every module of every plugin,
-  # plus each plugin's own node. `path` is where its options mount.
+  /**
+    One entry per mounted option namespace: every module of every plugin,
+    plus each plugin's own node. Modules are loaded here — `import`ed but
+    not applied — because loading is never the cut; `enable` is.
+
+    # Type
+
+    ```
+    entries :: [ Entry ]
+    ```
+  */
   entries = lib.concatMap (
     { binding, plugin }:
     lib.map (mod: {
@@ -116,6 +208,18 @@ in
 }:
 
 let
+  /**
+    Apply a module to the arguments it asked for. Rhizome modules take a
+    fixed, closed set — unlike the host module system, an unrecognised
+    argument is an error rather than a lazy `_module.args` lookup, so a
+    typo names itself instead of surfacing later as a missing option.
+
+    # Type
+
+    ```
+    applyModule :: String -> AttrSet -> Module -> AttrSet
+    ```
+  */
   applyModule =
     description: available: loader:
     if !lib.isFunction loader then
@@ -129,11 +233,30 @@ let
       else
         throw "rhizome: ${description} requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Modules receive only: ${lib.concatStringsSep ", " (lib.attrNames available)}.";
 
-  # The fenced read surface: mounted plugins only, never the host's own
-  # options. Reads work on every module that is *mounted* — enablement
-  # gates effects, not visibility.
+  /**
+    The fenced read surface: mounted plugins only, never the host's own
+    options. Reads work on every module that is *mounted* — enablement
+    gates effects, not visibility.
+
+    # Type
+
+    ```
+    global :: AttrSet
+    ```
+  */
   global = lib.genAttrs pluginKeys (key: config.${key});
 
+  /**
+    Every entry with its module applied, ready to contribute options and
+    config. `applied` is the module's own attrset: `options`, `config`,
+    `modules`, `peers`.
+
+    # Type
+
+    ```
+    evaluated :: [ Entry // { applied : AttrSet } ]
+    ```
+  */
   evaluated = lib.map (
     entry:
     entry
@@ -151,8 +274,18 @@ let
     }
   ) entries;
 
-  # Every module gets an implicit `enable` (plugin nodes default on) that
-  # gates its writes and module blocks — loading is never the cut.
+  /**
+    A module's declared options, plus the implicit `enable` that gates
+    its writes — loading is never the cut. A module may declare `enable`
+    itself to change its type or default; a plugin node defaults on,
+    since the plugin is already opt-in by being mounted.
+
+    # Type
+
+    ```
+    optionsFor :: Entry -> AttrSet
+    ```
+  */
   optionsFor =
     entry:
     let
@@ -167,6 +300,18 @@ let
       };
     };
 
+  /**
+    Sort a module's `modules.<block>` writes by where they have to land:
+    `inline` for this mount's own class, which merges into the live
+    fixpoint, and `foreign` for every other class, which travels as a
+    deferred fragment.
+
+    # Type
+
+    ```
+    splitBlocks :: Entry -> { inline : AttrSet, foreign : AttrSet }
+    ```
+  */
   splitBlocks =
     entry:
     let
@@ -181,11 +326,19 @@ let
     else
       throw "rhizome: ${entry.description} targets unknown module block `${lib.head unknown}`. Known blocks: ${lib.concatStringsSep ", " (lib.attrNames classMap)}.";
 
-  # A fragment for the host's own class merges into the live fixpoint as
-  # config. It gets the host's args (like any class fragment gets its
-  # class's args) but cannot declare options or extend imports — config
-  # cannot grow the eval. Anything needing that belongs at the assembly
-  # site.
+  /**
+    Merge a fragment for the host's own class into the live fixpoint as
+    config. It gets the host's args (like any class fragment gets its
+    class's args) but cannot declare options or extend imports — config
+    cannot grow the eval. Anything needing that belongs at the assembly
+    site.
+
+    # Type
+
+    ```
+    inlineFragment :: Entry -> String -> Module -> AttrSet
+    ```
+  */
   inlineFragment =
     entry: block: fragment:
     let
@@ -223,19 +376,36 @@ let
     else
       body;
 
-  # Fragments for every other class are deferred modules: they cross into
-  # a fresh eval with full module powers, tagged so importing one into
-  # the wrong platform fails loudly.
+  /**
+    Package a fragment for another class as a deferred module: it crosses
+    into a fresh eval with full module powers, tagged so importing one
+    into the wrong platform fails loudly, and carrying the source file so
+    the far side's errors still point back here.
+
+    # Type
+
+    ```
+    wrapFragment :: Entry -> String -> Module -> Module
+    ```
+  */
   wrapFragment = entry: block: fragment: {
     _file = "${entry.file}#modules.${block}";
     _class = classMap.${block};
     imports = [ fragment ];
   };
 
-  # `peers.<handle>` writes a peer's namespace. It lands in the same
-  # fixpoint `config` does, but a separate block means the reach is
-  # declared rather than incidental — and an unmounted handle can say so
-  # instead of surfacing as a missing option.
+  /**
+    A module's writes into its peers' namespaces, one attrset per peer.
+    They land in the same fixpoint `config` does, but a separate block
+    means the reach is declared rather than incidental — and an unmounted
+    handle can say so instead of surfacing as a missing option.
+
+    # Type
+
+    ```
+    peerWritesFor :: Entry -> [ AttrSet ]
+    ```
+  */
   peerWritesFor =
     entry:
     let
@@ -247,9 +417,21 @@ let
     else
       throw "rhizome: ${entry.description} writes the plugin at `${lib.head unknown}`, which is not mounted. Register it alongside '${entry.binding}'.";
 
-  # A module's `config` block is its plugin's namespace — the mount point
-  # is implied, never spelled. Reaching out is explicit: `modules.<class>`
-  # for the host, `peers.<handle>` for a peer.
+  /**
+    Everything one module contributes to the fixpoint, gated on its
+    `enable`: its own config, its peer writes, its inline class blocks,
+    and its foreign ones parked in `rhizome.fragments`.
+
+    A module's `config` block is its plugin's namespace — the mount point
+    is implied, never spelled. Reaching out is explicit: `modules.<class>`
+    for the host, `peers.<handle>` for a peer.
+
+    # Type
+
+    ```
+    contributionFor :: Entry -> AttrSet
+    ```
+  */
   contributionFor =
     entry:
     let
@@ -266,14 +448,34 @@ let
       )
     );
 
-  # Each module mounts as a module of its own, so the stock merge
-  # machinery reports option collisions — and their provenance — for us.
+  /**
+    One rhizome module as one host module. Keeping them separate is what
+    makes the stock merge machinery report option collisions — and their
+    provenance — for us.
+
+    # Type
+
+    ```
+    mountFor :: Entry -> Module
+    ```
+  */
   mountFor = entry: {
     _file = entry.file;
     options = lib.setAttrByPath entry.path (optionsFor entry);
     config = contributionFor entry;
   };
 
+  /**
+    The mount's own options: where foreign fragments collect, who claimed
+    them, and what nobody did. Declared once for the whole mount rather
+    than per module.
+
+    # Type
+
+    ```
+    bookkeeping :: Module
+    ```
+  */
   bookkeeping = {
     options.rhizome = {
       fragments = lib.mkOption {

@@ -1,9 +1,17 @@
 { lib, mkMount }:
 
-# The standalone home-manager edition of the mount, for hosts where
-# home-manager *is* the top-level host (WSL, foreign distros). Refuses to
-# evaluate under an OS host that already manages this configuration — the
-# rhizome layer must evaluate exactly once per stack.
+/**
+  The standalone home-manager edition of the mount, for hosts where
+  home-manager *is* the top-level host (WSL, foreign distros). Refuses to
+  evaluate under an OS host that already manages this configuration — the
+  rhizome layer must evaluate exactly once per stack.
+
+  # Type
+
+  ```
+  mounts.home-manager :: AttrSet Plugin -> Module
+  ```
+*/
 
 plugins:
 
