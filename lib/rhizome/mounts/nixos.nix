@@ -46,7 +46,20 @@ mount {
             rhizome.routed = [ "homeManager" ];
 
             home-manager.sharedModules = config.rhizome.fragments.homeManager ++ [
-              (import ./hosted-marker.nix { inherit lib; })
+              # Marks the layer below as already managed from up here, so
+              # the standalone home-manager mount can refuse to install a
+              # second rhizome layer. Read-only, so a nested configuration
+              # cannot talk its way out of being hosted: the default is a
+              # definition, and an override would be the second one.
+              {
+                options.rhizome.hosted = lib.mkOption {
+                  type = lib.types.bool;
+                  default = true;
+                  readOnly = true;
+                  internal = true;
+                  description = "Whether an outer eval's rhizome layer already manages this configuration.";
+                };
+              }
             ];
           }
         ]
