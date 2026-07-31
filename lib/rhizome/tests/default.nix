@@ -84,6 +84,8 @@ let
         inherit main;
       };
 
+  malformed = plugin { src = ./fixtures/malformed/modules; } { };
+
   side = sideDef { inherit main; };
   sideLabelled = sideDef {
     inherit main;
@@ -587,6 +589,15 @@ lib.runTests {
         (evalHost { inherit main stray; } [
           { config."${stray}".stray.enable = true; }
         ]).config.rhizome.fragments;
+    expected = true;
+  };
+
+  # Every write is read by name, so a key nobody reads merges into
+  # nothing while the module looks like it did its job. Caught where the
+  # module is applied rather than where its writes are read, so leaving
+  # it disabled is no excuse — note nothing is enabled here.
+  testUnknownModuleKeyRejected = {
+    expr = fails (evalHost { inherit malformed; } [ ]).config;
     expected = true;
   };
 }

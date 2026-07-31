@@ -114,9 +114,47 @@ let
       };
 
   /**
+    The whole surface of a rhizome module. Every write is read by name,
+    so a key nobody reads is not an extension point — it is a typo that
+    merges into nothing while the module appears to have done its job.
+
+    # Type
+
+    ```
+    moduleKeys :: [ String ]
+    ```
+  */
+  moduleKeys = [
+    "options" # declared onto the mount point by `optionsFor`
+    "config" # this plugin's own namespace
+    "modules" # a host class: inline here, or a fragment to route
+    "plugins" # another mounted plugin's namespace
+  ];
+
+  /**
+    Reject a module whose top level names anything unreadable. Checked
+    where the module is applied rather than where its writes are read,
+    so an unenabled module still has to be spelled correctly.
+
+    # Type
+
+    ```
+    checkKeys :: String -> AttrSet -> AttrSet
+    ```
+  */
+  checkKeys =
+    description: applied:
+    let
+      unknown = lib.attrNames (lib.removeAttrs applied moduleKeys);
+    in
+    if unknown == [ ] then
+      applied
+    else
+      throw "rhizome: ${description} has unrecognised top-level key(s): ${lib.concatStringsSep ", " unknown}. Modules write through: ${lib.concatStringsSep ", " moduleKeys}.";
+
+  /**
     Every entry with its module applied, ready to contribute options and
-    config. `applied` is the module's own attrset: `options`, `config`,
-    `modules`, `plugins`.
+    config.
 
     # Type
 
@@ -132,16 +170,18 @@ let
       # slice of it — both ordinary lazy reads, so navigating past the
       # first hop is strict and loud on typos. `inputs` is load-time
       # data, the only thing here safe to use as an attribute name.
-      applied = applyModule {
-        inherit (entry) description;
-        subject = "Modules";
-        available = {
-          self = config.${lib.head entry.path};
-          cfg = lib.getAttrFromPath entry.path config;
-          inputs = entry.plugin.__plugin.inputs;
-          inherit global lib pkgs;
-        };
-      } entry.loader;
+      applied = checkKeys entry.description (
+        applyModule {
+          inherit (entry) description;
+          subject = "Modules";
+          available = {
+            self = config.${lib.head entry.path};
+            cfg = lib.getAttrFromPath entry.path config;
+            inputs = entry.plugin.__plugin.inputs;
+            inherit global lib pkgs;
+          };
+        } entry.loader
+      );
     }
   ) entries;
 
