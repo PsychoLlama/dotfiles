@@ -1,9 +1,5 @@
 { lib }:
 
-let
-  builtinClasses = import ./classes.nix;
-in
-
 /**
   The mount: a module that installs every plugin into the host's own
   fixpoint, keyed by the plugin's handle. A plugin's modules mount as a
@@ -131,10 +127,11 @@ let
       throw "rhizome: plugin '${entry.binding}' remaps module block `${lib.head (lib.attrNames conflicts)}` to a different class tag.";
 
   /**
-    `modules.<block>` key -> `_class` tag, across built-ins and all
-    plugins. Every block names a real class: a module says which host it
-    is configuring, and a block for some other class becomes a fragment
-    for a router to carry (or a warning when nothing claims it).
+    `modules.<block>` key -> `_class` tag, seeded with the blocks every
+    mount understands and extended by each plugin's own. Every block
+    names a real class: a module says which host it is configuring, and
+    a block for some other class becomes a fragment for a router to
+    carry (or a failure when nothing claims it).
 
     # Type
 
@@ -142,7 +139,11 @@ let
     classMap :: AttrSet String
     ```
   */
-  classMap = lib.foldl' mergeClasses builtinClasses pluginList;
+  classMap = lib.foldl' mergeClasses {
+    nixos = "nixos";
+    darwin = "darwin";
+    home-manager = "homeManager";
+  } pluginList;
 
   /**
     Every class reachable from this mount, deduplicated: several blocks
