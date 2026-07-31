@@ -129,6 +129,33 @@ let
     { config."${side}".probe.enable = true; }
   ];
 
+  # A root that rides in on `configure` instead of sitting beside the
+  # mount, the way the shipped roots attach their routers.
+  configured = lib.evalModules {
+    class = "test";
+    modules = [
+      (mount {
+        class = "test";
+        plugins = { inherit main; };
+        configure = {
+          config._module.args.pkgs = { };
+          config.rhizome.dropped = [ "widget" ];
+
+          options.rootSetting = lib.mkOption {
+            type = lib.types.str;
+            default = "declared";
+          };
+
+          # The host options the fixtures write into, as in `evalHost`.
+          options.hostSetting = lib.mkOption {
+            type = lib.types.str;
+            default = "";
+          };
+        };
+      })
+    ];
+  };
+
   # A downstream eval consuming collected fragments, the way home-manager
   # consumes `sharedModules`.
   buildWidget =
@@ -433,6 +460,23 @@ lib.runTests {
           { config.rhizome.dropped = [ "widgit" ]; }
         ]).config.rhizome.unrouted;
     expected = true;
+  };
+
+  # ── `configure` ───────────────────────────────────────────────────────
+
+  # A root's own settings ride in with the plugins, so a mount comes back
+  # as one module instead of a list to assemble. This is how the shipped
+  # roots attach their routers.
+  testConfigureIsMergedIn = {
+    expr = configured.config.rhizome.dropped;
+    expected = [ "widget" ];
+  };
+
+  # It is imported, not merged as config, so a root may also declare
+  # options and pull in modules of its own.
+  testConfigureMayDeclareOptions = {
+    expr = configured.config.rootSetting;
+    expected = "declared";
   };
 
   # ── Fencing ───────────────────────────────────────────────────────────

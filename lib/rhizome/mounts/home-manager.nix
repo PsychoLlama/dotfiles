@@ -15,8 +15,11 @@
 
 plugins:
 
-let
-  guard =
+mount {
+  class = "homeManager";
+  inherit plugins;
+
+  configure =
     { config, ... }:
     {
       config = {
@@ -40,14 +43,4 @@ let
         }) config.rhizome.unrouted;
       };
     };
-in
-
-{
-  imports = [
-    (mount {
-      class = "homeManager";
-      inherit plugins;
-    })
-    guard
-  ];
 }

@@ -31,8 +31,20 @@
 
   This is the mount itself, taking its class as an argument: use it for
   a class rhizome ships no root for, and carry or drop the fragments
-  yourself. The siblings in this directory are that same machinery with
-  a stack's routers and drop policy already attached.
+  yourself. `configure` is where that goes — an ordinary module, merged
+  in alongside the plugins, so a root comes back as one value instead of
+  a list the caller has to assemble:
+
+  ```nix
+  mounts.custom {
+    class = "editor";
+    plugins = { inherit dotfiles; };
+    configure.rhizome.dropped = [ "nixos" "darwin" "homeManager" ];
+  }
+  ```
+
+  The siblings in this directory are that same call with a stack's
+  routers and drop policy already passed in.
 
   This file is the assembly. The parts it draws on, one directory up:
 
@@ -46,13 +58,18 @@
   # Type
 
   ```
-  mounts.custom :: { class : String, plugins : AttrSet Plugin } -> Module
+  mounts.custom :: {
+    class : String,               # `_class` of the eval this mounts into
+    plugins : AttrSet Plugin,     # instantiated plugins, by binding name
+    configure? : Module,          # merged in alongside them
+  } -> Module
   ```
 */
 
 {
   class,
   plugins,
+  configure ? { },
 }:
 
 let
@@ -175,5 +192,6 @@ in
 {
   imports = lib.map mountFor evaluated ++ [
     (import ../fragment-options.nix { inherit lib; } classTags)
+    configure
   ];
 }

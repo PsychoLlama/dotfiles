@@ -32,14 +32,12 @@ let
       (self.lib.rhizome.mounts.custom {
         class = "editor";
         plugins = { inherit dotfiles; };
-      })
-      {
-        rhizome.dropped = [
+        configure.rhizome.dropped = [
           "nixos"
           "darwin"
           "homeManager"
         ];
-      }
+      })
     ];
   };
 in

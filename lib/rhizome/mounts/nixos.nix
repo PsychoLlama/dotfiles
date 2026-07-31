@@ -20,10 +20,11 @@
 
 plugins:
 
-let
-  hostedMarker = import ./hosted-marker.nix { inherit lib; };
+mount {
+  class = "nixos";
+  inherit plugins;
 
-  routers =
+  configure =
     { config, options, ... }:
     {
       config = lib.mkMerge (
@@ -43,19 +44,12 @@ let
         ++ lib.optionals (options ? home-manager) [
           {
             rhizome.routed = [ "homeManager" ];
-            home-manager.sharedModules = config.rhizome.fragments.homeManager ++ [ hostedMarker ];
+
+            home-manager.sharedModules = config.rhizome.fragments.homeManager ++ [
+              (import ./hosted-marker.nix { inherit lib; })
+            ];
           }
         ]
       );
     };
-in
-
-{
-  imports = [
-    (mount {
-      class = "nixos";
-      inherit plugins;
-    })
-    routers
-  ];
 }
