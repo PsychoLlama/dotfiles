@@ -72,7 +72,7 @@ let
     inputs.needed = throw "unreadInputDef: forced an input nobody reads.";
   };
 
-  # Reaches `main` through a class block, which `peers` now owns.
+  # Reaches `main` through a class block, which `plugins` now owns.
   stray =
     plugin
       {
@@ -562,15 +562,15 @@ lib.runTests {
     expected = "plain";
   };
 
-  # ...and writes it through `peers`, keyed by the peer's handle.
+  # ...and writes it through `plugins`, keyed by the target's handle.
   testCrossPluginWrite = {
     expr = paired.config."${main}".services.beta.message;
     expected = "from the side";
   };
 
-  # A peer write names its target, so an unmounted one is caught here
+  # A plugin write names its target, so an unmounted one is caught here
   # rather than surfacing as a missing option.
-  testUnmountedPeerWriteRejected = {
+  testUnmountedPluginWriteRejected = {
     expr =
       fails
         (evalHost { side = sideDef { main = "/nowhere"; }; } [
@@ -579,9 +579,9 @@ lib.runTests {
     expected = true;
   };
 
-  # Peers share the host's fixpoint, so a class block could reach one.
-  # Keeping that to `peers` leaves `modules.<class>` meaning the host.
-  testPeerWriteViaClassBlockRejected = {
+  # Plugins share the host's fixpoint, so a class block could reach one.
+  # Keeping that to `plugins` leaves `modules.<class>` meaning the host.
+  testPluginWriteViaClassBlockRejected = {
     expr =
       fails
         (evalHost { inherit main stray; } [

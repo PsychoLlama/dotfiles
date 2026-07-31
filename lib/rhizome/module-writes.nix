@@ -8,7 +8,7 @@ in
   What one module writes, and where each write lands. A module's `config`
   block is its plugin's namespace — the mount point is implied, never
   spelled. Reaching out is explicit: `modules.<class>` for the host,
-  `peers.<handle>` for a peer.
+  `plugins.<handle>` for another plugin.
 
   Everything is gated on the module's `enable`, so a mounted module that
   nobody turned on contributes nothing.
@@ -98,14 +98,14 @@ let
       body = if applied ? config then applied.config else applied;
 
       # Mounted plugins share this fixpoint, so a class block *could*
-      # reach one. That reach is `peers`' job — keeping it out of here
+      # reach one. That reach is `plugins`' job — keeping it out of here
       # leaves `modules.<class>` meaning one thing: the host.
       reached = lib.filter (key: lib.elem key pluginKeys) (lib.attrNames body);
     in
     if applied ? options || applied ? imports then
       throw "rhizome: ${entry.description}'s `modules.${block}` runs in the live `${class}` fixpoint and cannot declare `options` or `imports`. Move those to the assembly site."
     else if reached != [ ] then
-      throw "rhizome: ${entry.description}'s `modules.${block}` writes the plugin mounted at `${lib.head reached}`. Peer plugins go through `peers`, not a class block."
+      throw "rhizome: ${entry.description}'s `modules.${block}` writes the plugin mounted at `${lib.head reached}`. Other plugins go through `plugins`, not a class block."
     else
       body;
 
@@ -128,21 +128,21 @@ let
   };
 
   /**
-    A module's writes into its peers' namespaces, one attrset per peer.
-    They land in the same fixpoint `config` does, but a separate block
-    means the reach is declared rather than incidental — and an unmounted
-    handle can say so instead of surfacing as a missing option.
+    A module's writes into other plugins' namespaces, one attrset per
+    plugin. They land in the same fixpoint `config` does, but a separate
+    block means the reach is declared rather than incidental — and an
+    unmounted handle can say so instead of surfacing as a missing option.
 
     # Type
 
     ```
-    peerWritesFor :: Entry -> [ AttrSet ]
+    pluginWritesFor :: Entry -> [ AttrSet ]
     ```
   */
-  peerWritesFor =
+  pluginWritesFor =
     entry:
     let
-      writes = entry.applied.peers or { };
+      writes = entry.applied.plugins or { };
       unknown = lib.filter (key: !(lib.elem key pluginKeys)) (lib.attrNames writes);
     in
     if unknown == [ ] then
@@ -160,7 +160,7 @@ in
 lib.mkIf (lib.getAttrFromPath (entry.path ++ [ "enable" ]) config) (
   lib.mkMerge (
     [ { ${lib.head entry.path} = entry.applied.config or { }; } ]
-    ++ peerWritesFor entry
+    ++ pluginWritesFor entry
     ++ lib.mapAttrsToList (block: fragment: inlineFragment entry block fragment) split.inline
     ++ lib.mapAttrsToList (block: fragment: {
       rhizome.fragments.${classMap.${block}} = [ (wrapFragment entry block fragment) ];

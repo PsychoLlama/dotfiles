@@ -145,7 +145,7 @@ let
 
   /**
     The mounted handles. Doubles as the fence for `global` and the guest
-    list `peers` writes are checked against.
+    list `plugins` writes are checked against.
 
     # Type
 

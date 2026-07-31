@@ -27,7 +27,7 @@
   };
 
   # `config` is this plugin's namespace: the mount point is implied, so
-  # enabling a peer is a plain write.
+  # enabling another plugin's module is a plain write.
   config.services.beta = {
     enable = true;
     message = "${cfg.greeting} from alpha";

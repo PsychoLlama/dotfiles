@@ -20,7 +20,7 @@
   ```nix
   config.services.foo.enable = true;                # its own plugin
   modules.nixos.users.users.bob.shell = ...;        # a host class
-  peers."${inputs.hosts}".machines.x.enable = true; # a peer plugin
+  plugins."${inputs.hosts}".machines.x.enable = true; # another plugin
   ```
 
   Rhizome modules receive exactly six arguments — `self`, `cfg`,
@@ -116,7 +116,7 @@ let
   /**
     Every entry with its module applied, ready to contribute options and
     config. `applied` is the module's own attrset: `options`, `config`,
-    `modules`, `peers`.
+    `modules`, `plugins`.
 
     # Type
 

@@ -27,7 +27,7 @@ in
   `inputs` declares the values a plugin expects from whoever assembles
   the mount, as an attrset of defaults. Every module in the plugin
   receives them as an `inputs` argument, verbatim — usually a reference
-  to a peer plugin, but any value works, and none of them are inspected
+  to another plugin, but any value works, and none of them are inspected
   or transformed. Required inputs default to `throw`; optional ones to
   `null`, for the plugin to detect:
 
@@ -38,11 +38,11 @@ in
   };
   ```
 
-  A plugin arrives as a plugin, so a module names its peer the same way
-  a consumer does — by interpolating it into the `peers` block:
+  A plugin arrives as a plugin, so a module names another one the same
+  way a consumer does — by interpolating it into the `plugins` block:
 
   ```nix
-  peers."${inputs.hosts}".machines.laptop.enable = true;
+  plugins."${inputs.hosts}".machines.laptop.enable = true;
   ```
 
   Inputs are load-time by construction: their job is to appear in

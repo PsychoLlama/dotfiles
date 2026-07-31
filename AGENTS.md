@@ -9,7 +9,7 @@ This flake is consumed by other flakes. Everything must be changeable, disableab
 Two plugins ship from `modules/`. Each defines itself in its own `default.nix` (`{ rhizome }: rhizome.plugin { ... }`); `flake.nix` imports, instantiates, and mounts them together:
 
 - `rhizomePlugins.dotfiles` (`modules/dotfiles/`) — the opinions. Knows nothing about hosts.
-- `rhizomePlugins.hosts` (`modules/hosts/`) — machines. Takes `dotfiles` as an input and writes it through `peers."${inputs.dotfiles}"`.
+- `rhizomePlugins.hosts` (`modules/hosts/`) — machines. Takes `dotfiles` as an input and writes it through `plugins."${inputs.dotfiles}"`.
 
 The editor is the one remaining platform, exposed as `nixosModules.editor`: the framework, no opinions. Every other program carries its own home-manager payload.
 
@@ -33,7 +33,7 @@ Writes go in one of three blocks, each naming a different target:
 
 - `config` — this plugin's namespace, mount point implied (`config.programs.foo.enable = true`).
 - `modules.<class>` — a host's own options, for a class this plugin declares or `lib/rhizome` builds in (`nixos`, `darwin`, `home-manager`). A block for a class the mount isn't evaluating becomes a fragment for a router to carry.
-- `peers."${inputs.<peer>}"` — a peer plugin's namespace.
+- `plugins."${inputs.<peer>}"` — another plugin's namespace.
 
 Nothing in attribute-name position comes from the fixpoint. Handles reach a module through `inputs`, which is load-time data supplied at instantiation, so config reads stay in value position — arbitrarily deep and lazy.
 
