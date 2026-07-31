@@ -6,7 +6,7 @@ NixOS-based configuration-as-code for Linux and home-manager environments.
 
 This flake is consumed by other flakes. Everything must be changeable, disableable, or extendable from the outside.
 
-Two plugins ship from `modules/`, both instantiated in `flake.nix` and mounted together:
+Two plugins ship from `modules/`. Each defines itself in its own `default.nix` (`{ rhizome }: rhizome.plugin { ... }`); `flake.nix` imports, instantiates, and mounts them together:
 
 - `rhizomePlugins.dotfiles` (`modules/dotfiles/`) — the opinions. Knows nothing about hosts.
 - `rhizomePlugins.hosts` (`modules/hosts/`) — machines. Takes `dotfiles` as an input and writes it through `peers."${inputs.dotfiles}"`.

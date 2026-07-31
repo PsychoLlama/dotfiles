@@ -78,6 +78,7 @@
 
     let
       lib = import ./lib flake-inputs;
+      inherit (lib.dotfiles) rhizome;
 
       # { system -> pkgs }
       pkgsBySystem = lib.genAttrs (import systems) (
@@ -106,19 +107,10 @@
       # Rhizome modules: one module per program carrying payloads for every
       # platform it touches. These are plugin *definitions* — apply one to an
       # input set to instantiate, then mount with `lib.rhizome.mounts.<class>`.
+      # Each plugin defines itself next to the modules it collects.
       rhizomePlugins = {
-        dotfiles = lib.dotfiles.rhizome.plugin {
-          src = ./modules/dotfiles;
-          classes.editor = "editor";
-        };
-
-        # Machine-specific settings. Split from the dotfiles so a consumer can
-        # mount the opinions without inheriting my hardware, and so a host says
-        # which plugin it is configuring rather than sitting inside it.
-        hosts = lib.dotfiles.rhizome.plugin {
-          src = ./modules/hosts;
-          inputs.dotfiles = throw "hosts: input `dotfiles` is required.";
-        };
+        dotfiles = import ./modules/dotfiles { inherit rhizome; };
+        hosts = import ./modules/hosts { inherit rhizome; };
       };
 
       nixosModules.editor = {
