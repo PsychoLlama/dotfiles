@@ -92,13 +92,7 @@ else
     __toString = _: lib.toString src;
 
     __plugin = {
-      inherit
-        src
-        classes
-        node
-        modules
-        namespace
-        ;
+      inherit classes node modules;
       key = lib.toString src;
       inputs = inputs // supplied;
     };

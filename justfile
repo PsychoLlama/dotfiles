@@ -25,9 +25,9 @@ fmt:
 fmt-check:
   treefmt --ci
 
-# Test the meta-module system.
+# Test the rhizome module system.
 test-modules:
-  ./lib/module/tests/report.nu
+  ./lib/rhizome/tests/report.nu
 
 # Update all flake inputs and custom packages.
 update:
