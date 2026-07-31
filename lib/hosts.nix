@@ -100,21 +100,6 @@ let
       config.home.packages = lib.mkIf cfg.enable [ cfg.neovim ];
     };
 
-  # Routes the `editor` class. `programs.editor` is a submodule of the
-  # home-manager eval, so fragments ride `sharedModules` down to it and land
-  # as definitions — a submodule definition is a module, so it may carry
-  # `imports`. Nothing here touches the option's *type*, which would make the
-  # declaration depend on config and recurse.
-  editor-router =
-    { config, ... }:
-    {
-      rhizome.routed = [ "editor" ];
-
-      home-manager.sharedModules = [
-        { programs.editor.imports = config.rhizome.fragments.editor; }
-      ];
-    };
-
   # Set reasonable defaults for home-manager as a submodule.
   # `theme`, `identity` and `trusted-directories` used to be copied down from
   # the host platform here. They are rhizome modules now: consumers read them
@@ -151,9 +136,9 @@ in
           home-manager.nixosModules.home-manager
 
           # Mounts every rhizome module's options into this host's fixpoint and
-          # routes home-manager fragments onto `sharedModules`.
+          # routes home-manager fragments onto `sharedModules`. Classes the
+          # plugins declare themselves — `editor` — route from the plugin.
           (self.lib.rhizome.mounts.nixos plugins)
-          editor-router
 
           nixpkgs-config
           nix-flakes
