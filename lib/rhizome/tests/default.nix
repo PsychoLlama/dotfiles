@@ -12,7 +12,7 @@ let
       widget = "widget";
     };
 
-    node =
+    configure =
       { cfg, lib, ... }:
       {
         options.themeName = lib.mkOption {
@@ -20,7 +20,7 @@ let
           default = "plain";
         };
 
-        # The plugin node writes into the plugin's namespace like any
+        # The plugin's own module writes into its namespace like any
         # other module: `config` is already rooted there.
         config.theme.name = cfg.themeName;
       };
@@ -43,7 +43,7 @@ let
       label = null;
     };
 
-    node =
+    configure =
       {
         global,
         inputs,
@@ -357,7 +357,7 @@ lib.runTests {
     expected = "hello on #000000";
   };
 
-  # ── The plugin node ──────────────────────────────────────────────────
+  # ── The plugin's own module ──────────────────────────────────────────
 
   testPluginNodeForwardsConfig = {
     expr =
@@ -373,10 +373,10 @@ lib.runTests {
     expected = true;
   };
 
-  # Node options share the plugin's namespace with its modules, so `self`
-  # reaches both.
-  testPluginNodeOptionsJoinSelf = {
-    expr = base.config."${main}".programs.alpha.nodeView;
+  # `configure`'s options share the plugin's namespace with its modules,
+  # so `self` reaches both.
+  testPluginConfigureOptionsJoinSelf = {
+    expr = base.config."${main}".programs.alpha.pluginView;
     expected = "plain";
   };
 

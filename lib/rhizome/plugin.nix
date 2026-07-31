@@ -6,8 +6,8 @@ let
 in
 
 /**
-  Define a plugin: a collection of rhizome modules plus an addressable node
-  of its own. Definition and instantiation are separate calls — this
+  Define a plugin: a collection of rhizome modules plus a module of its
+  own, mounted at the plugin's root. Definition and instantiation are separate calls — this
   returns a function, and applying it to an input set yields the
   mountable plugin.
 
@@ -70,7 +70,7 @@ in
     src : Path,                    # directory scanned for *.mod.nix / mod.nix
     classes? : AttrSet,            # extra `modules.<block>` -> `_class` tags
     inputs? : AttrSet,             # expected inputs -> default values
-    node? : Module | null,         # caller-facing options for the whole plugin
+    configure? : Module | null,    # the module at the plugin's own root
   } -> AttrSet -> Plugin
   ```
 */
@@ -78,7 +78,7 @@ in
   src,
   classes ? { },
   inputs ? { },
-  node ? null,
+  configure ? null,
 }:
 
 let
@@ -104,7 +104,7 @@ else
     __toString = _: lib.toString src;
 
     __plugin = {
-      inherit classes node modules;
+      inherit classes configure modules;
       key = lib.toString src;
       inputs = inputs // supplied;
     };

@@ -8,13 +8,13 @@
 
   Two record shapes come out of here. A `Binding` is a plugin under the
   name the assembler registered it as; an `Entry` is one mounted option
-  namespace — a module, or a plugin's own node.
+  namespace — a module, or a plugin's own `configure`.
 
   Entries name themselves as `binding#module.path`, matching `_file`'s
   `<container>#<path within it>`. The `#` is load-bearing: the binding is
   a name chosen at the mount site, not a segment of the option path —
   those really mount under the plugin's key, at `${plugin}.module.path`.
-  A bare binding (no `#`) is the plugin's own node.
+  A bare binding (no `#`) is the plugin's own `configure`.
 
   ```
   Binding = { binding : String, plugin : Plugin }
@@ -24,7 +24,7 @@
     file : String,          # `_file` for module-system provenance
     loader : Module,        # the unapplied module
     description : String,   # `binding#module.path`, for errors
-    isNode : Bool,          # plugin node, rather than a module
+    isPlugin : Bool,        # the plugin itself, rather than one of its modules
   }
   ```
 
@@ -157,7 +157,7 @@ let
 
   /**
     One entry per mounted option namespace: every module of every plugin,
-    plus each plugin's own node. Modules are loaded here — `import`ed but
+    plus each plugin's own `configure`. Modules are loaded here — `import`ed but
     not applied — because loading is never the cut; `enable` is.
 
     # Type
@@ -174,15 +174,15 @@ let
       file = lib.toString mod.file;
       loader = import mod.file;
       description = "${binding}#${lib.concatStringsSep "." mod.subpath}";
-      isNode = false;
+      isPlugin = false;
     }) plugin.__plugin.modules
-    ++ lib.optional (plugin.__plugin.node != null) {
+    ++ lib.optional (plugin.__plugin.configure != null) {
       inherit binding plugin;
       path = [ plugin.__plugin.key ];
       file = plugin.__plugin.key;
-      loader = plugin.__plugin.node;
+      loader = plugin.__plugin.configure;
       description = binding;
-      isNode = true;
+      isPlugin = true;
     }
   ) pluginList;
 in

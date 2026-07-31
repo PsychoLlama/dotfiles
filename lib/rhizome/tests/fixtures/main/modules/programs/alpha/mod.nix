@@ -18,8 +18,8 @@
       default = "${cfg.greeting} on ${self.theme.palette.background}";
     };
 
-    # `self` covers the plugin node's options too, not just its modules.
-    nodeView = lib.mkOption {
+    # `self` covers the plugin's own options too, not just its modules.
+    pluginView = lib.mkOption {
       type = lib.types.str;
       readOnly = true;
       default = self.themeName;

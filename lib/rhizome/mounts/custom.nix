@@ -188,7 +188,7 @@ let
   /**
     A module's declared options, plus the implicit `enable` that gates
     its writes — loading is never the cut. A module may declare `enable`
-    itself to change its type or default; a plugin node defaults on,
+    itself to change its type or default; the plugin itself defaults on,
     since the plugin is already opt-in by being mounted.
 
     # Type
@@ -206,7 +206,7 @@ let
     // lib.optionalAttrs (!(declared ? enable)) {
       enable = lib.mkOption {
         type = lib.types.bool;
-        default = entry.isNode;
+        default = entry.isPlugin;
         description = "Whether to activate `${entry.description}`.";
       };
     };
