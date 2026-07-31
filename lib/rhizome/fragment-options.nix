@@ -15,7 +15,7 @@
 
 classTags:
 
-{ config, ... }:
+{ config, options, ... }:
 
 {
   options.rhizome = {
@@ -70,5 +70,19 @@ classTags:
     };
   };
 
-  config.rhizome.fragments = lib.genAttrs classTags (_: [ ]);
+  config = lib.mkMerge [
+    { rhizome.fragments = lib.genAttrs classTags (_: [ ]); }
+
+    # Configuration that was written and then went nowhere is a failure,
+    # not a warning — but only a host with an assertions mechanism can
+    # say so. A custom class without one has to read `rhizome.unrouted`
+    # itself; there is nothing here that could force the check, since
+    # nothing in a bare `evalModules` is obliged to read it.
+    (lib.optionalAttrs (options ? assertions) {
+      assertions = lib.map (tag: {
+        assertion = false;
+        message = "rhizome: class '${tag}' produced fragments, but no router claimed them. Carry it with `rhizome.routed = [ \"${tag}\" ];` after wiring the fragments into a `${tag}` eval, or discard it deliberately with `rhizome.dropped = [ \"${tag}\" ];`.";
+      }) config.rhizome.unrouted;
+    })
+  ];
 }

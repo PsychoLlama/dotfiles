@@ -129,6 +129,25 @@ let
     { config."${side}".probe.enable = true; }
   ];
 
+  # A host that declares `assertions`, the way nixos and home-manager
+  # do. `evalHost` deliberately does not, so most tests read
+  # `rhizome.unrouted` directly instead.
+  asserting =
+    modules:
+    evalHost { inherit main; } (
+      [
+        {
+          config."${main}".programs.alpha.enable = true;
+
+          options.assertions = lib.mkOption {
+            type = lib.types.listOf lib.types.unspecified;
+            default = [ ];
+          };
+        }
+      ]
+      ++ modules
+    );
+
   # A root that rides in on `configure` instead of sitting beside the
   # mount, the way the shipped roots attach their routers.
   configured = lib.evalModules {
@@ -460,6 +479,19 @@ lib.runTests {
           { config.rhizome.dropped = [ "widgit" ]; }
         ]).config.rhizome.unrouted;
     expected = true;
+  };
+
+  # Where the host has an assertions mechanism, the mount uses it, so an
+  # unclaimed class fails the build rather than vanishing. This lives in
+  # the mount, not the roots, so a custom class gets it too.
+  testUnroutedClassesAssert = {
+    expr = lib.map (entry: entry.assertion) (asserting [ ]).config.assertions;
+    expected = [ false ];
+  };
+
+  testClaimedClassesAssertNothing = {
+    expr = (asserting [ { config.rhizome.routed = [ "widget" ]; } ]).config.assertions;
+    expected = [ ];
   };
 
   # ── `configure` ───────────────────────────────────────────────────────
