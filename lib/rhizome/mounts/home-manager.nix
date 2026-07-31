@@ -1,4 +1,4 @@
-{ lib, mkMount }:
+{ lib, mount }:
 
 /**
   The standalone home-manager edition of the mount, for hosts where
@@ -44,7 +44,7 @@ in
 
 {
   imports = [
-    (mkMount {
+    (mount {
       class = "homeManager";
       inherit plugins;
     })

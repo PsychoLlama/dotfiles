@@ -2,7 +2,7 @@
 
 let
   plugin = import ../plugin.nix { inherit lib; };
-  mkMount = import ../mk-mount.nix { inherit lib; };
+  mount = import ../mounts/custom.nix { inherit lib; };
 
   main = plugin {
     src = ./fixtures/main/modules;
@@ -98,7 +98,7 @@ let
     lib.evalModules {
       class = "test";
       modules = [
-        (mkMount {
+        (mount {
           class = "test";
           inherit plugins;
         })

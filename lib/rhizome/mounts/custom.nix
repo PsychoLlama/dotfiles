@@ -29,7 +29,12 @@
   observe (and grow dependent on) the host platform it happens to be
   evaluated in.
 
-  This file is the assembly. The parts it draws on:
+  This is the mount itself, taking its class as an argument: use it for
+  a class rhizome ships no root for, and carry or drop the fragments
+  yourself. The siblings in this directory are that same machinery with
+  a stack's routers and drop policy already attached.
+
+  This file is the assembly. The parts it draws on, one directory up:
 
   - `load-plugins.nix` — what is mounted, resolved before any eval.
     Defines the `Entry` record the rest of the mount passes around.
@@ -41,7 +46,7 @@
   # Type
 
   ```
-  mkMount :: { class : String, plugins : AttrSet Plugin } -> Module
+  mounts.custom :: { class : String, plugins : AttrSet Plugin } -> Module
   ```
 */
 
@@ -51,9 +56,9 @@
 }:
 
 let
-  applyModule = import ./apply-module.nix { inherit lib; };
+  applyModule = import ../apply-module.nix { inherit lib; };
 
-  inherit (import ./load-plugins.nix { inherit lib; } plugins)
+  inherit (import ../load-plugins.nix { inherit lib; } plugins)
     entries
     classMap
     classTags
@@ -83,7 +88,7 @@ let
   global = lib.genAttrs pluginKeys (key: config.${key});
 
   writesFor =
-    import ./module-writes.nix { inherit lib; }
+    import ../module-writes.nix { inherit lib; }
       {
         inherit class classMap pluginKeys;
       }
@@ -169,6 +174,6 @@ in
 
 {
   imports = lib.map mountFor evaluated ++ [
-    (import ./fragment-options.nix { inherit lib; } classTags)
+    (import ../fragment-options.nix { inherit lib; } classTags)
   ];
 }

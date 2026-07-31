@@ -29,7 +29,7 @@ let
       # here. `class = "editor"` makes editor payloads merge inline; every
       # other class is discarded on purpose — a portable editor has no OS or
       # home to configure, which is the whole point of shipping it this way.
-      (self.lib.rhizome.mkMount {
+      (self.lib.rhizome.mounts.custom {
         class = "editor";
         plugins = { inherit dotfiles; };
       })

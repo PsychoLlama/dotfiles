@@ -1,4 +1,4 @@
-{ lib, mkMount }:
+{ lib, mount }:
 
 /**
   The nixos edition of the mount. Installs the plugins and ships the
@@ -52,7 +52,7 @@ in
 
 {
   imports = [
-    (mkMount {
+    (mount {
       class = "nixos";
       inherit plugins;
     })

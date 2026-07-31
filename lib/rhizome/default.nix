@@ -8,19 +8,21 @@
 # loading — is the cut.
 
 let
-  mkMount = import ./mk-mount.nix { inherit lib; };
+  mount = import ./mounts/custom.nix { inherit lib; };
 in
 
 {
-  inherit mkMount;
-
   # Define a plugin from a directory of `*.mod.nix` files.
   plugin = import ./plugin.nix { inherit lib; };
 
-  # Preassembled mounts per host platform: `mounts.nixos { <binding> =
-  # <plugin>; }` returns a module for that platform's eval.
+  # `mounts.<class> { <binding> = <plugin>; }` returns a module for that
+  # platform's eval, preassembled with the routers and drop policy a root
+  # of that stack needs. `mounts.custom` is the same machinery without
+  # them, for a class rhizome does not ship a root for — it takes the
+  # class as an argument and leaves routing to the caller.
   mounts = {
-    nixos = import ./mounts/nixos.nix { inherit lib mkMount; };
-    home-manager = import ./mounts/home-manager.nix { inherit lib mkMount; };
+    custom = mount;
+    nixos = import ./mounts/nixos.nix { inherit lib mount; };
+    home-manager = import ./mounts/home-manager.nix { inherit lib mount; };
   };
 }
