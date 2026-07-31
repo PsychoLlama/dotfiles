@@ -14,7 +14,7 @@ in
     package = lib.mkPackageOption pkgs.unstable "typescript-language-server" { };
   };
 
-  modules.home-manager.programs.claude-code.localPlugins.typescript-lsp = {
+  config.programs.claude-code.marketplace.plugins.typescript-lsp = {
     description = "TypeScript Language Server for Claude Code.";
 
     lsp.servers.typescript = {

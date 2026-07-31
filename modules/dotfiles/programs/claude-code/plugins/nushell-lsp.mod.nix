@@ -1,5 +1,5 @@
 {
-  modules.home-manager.programs.claude-code.localPlugins.nushell-lsp = {
+  config.programs.claude-code.marketplace.plugins.nushell-lsp = {
     description = "Nushell Language Server for Claude Code.";
 
     lsp.servers.nushell = {

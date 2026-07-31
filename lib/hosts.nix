@@ -37,7 +37,6 @@ let
       allowUnfreePredicate =
         pkg:
         lib.elem (lib.getName pkg) [
-          "claude-code" # symlinkJoin wrapper from home-manager
           "claude-code-bin"
           "spotify"
         ];

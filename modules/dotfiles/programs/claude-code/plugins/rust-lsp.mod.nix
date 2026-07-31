@@ -1,5 +1,5 @@
 {
-  modules.home-manager.programs.claude-code.localPlugins.rust-lsp = {
+  config.programs.claude-code.marketplace.plugins.rust-lsp = {
     description = "Rust Language Server for Claude Code.";
 
     lsp.servers.rust = {

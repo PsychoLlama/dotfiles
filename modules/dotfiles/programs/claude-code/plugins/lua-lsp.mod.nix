@@ -35,7 +35,7 @@ let
 in
 
 {
-  modules.home-manager.programs.claude-code.localPlugins.lua-lsp = {
+  config.programs.claude-code.marketplace.plugins.lua-lsp = {
     description = "Lua Language Server for Claude Code.";
 
     lsp.servers.lua = {
