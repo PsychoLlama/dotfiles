@@ -1,12 +1,6 @@
-{
-  nixpkgs,
-  nixpkgs-unstable,
-  self,
-  ...
-}:
+{ self, ... }:
 {
   pkgs,
-  dotfiles,
   modules ? [ ],
 }:
 
@@ -17,6 +11,9 @@
 #
 # You can still configure it declaratively in NixOS, but you can share it on
 # other hosts that only have the Nix command installed.
+#
+# Only the framework. Presets arrive as modules — `mountEditor` is how a
+# rhizome plugin becomes one.
 
 let
   mod = pkgs.lib.modules.evalModules {
@@ -24,20 +21,6 @@ let
     modules = modules ++ [
       { _module.args.pkgs = pkgs; }
       self.nixosModules.editor
-
-      # No outer host to route fragments down from, so the plugin mounts
-      # here. `class = "editor"` makes editor payloads merge inline; every
-      # other class is discarded on purpose — a portable editor has no OS or
-      # home to configure, which is the whole point of shipping it this way.
-      (self.lib.rhizome.mounts.custom {
-        class = "editor";
-        plugins = { inherit dotfiles; };
-        configure.rhizome.dropped = [
-          "nixos"
-          "darwin"
-          "homeManager"
-        ];
-      })
     ];
   };
 in

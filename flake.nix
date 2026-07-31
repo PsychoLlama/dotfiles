@@ -167,8 +167,11 @@
       packages = eachSystem (
         system: pkgs: {
           editor = lib.dotfiles.buildEditor {
-            inherit pkgs dotfiles;
-            modules = [ { "${dotfiles}".profiles.editor.enable = true; } ];
+            inherit pkgs;
+            modules = [
+              (lib.dotfiles.mountEditor { inherit dotfiles; })
+              { "${dotfiles}".profiles.editor.enable = true; }
+            ];
           };
 
           inherit (pkgs.custom) chrome-devtools-mcp claude-code-bin codex-bin;

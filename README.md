@@ -36,13 +36,9 @@ nix run 'github:PsychoLlama/dotfiles#editor' ./
 You can also build your own variant. It has access to all options from `nixosModules.editor`.
 
 ```nix
-let
-  dotfiles = inputs.dotfiles.rhizomePlugins.dotfiles { };
-in
-
 inputs.dotfiles.lib.buildEditor {
-  inherit pkgs dotfiles;
-  modules = [ { "${dotfiles}".profiles.editor.enable = true; } ];
+  inherit pkgs;
+  modules = [ { extraConfig = "set number"; } ];
 }
 ```
 
