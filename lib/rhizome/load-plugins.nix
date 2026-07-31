@@ -8,7 +8,13 @@
 
   Two record shapes come out of here. A `Binding` is a plugin under the
   name the assembler registered it as; an `Entry` is one mounted option
-  namespace — a module, or a plugin's own node:
+  namespace — a module, or a plugin's own node.
+
+  Entries name themselves as `binding#module.path`, matching `_file`'s
+  `<container>#<path within it>`. The `#` is load-bearing: the binding is
+  a name chosen at the mount site, not a segment of the option path —
+  those really mount under the plugin's key, at `${plugin}.module.path`.
+  A bare binding (no `#`) is the plugin's own node.
 
   ```
   Binding = { binding : String, plugin : Plugin }
@@ -17,7 +23,7 @@
     path : [String],        # where its options mount, key first
     file : String,          # `_file` for module-system provenance
     loader : Module,        # the unapplied module
-    description : String,   # human-facing name, for errors
+    description : String,   # `binding#module.path`, for errors
     isNode : Bool,          # plugin node, rather than a module
   }
   ```
@@ -167,7 +173,7 @@ let
       path = [ plugin.__plugin.key ] ++ mod.subpath;
       file = lib.toString mod.file;
       loader = import mod.file;
-      description = "${binding}.${lib.concatStringsSep "." mod.subpath}";
+      description = "${binding}#${lib.concatStringsSep "." mod.subpath}";
       isNode = false;
     }) plugin.__plugin.modules
     ++ lib.optional (plugin.__plugin.node != null) {
@@ -175,7 +181,7 @@ let
       path = [ plugin.__plugin.key ];
       file = plugin.__plugin.key;
       loader = plugin.__plugin.node;
-      description = "${binding} (plugin node)";
+      description = binding;
       isNode = true;
     }
   ) pluginList;

@@ -14,7 +14,7 @@
 
   ```
   applyModule :: {
-    description : String,   # e.g. `dotfiles.programs.git`
+    description : String,   # e.g. `dotfiles#programs.git`
     subject : String,       # e.g. `Modules`
     available : AttrSet,    # the closed argument set
   } -> Module -> AttrSet
