@@ -26,7 +26,7 @@ let
             # the class table — the darwin root drops nixos in turn.
             rhizome.dropped = [ "darwin" ];
 
-            assertions = map (tag: {
+            assertions = lib.map (tag: {
               assertion = false;
               message = "rhizome: class '${tag}' produced fragments, but no router claimed them. Carry it with `rhizome.routed = [ \"${tag}\" ];` after wiring the fragments into a `${tag}` eval, or discard it deliberately with `rhizome.dropped = [ \"${tag}\" ];`.";
             }) config.rhizome.unrouted;

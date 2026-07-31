@@ -79,17 +79,17 @@ in
 supplied:
 
 let
-  unknown = lib.attrNames (removeAttrs supplied (lib.attrNames inputs));
+  unknown = lib.attrNames (lib.removeAttrs supplied (lib.attrNames inputs));
 in
 
 if reserved != [ ] then
-  throw "rhizome: module names may not start with `__` (got `${lib.concatStringsSep "." (lib.head reserved).subpath}` in ${toString src})."
+  throw "rhizome: module names may not start with `__` (got `${lib.concatStringsSep "." (lib.head reserved).subpath}` in ${lib.toString src})."
 else if unknown != [ ] then
-  throw "rhizome: ${toString src} was given unexpected input(s): ${lib.concatStringsSep ", " unknown}. It declares: ${lib.concatStringsSep ", " (lib.attrNames inputs)}."
+  throw "rhizome: ${lib.toString src} was given unexpected input(s): ${lib.concatStringsSep ", " unknown}. It declares: ${lib.concatStringsSep ", " (lib.attrNames inputs)}."
 else
   namespace
   // {
-    __toString = _: toString src;
+    __toString = _: lib.toString src;
 
     __plugin = {
       inherit
@@ -99,7 +99,7 @@ else
         modules
         namespace
         ;
-      key = toString src;
+      key = lib.toString src;
       inputs = inputs // supplied;
     };
   }

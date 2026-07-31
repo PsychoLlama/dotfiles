@@ -49,8 +49,8 @@ let
   dedupe =
     key: group:
     let
-      inputs = map (entry: entry.plugin.__plugin.inputs) group;
-      bindings = lib.concatStringsSep ", " (map (entry: entry.binding) group);
+      inputs = lib.map (entry: entry.plugin.__plugin.inputs) group;
+      bindings = lib.concatStringsSep ", " (lib.map (entry: entry.binding) group);
     in
     if lib.length group == 1 || lib.all (given: given == lib.head inputs) inputs then
       lib.head group
@@ -83,16 +83,16 @@ let
 
   classTags = lib.unique (lib.attrValues classMap);
 
-  pluginKeys = map (entry: entry.plugin.__plugin.key) pluginList;
+  pluginKeys = lib.map (entry: entry.plugin.__plugin.key) pluginList;
 
   # One entry per mounted option namespace: every module of every plugin,
   # plus each plugin's own node. `path` is where its options mount.
   entries = lib.concatMap (
     { binding, plugin }:
-    map (mod: {
+    lib.map (mod: {
       inherit binding plugin;
       path = [ plugin.__plugin.key ] ++ mod.subpath;
-      file = toString mod.file;
+      file = lib.toString mod.file;
       loader = import mod.file;
       description = "${binding}.${lib.concatStringsSep "." mod.subpath}";
       isNode = false;
@@ -122,10 +122,10 @@ let
       loader
     else
       let
-        unknown = lib.attrNames (removeAttrs (builtins.functionArgs loader) (lib.attrNames available));
+        unknown = lib.attrNames (lib.removeAttrs (lib.functionArgs loader) (lib.attrNames available));
       in
       if unknown == [ ] then
-        loader (builtins.intersectAttrs (builtins.functionArgs loader) available)
+        loader (lib.intersectAttrs (lib.functionArgs loader) available)
       else
         throw "rhizome: ${description} requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Modules receive only: ${lib.concatStringsSep ", " (lib.attrNames available)}.";
 
@@ -134,7 +134,7 @@ let
   # gates effects, not visibility.
   global = lib.genAttrs pluginKeys (key: config.${key});
 
-  evaluated = map (
+  evaluated = lib.map (
     entry:
     entry
     // {
@@ -171,7 +171,7 @@ let
     entry:
     let
       blocks = entry.applied.modules or { };
-      unknown = lib.attrNames (removeAttrs blocks (lib.attrNames classMap));
+      unknown = lib.attrNames (lib.removeAttrs blocks (lib.attrNames classMap));
     in
     if unknown == [ ] then
       {
@@ -202,10 +202,10 @@ let
           fragment
         else
           let
-            unknown = lib.attrNames (removeAttrs (builtins.functionArgs fragment) (lib.attrNames hostArgs));
+            unknown = lib.attrNames (lib.removeAttrs (lib.functionArgs fragment) (lib.attrNames hostArgs));
           in
           if unknown == [ ] then
-            fragment (builtins.intersectAttrs (builtins.functionArgs fragment) hostArgs)
+            fragment (lib.intersectAttrs (lib.functionArgs fragment) hostArgs)
           else
             throw "rhizome: ${entry.description}'s `modules.${block}` requested unavailable argument(s): ${lib.concatStringsSep ", " unknown}. Host-class fragments receive only: ${lib.concatStringsSep ", " (lib.attrNames hostArgs)}.";
 
@@ -333,5 +333,5 @@ let
 in
 
 {
-  imports = map mountFor evaluated ++ [ bookkeeping ];
+  imports = lib.map mountFor evaluated ++ [ bookkeeping ];
 }

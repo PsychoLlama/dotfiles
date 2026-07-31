@@ -22,7 +22,7 @@ let
           walk (subpath ++ [ name ]) (directory + "/${name}")
         else if name == "mod.nix" then
           if subpath == [ ] then
-            throw "rhizome: `mod.nix` cannot sit at the top of ${toString src}. That mount point is reserved for the plugin's own node."
+            throw "rhizome: `mod.nix` cannot sit at the top of ${lib.toString src}. That mount point is reserved for the plugin's own node."
           else
             [
               {
@@ -39,7 +39,7 @@ let
           ]
         else
           [ ]
-      ) (builtins.readDir directory)
+      ) (lib.readDir directory)
     );
 
   modules = walk [ ] src;
@@ -54,4 +54,4 @@ in
 if duplicates == [ ] then
   modules
 else
-  throw "rhizome: multiple files mount at `${lib.head duplicates}` in ${toString src}. Use either `<name>.mod.nix` or `<name>/mod.nix`, not both."
+  throw "rhizome: multiple files mount at `${lib.head duplicates}` in ${lib.toString src}. Use either `<name>.mod.nix` or `<name>/mod.nix`, not both."

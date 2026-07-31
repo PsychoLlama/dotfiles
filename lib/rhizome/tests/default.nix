@@ -148,7 +148,7 @@ let
       ++ fragments;
     };
 
-  fails = expr: !(builtins.tryEval (builtins.deepSeq expr expr)).success;
+  fails = expr: !(lib.tryEval (lib.deepSeq expr expr)).success;
 in
 
 lib.runTests {
@@ -157,7 +157,7 @@ lib.runTests {
   testNamespaceShape = {
     expr = lib.sort lib.lessThan (
       lib.attrNames (
-        removeAttrs main [
+        lib.removeAttrs main [
           "__plugin"
           "__toString"
         ]

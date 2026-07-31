@@ -26,7 +26,7 @@ let
             message = "rhizome: this home-manager configuration is already managed by the OS host above it. Remove the standalone home-manager mount.";
           }
         ]
-        ++ map (tag: {
+        ++ lib.map (tag: {
           assertion = false;
           message = "rhizome: class '${tag}' produced fragments, but no router claimed them. Carry it with `rhizome.routed = [ \"${tag}\" ];` after wiring the fragments into a `${tag}` eval, or discard it deliberately with `rhizome.dropped = [ \"${tag}\" ];`.";
         }) config.rhizome.unrouted;
