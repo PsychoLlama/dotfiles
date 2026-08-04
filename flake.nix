@@ -6,6 +6,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     systems.url = "github:nix-systems/default";
     import-tree.url = "github:denful/import-tree";
+    den.url = "github:denful/den";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";

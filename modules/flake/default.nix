@@ -9,13 +9,12 @@ in
   imports = [
     inputs.flake-parts.flakeModules.modules
 
+    ./den.nix
     ./overlays
     ./packages.nix
     ./shell.nix
     ./templates.nix
   ];
-
-  systems = import inputs.systems;
 
   perSystem =
     { system, ... }:
