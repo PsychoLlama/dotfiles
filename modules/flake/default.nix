@@ -2,10 +2,7 @@
 
 let
   lib = import ../../lib inputs;
-
-  # Modules opt in with a `.mod.nix` suffix. Plain `.nix` files are free to be
-  # helpers, data, or libraries.
-  importModules = inputs.import-tree.filter (lib.hasSuffix ".mod.nix");
+  inherit (inputs) import-tree;
 in
 
 {
@@ -38,22 +35,25 @@ in
   flake = {
     lib = lib.dotfiles;
 
+    # Every `.nix` file in these trees is a module. Helpers, data, and libraries
+    # opt out with an `_` prefix, which import-tree ignores by default.
+    #
+    # `nixos` and `generic` have no platform extensions today. Add the output
+    # alongside a `platform/` directory when they do.
     modules = {
-      # `nixos` and `generic` have no platform extensions today. Add the output
-      # alongside a `platform/` directory when they do.
-      generic.configs = importModules ../generic/psychollama;
+      generic.configs = import-tree ../generic/psychollama;
 
       editor = {
-        platform = importModules ../editor/platform;
-        configs = importModules ../editor/psychollama;
+        platform = import-tree ../editor/platform;
+        configs = import-tree ../editor/psychollama;
       };
 
       homeManager = {
-        platform = importModules ../homeManager/platform;
-        configs = importModules ../homeManager/psychollama;
+        platform = import-tree ../homeManager/platform;
+        configs = import-tree ../homeManager/psychollama;
       };
 
-      nixos.configs = importModules ../nixos/psychollama;
+      nixos.configs = import-tree ../nixos/psychollama;
     };
 
     nixosConfigurations = lib.dotfiles.hosts.nixos {

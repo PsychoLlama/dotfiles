@@ -34,7 +34,7 @@ Inside `modules/<class>/psychollama/`:
 - `presets/` — single-program opinionated configs.
 - `profiles/` — groupings of presets.
 
-Module options mirror the directory structure: `psychollama.presets.programs.foo` lives at `psychollama/presets/programs/foo.mod.nix` (or `foo/default.mod.nix`).
+Module options mirror the directory structure: `psychollama.presets.programs.foo` lives at `psychollama/presets/programs/foo.nix` (or `foo/default.nix`).
 
 ## Conventions
 
@@ -80,5 +80,5 @@ All programs are declaratively managed. When changing configuration for a progra
 - Use `nix eval` to verify settings are applied correctly when refactoring.
 - `git add --intent-to-add` new files before Nix can discover them.
 - Nix modules in this repo are discovered and imported automatically. No `imports` needed.
-- Only `*.mod.nix` files under `modules/<class>/` are imported as modules. Name a module file with the `.mod.nix` suffix (including `default.mod.nix` for directory entrypoints), or it won't be picked up.
-- Plain `.nix` files are free to be helpers, data, or libraries — `import` them explicitly where needed.
+- Every `.nix` file under `modules/<class>/` is imported as a module. Just drop the file in.
+- Helpers, data, and libraries opt out with an `_` prefix (`_auto-format.nix`), which import-tree ignores. `import` them explicitly where needed.
