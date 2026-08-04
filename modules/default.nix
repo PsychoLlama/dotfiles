@@ -1,3 +1,5 @@
+{ inputs, ... }:
+
 {
-  imports = [ ./flake ];
+  imports = [ (inputs.import-tree ./flake) ];
 }

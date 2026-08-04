@@ -21,7 +21,7 @@ Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, di
 
 - `modules/` — All Nix modules, one directory per class. `flake.nix` holds inputs only.
   - `flake/` — the flake's own outputs (packages, shell, overlays, templates).
-    - `hosts/` — Den host and user entities. `common.nix` holds the aspects every host and user inherits; `<host>/` holds machine-specific config.
+    - `hosts/` — Den host and user entities. `common.nix` holds the aspects every host and user inherits; `<host>/` holds machine-specific config. Non-flake modules there are `_`-prefixed and referenced explicitly by the host's `default.nix`.
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
   - `homeManager/` — Home Manager extensions and presets. Platform extensions live under `platform/programs/` and `platform/services/`.
   - `nixos/` — NixOS-only presets and profiles. No standalone platform extensions today.
@@ -80,5 +80,5 @@ All programs are declaratively managed. When changing configuration for a progra
 - Use `nix eval` to verify settings are applied correctly when refactoring.
 - `git add --intent-to-add` new files before Nix can discover them.
 - Nix modules in this repo are discovered and imported automatically. No `imports` needed.
-- Every `.nix` file under `modules/<class>/` is imported as a module. Just drop the file in.
+- Every `.nix` file under `modules/` is imported as a module — `modules/flake/` included. Just drop the file in.
 - Helpers, data, and libraries opt out with an `_` prefix (`_auto-format.nix`), which import-tree ignores. `import` them explicitly where needed.

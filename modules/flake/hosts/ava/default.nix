@@ -1,48 +1,22 @@
-{ lib, ... }:
+{ inputs, den, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  den.aspects.ava.nixos.imports = [
+    inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
+    inputs.nixpkgs.nixosModules.notDetected
+    ./_system.nix
+  ];
 
-  config = {
-    boot.loader.systemd-boot = {
-      enable = true;
-      configurationLimit = 5;
-    };
+  den.aspects.overlord = {
+    includes = [ den.batteries.primary-user ];
+  }
+  // import ./_overlord.nix;
 
-    # fprintd doesn't play well with swaylock's pam module. It effectively
-    # disables password input.
-    services.fprintd.enable = lib.mkForce false;
-
-    hardware.keyboard.qmk = {
-      enable = true;
-      keychronSupport = true;
-    };
-
-    networking = {
-      networkmanager.enable = true;
-      hostId = "daf96cd8"; # Random. Required by the ZFS pool.
-    };
-
-    psychollama = {
-      identity = {
-        username = "overlord";
-        name = "Jesse Gibson";
-        email = "JesseTheGibson@gmail.com";
-      };
-
-      trusted-directories = [
-        "~/projects/psychollama"
-        "~/projects/@scratch"
-        "~/projects/retreon"
-        "~/projects/ambient-computer"
-      ];
-
-      profiles = {
-        full.enable = true;
-        home-lab-admin.enable = true;
-      };
-    };
-
-    system.stateVersion = "20.09";
+  den.hosts.x86_64-linux.ava = {
+    # `user` manages the OS account, `homeManager` the home directory.
+    users.overlord.classes = [
+      "user"
+      "homeManager"
+    ];
   };
 }
