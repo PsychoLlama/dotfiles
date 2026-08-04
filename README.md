@@ -21,7 +21,7 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
 ## Structure
 
 - `hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized.
-- `modules/`: [flake-parts](https://flake.parts/) modules defining this flake's outputs.
+- `modules/`: [flake-parts](https://flake.parts/) modules. `modules/flake/` defines this flake's outputs.
 - `platforms/`: Modules extending other platforms with new programs and services. Many of these could be upstreamed.
   - [`home-manager/`](https://github.com/nix-community/home-manager)
   - [`nixos/`](https://nixos.org/)

@@ -20,7 +20,8 @@ Hosts (`hosts/`) hold machine-specific settings only (hardware, disk, display). 
 ## Directory Structure
 
 - `hosts/` — Machine-specific configs.
-- `modules/` — flake-parts modules defining the flake outputs. `flake.nix` holds inputs only.
+- `modules/` — flake-parts modules. `flake.nix` holds inputs only.
+  - `flake/` — the flake's own outputs (packages, shell, overlays, templates).
 - `platforms/`
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
   - `home-manager/` — Home Manager extensions and presets. Platform extensions live under `modules/programs/` and `modules/services/`.

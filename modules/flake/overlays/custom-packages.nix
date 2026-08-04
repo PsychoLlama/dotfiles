@@ -4,10 +4,10 @@
     # Custom packages live under their own namespace so they never shadow (or get
     # shadowed by) upstream attributes on `pkgs.*`/`pkgs.unstable.*`.
     custom = (prev.custom or { }) // {
-      chrome-devtools-mcp = final.callPackage ../../pkgs/chrome-devtools-mcp { };
-      claude-code-bin = final.callPackage ../../pkgs/claude-code { };
-      codex-bin = final.callPackage ../../pkgs/codex { };
-      nvim-rs = final.wrapNeovim (final.callPackage ../../pkgs/nvim-rs { }) { };
+      chrome-devtools-mcp = final.callPackage ../../../pkgs/chrome-devtools-mcp { };
+      claude-code-bin = final.callPackage ../../../pkgs/claude-code { };
+      codex-bin = final.callPackage ../../../pkgs/codex { };
+      nvim-rs = final.wrapNeovim (final.callPackage ../../../pkgs/nvim-rs { }) { };
     };
 
     # The 4.10.0 server bundles open with a CommonJS `require("core-js/...")`

@@ -32,8 +32,8 @@
         # by name without polluting the upstream set.
         custom = (prev.custom or { }) // {
           vimPlugins = extraVimPlugins // {
-            "dotfiles-nvim" = prev.callPackage ../../pkgs/dotfiles.nvim { };
-            "note-nvim" = prev.callPackage ../../pkgs/note.nvim { };
+            "dotfiles-nvim" = prev.callPackage ../../../pkgs/dotfiles.nvim { };
+            "note-nvim" = prev.callPackage ../../../pkgs/note.nvim { };
             "alternaut-nvim" = inputs'.alternaut-nvim.packages.default;
             "deja-view-nvim" = inputs'.deja-view-nvim.packages.default;
             "gutenberg-nvim" = inputs'.gutenberg-nvim.packages.default;
