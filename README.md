@@ -21,13 +21,14 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
 ## Structure
 
 - `hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized.
-- `modules/`: [flake-parts](https://flake.parts/) modules. `modules/flake/` defines this flake's outputs.
-- `platforms/`: Modules extending other platforms with new programs and services. Many of these could be upstreamed.
-  - [`home-manager/`](https://github.com/nix-community/home-manager)
+- `modules/`: All Nix modules, one directory per class. `modules/flake/` defines this flake's [flake-parts](https://flake.parts/) outputs.
+  - [`homeManager/`](https://github.com/nix-community/home-manager)
   - [`nixos/`](https://nixos.org/)
   - `editor/` (My equivalent of [nixvim](https://nix-community.github.io/nixvim/). Self-contained, no `~/.config` files.)
-- `platforms/*/modules/presets/`: Opinionated config for a specific program or service.
-- `platforms/*/modules/profiles/`: Groupings of presets.
+  - `generic/`: Cross-platform options shared by every substrate.
+- `modules/*/platform/`: Modules extending other platforms with new programs and services. Many of these could be upstreamed.
+- `modules/*/psychollama/presets/`: Opinionated config for a specific program or service.
+- `modules/*/psychollama/profiles/`: Groupings of presets.
 
 ## Composition
 
@@ -38,7 +39,7 @@ Modules are divided into **platforms** and **configs**.
 - `dotfiles.modules.<class>.platform`: Extends platforms with new programs, services, and DSLs.
 - `dotfiles.modules.<class>.configs`: Opinionated configurations for programs and services.
 
-Where `<class>` is `nixos`, `homeManager`, or `editor`. Cross-platform options live in `dotfiles.modules.generic.universal`.
+Where `<class>` is `nixos`, `homeManager`, or `editor`. Cross-platform options live in `dotfiles.modules.generic.configs`.
 
 Configs are available under the `psychollama.*` namespace.
 

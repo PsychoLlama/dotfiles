@@ -98,7 +98,7 @@ let
           modules = [
             self.modules.editor.platform
             self.modules.editor.configs
-            self.modules.generic.universal
+            self.modules.generic.configs
 
             {
               # Inherit trusted directories from the home-manager platform; the
@@ -125,7 +125,7 @@ let
           agenix.homeManagerModules.default
           self.modules.homeManager.platform
           self.modules.homeManager.configs
-          self.modules.generic.universal
+          self.modules.generic.configs
           editor-program
 
           {
@@ -154,9 +154,8 @@ in
       modules = modules ++ [
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager
-        self.modules.nixos.platform
         self.modules.nixos.configs
-        self.modules.generic.universal
+        self.modules.generic.configs
 
         nixpkgs-config
         nix-flakes

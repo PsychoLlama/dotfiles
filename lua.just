@@ -3,11 +3,11 @@ set indentation := "  "
 
 # Run luacheck on all Lua files.
 lint:
-  luacheck pkgs platforms
+  luacheck pkgs modules
 
 # Run Lua unit tests with vusted.
 test:
-  vusted pkgs platforms
+  vusted pkgs modules
 
 # Run lua-language-server type checks.
 typecheck:

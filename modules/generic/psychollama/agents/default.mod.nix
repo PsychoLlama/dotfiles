@@ -6,7 +6,7 @@
 # no program and writes no files. Each agent preset reads `psychollama.agents.*`
 # and decides how to render it into its own native shape.
 #
-# Defined in `universal` because it's the only module set evaluated inside every
+# Defined in `generic` because it's the only module set evaluated inside every
 # substrate, so both the codex preset (NixOS) and the claude-code preset (Home
 # Manager) read the same values with no bridge.
 

@@ -6,9 +6,6 @@ let
   # Modules opt in with a `.mod.nix` suffix. Plain `.nix` files are free to be
   # helpers, data, or libraries.
   importModules = inputs.import-tree.filter (lib.hasSuffix ".mod.nix");
-
-  # The opinionated `psychollama.*` configs are exposed separately.
-  importPlatform = importModules.filterNot (lib.hasInfix "/psychollama/");
 in
 
 {
@@ -42,22 +39,21 @@ in
     lib = lib.dotfiles;
 
     modules = {
-      generic.universal = importModules ../../platforms/universal/modules;
+      # `nixos` and `generic` have no platform extensions today. Add the output
+      # alongside a `platform/` directory when they do.
+      generic.configs = importModules ../generic/psychollama;
 
       editor = {
-        platform = importPlatform ../../platforms/editor/modules;
-        configs = importModules ../../platforms/editor/modules/psychollama;
+        platform = importModules ../editor/platform;
+        configs = importModules ../editor/psychollama;
       };
 
       homeManager = {
-        platform = importPlatform ../../platforms/home-manager/modules;
-        configs = importModules ../../platforms/home-manager/modules/psychollama;
+        platform = importModules ../homeManager/platform;
+        configs = importModules ../homeManager/psychollama;
       };
 
-      nixos = {
-        platform = importPlatform ../../platforms/nixos/modules;
-        configs = importModules ../../platforms/nixos/modules/psychollama;
-      };
+      nixos.configs = importModules ../nixos/psychollama;
     };
 
     nixosConfigurations = lib.dotfiles.hosts.nixos {

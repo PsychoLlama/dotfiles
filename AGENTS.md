@@ -11,26 +11,25 @@ Each platform exposes two flake-output modules:
 - `modules.<class>.platform` — new programs, services, and DSLs extending the platform. Keep opinions out; these should be upstreamable.
 - `modules.<class>.configs` — opinionated configurations under the `psychollama.*` namespace.
 
-Classes are `nixos`, `homeManager`, and `editor`. Cross-platform modules live under `generic` (`modules.generic.universal`), which declares no class and imports anywhere. The module system enforces the rest.
+Classes are `nixos`, `homeManager`, and `editor`. Cross-platform modules live under `generic` (`modules.generic.configs`), which declares no class and imports anywhere. The module system enforces the rest.
 
-On disk the split is by subdirectory: `platforms/<platform>/modules/psychollama/` is the configs side; everything else under `modules/` is the platform side.
+On disk the split is by subdirectory: `modules/<class>/psychollama/` is the configs side, `modules/<class>/platform/` is the platform side. A directory is omitted when the class has nothing on that side (`nixos` and `generic` have no platform extensions today).
 
 Hosts (`hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
 
 ## Directory Structure
 
 - `hosts/` — Machine-specific configs.
-- `modules/` — flake-parts modules. `flake.nix` holds inputs only.
+- `modules/` — All Nix modules, one directory per class. `flake.nix` holds inputs only.
   - `flake/` — the flake's own outputs (packages, shell, overlays, templates).
-- `platforms/`
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
-  - `home-manager/` — Home Manager extensions and presets. Platform extensions live under `modules/programs/` and `modules/services/`.
+  - `homeManager/` — Home Manager extensions and presets. Platform extensions live under `platform/programs/` and `platform/services/`.
   - `nixos/` — NixOS-only presets and profiles. No standalone platform extensions today.
-  - `universal/` — Cross-platform options (`identity`, `theme`) consumed by every system substrate.
+  - `generic/` — Cross-platform options (`identity`, `theme`) consumed by every system substrate.
 - `lib/` — Nix utilities (system builders, module discovery).
 - `pkgs/` — Custom package derivations.
 
-Inside `platforms/<platform>/modules/psychollama/`:
+Inside `modules/<class>/psychollama/`:
 
 - `presets/` — single-program opinionated configs.
 - `profiles/` — groupings of presets.
@@ -54,13 +53,13 @@ Module options mirror the directory structure: `psychollama.presets.programs.foo
 
 ## Editor
 
-Self-contained neovim framework in `platforms/editor/`. No `~/.config` files.
+Self-contained neovim framework in `modules/editor/`. No `~/.config` files.
 
-- `modules/` — plugin system, LSP configuration, settings schema.
+- `platform/` — plugin system, LSP configuration, settings schema.
 - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
 - `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.
 
-Plugin presets live under `modules/psychollama/presets/plugins/`; LSP servers under `modules/psychollama/presets/lsp/servers/`.
+Plugin presets live under `psychollama/presets/plugins/`; LSP servers under `psychollama/presets/lsp/servers/`.
 
 ### Working with Neovim
 
@@ -81,5 +80,5 @@ All programs are declaratively managed. When changing configuration for a progra
 - Use `nix eval` to verify settings are applied correctly when refactoring.
 - `git add --intent-to-add` new files before Nix can discover them.
 - Nix modules in this repo are discovered and imported automatically. No `imports` needed.
-- Only `*.mod.nix` files under `platforms/` are imported as modules. Name a module file with the `.mod.nix` suffix (including `default.mod.nix` for directory entrypoints), or it won't be picked up.
+- Only `*.mod.nix` files under `modules/<class>/` are imported as modules. Name a module file with the `.mod.nix` suffix (including `default.mod.nix` for directory entrypoints), or it won't be picked up.
 - Plain `.nix` files are free to be helpers, data, or libraries — `import` them explicitly where needed.
