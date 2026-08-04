@@ -123,6 +123,10 @@ in
         XF86AudioRaiseVolume = "exec ${pamixer} --increase 10";
       };
 
+      # Grouped keyboards forward keys via a shared device, leaking any
+      # `--input-device` binding through to the focused window.
+      seat."*".keyboard_grouping = "none";
+
       input = {
         "type:touchpad" = {
           natural_scroll = "enabled";
