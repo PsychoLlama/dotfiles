@@ -55,7 +55,10 @@
 
     teleport-vim = {
       url = "github:PsychoLlama/teleport.vim";
-      flake = false;
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
     };
 
     agenix = {

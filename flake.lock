@@ -266,13 +266,20 @@
       }
     },
     "teleport-vim": {
-      "flake": false,
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
       "locked": {
-        "lastModified": 1607511129,
-        "narHash": "sha256-rz1zU8UhMQqRGlrVHvs+KuDECh042hKjSMGKPIGgGxY=",
+        "lastModified": 1785869654,
+        "narHash": "sha256-3Hmyw90V1K1bygZ4uUO7ezT8rbNAkKnETBl+XusdXTg=",
         "owner": "PsychoLlama",
         "repo": "teleport.vim",
-        "rev": "5cc0369a8cb5f6568fb65ad100fbf4de5cfc5514",
+        "rev": "4b2d1dfe37f96931c60d3578d3fe21f3747b658f",
         "type": "github"
       },
       "original": {
