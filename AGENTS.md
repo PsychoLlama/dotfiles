@@ -15,18 +15,18 @@ Classes are `nixos`, `homeManager`, and `editor`. Cross-platform modules live un
 
 On disk the split is by subdirectory: `modules/<class>/psychollama/` is the configs side, `modules/<class>/platform/` is the platform side. A directory is omitted when the class has nothing on that side (`nixos` and `generic` have no platform extensions today).
 
-Hosts (`hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
+Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
 
 ## Directory Structure
 
-- `hosts/` — Machine-specific configs.
 - `modules/` — All Nix modules, one directory per class. `flake.nix` holds inputs only.
   - `flake/` — the flake's own outputs (packages, shell, overlays, templates).
+    - `hosts/` — Den host entities. `common.nix` is the aspect every host inherits; `<host>/` holds machine-specific config.
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
   - `homeManager/` — Home Manager extensions and presets. Platform extensions live under `platform/programs/` and `platform/services/`.
   - `nixos/` — NixOS-only presets and profiles. No standalone platform extensions today.
   - `generic/` — Cross-platform options (`identity`, `theme`) consumed by every system substrate.
-- `lib/` — Nix utilities (system builders, module discovery).
+- `lib/` — Nix utilities (`buildEditor`).
 - `pkgs/` — Custom package derivations.
 
 Inside `modules/<class>/psychollama/`:

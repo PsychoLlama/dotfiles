@@ -10,7 +10,7 @@ in
     inputs.flake-parts.flakeModules.modules
 
     ./den.nix
-    ./hosts.nix
+    ./hosts
     ./overlays
     ./packages.nix
     ./shell.nix

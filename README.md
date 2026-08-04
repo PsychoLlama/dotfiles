@@ -20,8 +20,8 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
 
 ## Structure
 
-- `hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized.
 - `modules/`: All Nix modules, one directory per class. `modules/flake/` defines this flake's [flake-parts](https://flake.parts/) outputs.
+  - `flake/hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized.
   - [`homeManager/`](https://github.com/nix-community/home-manager)
   - [`nixos/`](https://nixos.org/)
   - `editor/` (My equivalent of [nixvim](https://nix-community.github.io/nixvim/). Self-contained, no `~/.config` files.)
