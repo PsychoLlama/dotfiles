@@ -11,6 +11,7 @@
       # Every overlay but this one, which would recurse forever.
       overlays = [
         config.flake.overlays.custom-packages
+        config.flake.overlays.custom-patches
         config.flake.overlays.vim-plugins
       ];
     };

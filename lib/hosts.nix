@@ -29,6 +29,7 @@ let
     overlays = [
       self.overlays.unstable-packages
       self.overlays.custom-packages
+      self.overlays.custom-patches
       self.overlays.vim-plugins
     ];
 

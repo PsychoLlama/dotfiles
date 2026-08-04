@@ -1,0 +1,18 @@
+{
+  # Patches and overrides for broken upstream packages.
+  flake.overlays.custom-patches = final: prev: {
+    # The 4.10.0 server bundles open with a CommonJS `require("core-js/...")`
+    # prelude but also contain an `import.meta` shim further down. Node's module
+    # auto-detection sees `import.meta`, loads each *ServerMain.js as ESM, and the
+    # bare top-level `require` is then undefined — so every language server
+    # (json/jsonc/json5, css, html, eslint) exits 1 the moment it starts. Define
+    # an ESM-scope `require` via `createRequire` so the prelude resolves.
+    vscode-langservers-extracted = prev.vscode-langservers-extracted.overrideAttrs (old: {
+      postInstall = (old.postInstall or "") + ''
+        for main in "$out"/lib/node_modules/vscode-langservers-extracted/lib/*/node/*ServerMain.js; do
+          sed -i '1i import { createRequire as __nixCreateRequire } from "module"; const require = __nixCreateRequire(import.meta.url);' "$main"
+        done
+      '';
+    });
+  };
+}

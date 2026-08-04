@@ -25,6 +25,7 @@ in
         overlays = [
           config.flake.overlays.unstable-packages
           config.flake.overlays.custom-packages
+          config.flake.overlays.custom-patches
           config.flake.overlays.vim-plugins
         ];
       };
