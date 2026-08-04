@@ -9,13 +9,13 @@ let
   inherit (config.psychollama) agents;
   cfg = config.psychollama.presets.programs.codex;
 
-  trustedDirectoriesHook = pkgs.callPackage ./hooks/trusted-directories.nix {
+  trustedDirectoriesHook = pkgs.callPackage ./hooks/_trusted-directories.nix {
     directories = config.psychollama.trusted-directories;
   };
 
-  localInstructionsHook = pkgs.callPackage ./hooks/local-instructions.nix { };
+  localInstructionsHook = pkgs.callPackage ./hooks/_local-instructions.nix { };
 
-  autoFormatHook = pkgs.callPackage ./hooks/auto-format.nix { };
+  autoFormatHook = pkgs.callPackage ./hooks/_auto-format.nix { };
 
   # A `hooks.SessionStart` matcher group that runs one command hook.
   commandHook = command: {
