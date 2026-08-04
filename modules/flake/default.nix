@@ -10,6 +10,7 @@ in
     inputs.flake-parts.flakeModules.modules
 
     ./den.nix
+    ./hosts.nix
     ./overlays
     ./packages.nix
     ./shell.nix
@@ -53,14 +54,6 @@ in
       };
 
       nixos.configs = import-tree ../nixos/psychollama;
-    };
-
-    nixosConfigurations = lib.dotfiles.hosts.nixos {
-      ava = [
-        inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
-        inputs.nixpkgs.nixosModules.notDetected
-        ../../hosts/ava
-      ];
     };
   };
 }

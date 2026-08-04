@@ -148,22 +148,25 @@ let
 in
 
 {
-  nixos = lib.mapAttrs (
-    hostName: modules:
-    lib.nixosSystem {
-      modules = modules ++ [
-        agenix.nixosModules.default
-        home-manager.nixosModules.home-manager
-        self.modules.nixos.configs
-        self.modules.generic.configs
+  # Curried for Den's `host.instantiate`, which calls it with `{ modules }`.
+  nixos =
+    hostName: args:
+    lib.nixosSystem (
+      args
+      // {
+        modules = args.modules ++ [
+          agenix.nixosModules.default
+          home-manager.nixosModules.home-manager
+          self.modules.nixos.configs
+          self.modules.generic.configs
 
-        nixpkgs-config
-        nix-flakes
-        hm-substrate
-        configuration-revision
+          nixpkgs-config
+          nix-flakes
+          hm-substrate
+          configuration-revision
 
-        (manage-system-name hostName)
-      ];
-    }
-  );
+          (manage-system-name hostName)
+        ];
+      }
+    );
 }
