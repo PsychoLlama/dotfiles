@@ -8,6 +8,7 @@ in
   imports = [
     inputs.flake-parts.flakeModules.modules
 
+    ./overlays
     ./packages.nix
     ./shell.nix
     ./templates.nix
@@ -20,7 +21,12 @@ in
     {
       _module.args.pkgs = import inputs.nixpkgs {
         inherit system;
-        overlays = lib.attrValues config.flake.overlays;
+
+        overlays = [
+          config.flake.overlays.unstable-packages
+          config.flake.overlays.custom-packages
+          config.flake.overlays.vim-plugins
+        ];
       };
     };
 
@@ -78,12 +84,6 @@ in
           };
         };
       };
-    };
-
-    overlays = {
-      latest-packages = import ../lib/overlays/latest-packages.nix inputs;
-      packages = import ../lib/overlays/packages.nix inputs;
-      vim-plugins = import ../lib/overlays/vim-plugins.nix inputs;
     };
 
     nixosConfigurations = lib.dotfiles.hosts.nixos {

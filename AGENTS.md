@@ -26,7 +26,7 @@ Hosts (`hosts/`) hold machine-specific settings only (hardware, disk, display). 
   - `home-manager/` — Home Manager extensions and presets. Platform extensions live under `modules/programs/` and `modules/services/`.
   - `nixos/` — NixOS-only presets and profiles. No standalone platform extensions today.
   - `universal/` — Cross-platform options (`identity`, `theme`) consumed by every system substrate.
-- `lib/` — Nix utilities (system builders, module discovery, overlays).
+- `lib/` — Nix utilities (system builders, module discovery).
 - `pkgs/` — Custom package derivations.
 
 Inside `platforms/<platform>/modules/psychollama/`:
