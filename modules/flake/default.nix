@@ -2,6 +2,13 @@
 
 let
   lib = import ../../lib inputs;
+
+  # Modules opt in with a `.mod.nix` suffix. Plain `.nix` files are free to be
+  # helpers, data, or libraries.
+  importModules = inputs.import-tree.filter (lib.hasSuffix ".mod.nix");
+
+  # The opinionated `psychollama.*` configs are exposed separately.
+  importPlatform = importModules.filterNot (lib.hasInfix "/psychollama/");
 in
 
 {
@@ -35,55 +42,21 @@ in
     lib = lib.dotfiles;
 
     modules = {
-      generic.universal = {
-        imports = lib.dotfiles.discoverNixFiles {
-          directory = ../../platforms/universal/modules;
-        };
-      };
+      generic.universal = importModules ../../platforms/universal/modules;
 
       editor = {
-        platform = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ../../platforms/editor/modules;
-            exclude = [ ../../platforms/editor/modules/psychollama ];
-          };
-        };
-
-        configs = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ../../platforms/editor/modules/psychollama;
-          };
-        };
+        platform = importPlatform ../../platforms/editor/modules;
+        configs = importModules ../../platforms/editor/modules/psychollama;
       };
 
       homeManager = {
-        platform = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ../../platforms/home-manager/modules;
-            exclude = [ ../../platforms/home-manager/modules/psychollama ];
-          };
-        };
-
-        configs = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ../../platforms/home-manager/modules/psychollama;
-          };
-        };
+        platform = importPlatform ../../platforms/home-manager/modules;
+        configs = importModules ../../platforms/home-manager/modules/psychollama;
       };
 
       nixos = {
-        platform = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ../../platforms/nixos/modules;
-            exclude = [ ../../platforms/nixos/modules/psychollama ];
-          };
-        };
-
-        configs = {
-          imports = lib.dotfiles.discoverNixFiles {
-            directory = ../../platforms/nixos/modules/psychollama;
-          };
-        };
+        platform = importPlatform ../../platforms/nixos/modules;
+        configs = importModules ../../platforms/nixos/modules/psychollama;
       };
     };
 
