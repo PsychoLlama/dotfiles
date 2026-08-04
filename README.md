@@ -21,6 +21,7 @@ This repo only manages my workstations. Servers live in [home-lab](https://githu
 ## Structure
 
 - `hosts/`: Machine-specific configs. They manage hardware, disk formats, or anything that can't be generalized.
+- `modules/`: [flake-parts](https://flake.parts/) modules defining this flake's outputs.
 - `platforms/`: Modules extending other platforms with new programs and services. Many of these could be upstreamed.
   - [`home-manager/`](https://github.com/nix-community/home-manager)
   - [`nixos/`](https://nixos.org/)
@@ -34,8 +35,10 @@ Everything in this repo can be used piecemeal in other flakes. Modules have no s
 
 Modules are divided into **platforms** and **configs**.
 
-- `dotfiles.nixosModules.*-platform`: Extends platforms with new programs, services, and DSLs.
-- `dotfiles.nixosModules.*-config`: Opinionated configurations for programs and services.
+- `dotfiles.modules.<class>.platform`: Extends platforms with new programs, services, and DSLs.
+- `dotfiles.modules.<class>.configs`: Opinionated configurations for programs and services.
+
+Where `<class>` is `nixos`, `homeManager`, or `editor`. Cross-platform options live in `dotfiles.modules.generic.universal`.
 
 Configs are available under the `psychollama.*` namespace.
 
@@ -52,10 +55,10 @@ You can try my editor without installing it because it's built as a standalone p
 nix run 'github:PsychoLlama/dotfiles#editor' ./
 ```
 
-You can also build your own variant. It has access to all options from `nixosModules.editor-platform`.
+You can also build your own variant. It has access to all options from `modules.editor.platform`.
 
 ```nix
-flake.lib.dotfiles.buildEditor {
+flake.lib.buildEditor {
   inherit pkgs;
   modules = [ ];
 }

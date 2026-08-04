@@ -19,10 +19,11 @@
 
 let
   mod = pkgs.lib.modules.evalModules {
+    class = "editor";
     modules = modules ++ [
       { _module.args.pkgs = pkgs; }
-      self.nixosModules.editor-platform
-      self.nixosModules.universal-platform
+      self.modules.editor.platform
+      self.modules.generic.universal
     ];
   };
 in

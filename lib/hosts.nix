@@ -88,14 +88,16 @@ let
         description = "Configure and install Neovim";
         default = { };
         type = lib.types.submoduleWith {
+          class = "editor";
+
           specialArgs = {
             inherit pkgs;
           };
 
           modules = [
-            self.nixosModules.editor-platform
-            self.nixosModules.editor-configs
-            self.nixosModules.universal-platform
+            self.modules.editor.platform
+            self.modules.editor.configs
+            self.modules.generic.universal
 
             {
               # Inherit trusted directories from the home-manager platform; the
@@ -120,9 +122,9 @@ let
         # Add custom dotfiles modules to the HM framework.
         sharedModules = [
           agenix.homeManagerModules.default
-          self.nixosModules.home-manager-platform
-          self.nixosModules.home-manager-configs
-          self.nixosModules.universal-platform
+          self.modules.homeManager.platform
+          self.modules.homeManager.configs
+          self.modules.generic.universal
           editor-program
 
           {
@@ -151,9 +153,9 @@ in
       modules = modules ++ [
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager
-        self.nixosModules.nixos-platform
-        self.nixosModules.nixos-configs
-        self.nixosModules.universal-platform
+        self.modules.nixos.platform
+        self.modules.nixos.configs
+        self.modules.generic.universal
 
         nixpkgs-config
         nix-flakes

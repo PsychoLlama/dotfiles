@@ -8,8 +8,10 @@ This flake is consumed by other flakes. Everything must be changeable, disableab
 
 Each platform exposes two flake-output modules:
 
-- `nixosModules.<platform>-platform` — new programs, services, and DSLs extending the platform. Keep opinions out; these should be upstreamable.
-- `nixosModules.<platform>-configs` — opinionated configurations under the `psychollama.*` namespace.
+- `modules.<class>.platform` — new programs, services, and DSLs extending the platform. Keep opinions out; these should be upstreamable.
+- `modules.<class>.configs` — opinionated configurations under the `psychollama.*` namespace.
+
+Classes are `nixos`, `homeManager`, and `editor`. Cross-platform modules live under `generic` (`modules.generic.universal`), which declares no class and imports anywhere. The module system enforces the rest.
 
 On disk the split is by subdirectory: `platforms/<platform>/modules/psychollama/` is the configs side; everything else under `modules/` is the platform side.
 
@@ -18,6 +20,7 @@ Hosts (`hosts/`) hold machine-specific settings only (hardware, disk, display). 
 ## Directory Structure
 
 - `hosts/` — Machine-specific configs.
+- `modules/` — flake-parts modules defining the flake outputs. `flake.nix` holds inputs only.
 - `platforms/`
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
   - `home-manager/` — Home Manager extensions and presets. Platform extensions live under `modules/programs/` and `modules/services/`.
@@ -26,7 +29,7 @@ Hosts (`hosts/`) hold machine-specific settings only (hardware, disk, display). 
 - `lib/` — Nix utilities (system builders, module discovery, overlays).
 - `pkgs/` — Custom package derivations.
 
-Inside `modules/psychollama/`:
+Inside `platforms/<platform>/modules/psychollama/`:
 
 - `presets/` — single-program opinionated configs.
 - `profiles/` — groupings of presets.
