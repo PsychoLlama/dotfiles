@@ -9,7 +9,6 @@ let
   inherit (config.flake) modules overlays;
   inherit (inputs)
     agenix
-    home-manager
     nixpkgs-unstable
     self
     ;
@@ -58,7 +57,7 @@ in
 
 {
   den.schema.host.includes = [
-    den.aspects.common
+    den.aspects.common-host
     den.batteries.hostname
 
     # TODO: Move into respective program aspects once they exist.
@@ -69,19 +68,15 @@ in
     ])
   ];
 
+  den.schema.user.includes = [ den.aspects.common-user ];
+
   # Base configuration every host inherits.
-  den.aspects.common.nixos =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+  den.aspects.common-host.nixos =
+    { lib, pkgs, ... }:
 
     {
       imports = [
         agenix.nixosModules.default
-        home-manager.nixosModules.home-manager
         modules.nixos.configs
         modules.generic.configs
       ];
@@ -120,32 +115,36 @@ in
         };
       };
 
+      # Den imports the home-manager module itself; these are just preferences.
       home-manager = {
         useGlobalPkgs = lib.mkDefault true;
         useUserPackages = lib.mkDefault true;
-
-        # Add custom dotfiles modules to the HM framework.
-        sharedModules = [
-          agenix.homeManagerModules.default
-          modules.homeManager.platform
-          modules.homeManager.configs
-          modules.generic.configs
-          editor-program
-
-          {
-            # Inherit theme config from host platform.
-            theme = {
-              name = lib.mkDefault config.theme.name;
-              palettes = lib.mkDefault config.theme.palettes;
-            };
-
-            # Inherit identity from host platform.
-            psychollama.identity = lib.mapAttrs (_: lib.mkDefault) config.psychollama.identity;
-
-            # Inherit trusted directories from host platform.
-            psychollama.trusted-directories = lib.mkDefault config.psychollama.trusted-directories;
-          }
-        ];
       };
+    };
+
+  # Base configuration every user inherits.
+  den.aspects.common-user.homeManager =
+    { lib, osConfig, ... }:
+
+    {
+      imports = [
+        agenix.homeManagerModules.default
+        modules.homeManager.platform
+        modules.homeManager.configs
+        modules.generic.configs
+        editor-program
+      ];
+
+      # Inherit theme config from host platform.
+      theme = {
+        name = lib.mkDefault osConfig.theme.name;
+        palettes = lib.mkDefault osConfig.theme.palettes;
+      };
+
+      # Inherit identity from host platform.
+      psychollama.identity = lib.mapAttrs (_: lib.mkDefault) osConfig.psychollama.identity;
+
+      # Inherit trusted directories from host platform.
+      psychollama.trusted-directories = lib.mkDefault osConfig.psychollama.trusted-directories;
     };
 }

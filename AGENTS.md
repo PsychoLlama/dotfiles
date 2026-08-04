@@ -21,7 +21,7 @@ Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, di
 
 - `modules/` — All Nix modules, one directory per class. `flake.nix` holds inputs only.
   - `flake/` — the flake's own outputs (packages, shell, overlays, templates).
-    - `hosts/` — Den host entities. `common.nix` is the aspect every host inherits; `<host>/` holds machine-specific config.
+    - `hosts/` — Den host and user entities. `common.nix` holds the aspects every host and user inherits; `<host>/` holds machine-specific config.
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
   - `homeManager/` — Home Manager extensions and presets. Platform extensions live under `platform/programs/` and `platform/services/`.
   - `nixos/` — NixOS-only presets and profiles. No standalone platform extensions today.
