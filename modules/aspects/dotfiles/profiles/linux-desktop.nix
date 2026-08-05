@@ -6,6 +6,8 @@
 {
   dotfiles.profiles.linux-desktop.includes = [
     dotfiles.fonts
+    dotfiles.programs.fuzzel
+    dotfiles.programs.swaylock
     dotfiles.programs.sway
   ];
 }

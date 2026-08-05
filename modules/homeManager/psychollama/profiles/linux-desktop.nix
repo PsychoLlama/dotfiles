@@ -32,13 +32,11 @@ in
         chromium.enable = mkDefault true;
         bemoji.enable = mkDefault true;
         firefox.enable = mkDefault true;
-        fuzzel.enable = mkDefault true;
         grim.enable = mkDefault true;
         pamixer.enable = mkDefault true;
         parted.enable = mkDefault true;
         playerctl.enable = mkDefault true;
         slurp.enable = mkDefault true;
-        swaylock.enable = mkDefault true;
         waybar.enable = mkDefault true;
         wf-recorder.enable = mkDefault true;
         wireplumber.enable = mkDefault true;

@@ -7,5 +7,6 @@
   dotfiles.profiles.full.includes = [
     dotfiles.programs.editor
     dotfiles.programs.git
+    dotfiles.programs.wezterm
   ];
 }
