@@ -16,7 +16,6 @@ in
     };
 
     psychollama.presets = {
-      fonts.enable = true;
       gtk.enable = mkDefault true;
       sound-theme.enable = mkDefault true;
 

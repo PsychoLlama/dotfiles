@@ -11,8 +11,6 @@ in
 
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
-      fonts.enable = lib.mkDefault true;
-
       services = {
         agenix.enable = lib.mkDefault true;
         avahi.enable = lib.mkDefault true;
@@ -40,7 +38,5 @@ in
     # Build the apropos/whatis cache so `man -k` works. Carapace's native `man`
     # completer shells out to apropos, which returns nothing without it.
     documentation.man.cache.enable = lib.mkDefault true;
-
-    fonts.enableDefaultPackages = lib.mkDefault true;
   };
 }

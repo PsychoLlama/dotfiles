@@ -27,7 +27,13 @@ in
     ])
   ];
 
-  den.schema.user.includes = [ den.aspects.common-user ];
+  den.schema.user.includes = [
+    den.aspects.common-user
+
+    # Projects `homeManager` keys from the host's aspect tree onto the user, so
+    # a cross-class aspect can be included once on the host.
+    den.batteries.host-aspects
+  ];
 
   # Base configuration every host inherits.
   den.aspects.common-host.nixos =

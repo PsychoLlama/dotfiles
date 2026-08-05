@@ -7,6 +7,7 @@
   imports = [
     (inputs.import-tree [
       ./den
+      ./dotfiles
       ./flake
       ./hosts
     ])
