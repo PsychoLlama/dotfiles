@@ -6,10 +6,10 @@
 {
   imports = [
     (inputs.import-tree [
+      ./aspects
       ./den
-      ./dotfiles
+      ./den.nix
       ./flake
-      ./hosts
     ])
   ];
 }
