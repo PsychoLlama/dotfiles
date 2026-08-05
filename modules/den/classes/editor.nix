@@ -48,12 +48,11 @@ in
 {
   den.classes.editor.description = "Neovim configuration, nested into home-manager's `programs.editor`";
 
-  den.policies.editor-to-home-manager = _: [
-    (den.lib.policy.provide {
-      class = "homeManager";
-      module = editor-program;
-    })
+  # Declares the option on every user. `policy.provide` resolves once and would
+  # only reach the first.
+  den.aspects.editor-class.homeManager.imports = [ editor-program ];
 
+  den.policies.editor-to-home-manager = _: [
     (den.lib.policy.route {
       fromClass = "editor";
       intoClass = "homeManager";
@@ -64,6 +63,13 @@ in
     })
   ];
 
-  den.schema.user.includes = [ den.policies.editor-to-home-manager ];
-  den.schema.home.includes = [ den.policies.editor-to-home-manager ];
+  den.schema.user.includes = [
+    den.aspects.editor-class
+    den.policies.editor-to-home-manager
+  ];
+
+  den.schema.home.includes = [
+    den.aspects.editor-class
+    den.policies.editor-to-home-manager
+  ];
 }
