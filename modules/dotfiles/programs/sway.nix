@@ -1,5 +1,5 @@
 {
-  dotfiles.sway.nixos = {
+  dotfiles.programs.sway.nixos = {
     programs.sway.enable = true;
 
     # Home-manager generates the real config; suppress the package default.
@@ -9,7 +9,7 @@
     xdg.portal.wlr.enable = true;
   };
 
-  dotfiles.sway.homeManager =
+  dotfiles.programs.sway.homeManager =
     { config, lib, ... }:
 
     let

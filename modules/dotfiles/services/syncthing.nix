@@ -1,5 +1,5 @@
 {
-  dotfiles.syncthing =
+  dotfiles.services.syncthing =
     { user, ... }:
 
     {

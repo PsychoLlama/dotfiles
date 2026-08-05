@@ -5,7 +5,7 @@
 
 {
   dotfiles.profiles.full.includes = [
-    dotfiles.editor
-    dotfiles.git
+    dotfiles.programs.editor
+    dotfiles.programs.git
   ];
 }

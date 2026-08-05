@@ -23,8 +23,8 @@
     includes = [
       den.batteries.primary-user
       dotfiles.home-lab-admin
-      dotfiles.restic
-      dotfiles.syncthing
+      dotfiles.services.restic
+      dotfiles.services.syncthing
     ];
   }
   // import ./_overlord.nix;

@@ -1,5 +1,5 @@
 {
-  dotfiles.git.homeManager =
+  dotfiles.programs.git.homeManager =
     {
       user,
       config,

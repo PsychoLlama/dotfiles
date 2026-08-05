@@ -1,5 +1,5 @@
 {
-  dotfiles.editor = {
+  dotfiles.programs.editor = {
     homeManager =
       { config, ... }:
 

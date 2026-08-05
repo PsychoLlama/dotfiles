@@ -1,5 +1,5 @@
 {
-  dotfiles.restic =
+  dotfiles.services.restic =
     { user, ... }:
 
     {

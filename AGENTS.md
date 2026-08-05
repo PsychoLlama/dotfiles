@@ -21,6 +21,7 @@ Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, di
 
 - `modules/` — All Nix modules. `flake.nix` holds inputs only, and `default.nix` lists the flake-module trees.
   - `den/` — Den wiring: schema, systems, the `dotfiles` namespace, and `classes/` for custom aspect classes.
+  - `dotfiles/` — Den aspects under the `dotfiles.*` namespace. Split into `programs/`, `services/`, and `profiles/`; anything that is neither a program nor a service sits at the root.
   - `flake/` — the flake's own outputs (packages, shell, overlays, templates).
   - `hosts/` — Den host and user entities. `common.nix` holds the aspects every host and user inherits; `<host>/` holds machine-specific config. Non-flake modules there are `_`-prefixed and referenced explicitly by the host's `default.nix`.
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
@@ -36,6 +37,8 @@ Inside `modules/<class>/psychollama/`:
 - `profiles/` — groupings of presets.
 
 Module options mirror the directory structure: `psychollama.presets.programs.foo` lives at `psychollama/presets/programs/foo.nix` (or `foo/default.nix`).
+
+Aspects follow the same rule: `dotfiles.services.syncthing` lives at `modules/dotfiles/services/syncthing.nix`.
 
 ## Conventions
 
