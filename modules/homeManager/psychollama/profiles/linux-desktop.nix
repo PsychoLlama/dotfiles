@@ -23,7 +23,6 @@ in
         dunst.enable = mkDefault true;
         gammastep.enable = mkDefault true;
         swaybg.enable = mkDefault true;
-        swayidle.enable = mkDefault true;
       };
 
       programs = {
@@ -37,7 +36,6 @@ in
         parted.enable = mkDefault true;
         playerctl.enable = mkDefault true;
         slurp.enable = mkDefault true;
-        waybar.enable = mkDefault true;
         wf-recorder.enable = mkDefault true;
         wireplumber.enable = mkDefault true;
         wl-clipboard.enable = mkDefault true;

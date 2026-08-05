@@ -9,5 +9,7 @@
     dotfiles.programs.fuzzel
     dotfiles.programs.swaylock
     dotfiles.programs.sway
+    dotfiles.programs.waybar
+    dotfiles.services.swayidle
   ];
 }

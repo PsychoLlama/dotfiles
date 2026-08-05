@@ -54,7 +54,6 @@ in
     (mkUnstablePreset "termshark")
     (mkUnstablePreset "tmux")
     (mkUnstablePreset "viddy")
-    (mkUnstablePreset "waybar")
     (mkUnstablePreset "wf-recorder")
     (mkUnstablePreset "whois")
     (mkUnstablePreset "wireplumber")
