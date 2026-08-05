@@ -39,7 +39,6 @@ in
     (mkUnstablePreset "fd")
     (mkUnstablePreset "firefox")
     (mkUnstablePreset "fzf")
-    (mkUnstablePreset "git")
     (mkUnstablePreset "glow")
     (mkUnstablePreset "grim")
     (mkUnstablePreset "jq")

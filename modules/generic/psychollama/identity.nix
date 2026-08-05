@@ -1,24 +1,14 @@
 { lib, ... }:
 
-# Personal identity for the system's primary user. Required and shared across
-# platforms; consumed by anything that needs to address or attribute the owner
-# (login user, git, etc).
+# The system's primary user. Real name and email moved to the user entity
+# (`den.schema.user.options.identity`); this remains for NixOS presets that
+# still resolve the primary account by name.
 
 {
   options.psychollama.identity = {
     username = lib.mkOption {
       type = lib.types.str;
       description = "The primary username for the system.";
-    };
-
-    name = lib.mkOption {
-      type = lib.types.str;
-      description = "Real name of the system's owner.";
-    };
-
-    email = lib.mkOption {
-      type = lib.types.str;
-      description = "Email address of the system's owner.";
     };
   };
 }

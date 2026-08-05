@@ -24,11 +24,7 @@
     };
 
     psychollama = {
-      identity = {
-        username = "overlord";
-        name = "Jesse Gibson";
-        email = "JesseTheGibson@gmail.com";
-      };
+      identity.username = "overlord";
 
       trusted-directories = [
         "~/projects/psychollama"

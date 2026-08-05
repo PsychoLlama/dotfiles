@@ -6,5 +6,6 @@
 {
   dotfiles.profiles.full.includes = [
     dotfiles.editor
+    dotfiles.git
   ];
 }

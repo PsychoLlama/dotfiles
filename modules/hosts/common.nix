@@ -105,9 +105,6 @@ in
         palettes = lib.mkDefault osConfig.theme.palettes;
       };
 
-      # Inherit identity from host platform.
-      psychollama.identity = lib.mapAttrs (_: lib.mkDefault) osConfig.psychollama.identity;
-
       # Inherit trusted directories from host platform.
       psychollama.trusted-directories = lib.mkDefault osConfig.psychollama.trusted-directories;
     };

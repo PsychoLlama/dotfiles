@@ -2,10 +2,10 @@
 {
   # Routed to `users.users.overlord`.
   user =
-    { osConfig, ... }:
+    { user, osConfig, ... }:
 
     {
-      description = osConfig.psychollama.identity.name;
+      description = user.identity.name;
       shell = osConfig.home-manager.users.overlord.programs.nushell.package;
       extraGroups = [
         "dialout"
