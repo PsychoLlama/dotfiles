@@ -28,7 +28,6 @@ in
         dix.enable = mkDefault true;
         dive.enable = mkDefault true;
         doggo.enable = mkDefault true;
-        editor.enable = mkDefault true;
         fd.enable = mkDefault true;
         fzf.enable = mkDefault true;
         gh.enable = mkDefault true;

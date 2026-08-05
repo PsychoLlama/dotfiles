@@ -7,7 +7,10 @@
 
 {
   den.aspects.ava = {
-    includes = [ dotfiles.profiles.linux-desktop ];
+    includes = [
+      dotfiles.profiles.full
+      dotfiles.profiles.linux-desktop
+    ];
 
     nixos.imports = [
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
