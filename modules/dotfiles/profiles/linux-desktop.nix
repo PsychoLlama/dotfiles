@@ -6,5 +6,6 @@
 {
   dotfiles.profiles.linux-desktop.includes = [
     dotfiles.fonts
+    dotfiles.sway
   ];
 }

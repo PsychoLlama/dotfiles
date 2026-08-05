@@ -27,7 +27,6 @@ in
       };
 
       programs = {
-        sway.enable = mkDefault true;
         acpi.enable = mkDefault true;
         brightnessctl.enable = mkDefault true;
         chromium.enable = mkDefault true;

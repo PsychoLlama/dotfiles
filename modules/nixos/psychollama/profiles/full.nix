@@ -25,7 +25,6 @@ in
 
       programs = {
         codex.enable = lib.mkDefault true;
-        sway.enable = lib.mkDefault true;
         wireshark.enable = lib.mkDefault true;
       };
     };
