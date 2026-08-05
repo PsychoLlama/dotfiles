@@ -10,10 +10,15 @@
   };
 
   dotfiles.programs.sway.homeManager =
-    { config, lib, ... }:
+    {
+      config,
+      host,
+      lib,
+      ...
+    }:
 
     let
-      theme = config.theme.palette;
+      theme = host.theme.palette;
       swaylock = lib.getExe' config.programs.swaylock.package "swaylock";
       wezterm = lib.getExe' config.programs.wezterm.package "wezterm";
       fuzzel = lib.getExe' config.programs.fuzzel.package "fuzzel";

@@ -97,12 +97,6 @@ in
         modules.generic.configs
       ];
 
-      # Inherit theme config from host platform.
-      theme = {
-        name = lib.mkDefault osConfig.theme.name;
-        palettes = lib.mkDefault osConfig.theme.palettes;
-      };
-
       # Inherit trusted directories from host platform.
       psychollama.trusted-directories = lib.mkDefault osConfig.psychollama.trusted-directories;
     };
