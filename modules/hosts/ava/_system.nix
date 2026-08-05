@@ -24,8 +24,6 @@
     };
 
     psychollama = {
-      identity.username = "overlord";
-
       trusted-directories = [
         "~/projects/psychollama"
         "~/projects/@scratch"
@@ -33,10 +31,7 @@
         "~/projects/ambient-computer"
       ];
 
-      profiles = {
-        full.enable = true;
-        home-lab-admin.enable = true;
-      };
+      profiles.full.enable = true;
     };
 
     system.stateVersion = "20.09";

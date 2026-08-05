@@ -26,7 +26,7 @@ Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, di
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
   - `homeManager/` — Home Manager extensions and presets. Platform extensions live under `platform/programs/` and `platform/services/`.
   - `nixos/` — NixOS-only presets and profiles. No standalone platform extensions today.
-  - `generic/` — Cross-platform options (`identity`, `theme`) consumed by every system substrate.
+  - `generic/` — Cross-platform options (`theme`, `trusted-directories`) consumed by every system substrate.
 - `lib/` — Nix utilities (`buildEditor`).
 - `pkgs/` — Custom package derivations.
 

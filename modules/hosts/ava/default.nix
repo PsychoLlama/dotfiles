@@ -20,7 +20,12 @@
   };
 
   den.aspects.overlord = {
-    includes = [ den.batteries.primary-user ];
+    includes = [
+      den.batteries.primary-user
+      dotfiles.home-lab-admin
+      dotfiles.restic
+      dotfiles.syncthing
+    ];
   }
   // import ./_overlord.nix;
 
