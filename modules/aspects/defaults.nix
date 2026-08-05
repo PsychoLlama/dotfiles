@@ -14,10 +14,16 @@ let
     ;
 in
 
+# Applied to every entity. Den injects `den.default` as a schema include for
+# hosts, users, and homes alike, deduplicating across scopes.
+
 {
-  den.schema.host.includes = [
-    den.aspects.common-host
+  den.default.includes = [
     den.batteries.hostname
+
+    # Projects `homeManager` keys from the host's aspect tree onto users, so a
+    # cross-class aspect can be included once on the host.
+    den.batteries.host-aspects
 
     # TODO: Move into respective program aspects once they exist.
     (den.batteries.unfree [
@@ -27,16 +33,8 @@ in
     ])
   ];
 
-  den.schema.user.includes = [
-    den.aspects.common-user
-
-    # Projects `homeManager` keys from the host's aspect tree onto the user, so
-    # a cross-class aspect can be included once on the host.
-    den.batteries.host-aspects
-  ];
-
   # Base configuration every host inherits.
-  den.aspects.common-host.nixos =
+  den.default.nixos =
     { lib, pkgs, ... }:
 
     {
@@ -88,7 +86,7 @@ in
     };
 
   # Base configuration every user inherits.
-  den.aspects.common-user.homeManager =
+  den.default.homeManager =
     { lib, osConfig, ... }:
 
     {

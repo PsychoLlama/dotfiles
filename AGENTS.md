@@ -22,7 +22,7 @@ Host aspects (`modules/aspects/<host>/`) hold machine-specific settings only (ha
 - `modules/` — All Nix modules. `flake.nix` holds inputs only, and `default.nix` lists the flake-module trees.
   - `den.nix` — Den entity data: which hosts exist, and which users live on them. Aspects live elsewhere.
   - `den/` — Den wiring: schema, systems, the `dotfiles` namespace, and `classes/` for custom aspect classes.
-  - `aspects/` — Every aspect, entity aspects included. `common.nix` holds what every host and user inherits; `<host>/` and `<user>.nix` hold entity-specific config. Non-flake modules are `_`-prefixed and referenced explicitly.
+  - `aspects/` — Every aspect, entity aspects included. `defaults.nix` defines `den.default`, applied to every entity; `<host>/` and `<user>.nix` hold entity-specific config. Non-flake modules are `_`-prefixed and referenced explicitly.
     - `dotfiles/` — Reusable aspects under the `dotfiles.*` namespace. Split into `programs/`, `services/`, and `profiles/`; anything that is neither a program nor a service sits at the root.
   - `flake/` — the flake's own outputs (packages, shell, overlays, templates).
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
