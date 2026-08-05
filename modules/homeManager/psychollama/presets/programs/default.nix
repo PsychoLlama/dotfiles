@@ -61,7 +61,6 @@ in
     (mkUnstablePreset "whois")
     (mkUnstablePreset "wireplumber")
     (mkUnstablePreset "wl-clipboard")
-    (mkUnstablePreset "zathura")
     (mkUnstablePreset "zoxide")
   ];
 }

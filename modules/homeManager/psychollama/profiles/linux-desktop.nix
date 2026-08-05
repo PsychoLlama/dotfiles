@@ -43,7 +43,6 @@ in
         wf-recorder.enable = mkDefault true;
         wireplumber.enable = mkDefault true;
         wl-clipboard.enable = mkDefault true;
-        zathura.enable = mkDefault true;
       };
     };
   };
