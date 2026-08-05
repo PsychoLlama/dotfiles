@@ -12,47 +12,6 @@ let
     nixpkgs-unstable
     self
     ;
-
-  # Provides `programs.editor` (Neovim config).
-  editor-program =
-    {
-      lib,
-      config,
-      pkgs,
-      ...
-    }:
-
-    let
-      cfg = config.programs.editor;
-    in
-
-    {
-      options.programs.editor = lib.mkOption {
-        description = "Configure and install Neovim";
-        default = { };
-        type = lib.types.submoduleWith {
-          class = "editor";
-
-          specialArgs = {
-            inherit pkgs;
-          };
-
-          modules = [
-            modules.editor.platform
-            modules.editor.configs
-            modules.generic.configs
-
-            {
-              # Inherit trusted directories from the home-manager platform; the
-              # editor's own namespace derives `env.trusted` from them.
-              psychollama.trusted-directories = lib.mkDefault config.psychollama.trusted-directories;
-            }
-          ];
-        };
-      };
-
-      config.home.packages = lib.mkIf cfg.enable [ cfg.neovim ];
-    };
 in
 
 {
@@ -132,7 +91,6 @@ in
         modules.homeManager.platform
         modules.homeManager.configs
         modules.generic.configs
-        editor-program
       ];
 
       # Inherit theme config from host platform.

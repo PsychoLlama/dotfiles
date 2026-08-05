@@ -20,7 +20,7 @@ Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, di
 ## Directory Structure
 
 - `modules/` — All Nix modules. `flake.nix` holds inputs only, and `default.nix` lists the flake-module trees.
-  - `den/` — Den wiring: schema, systems, and the `dotfiles` namespace.
+  - `den/` — Den wiring: schema, systems, the `dotfiles` namespace, and `classes/` for custom aspect classes.
   - `flake/` — the flake's own outputs (packages, shell, overlays, templates).
   - `hosts/` — Den host and user entities. `common.nix` holds the aspects every host and user inherits; `<host>/` holds machine-specific config. Non-flake modules there are `_`-prefixed and referenced explicitly by the host's `default.nix`.
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
@@ -61,6 +61,15 @@ Self-contained neovim framework in `modules/editor/`. No `~/.config` files.
 - `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.
 
 Plugin presets live under `psychollama/presets/plugins/`; LSP servers under `psychollama/presets/lsp/servers/`.
+
+`editor` is also a Den class (`modules/den/classes/editor.nix`), so an aspect can configure Neovim beside its other classes:
+
+```nix
+dotfiles.foo = {
+  homeManager.programs.git.enable = true;
+  editor.extraConfig = "-- ...";
+};
+```
 
 ### Working with Neovim
 
