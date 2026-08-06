@@ -27,7 +27,6 @@ in
 
     # TODO: Move into respective program aspects once they exist.
     (den.batteries.unfree [
-      "claude-code" # symlinkJoin wrapper from home-manager
       "claude-code-bin"
       "spotify"
     ])

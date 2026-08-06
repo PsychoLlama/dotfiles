@@ -12,7 +12,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.claude-code.localPlugins.nushell-lsp = {
+    programs.claude-code.plugins.nushell-lsp = {
       description = "Nushell Language Server for Claude Code.";
 
       lsp.servers.nushell = {

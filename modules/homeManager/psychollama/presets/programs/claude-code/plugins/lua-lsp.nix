@@ -49,7 +49,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.claude-code.localPlugins.lua-lsp = {
+    programs.claude-code.plugins.lua-lsp = {
       description = "Lua Language Server for Claude Code.";
 
       lsp.servers.lua = {
