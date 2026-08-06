@@ -21,7 +21,6 @@ in
         bat.enable = mkDefault true;
         bottom.enable = mkDefault true;
         carapace.enable = mkDefault true;
-        claude-code.enable = mkDefault true;
         delta.enable = mkDefault true;
         dictation.enable = mkDefault true;
         direnv.enable = mkDefault true;

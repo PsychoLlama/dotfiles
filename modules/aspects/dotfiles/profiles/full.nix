@@ -5,6 +5,7 @@
 
 {
   dotfiles.profiles.full.includes = [
+    dotfiles.programs.claude-code
     dotfiles.programs.editor
     dotfiles.programs.git
     dotfiles.programs.wezterm

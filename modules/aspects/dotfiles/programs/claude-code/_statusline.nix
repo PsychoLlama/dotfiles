@@ -1,13 +1,6 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 
 let
-  cfg = config.psychollama.presets.programs.claude-code;
-
   nu = lib.getExe pkgs.nushell;
 
   # Own the shebang so we can pass `--stdin` (bind stdin to `$in`, required
@@ -21,10 +14,8 @@ let
 in
 
 {
-  config = lib.mkIf cfg.enable {
-    programs.claude-code.settings.statusLine = {
-      type = "command";
-      command = "${statusline}";
-    };
+  programs.claude-code.settings.statusLine = {
+    type = "command";
+    command = "${statusline}";
   };
 }

@@ -6,8 +6,6 @@
 }:
 
 let
-  cfg = config.psychollama.presets.programs.claude-code;
-
   notify = pkgs.writeShellApplication {
     name = "notify";
     runtimeInputs = [ pkgs.libnotify ];
@@ -32,18 +30,24 @@ let
       notify-send --urgency=normal --icon="$icon" "$title" "$message"
     '';
   };
+
+  # SKILL.md tells the model to run `$CLAUDE_SKILL_DIR/notify`, so the wrapper
+  # has to sit beside it in the skill directory.
+  notifySkill = pkgs.linkFarm "claude-skill-notify" [
+    {
+      name = "SKILL.md";
+      path = ./skills/notify/SKILL.md;
+    }
+    {
+      name = "notify";
+      path = lib.getExe notify;
+    }
+  ];
 in
 
 {
-  # We want the skill directory to bundle SKILL.md alongside the `notify`
-  # wrapper, but home-manager's `programs.claude-code.skills.<name>` accepts
-  # only `lines` or a Nix `path`. Its `lib.isPath` branch rejects derivation
-  # outputs (which are strings), so a `runCommand` that assembles both files
-  # can't go through the option. Wire up `home.file` directly instead.
-  config = lib.mkIf cfg.enable {
-    home.file = {
-      ".claude/skills/notify/SKILL.md".source = ./notify/SKILL.md;
-      ".claude/skills/notify/notify".source = lib.getExe notify;
-    };
+  programs.claude-code.skills = config.psychollama.agents.skills // {
+    codex-review = ./skills/codex-review;
+    notify = notifySkill;
   };
 }

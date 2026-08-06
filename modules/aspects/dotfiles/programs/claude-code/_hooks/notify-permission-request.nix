@@ -1,13 +1,6 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 
 let
-  cfg = config.psychollama.presets.programs.claude-code;
-
   notifyPermissionRequest = pkgs.writeShellApplication {
     name = "notify-permission-request";
     runtimeInputs = [
@@ -32,17 +25,15 @@ let
 in
 
 {
-  config = lib.mkIf cfg.enable {
-    programs.claude-code.settings.hooks.Notification = [
-      {
-        matcher = "permission_prompt";
-        hooks = [
-          {
-            type = "command";
-            command = lib.getExe notifyPermissionRequest;
-          }
-        ];
-      }
-    ];
-  };
+  programs.claude-code.settings.hooks.Notification = [
+    {
+      matcher = "permission_prompt";
+      hooks = [
+        {
+          type = "command";
+          command = lib.getExe notifyPermissionRequest;
+        }
+      ];
+    }
+  ];
 }

@@ -6,7 +6,6 @@
 }:
 
 let
-  cfg = config.psychollama.presets.programs.claude-code;
   direnv = lib.getExe config.programs.direnv.package;
 
   injectDirenv = pkgs.writers.writeDash "inject-direnv" ''
@@ -19,7 +18,7 @@ let
 in
 
 {
-  config = lib.mkIf (cfg.enable && config.programs.direnv.enable) {
+  config = lib.mkIf config.programs.direnv.enable {
     programs.claude-code.settings.hooks.SessionStart = [
       {
         hooks = [
