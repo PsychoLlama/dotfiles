@@ -1,5 +1,14 @@
 { inputs, ... }:
 
+let
+  inherit (inputs) import-tree;
+in
+
 {
-  imports = [ (inputs.import-tree ./flake) ];
+  imports = [
+    (import-tree ./flake)
+    (import-tree ./extensions)
+    (import-tree ./programs)
+    (import-tree ./services)
+  ];
 }

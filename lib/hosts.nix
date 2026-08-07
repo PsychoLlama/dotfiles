@@ -124,6 +124,7 @@ let
           agenix.homeManagerModules.default
           self.modules.homeManager.platform
           self.modules.homeManager.configs
+          self.modules.homeManager.default
           self.modules.generic.configs
           editor-program
 
@@ -154,6 +155,7 @@ in
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager
         self.modules.nixos.configs
+        self.modules.nixos.default
         self.modules.generic.configs
 
         nixpkgs-config
