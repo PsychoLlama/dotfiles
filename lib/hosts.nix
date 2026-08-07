@@ -122,7 +122,6 @@ let
         # Add custom dotfiles modules to the HM framework.
         sharedModules = [
           agenix.homeManagerModules.default
-          self.modules.homeManager.configs
           self.modules.homeManager.default
           self.modules.generic.default
           editor-program
@@ -153,7 +152,6 @@ in
       modules = modules ++ [
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager
-        self.modules.nixos.configs
         self.modules.nixos.default
         self.modules.generic.default
 

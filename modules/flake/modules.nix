@@ -20,16 +20,8 @@ in
       configs = import-tree ../editor/psychollama;
     };
 
-    homeManager = {
-      configs = import-tree ../homeManager/psychollama;
-
-      # Seeded so the output exists when nothing contributes to it.
-      default = { };
-    };
-
-    nixos = {
-      configs = import-tree ../nixos/psychollama;
-      default = { };
-    };
+    # Seeded so the outputs exist when nothing contributes to them.
+    homeManager.default = { };
+    nixos.default = { };
   };
 }
