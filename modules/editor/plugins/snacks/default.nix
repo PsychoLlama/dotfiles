@@ -1,17 +1,6 @@
 {
-  flake.modules.editor.default =
-    { lib, config, ... }:
-
-    let
-      cfg = config.psychollama.presets.plugins.snacks-nvim;
-    in
-
-    {
-      config.plugins.snacks-nvim = lib.mkIf cfg.enable {
-        opts = {
-          input.enabled = true;
-          notifier.enabled = true;
-        };
-      };
-    };
+  flake.modules.editor.default.plugins.snacks-nvim.opts = {
+    input.enabled = true;
+    notifier.enabled = true;
+  };
 }

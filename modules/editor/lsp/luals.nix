@@ -13,11 +13,10 @@
 
     {
       options.psychollama.presets.lsp.servers.luals = {
-        enable = lib.mkEnableOption "Use JSON language server";
         package = lib.mkPackageOption pkgs.unstable "lua-language-server" { };
       };
 
-      config.lsp.servers.luals = lib.mkIf cfg.enable {
+      config.lsp.servers.luals = {
         cmd = [ "${cfg.package}/bin/lua-language-server" ];
         filetypes = [ "lua" ];
         root_markers = [

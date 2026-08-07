@@ -7,12 +7,8 @@
       ...
     }:
 
-    let
-      cfg = config.psychollama.presets.plugins.conform-nvim;
-    in
-
     {
-      config.plugins.conform-nvim = lib.mkIf cfg.enable {
+      config.plugins.conform-nvim = {
         opts = {
           default_format_opts.undojoin = true;
 

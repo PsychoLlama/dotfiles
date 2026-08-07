@@ -13,11 +13,10 @@
 
     {
       options.psychollama.presets.lsp.servers.nil = {
-        enable = lib.mkEnableOption "Use Nil (nix) language server";
         package = lib.mkPackageOption pkgs.unstable "nil" { };
       };
 
-      config.lsp.servers.nil = lib.mkIf cfg.enable {
+      config.lsp.servers.nil = {
         cmd = [ "${cfg.package}/bin/nil" ];
         filetypes = [ "nix" ];
         root_markers = [ "flake.nix" ];

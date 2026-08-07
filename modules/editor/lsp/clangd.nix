@@ -13,11 +13,10 @@
 
     {
       options.psychollama.presets.lsp.servers.clangd = {
-        enable = lib.mkEnableOption "Use clangd language server";
         package = lib.mkPackageOption pkgs.unstable "clang-tools" { };
       };
 
-      config.lsp.servers.clangd = lib.mkIf cfg.enable {
+      config.lsp.servers.clangd = {
         cmd = [ "${cfg.package}/bin/clangd" ];
         root_markers = [ "compile_commands.json" ];
         filetypes = [

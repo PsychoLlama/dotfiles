@@ -1,4 +1,6 @@
 {
+  imports = [ ../editor/profiles/full ];
+
   flake.modules.homeManager.default =
     {
       config,
@@ -22,7 +24,6 @@
       programs.editor = {
         enable = lib.mkDefault true;
         package = lib.mkDefault pkgs.unstable.neovim;
-        psychollama.profiles.full.enable = true;
       };
     };
 }

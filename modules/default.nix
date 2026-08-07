@@ -7,7 +7,7 @@ in
 {
   imports = [
     (import-tree ./flake)
-    (import-tree ./editor)
+    (import-tree ./editor/platform)
     (import-tree ./extensions)
     (import-tree ./profiles)
   ];

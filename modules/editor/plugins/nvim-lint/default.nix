@@ -7,12 +7,8 @@
       ...
     }:
 
-    let
-      cfg = config.psychollama.presets.plugins.nvim-lint;
-    in
-
     {
-      config.plugins.nvim-lint = lib.mkIf cfg.enable {
+      config.plugins.nvim-lint = {
         opts = {
           linters = {
             eslint_d.cmd = "${pkgs.unstable.eslint_d}/bin/eslint_d";

@@ -13,11 +13,10 @@
 
     {
       options.psychollama.presets.lsp.servers.jsonls = {
-        enable = lib.mkEnableOption "Use JSON language server";
         package = lib.mkPackageOption pkgs.unstable "vscode-langservers-extracted" { };
       };
 
-      config.lsp.servers.jsonls = lib.mkIf cfg.enable {
+      config.lsp.servers.jsonls = {
         cmd = [
           "${cfg.package}/bin/vscode-json-language-server"
           "--stdio"

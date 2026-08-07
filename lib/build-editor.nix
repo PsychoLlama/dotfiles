@@ -6,7 +6,7 @@
 }:
 {
   pkgs,
-  modules ? { },
+  modules ? [ ],
 }:
 
 # This utility exposes the Neovim module outside the typical module system.

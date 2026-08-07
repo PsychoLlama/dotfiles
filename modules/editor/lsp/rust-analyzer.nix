@@ -1,23 +1,10 @@
 {
-  flake.modules.editor.default =
-    { lib, config, ... }:
-
-    let
-      cfg = config.psychollama.presets.lsp.servers.rust-analyzer;
-    in
-
-    {
-      options.psychollama.presets.lsp.servers.rust-analyzer = {
-        enable = lib.mkEnableOption "Use the Rust language server";
-      };
-
-      config.lsp.servers.rust-analyzer = lib.mkIf cfg.enable {
-        cmd = [ "rust-analyzer" ];
-        filetypes = [ "rust" ];
-        root_markers = [
-          "Cargo.lock"
-          "Cargo.toml"
-        ];
-      };
-    };
+  flake.modules.editor.default.lsp.servers.rust-analyzer = {
+    cmd = [ "rust-analyzer" ];
+    filetypes = [ "rust" ];
+    root_markers = [
+      "Cargo.lock"
+      "Cargo.toml"
+    ];
+  };
 }

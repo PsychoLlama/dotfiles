@@ -1,4 +1,12 @@
 {
+  imports = [
+    ./alternaut
+    ./conform
+    ./markdown-preview
+    ./nvim-lint
+    ./snacks
+  ];
+
   flake.modules.editor.default =
     {
       lib,
@@ -25,11 +33,10 @@
         {
           # Install the latest version of a vim plugin.
           options.psychollama.presets.plugins.${name} = {
-            enable = lib.mkEnableOption "Install vimPlugins.${name}";
             package = lib.mkPackageOption config.plugin.pkgs name { };
           };
 
-          config.plugins.${name} = lib.mkIf cfg.enable {
+          config.plugins.${name} = {
             enable = lib.mkDefault true;
             package = lib.mkDefault cfg.package;
             inherit extraConfig defer;

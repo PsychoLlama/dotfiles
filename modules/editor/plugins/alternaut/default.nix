@@ -2,12 +2,8 @@
   flake.modules.editor.default =
     { lib, config, ... }:
 
-    let
-      cfg = config.psychollama.presets.plugins.alternaut-nvim;
-    in
-
     {
-      config.plugins.alternaut-nvim = lib.mkIf cfg.enable {
+      config.plugins.alternaut-nvim = {
         opts = {
           modes = {
             test = {
