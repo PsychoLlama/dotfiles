@@ -13,7 +13,7 @@ in
   # `nixos` and `generic` have no platform extensions today. Add the output
   # alongside a `platform/` directory when they do.
   flake.modules = {
-    generic.configs = import-tree ../generic/psychollama;
+    generic.default = { };
 
     editor = {
       platform = import-tree ../editor/platform;

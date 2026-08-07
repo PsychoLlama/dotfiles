@@ -23,7 +23,7 @@ let
     modules = modules ++ [
       { _module.args.pkgs = pkgs; }
       self.modules.editor.platform
-      self.modules.generic.configs
+      self.modules.generic.default
     ];
   };
 in
