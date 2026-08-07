@@ -1,15 +1,8 @@
 {
   flake.modules.homeManager.default =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { lib, pkgs, ... }:
 
     let
-      cfg = config.psychollama.presets.programs.claude-code;
-
       notify = pkgs.writeShellApplication {
         name = "notify";
         runtimeInputs = [ pkgs.libnotify ];
@@ -50,8 +43,6 @@
     in
 
     {
-      config = lib.mkIf cfg.enable {
-        programs.claude-code.skills.notify = notifySkill;
-      };
+      programs.claude-code.skills.notify = notifySkill;
     };
 }

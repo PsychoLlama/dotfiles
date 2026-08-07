@@ -1,27 +1,10 @@
 {
-  flake.modules.homeManager.default =
-    { lib, config, ... }:
+  flake.modules.homeManager.default.programs.claude-code.plugins.rust-lsp = {
+    description = "Rust Language Server for Claude Code.";
 
-    let
-      cfg = config.psychollama.presets.programs.claude-code.plugins.rust-lsp;
-    in
-
-    {
-      options.psychollama.presets.programs.claude-code.plugins.rust-lsp = {
-        enable = lib.mkEnableOption "Rust LSP for Claude Code" // {
-          default = true;
-        };
-      };
-
-      config = lib.mkIf cfg.enable {
-        programs.claude-code.plugins.rust-lsp = {
-          description = "Rust Language Server for Claude Code.";
-
-          lsp.servers.rust = {
-            command = "rust-analyzer";
-            extensionToLanguage.".rs" = "rust";
-          };
-        };
-      };
+    lsp.servers.rust = {
+      command = "rust-analyzer";
+      extensionToLanguage.".rs" = "rust";
     };
+  };
 }

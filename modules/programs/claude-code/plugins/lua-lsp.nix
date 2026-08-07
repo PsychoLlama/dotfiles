@@ -1,15 +1,8 @@
 {
   flake.modules.homeManager.default =
-    {
-      lib,
-      config,
-      pkgs,
-      ...
-    }:
+    { lib, pkgs, ... }:
 
     let
-      cfg = config.psychollama.presets.programs.claude-code.plugins.lua-lsp;
-
       luals = pkgs.unstable.lua-language-server;
 
       # Prints Neovim's runtime path to stdout, then exits (nvim's `-l` runs a script
@@ -44,20 +37,12 @@
     in
 
     {
-      options.psychollama.presets.programs.claude-code.plugins.lua-lsp = {
-        enable = lib.mkEnableOption "Lua LSP for Claude Code" // {
-          default = true;
-        };
-      };
+      programs.claude-code.plugins.lua-lsp = {
+        description = "Lua Language Server for Claude Code.";
 
-      config = lib.mkIf cfg.enable {
-        programs.claude-code.plugins.lua-lsp = {
-          description = "Lua Language Server for Claude Code.";
-
-          lsp.servers.lua = {
-            command = lib.getExe server;
-            extensionToLanguage.".lua" = "lua";
-          };
+        lsp.servers.lua = {
+          command = lib.getExe server;
+          extensionToLanguage.".lua" = "lua";
         };
       };
     };

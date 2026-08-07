@@ -8,7 +8,6 @@
     }:
 
     let
-      cfg = config.psychollama.presets.programs.claude-code;
       direnv = lib.getExe config.programs.direnv.package;
 
       injectDirenv = pkgs.writers.writeDash "inject-direnv" ''
@@ -21,7 +20,10 @@
     in
 
     {
-      config = lib.mkIf (cfg.enable && config.programs.direnv.enable) {
+      # Wired only when direnv is already installed. Importing the direnv preset
+      # from here would make Claude Code the reason it exists; that's a profile's
+      # call.
+      config = lib.mkIf config.programs.direnv.enable {
         programs.claude-code.settings.hooks.SessionStart = [
           {
             hooks = [

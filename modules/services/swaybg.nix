@@ -1,21 +1,11 @@
 {
+  imports = [ ../extensions/services/swaybg.nix ];
+
   flake.modules.homeManager.default =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
-
-    let
-      cfg = config.psychollama.presets.services.swaybg;
-    in
+    { pkgs, ... }:
 
     {
-      options.psychollama.presets.services.swaybg.enable =
-        lib.mkEnableOption "Manage wallpapers with swaybg";
-
-      config.services.swaybg = lib.mkIf cfg.enable {
+      services.swaybg = {
         enable = true;
         package = pkgs.unstable.swaybg;
         image = "attic/images/wallpapers/current";

@@ -1,4 +1,23 @@
 {
+  imports = [
+    ./hooks/auto-format.nix
+    ./hooks/block-env-files.nix
+    ./hooks/direnv.nix
+    ./hooks/notify-permission-request.nix
+    ./plugins/chrome-devtools.nix
+    ./plugins/lua-lsp.nix
+    ./plugins/nil-lsp.nix
+    ./plugins/nushell-lsp.nix
+    ./plugins/rust-lsp.nix
+    ./plugins/typescript-lsp.nix
+    ./skills/notify.nix
+    ./statusline.nix
+
+    ../../extensions/programs/claude-code.nix
+    ../../system/agents
+    ../../system/trusted-directories.nix
+  ];
+
   flake.modules.homeManager.default =
     {
       pkgs,
@@ -19,14 +38,12 @@
 
     {
       options.psychollama.presets.programs.claude-code = {
-        enable = lib.mkEnableOption "Opinionated config for Claude Code";
-
         voice.package = lib.mkPackageOption pkgs.unstable "sox" {
           nullable = true;
         };
       };
 
-      config = lib.mkIf cfg.enable {
+      config = {
         programs.nushell.abbreviations.a = "claude"; # `a` short for `agent`
 
         home.packages = lib.optionals (cfg.voice.package != null) [ cfg.voice.package ];
@@ -113,7 +130,7 @@
           };
         };
 
-        programs.git = lib.mkIf cfg.enable {
+        programs.git = {
           ignores = [
             "**/.claude/*.lock"
             "**/.claude/settings.local.json"

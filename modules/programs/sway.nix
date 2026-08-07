@@ -1,38 +1,35 @@
-{ lib, ... }:
-
-let
-  option.options.psychollama.presets.programs.sway.enable =
-    lib.mkEnableOption "Use SwayWM as the desktop environment";
-in
-
 {
+  # Keybindings reach for these programs; the modules only declare the options,
+  # leaving a profile to decide whether any of them are installed.
+  imports = [
+    ../extensions/programs/bemoji.nix
+    ../extensions/programs/brightnessctl.nix
+    ../extensions/programs/grim.nix
+    ../extensions/programs/pamixer.nix
+    ../extensions/programs/playerctl.nix
+    ../extensions/programs/slurp.nix
+    ../extensions/programs/wl-clipboard.nix
+    ../system/theme.nix
+  ];
+
   flake.modules = {
     nixos.default =
-      { config, lib, ... }:
-
-      let
-        cfg = config.psychollama.presets.programs.sway;
-      in
+      { lib, ... }:
 
       {
-        imports = [ option ];
+        programs.sway.enable = lib.mkDefault true;
 
-        config = lib.mkIf cfg.enable {
-          programs.sway.enable = lib.mkDefault true;
+        # Home-manager generates the real config; suppress the package default.
+        environment.etc."sway/config".enable = false;
 
-          # Home-manager generates the real config; suppress the package default.
-          environment.etc."sway/config".enable = false;
-
-          # Powers screen capture in Firefox.
-          xdg.portal.wlr.enable = true;
-        };
+        # Powers screen capture in Firefox.
+        xdg.portal.wlr.enable = true;
       };
 
     homeManager.default =
       { config, lib, ... }:
 
       let
-        cfg = config.psychollama.presets.programs.sway;
         theme = config.theme.palette;
         swaylock = lib.getExe' config.programs.swaylock.package "swaylock";
         wezterm = lib.getExe' config.programs.wezterm.package "wezterm";
@@ -57,9 +54,7 @@ in
       in
 
       {
-        imports = [ option ];
-
-        config.wayland.windowManager.sway = lib.mkIf cfg.enable {
+        wayland.windowManager.sway = {
           enable = true;
           package = null;
           checkConfig = false;

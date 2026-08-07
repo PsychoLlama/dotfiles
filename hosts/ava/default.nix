@@ -64,11 +64,6 @@ in
 
         # Where the flake lives on disk, used by `nh os` / `nh home`.
         programs.nh.flake = "${config.home.homeDirectory}/projects/psychollama/dotfiles";
-
-        psychollama.profiles = {
-          full.enable = true;
-          linux-desktop.enable = true;
-        };
       };
 
     psychollama = {
@@ -84,11 +79,6 @@ in
         "~/projects/retreon"
         "~/projects/ambient-computer"
       ];
-
-      profiles = {
-        full.enable = true;
-        home-lab-admin.enable = true;
-      };
     };
 
     system.stateVersion = "20.09";

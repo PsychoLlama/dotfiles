@@ -1,15 +1,8 @@
 {
   flake.modules.homeManager.default =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { lib, pkgs, ... }:
 
     let
-      cfg = config.psychollama.presets.programs.claude-code;
-
       blockEnvFiles = pkgs.writeShellApplication {
         name = "block-env-files";
         runtimeInputs = [ pkgs.jq ];
@@ -26,18 +19,16 @@
     in
 
     {
-      config = lib.mkIf cfg.enable {
-        programs.claude-code.settings.hooks.PreToolUse = [
-          {
-            matcher = "Read|Edit|Write";
-            hooks = [
-              {
-                type = "command";
-                command = lib.getExe blockEnvFiles;
-              }
-            ];
-          }
-        ];
-      };
+      programs.claude-code.settings.hooks.PreToolUse = [
+        {
+          matcher = "Read|Edit|Write";
+          hooks = [
+            {
+              type = "command";
+              command = lib.getExe blockEnvFiles;
+            }
+          ];
+        }
+      ];
     };
 }

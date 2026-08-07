@@ -1,14 +1,8 @@
 {
   flake.modules.homeManager.default =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { lib, pkgs, ... }:
 
     let
-      cfg = config.psychollama.presets.programs.claude-code;
       jq = lib.getExe pkgs.jq;
 
       autoFormat =
@@ -26,18 +20,16 @@
     in
 
     {
-      config = lib.mkIf cfg.enable {
-        programs.claude-code.settings.hooks.PostToolUse = [
-          {
-            matcher = "Write|Edit";
-            hooks = [
-              {
-                type = "command";
-                command = autoFormat;
-              }
-            ];
-          }
-        ];
-      };
+      programs.claude-code.settings.hooks.PostToolUse = [
+        {
+          matcher = "Write|Edit";
+          hooks = [
+            {
+              type = "command";
+              command = autoFormat;
+            }
+          ];
+        }
+      ];
     };
 }

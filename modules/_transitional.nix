@@ -1,0 +1,71 @@
+# Presets not yet reachable through a profile. Delete an entry as its module
+# moves to explicit imports; delete the file when the list empties.
+
+{
+  imports = [
+    ./programs/acpi.nix
+    ./programs/bat.nix
+    ./programs/bemoji.nix
+    ./programs/bottom.nix
+    ./programs/brightnessctl.nix
+    ./programs/carapace.nix
+    ./programs/chromium.nix
+    ./programs/codex
+    ./programs/delta.nix
+    ./programs/dictation.nix
+    ./programs/dive.nix
+    ./programs/dix.nix
+    ./programs/doggo.nix
+    ./programs/editor.nix
+    ./programs/fd.nix
+    ./programs/firefox.nix
+    ./programs/fuzzel.nix
+    ./programs/fzf.nix
+    ./programs/gh.nix
+    ./programs/git.nix
+    ./programs/glow.nix
+    ./programs/grim.nix
+    ./programs/jq.nix
+    ./programs/miniserve.nix
+    ./programs/nix-output-monitor.nix
+    ./programs/nushell
+    ./programs/nushell/swizzle.nix
+    ./programs/pamixer.nix
+    ./programs/parted.nix
+    ./programs/playerctl.nix
+    ./programs/python3.nix
+    ./programs/slurp.nix
+    ./programs/spotify.nix
+    ./programs/starship.nix
+    ./programs/swaylock.nix
+    ./programs/termshark.nix
+    ./programs/tmux
+    ./programs/viddy.nix
+    ./programs/waybar
+    ./programs/wezterm.nix
+    ./programs/wf-recorder.nix
+    ./programs/whois.nix
+    ./programs/wireplumber.nix
+    ./programs/wireshark.nix
+    ./programs/wl-clipboard.nix
+    ./programs/zoxide.nix
+
+    ./services/agenix.nix
+    ./services/avahi.nix
+    ./services/dunst.nix
+    ./services/gammastep.nix
+    ./services/greetd.nix
+    ./services/pipewire.nix
+    ./services/podman.nix
+    ./services/restic
+    ./services/ssh-agent.nix
+    ./services/swayidle.nix
+    ./services/syncthing.nix
+    ./services/tailscale.nix
+    ./services/zfs.nix
+
+    ./system/agents
+    ./system/gtk.nix
+    ./system/sound-theme.nix
+  ];
+}
