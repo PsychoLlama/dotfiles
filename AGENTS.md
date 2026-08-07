@@ -6,35 +6,31 @@ NixOS-based configuration-as-code for Linux and home-manager environments.
 
 This flake is consumed by other flakes. Everything must be changeable, disableable, or extendable from the outside.
 
-Each platform exposes two flake-output modules:
+Every `.nix` file under `modules/` is a flake module (the dendritic pattern). Files are organized by concern, not by module class, so one file holds every class a concern touches — `modules/programs/sway.nix` configures both NixOS and Home Manager.
 
-- `modules.<class>.platform` — new programs, services, and DSLs extending the platform. Keep opinions out; these should be upstreamable.
-- `modules.<class>.configs` — opinionated configurations under the `psychollama.*` namespace.
+Each file exports into `flake.modules.<class>.default`, typed as a `deferredModule`, so contributions from every file merge into one module per class. `lib/hosts` imports those into each substrate. Classes are `nixos`, `homeManager`, and `editor`; `generic` declares no class and loads into all three.
 
-Classes are `nixos`, `homeManager`, and `editor`. Cross-platform modules live under `generic` (`modules.generic.configs`), which declares no class and imports anywhere. The module system enforces the rest.
+Two kinds of module share the tree:
 
-On disk the split is by subdirectory: `modules/<class>/psychollama/` is the configs side, `modules/<class>/platform/` is the platform side. A directory is omitted when the class has nothing on that side (`nixos` and `generic` have no platform extensions today).
+- **Platform extensions** (`modules/extensions/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so they export unconditionally.
+- **Presets** — opinionated configs under the `psychollama.*` namespace, gated on their own `enable`.
 
 Hosts (`hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
 
 ## Directory Structure
 
 - `hosts/` — Machine-specific configs.
-- `modules/` — All Nix modules, one directory per class. `flake.nix` holds inputs only.
-  - `flake/` — the flake's own outputs, one file per concern (lib, modules, nixpkgs, hosts, packages, shell, overlays, templates). Discovered with import-tree, same as everything else.
+- `modules/` — All Nix modules, one directory per concern. `flake.nix` holds inputs only.
+  - `flake/` — the flake's own outputs, one file per concern (lib, modules, nixpkgs, hosts, packages, shell, overlays, templates).
+  - `extensions/{programs,services}/` — platform extensions.
+  - `programs/`, `services/` — presets, one file (or directory) per program or service.
+  - `system/` — presets and options belonging to no single program (`fonts`, `gtk`, `identity`, `theme`, `agents`).
+  - `profiles/` — groupings of presets.
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
-  - `homeManager/` — Home Manager extensions and presets. Platform extensions live under `platform/programs/` and `platform/services/`.
-  - `nixos/` — NixOS-only presets and profiles. No standalone platform extensions today.
-  - `generic/` — Cross-platform options (`identity`, `theme`) consumed by every system substrate.
 - `lib/` — Nix utilities (system builders, module discovery).
 - `pkgs/` — Custom package derivations.
 
-Inside `modules/<class>/psychollama/`:
-
-- `presets/` — single-program opinionated configs.
-- `profiles/` — groupings of presets.
-
-Module options mirror the directory structure: `psychollama.presets.programs.foo` lives at `psychollama/presets/programs/foo.nix` (or `foo/default.nix`).
+Module options mirror the directory structure: `psychollama.presets.programs.foo` lives at `programs/foo.nix` (or `foo/default.nix`). A module keeps a directory when it references sibling assets relatively (`waybar/waybar.css`, `nushell/libraries/`).
 
 ## Conventions
 
@@ -42,7 +38,7 @@ Module options mirror the directory structure: `psychollama.presets.programs.foo
 
 - Prefer upstream `home-manager`/`nixos` options. Only add custom modules when upstream lacks support.
 - Prefer `home-manager` over per-OS modules; it's the most cross-platform option.
-- `makeProgramModule` and `mkUnstablePreset` exist for simple programs (enable + package only). Use standalone files when custom options are needed.
+- `_make-program-module.nix` and `_mk-unstable-preset.nix` cover programs whose only options are enable and package. A program needing more imports the helper alongside its own config, keeping settings and pin in one file.
 
 ### Presets
 
@@ -55,11 +51,12 @@ Module options mirror the directory structure: `psychollama.presets.programs.foo
 
 Self-contained neovim framework in `modules/editor/`. No `~/.config` files.
 
-- `platform/` — plugin system, LSP configuration, settings schema.
+Its vocabulary is plugins and LSP servers rather than programs and services, so it keeps its own tree, laid out on the same convention as the root.
+
+- `platform/` — plugin system, LSP configuration, settings schema. Named for what it is: the editor module class is invented here, so there is no upstream to extend.
+- `plugins/`, `lsp/` — presets. `profiles/` — groupings.
 - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
 - `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.
-
-Plugin presets live under `psychollama/presets/plugins/`; LSP servers under `psychollama/presets/lsp/servers/`.
 
 ### Working with Neovim
 
@@ -80,5 +77,6 @@ All programs are declaratively managed. When changing configuration for a progra
 - Use `nix eval` to verify settings are applied correctly when refactoring.
 - `git add --intent-to-add` new files before Nix can discover them.
 - Nix modules in this repo are discovered and imported automatically. No `imports` needed.
-- Every `.nix` file under `modules/` is imported as a module. Just drop the file in. Files under `modules/flake/` are flake modules; the `<class>/` trees reach the eval through `flake.modules.*`.
+- Every `.nix` file under `modules/` is a flake module. Just drop the file in; `modules/default.nix` import-trees each directory.
+- A module reaches a host by exporting to `flake.modules.<class>.default`. Declare its `enable` inside that exported module, not on the flake.
 - Helpers, data, and libraries opt out with an `_` prefix (`_auto-format.nix`), which import-tree ignores. `import` them explicitly where needed.
