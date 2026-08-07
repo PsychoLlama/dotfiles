@@ -1,117 +1,120 @@
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+  flake.modules.editor.default =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
 
-let
-  inherit (lib) mkOption types;
-  lua = lib.generators.toLua { };
-  configFile = pkgs.writeText "user-config.lua" config.extraConfig;
+    let
+      inherit (lib) mkOption types;
+      lua = lib.generators.toLua { };
+      configFile = pkgs.writeText "user-config.lua" config.extraConfig;
 
-  # `sep = null` keeps the flag and value as separate arguments, which
-  # `makeWrapper` requires to read `--add-flags` and its value.
-  optionFormat = name: {
-    option = if builtins.stringLength name > 1 then "--${name}" else "-${name}";
-    sep = null;
-    explicitBool = false;
-  };
+      # `sep = null` keeps the flag and value as separate arguments, which
+      # `makeWrapper` requires to read `--add-flags` and its value.
+      optionFormat = name: {
+        option = if builtins.stringLength name > 1 then "--${name}" else "-${name}";
+        sep = null;
+        explicitBool = false;
+      };
 
-  # Isolate the runtime directory so changes elsewhere in the repo don't
-  # invalidate the editor derivation. Tests (`*_spec.lua`) are excluded: they
-  # pull in vusted/luassert, which aren't present during `buildVimPlugin`'s
-  # require-check and would fail the build.
-  runtimeSrc = lib.fileset.toSource {
-    root = ../runtime;
-    fileset = lib.fileset.difference ../runtime (
-      lib.fileset.fileFilter (file: lib.hasSuffix "_spec.lua" file.name) ../runtime
-    );
-  };
+      # Isolate the runtime directory so changes elsewhere in the repo don't
+      # invalidate the editor derivation. Tests (`*_spec.lua`) are excluded: they
+      # pull in vusted/luassert, which aren't present during `buildVimPlugin`'s
+      # require-check and would fail the build.
+      runtimeSrc = lib.fileset.toSource {
+        root = ../runtime;
+        fileset = lib.fileset.difference ../runtime (
+          lib.fileset.fileFilter (file: lib.hasSuffix "_spec.lua" file.name) ../runtime
+        );
+      };
 
-  # This is the generated `&packpath` directory for all plugins.
-  packdir = pkgs.vimUtils.packDir {
-    managed-by-nix = {
-      start = [
-        # Core framework, automatically loaded. Provides package loading and
-        # language server support.
-        (pkgs.vimUtils.buildVimPlugin {
-          pname = "neovim-core";
-          version = "latest";
-          src = runtimeSrc;
-        })
-      ];
+      # This is the generated `&packpath` directory for all plugins.
+      packdir = pkgs.vimUtils.packDir {
+        managed-by-nix = {
+          start = [
+            # Core framework, automatically loaded. Provides package loading and
+            # language server support.
+            (pkgs.vimUtils.buildVimPlugin {
+              pname = "neovim-core";
+              version = "latest";
+              src = runtimeSrc;
+            })
+          ];
 
-      # Provide access to all plugins but don't load them immediately.
-      opt = config.core.packages;
-    };
-  };
-in
+          # Provide access to all plugins but don't load them immediately.
+          opt = config.core.packages;
+        };
+      };
+    in
 
-{
-  options = {
-    enable = lib.mkEnableOption "Whether to enable Neovim";
+    {
+      options = {
+        enable = lib.mkEnableOption "Whether to enable Neovim";
 
-    neovim = mkOption {
-      type = types.package;
-      description = "The generated neovim package";
-      readOnly = true;
-      default = config.package.override {
-        inherit (config) withNodeJs;
+        neovim = mkOption {
+          type = types.package;
+          description = "The generated neovim package";
+          readOnly = true;
+          default = config.package.override {
+            inherit (config) withNodeJs;
 
-        extraMakeWrapperArgs = lib.concatStringsSep " " [
-          "--suffix PATH : ${lib.makeBinPath config.extraPackages}"
-          (lib.cli.toCommandLineShell optionFormat {
-            add-flags = [
-              ''--cmd "set packpath^=${packdir}"''
-              ''--cmd "set rtp^=${packdir}"''
+            extraMakeWrapperArgs = lib.concatStringsSep " " [
+              "--suffix PATH : ${lib.makeBinPath config.extraPackages}"
+              (lib.cli.toCommandLineShell optionFormat {
+                add-flags = [
+                  ''--cmd "set packpath^=${packdir}"''
+                  ''--cmd "set rtp^=${packdir}"''
+                ];
+              })
             ];
-          })
-        ];
 
-        configure.customRC = ''
-          lua << CORE_FRAMEWORK
-          require('core.pkg._loader').set_manifest(${lua config.core.manifest})
-          require('core.lsp').setup(${lua config.core.lsp.servers})
-          require('core.env').setup(${lua { trusted_prefixes = config.env.trusted; }})
-          CORE_FRAMEWORK
+            configure.customRC = ''
+              lua << CORE_FRAMEWORK
+              require('core.pkg._loader').set_manifest(${lua config.core.manifest})
+              require('core.lsp').setup(${lua config.core.lsp.servers})
+              require('core.env').setup(${lua { trusted_prefixes = config.env.trusted; }})
+              CORE_FRAMEWORK
 
-          source ${configFile}
+              source ${configFile}
 
-          " Run per-plugin configs after the vimrc finishes.
-          lua require('core.pkg._loader').eval_configs()
-        '';
+              " Run per-plugin configs after the vimrc finishes.
+              lua require('core.pkg._loader').eval_configs()
+            '';
+          };
+        };
+
+        package = mkOption {
+          type = types.package;
+          description = "A neovim editor";
+          default = pkgs.neovim;
+        };
+
+        withNodeJs = mkOption {
+          type = types.bool;
+          description = "Whether to enable Node.js support";
+          default = false;
+        };
+
+        extraPlugins = mkOption {
+          type = types.listOf types.package;
+          description = "Extra plugins to install";
+          default = [ ];
+        };
+
+        extraPackages = mkOption {
+          type = types.listOf types.package;
+          description = "Extra packages visible to Neovim";
+          default = [ ];
+        };
+
+        extraConfig = mkOption {
+          type = types.lines;
+          description = "Extra init.lua config";
+          default = "";
+        };
       };
     };
-
-    package = mkOption {
-      type = types.package;
-      description = "A neovim editor";
-      default = pkgs.neovim;
-    };
-
-    withNodeJs = mkOption {
-      type = types.bool;
-      description = "Whether to enable Node.js support";
-      default = false;
-    };
-
-    extraPlugins = mkOption {
-      type = types.listOf types.package;
-      description = "Extra plugins to install";
-      default = [ ];
-    };
-
-    extraPackages = mkOption {
-      type = types.listOf types.package;
-      description = "Extra packages visible to Neovim";
-      default = [ ];
-    };
-
-    extraConfig = mkOption {
-      type = types.lines;
-      description = "Extra init.lua config";
-      default = "";
-    };
-  };
 }

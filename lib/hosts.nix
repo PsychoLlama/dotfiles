@@ -95,8 +95,7 @@ let
           };
 
           modules = [
-            self.modules.editor.platform
-            self.modules.editor.configs
+            self.modules.editor.default
             self.modules.generic.default
 
             {

@@ -22,7 +22,7 @@ let
     class = "editor";
     modules = modules ++ [
       { _module.args.pkgs = pkgs; }
-      self.modules.editor.platform
+      self.modules.editor.default
       self.modules.generic.default
     ];
   };

@@ -15,12 +15,8 @@ in
   flake.modules = {
     generic.default = { };
 
-    editor = {
-      platform = import-tree ../editor/platform;
-      configs = import-tree ../editor/psychollama;
-    };
-
     # Seeded so the outputs exist when nothing contributes to them.
+    editor.default = { };
     homeManager.default = { };
     nixos.default = { };
   };
