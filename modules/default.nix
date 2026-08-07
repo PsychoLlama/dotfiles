@@ -8,7 +8,6 @@ in
   imports = [
     (import-tree ./flake)
     (import-tree ./editor/platform)
-    (import-tree ./extensions)
     (import-tree ./profiles)
   ];
 }

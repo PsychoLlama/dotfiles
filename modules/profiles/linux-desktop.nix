@@ -1,4 +1,8 @@
 {
+  # Consumed by other flakes: importing this picks the profile, and its
+  # presets land in `self.modules.<class>.default`.
+  flake.modules.flake.linux-desktop = ./linux-desktop.nix;
+
   imports = [
     ../programs/acpi.nix
     ../programs/bemoji.nix
@@ -24,6 +28,9 @@
     ../system/fonts.nix
     ../system/gtk.nix
     ../system/sound-theme.nix
+
+    # Enabled directly below, without a preset of its own.
+    ../extensions/programs/signal-desktop.nix
   ];
 
   flake.modules.homeManager.default =

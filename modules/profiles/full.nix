@@ -1,4 +1,8 @@
 {
+  # Consumed by other flakes: importing this picks the profile, and its
+  # presets land in `self.modules.<class>.default`.
+  flake.modules.flake.full = ./full.nix;
+
   imports = [
     ../programs/bat.nix
     ../programs/bottom.nix
@@ -44,6 +48,17 @@
     ../services/tailscale.nix
     ../services/zfs.nix
     ../system/fonts.nix
+
+    # Programs enabled directly below, without a preset of their own.
+    ../extensions/programs/binutils.nix
+    ../extensions/programs/duf.nix
+    ../extensions/programs/hexyl.nix
+    ../extensions/programs/lsof.nix
+    ../extensions/programs/onefetch.nix
+    ../extensions/programs/parted.nix
+    ../extensions/programs/rage.nix
+    ../extensions/programs/tokei.nix
+    ../extensions/programs/viu.nix
   ];
 
   flake.modules = {
