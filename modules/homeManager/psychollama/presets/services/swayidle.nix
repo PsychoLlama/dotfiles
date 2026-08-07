@@ -7,7 +7,7 @@
 
 let
   cfg = config.psychollama.presets.services.swayidle;
-  swaylock = "${pkgs.swaylock}/bin/swaylock";
+  swaylock = lib.getExe' config.programs.swaylock.package "swaylock";
   swaymsg = "${pkgs.sway}/bin/swaymsg";
 in
 
