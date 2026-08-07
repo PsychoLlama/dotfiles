@@ -15,6 +15,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    fonts.enableDefaultPackages = lib.mkDefault true;
+
     fonts.packages = [
       pkgs.noto-fonts-color-emoji
     ];
