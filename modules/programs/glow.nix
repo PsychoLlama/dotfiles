@@ -1,19 +1,8 @@
 {
   imports = [ (import ./_mk-unstable-preset.nix "glow") ];
 
-  flake.modules.homeManager.default =
-    { config, lib, ... }:
-
-    let
-      cfg = config.psychollama.presets.programs.glow;
-    in
-
-    {
-      config.programs.glow = lib.mkIf cfg.enable {
-        settings = {
-          local = true;
-          pager = false;
-        };
-      };
-    };
+  flake.modules.homeManager.default.programs.glow.settings = {
+    local = true;
+    pager = false;
+  };
 }

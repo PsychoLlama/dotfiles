@@ -8,7 +8,6 @@
     }:
 
     let
-      cfg = config.psychollama.presets.programs.nushell;
       json = pkgs.formats.json { };
 
       # All enabled `home.file` entries projected as `{ path }` records. Supports
@@ -23,8 +22,6 @@
     in
 
     {
-      config = lib.mkIf cfg.enable {
-        home.file.".config/swizzle/manifest.json".source = json.generate "swizzle-manifest.json" manifest;
-      };
+      home.file.".config/swizzle/manifest.json".source = json.generate "swizzle-manifest.json" manifest;
     };
 }

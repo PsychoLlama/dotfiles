@@ -1,5 +1,9 @@
 {
-  imports = [ (import ./_mk-unstable-preset.nix "wezterm") ];
+  imports = [
+    (import ./_mk-unstable-preset.nix "wezterm")
+
+    ../system/theme.nix
+  ];
 
   flake.modules.homeManager.default =
     {
@@ -11,13 +15,12 @@
 
     let
       inherit (config.theme) palette;
-      cfg = config.psychollama.presets.programs.wezterm;
       inline = lib.generators.mkLuaInline;
       tmux = config.programs.tmux.package;
     in
 
     {
-      config.programs.wezterm = lib.mkIf cfg.enable {
+      programs.wezterm = {
         colorSchemes.OneDarkPro = {
           ansi = [
             palette.normal.black

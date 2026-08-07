@@ -1,5 +1,11 @@
 {
-  imports = [ (import ./_mk-unstable-preset.nix "git") ];
+  imports = [
+    (import ./_mk-unstable-preset.nix "git")
+
+    ../extensions/programs/git.nix
+    ../extensions/programs/nushell/abbreviations.nix
+    ../system/identity.nix
+  ];
 
   flake.modules.homeManager.default =
     {
@@ -10,102 +16,99 @@
     }:
 
     let
-      cfg = config.psychollama.presets.programs.git;
       fsmonitor = config.programs.git.fsmonitor;
     in
 
     {
-      config = lib.mkIf cfg.enable {
-        programs.git.fsmonitor = {
-          enable = lib.mkDefault true;
-          package = lib.mkDefault pkgs.unstable.watchman;
+      programs.git.fsmonitor = {
+        enable = lib.mkDefault true;
+        package = lib.mkDefault pkgs.unstable.watchman;
+      };
+
+      programs.nushell.abbreviations = {
+        g = "git";
+        b = "git branch";
+        ch = "git checkout";
+        h = "git diff HEAD --staged";
+        hh = "git diff HEAD~1";
+        gd = "git diff";
+        gl = "git log";
+        gp = "git push";
+        ga = "git add --intent-to-add .";
+        gaa = "git add --all";
+        gr = "git reset";
+        grr = "git reset --hard HEAD";
+        grrr = "git reset --hard HEAD~1";
+      };
+
+      programs.git.settings = {
+        user = {
+          name = lib.mkDefault config.psychollama.identity.name;
+          email = lib.mkDefault config.psychollama.identity.email;
         };
 
-        programs.nushell.abbreviations = {
-          g = "git";
-          b = "git branch";
-          ch = "git checkout";
-          h = "git diff HEAD --staged";
-          hh = "git diff HEAD~1";
-          gd = "git diff";
-          gl = "git log";
-          gp = "git push";
-          ga = "git add --intent-to-add .";
-          gaa = "git add --all";
-          gr = "git reset";
-          grr = "git reset --hard HEAD";
-          grrr = "git reset --hard HEAD~1";
+        alias = {
+          c = "commit";
+          review = ''!git diff "$(git merge-base --fork-point origin/HEAD)"'';
+          f = "fetch origin";
+          pf = "push --force-with-lease";
+          s = "stash";
+          ss = "stash push --staged --message";
+          pl = "pull origin";
+          amend = "commit --amend";
+
+          watch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.watchScript}";
+          unwatch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.unwatchScript}";
         };
 
-        programs.git.settings = {
-          user = {
-            name = lib.mkDefault config.psychollama.identity.name;
-            email = lib.mkDefault config.psychollama.identity.email;
-          };
+        push = {
+          autoSetupRemote = true;
+          default = "current";
+          followTags = true;
+        };
 
-          alias = {
-            c = "commit";
-            review = ''!git diff "$(git merge-base --fork-point origin/HEAD)"'';
-            f = "fetch origin";
-            pf = "push --force-with-lease";
-            s = "stash";
-            ss = "stash push --staged --message";
-            pl = "pull origin";
-            amend = "commit --amend";
+        fetch = {
+          prune = true;
+          pruneTags = true;
+          writeCommitGraph = true;
+          negotiationAlgorithm = "skipping";
+        };
 
-            watch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.watchScript}";
-            unwatch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.unwatchScript}";
-          };
+        pull = {
+          rebase = true;
+          ff = "only";
+        };
 
-          push = {
-            autoSetupRemote = true;
-            default = "current";
-            followTags = true;
-          };
+        init.defaultBranch = "main";
+        rebase.autoStash = true;
+        interactive.singleKey = true;
 
-          fetch = {
-            prune = true;
-            pruneTags = true;
-            writeCommitGraph = true;
-            negotiationAlgorithm = "skipping";
-          };
+        feature.manyFiles = true;
 
-          pull = {
-            rebase = true;
-            ff = "only";
-          };
+        core = {
+          editor = "nvim";
+          untrackedCache = true;
+        };
 
-          init.defaultBranch = "main";
-          rebase.autoStash = true;
-          interactive.singleKey = true;
+        index.skipHash = true;
+        pack.useBitmapBoundaryTraversal = true;
+        transfer.fsckObjects = true;
 
-          feature.manyFiles = true;
+        diff.algorithm = "histogram";
+        merge.conflictStyle = "zdiff3";
 
-          core = {
-            editor = "nvim";
-            untrackedCache = true;
-          };
+        rerere = {
+          enabled = true;
+          autoUpdate = true;
+        };
 
-          index.skipHash = true;
-          pack.useBitmapBoundaryTraversal = true;
-          transfer.fsckObjects = true;
+        branch.sort = "-committerdate";
+        tag.sort = "version:refname";
+        log.date = "iso";
 
-          diff.algorithm = "histogram";
-          merge.conflictStyle = "zdiff3";
-
-          rerere = {
-            enabled = true;
-            autoUpdate = true;
-          };
-
-          branch.sort = "-committerdate";
-          tag.sort = "version:refname";
-          log.date = "iso";
-
-          submodule = {
-            recurse = true;
-            fetchJobs = 0;
-          };
+        submodule = {
+          recurse = true;
+          fetchJobs = 0;
         };
       };
     };

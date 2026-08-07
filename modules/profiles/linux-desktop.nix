@@ -1,6 +1,17 @@
 {
   imports = [
+    ../programs/acpi.nix
+    ../programs/brightnessctl.nix
+    ../programs/firefox.nix
+    ../programs/grim.nix
+    ../programs/pamixer.nix
+    ../programs/parted.nix
+    ../programs/playerctl.nix
+    ../programs/slurp.nix
     ../programs/sway.nix
+    ../programs/wf-recorder.nix
+    ../programs/wireplumber.nix
+    ../programs/wl-clipboard.nix
     ../services/swaybg.nix
     ../system/fonts.nix
   ];
@@ -28,22 +39,11 @@
         };
 
         programs = {
-          acpi.enable = mkDefault true;
-          brightnessctl.enable = mkDefault true;
           chromium.enable = mkDefault true;
           bemoji.enable = mkDefault true;
-          firefox.enable = mkDefault true;
           fuzzel.enable = mkDefault true;
-          grim.enable = mkDefault true;
-          pamixer.enable = mkDefault true;
-          parted.enable = mkDefault true;
-          playerctl.enable = mkDefault true;
-          slurp.enable = mkDefault true;
           swaylock.enable = mkDefault true;
           waybar.enable = mkDefault true;
-          wf-recorder.enable = mkDefault true;
-          wireplumber.enable = mkDefault true;
-          wl-clipboard.enable = mkDefault true;
         };
       };
     };

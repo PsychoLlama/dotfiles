@@ -1,8 +1,31 @@
 {
   imports = [
+    ../programs/bat.nix
+    ../programs/bottom.nix
     ../programs/claude-code
+    ../programs/delta.nix
     ../programs/direnv.nix
+    ../programs/dive.nix
+    ../programs/dix.nix
+    ../programs/doggo.nix
+    ../programs/fd.nix
+    ../programs/fzf.nix
+    ../programs/git.nix
+    ../programs/glow.nix
+    ../programs/jq.nix
+    ../programs/miniserve.nix
+    ../programs/nix-output-monitor.nix
+    ../programs/nushell
+    ../programs/nushell/swizzle.nix
+    ../programs/python3.nix
+    ../programs/starship.nix
     ../programs/sway.nix
+    ../programs/termshark.nix
+    ../programs/tmux
+    ../programs/viddy.nix
+    ../programs/wezterm.nix
+    ../programs/whois.nix
+    ../programs/zoxide.nix
     ../system/fonts.nix
   ];
 
@@ -54,33 +77,11 @@
       {
         psychollama.presets = {
           programs = {
-            bat.enable = mkDefault true;
-            bottom.enable = mkDefault true;
             carapace.enable = mkDefault true;
-            delta.enable = mkDefault true;
             dictation.enable = mkDefault true;
-            dix.enable = mkDefault true;
-            dive.enable = mkDefault true;
-            doggo.enable = mkDefault true;
             editor.enable = mkDefault true;
-            fd.enable = mkDefault true;
-            fzf.enable = mkDefault true;
             gh.enable = mkDefault true;
-            git.enable = mkDefault true;
-            glow.enable = mkDefault true;
-            jq.enable = mkDefault true;
-            miniserve.enable = mkDefault true;
-            nix-output-monitor.enable = mkDefault true;
-            nushell.enable = mkDefault true;
-            python3.enable = mkDefault true;
             spotify.enable = mkDefault true;
-            starship.enable = mkDefault true;
-            termshark.enable = mkDefault true;
-            tmux.enable = mkDefault true;
-            viddy.enable = mkDefault true;
-            wezterm.enable = mkDefault true;
-            whois.enable = mkDefault true;
-            zoxide.enable = mkDefault true;
           };
 
           services = {
