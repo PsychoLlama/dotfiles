@@ -11,18 +11,23 @@ in
 
   config = lib.mkIf cfg.enable {
     psychollama.presets = {
+      fonts.enable = lib.mkDefault true;
+
       services = {
         agenix.enable = lib.mkDefault true;
         avahi.enable = lib.mkDefault true;
         greetd.enable = lib.mkDefault true;
         pipewire.enable = lib.mkDefault true;
         podman.enable = lib.mkDefault true;
+        restic.enable = lib.mkDefault true;
+        syncthing.enable = lib.mkDefault true;
         tailscale.enable = lib.mkDefault true;
         zfs.enable = lib.mkDefault true;
       };
 
       programs = {
         codex.enable = lib.mkDefault true;
+        sway.enable = lib.mkDefault true;
         wireshark.enable = lib.mkDefault true;
       };
     };

@@ -21,15 +21,18 @@ in
         bat.enable = mkDefault true;
         bottom.enable = mkDefault true;
         carapace.enable = mkDefault true;
+        claude-code.enable = mkDefault true;
         delta.enable = mkDefault true;
         dictation.enable = mkDefault true;
         direnv.enable = mkDefault true;
         dix.enable = mkDefault true;
         dive.enable = mkDefault true;
         doggo.enable = mkDefault true;
+        editor.enable = mkDefault true;
         fd.enable = mkDefault true;
         fzf.enable = mkDefault true;
         gh.enable = mkDefault true;
+        git.enable = mkDefault true;
         glow.enable = mkDefault true;
         jq.enable = mkDefault true;
         miniserve.enable = mkDefault true;
@@ -41,6 +44,7 @@ in
         termshark.enable = mkDefault true;
         tmux.enable = mkDefault true;
         viddy.enable = mkDefault true;
+        wezterm.enable = mkDefault true;
         whois.enable = mkDefault true;
         zoxide.enable = mkDefault true;
       };

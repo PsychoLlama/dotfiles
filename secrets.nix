@@ -11,5 +11,5 @@ let
 in
 
 {
-  "modules/aspects/dotfiles/services/restic/env.age".publicKeys = allUsers ++ allHosts;
+  "modules/nixos/psychollama/presets/services/restic/env.age".publicKeys = allUsers ++ allHosts;
 }

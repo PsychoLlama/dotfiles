@@ -95,21 +95,6 @@
         "type": "github"
       }
     },
-    "den": {
-      "locked": {
-        "lastModified": 1785531595,
-        "narHash": "sha256-ipFk5ANEHhemDusdTZeuxVyFysyALjj8rRgpcTsjD4Y=",
-        "owner": "denful",
-        "repo": "den",
-        "rev": "2040b61346a7215fd7b7f51d4a457544b6e597d0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "denful",
-        "repo": "den",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -269,7 +254,6 @@
         "agenix": "agenix",
         "alternaut-nvim": "alternaut-nvim",
         "deja-view-nvim": "deja-view-nvim",
-        "den": "den",
         "flake-parts": "flake-parts",
         "gutenberg-nvim": "gutenberg-nvim",
         "home-manager": "home-manager",

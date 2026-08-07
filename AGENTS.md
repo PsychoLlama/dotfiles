@@ -15,21 +15,18 @@ Classes are `nixos`, `homeManager`, and `editor`. Cross-platform modules live un
 
 On disk the split is by subdirectory: `modules/<class>/psychollama/` is the configs side, `modules/<class>/platform/` is the platform side. A directory is omitted when the class has nothing on that side (`nixos` and `generic` have no platform extensions today).
 
-Host aspects (`modules/aspects/<host>/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
+Hosts (`hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
 
 ## Directory Structure
 
-- `modules/` — All Nix modules. `flake.nix` holds inputs only, and `default.nix` lists the flake-module trees.
-  - `den.nix` — Den entity data: which hosts exist, and which users live on them. Aspects live elsewhere.
-  - `den/` — Den wiring: schema, systems, the `dotfiles` namespace, and `classes/` for custom aspect classes. `schema/` adds entity data such as `user.identity` and `host.theme`, which aspects read from their class module args.
-  - `aspects/` — Every aspect, entity aspects included. `defaults.nix` defines `den.default`, applied to every entity; `<host>/` and `<user>.nix` hold entity-specific config. Non-flake modules are `_`-prefixed and referenced explicitly.
-    - `dotfiles/` — Reusable aspects under the `dotfiles.*` namespace. Split into `programs/`, `services/`, and `profiles/`; anything that is neither a program nor a service sits at the root.
-  - `flake/` — the flake's own outputs (packages, shell, overlays, templates).
+- `hosts/` — Machine-specific configs.
+- `modules/` — All Nix modules, one directory per class. `flake.nix` holds inputs only.
+  - `flake/` — the flake's own outputs, one file per concern (lib, modules, nixpkgs, hosts, packages, shell, overlays, templates). Discovered with import-tree, same as everything else.
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
   - `homeManager/` — Home Manager extensions and presets. Platform extensions live under `platform/programs/` and `platform/services/`.
   - `nixos/` — NixOS-only presets and profiles. No standalone platform extensions today.
-  - `generic/` — Cross-platform options (`trusted-directories`, `agents`) consumed by every system substrate.
-- `lib/` — Nix utilities (`buildEditor`).
+  - `generic/` — Cross-platform options (`identity`, `theme`) consumed by every system substrate.
+- `lib/` — Nix utilities (system builders, module discovery).
 - `pkgs/` — Custom package derivations.
 
 Inside `modules/<class>/psychollama/`:
@@ -38,8 +35,6 @@ Inside `modules/<class>/psychollama/`:
 - `profiles/` — groupings of presets.
 
 Module options mirror the directory structure: `psychollama.presets.programs.foo` lives at `psychollama/presets/programs/foo.nix` (or `foo/default.nix`).
-
-Aspects follow the same rule: `dotfiles.services.syncthing` lives at `modules/aspects/dotfiles/services/syncthing.nix`.
 
 ## Conventions
 
@@ -66,15 +61,6 @@ Self-contained neovim framework in `modules/editor/`. No `~/.config` files.
 
 Plugin presets live under `psychollama/presets/plugins/`; LSP servers under `psychollama/presets/lsp/servers/`.
 
-`editor` is also a Den class (`modules/den/classes/editor.nix`), so an aspect can configure Neovim beside its other classes:
-
-```nix
-dotfiles.foo = {
-  homeManager.programs.git.enable = true;
-  editor.extraConfig = "-- ...";
-};
-```
-
 ### Working with Neovim
 
 Always check help pages when working with the neovim API:
@@ -94,5 +80,5 @@ All programs are declaratively managed. When changing configuration for a progra
 - Use `nix eval` to verify settings are applied correctly when refactoring.
 - `git add --intent-to-add` new files before Nix can discover them.
 - Nix modules in this repo are discovered and imported automatically. No `imports` needed.
-- Every `.nix` file under `modules/` is imported as a module. Just drop the file in. `den.nix`, `den/`, `aspects/`, and `flake/` are flake modules; the `<class>/` trees are imported through `flake.modules.*`.
+- Every `.nix` file under `modules/` is imported as a module. Just drop the file in. Files under `modules/flake/` are flake modules; the `<class>/` trees reach the eval through `flake.modules.*`.
 - Helpers, data, and libraries opt out with an `_` prefix (`_auto-format.nix`), which import-tree ignores. `import` them explicitly where needed.
