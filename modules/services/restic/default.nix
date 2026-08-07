@@ -1,4 +1,6 @@
 {
+  imports = [ ../../system/identity.nix ];
+
   flake.modules.nixos.default =
     {
       config,
@@ -11,15 +13,10 @@
       inherit (config.psychollama.identity) username;
       inherit (config.home-manager.users.${username}.home) homeDirectory;
       inherit (config.networking) hostName;
-      cfg = config.psychollama.presets.services.restic;
     in
 
     {
-      options.psychollama.presets.services.restic = {
-        enable = lib.mkEnableOption "Automated backups to home NAS via Restic";
-      };
-
-      config = lib.mkIf cfg.enable {
+      config = {
         age.secrets.restic-env.file = ./env.age;
 
         services.restic.backups.${username} = {

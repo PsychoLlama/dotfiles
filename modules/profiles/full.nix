@@ -4,6 +4,7 @@
     ../programs/bottom.nix
     ../programs/carapace.nix
     ../programs/claude-code
+    ../programs/codex
     ../programs/delta.nix
     ../programs/dictation.nix
     ../programs/direnv.nix
@@ -30,8 +31,18 @@
     ../programs/viddy.nix
     ../programs/wezterm.nix
     ../programs/whois.nix
+    ../programs/wireshark.nix
     ../programs/zoxide.nix
+    ../services/agenix.nix
+    ../services/avahi.nix
+    ../services/greetd.nix
+    ../services/pipewire.nix
+    ../services/podman.nix
+    ../services/restic
     ../services/ssh-agent.nix
+    ../services/syncthing.nix
+    ../services/tailscale.nix
+    ../services/zfs.nix
     ../system/fonts.nix
   ];
 
@@ -44,25 +55,6 @@
       in
 
       {
-        psychollama.presets = {
-          services = {
-            agenix.enable = mkDefault true;
-            avahi.enable = mkDefault true;
-            greetd.enable = mkDefault true;
-            pipewire.enable = mkDefault true;
-            podman.enable = mkDefault true;
-            restic.enable = mkDefault true;
-            syncthing.enable = mkDefault true;
-            tailscale.enable = mkDefault true;
-            zfs.enable = mkDefault true;
-          };
-
-          programs = {
-            codex.enable = mkDefault true;
-            wireshark.enable = mkDefault true;
-          };
-        };
-
         services = {
           automatic-timezoned.enable = mkDefault true;
           printing.enable = mkDefault true;

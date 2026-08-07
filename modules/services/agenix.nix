@@ -7,16 +7,11 @@
     }:
 
     let
-      cfg = config.psychollama.presets.services.agenix;
       keyPath = "/etc/ssh/ssh_host_agenix_key";
     in
 
     {
-      options.psychollama.presets.services.agenix = {
-        enable = lib.mkEnableOption "Agenix secrets decryption";
-      };
-
-      config = lib.mkIf cfg.enable {
+      config = {
         services.openssh = {
           enable = true;
           openFirewall = false;

@@ -1,4 +1,6 @@
 {
+  imports = [ ../system/identity.nix ];
+
   flake.modules.nixos.default =
     {
       config,
@@ -10,15 +12,10 @@
     let
       inherit (config.psychollama.identity) username;
       inherit (config.home-manager.users.${username}.home) homeDirectory;
-      cfg = config.psychollama.presets.services.syncthing;
     in
 
     {
-      options.psychollama.presets.services.syncthing = {
-        enable = lib.mkEnableOption "Sync files with Syncthing";
-      };
-
-      config.services.syncthing = lib.mkIf cfg.enable {
+      services.syncthing = {
         enable = true;
 
         # Use stable. New version expects flags in a different style.

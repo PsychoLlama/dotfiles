@@ -10,7 +10,5 @@ in
     (import-tree ./editor)
     (import-tree ./extensions)
     (import-tree ./profiles)
-
-    ./_transitional.nix
   ];
 }

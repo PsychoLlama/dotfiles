@@ -1,4 +1,9 @@
 {
+  imports = [
+    ../../system/agents
+    ../../system/trusted-directories.nix
+  ];
+
   flake.modules.nixos.default =
     {
       config,
@@ -77,8 +82,6 @@
 
     {
       options.psychollama.presets.programs.codex = {
-        enable = lib.mkEnableOption "Install the latest version of codex";
-
         package = lib.mkOption {
           type = lib.types.package;
           default = pkgs.unstable.custom.codex-bin;
@@ -87,7 +90,7 @@
         };
       };
 
-      config = lib.mkIf cfg.enable {
+      config = {
         environment.systemPackages = [ cfg.package ];
 
         # User config is left writable and untracked because codex *insists* on
