@@ -52,7 +52,6 @@ in
     (mkUnstablePreset "python3")
     (mkUnstablePreset "slurp")
     (mkUnstablePreset "starship")
-    (mkUnstablePreset "swaylock")
     (mkUnstablePreset "termshark")
     (mkUnstablePreset "tmux")
     (mkUnstablePreset "viddy")
