@@ -20,7 +20,7 @@ in
   config = lib.mkIf cfg.enable {
     age.secrets.restic-env.file = ./env.age;
 
-    services.restic.backups.home = {
+    services.restic.backups.${username} = {
       repository = "rest:https://restic.selfhosted.city/workstation-${hostName}/";
       initialize = true;
       environmentFile = config.age.secrets.restic-env.path;
