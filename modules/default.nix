@@ -10,5 +10,6 @@ in
     (import-tree ./extensions)
     (import-tree ./programs)
     (import-tree ./services)
+    (import-tree ./system)
   ];
 }
