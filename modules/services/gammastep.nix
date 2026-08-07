@@ -7,16 +7,8 @@
       ...
     }:
 
-    let
-      cfg = config.psychollama.presets.services.gammastep;
-    in
-
     {
-      options.psychollama.presets.services.gammastep = {
-        enable = lib.mkEnableOption "Use the gammastep blue light filter";
-      };
-
-      config.services.gammastep = lib.mkIf cfg.enable {
+      services.gammastep = {
         enable = true;
         package = pkgs.unstable.gammastep;
         dawnTime = "6:30-7:00";

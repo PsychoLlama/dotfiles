@@ -7,16 +7,8 @@
       ...
     }:
 
-    let
-      cfg = config.psychollama.presets.programs.gh;
-    in
-
     {
-      options.psychollama.presets.programs.gh = {
-        enable = lib.mkEnableOption "Opinionated config for GitHub CLI";
-      };
-
-      config.programs.gh = lib.mkIf cfg.enable {
+      programs.gh = {
         enable = lib.mkDefault true;
         package = pkgs.unstable.gh;
 

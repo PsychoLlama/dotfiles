@@ -1,4 +1,6 @@
 {
+  imports = [ ../../system/theme.nix ];
+
   flake.modules.homeManager.default =
     {
       config,
@@ -8,8 +10,9 @@
     }:
 
     let
-      cfg = config.psychollama.presets.programs.waybar;
-      swayidle = config.psychollama.presets.services.swayidle;
+      # Sway's own idle inhibitor is the module's reason to exist, so key off
+      # the service rather than assuming a profile wired it up.
+      swayidle = config.services.swayidle;
 
       # Sway ignores every idle inhibitor that isn't attached to the lock surface
       # while a session lock is held (`sway_idle_inhibit_v1_is_active`), so waybar's
@@ -73,10 +76,7 @@
     in
 
     {
-      options.psychollama.presets.programs.waybar.enable =
-        lib.mkEnableOption "Install the latest version of waybar";
-
-      config.programs.waybar = lib.mkIf cfg.enable {
+      programs.waybar = {
         enable = lib.mkDefault true;
         package = lib.mkDefault pkgs.unstable.waybar;
 

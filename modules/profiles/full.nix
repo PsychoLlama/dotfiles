@@ -2,14 +2,18 @@
   imports = [
     ../programs/bat.nix
     ../programs/bottom.nix
+    ../programs/carapace.nix
     ../programs/claude-code
     ../programs/delta.nix
+    ../programs/dictation.nix
     ../programs/direnv.nix
     ../programs/dive.nix
     ../programs/dix.nix
     ../programs/doggo.nix
+    ../programs/editor.nix
     ../programs/fd.nix
     ../programs/fzf.nix
+    ../programs/gh.nix
     ../programs/git.nix
     ../programs/glow.nix
     ../programs/jq.nix
@@ -18,6 +22,7 @@
     ../programs/nushell
     ../programs/nushell/swizzle.nix
     ../programs/python3.nix
+    ../programs/spotify.nix
     ../programs/starship.nix
     ../programs/sway.nix
     ../programs/termshark.nix
@@ -26,6 +31,7 @@
     ../programs/wezterm.nix
     ../programs/whois.nix
     ../programs/zoxide.nix
+    ../services/ssh-agent.nix
     ../system/fonts.nix
   ];
 
@@ -75,20 +81,6 @@
       in
 
       {
-        psychollama.presets = {
-          programs = {
-            carapace.enable = mkDefault true;
-            dictation.enable = mkDefault true;
-            editor.enable = mkDefault true;
-            gh.enable = mkDefault true;
-            spotify.enable = mkDefault true;
-          };
-
-          services = {
-            ssh-agent.enable = mkDefault true;
-          };
-        };
-
         programs = {
           binutils.enable = mkDefault true;
           duf.enable = mkDefault true;

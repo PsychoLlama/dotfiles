@@ -1,4 +1,6 @@
 {
+  imports = [ ../system/theme.nix ];
+
   flake.modules.homeManager.default =
     {
       config,
@@ -9,15 +11,11 @@
 
     let
       inherit (config.theme) palette;
-      cfg = config.psychollama.presets.programs.swaylock;
       semi-black = "${palette.normal.black}d9"; # alpha(0.85)
     in
 
     {
-      options.psychollama.presets.programs.swaylock.enable =
-        lib.mkEnableOption "Install the latest version of swaylock";
-
-      config.programs.swaylock = lib.mkIf cfg.enable {
+      programs.swaylock = {
         enable = lib.mkDefault true;
         package = lib.mkDefault pkgs.unstable.swaylock;
 

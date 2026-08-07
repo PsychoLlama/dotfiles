@@ -1,14 +1,10 @@
 {
+  imports = [ ../system/sound-theme.nix ];
+
   flake.modules.homeManager.default =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { config, pkgs, ... }:
 
     let
-      cfg = config.psychollama.presets.services.dunst;
       soundTheme = config.psychollama.presets.sound-theme;
 
       notificationSound = pkgs.writeShellApplication {
@@ -23,10 +19,7 @@
       };
     in
     {
-      options.psychollama.presets.services.dunst.enable =
-        lib.mkEnableOption "Use the dunst notification daemon";
-
-      config.services.dunst = lib.mkIf cfg.enable {
+      services.dunst = {
         enable = true;
         package = pkgs.unstable.dunst;
 

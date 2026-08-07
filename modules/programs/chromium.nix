@@ -7,15 +7,8 @@
       ...
     }:
 
-    let
-      cfg = config.psychollama.presets.programs.chromium;
-    in
-
     {
-      options.psychollama.presets.programs.chromium.enable =
-        lib.mkEnableOption "Install ungoogled-chromium";
-
-      config.programs.chromium = lib.mkIf cfg.enable {
+      programs.chromium = {
         enable = lib.mkDefault true;
         package = lib.mkDefault pkgs.unstable.chromium;
       };

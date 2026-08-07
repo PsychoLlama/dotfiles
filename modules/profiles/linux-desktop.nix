@@ -1,50 +1,35 @@
 {
   imports = [
     ../programs/acpi.nix
+    ../programs/bemoji.nix
     ../programs/brightnessctl.nix
+    ../programs/chromium.nix
     ../programs/firefox.nix
+    ../programs/fuzzel.nix
     ../programs/grim.nix
     ../programs/pamixer.nix
     ../programs/parted.nix
     ../programs/playerctl.nix
     ../programs/slurp.nix
     ../programs/sway.nix
+    ../programs/swaylock.nix
+    ../programs/waybar
     ../programs/wf-recorder.nix
     ../programs/wireplumber.nix
     ../programs/wl-clipboard.nix
+    ../services/dunst.nix
+    ../services/gammastep.nix
     ../services/swaybg.nix
+    ../services/swayidle.nix
     ../system/fonts.nix
+    ../system/gtk.nix
+    ../system/sound-theme.nix
   ];
 
   flake.modules.homeManager.default =
     { lib, ... }:
 
-    let
-      inherit (lib) mkDefault;
-    in
-
     {
-      programs = {
-        signal-desktop.enable = mkDefault true;
-      };
-
-      psychollama.presets = {
-        gtk.enable = mkDefault true;
-        sound-theme.enable = mkDefault true;
-
-        services = {
-          dunst.enable = mkDefault true;
-          gammastep.enable = mkDefault true;
-          swayidle.enable = mkDefault true;
-        };
-
-        programs = {
-          chromium.enable = mkDefault true;
-          bemoji.enable = mkDefault true;
-          fuzzel.enable = mkDefault true;
-          swaylock.enable = mkDefault true;
-          waybar.enable = mkDefault true;
-        };
-      };
+      programs.signal-desktop.enable = lib.mkDefault true;
     };
 }

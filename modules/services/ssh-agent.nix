@@ -7,16 +7,8 @@
       ...
     }:
 
-    let
-      cfg = config.psychollama.presets.services.ssh-agent;
-    in
-
     {
-      options.psychollama.presets.services.ssh-agent = {
-        enable = lib.mkEnableOption "OpenSSH key agent";
-      };
-
-      config.services.ssh-agent = lib.mkIf cfg.enable {
+      services.ssh-agent = {
         enable = true;
         package = pkgs.unstable.openssh;
       };

@@ -9,7 +9,6 @@
 
     let
       cfg = config.psychollama.presets.programs.dictation;
-
       recordCommand = ''pw-record "$audio_file"'';
 
       dictation = pkgs.writeShellApplication {
@@ -62,8 +61,6 @@
 
     {
       options.psychollama.presets.programs.dictation = {
-        enable = lib.mkEnableOption "Speech-to-text using local Whisper";
-
         model = lib.mkOption {
           type = lib.types.str;
           default = "base.en";
@@ -71,8 +68,6 @@
         };
       };
 
-      config = lib.mkIf cfg.enable {
-        home.packages = [ dictation ];
-      };
+      config.home.packages = [ dictation ];
     };
 }

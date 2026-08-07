@@ -1,4 +1,6 @@
 {
+  imports = [ ../system/theme.nix ];
+
   flake.modules.homeManager.default =
     {
       config,
@@ -9,7 +11,6 @@
 
     let
       inherit (config.theme) palette;
-      cfg = config.psychollama.presets.programs.fuzzel;
       rgba = hex: alpha: "${lib.substring 1 (-1) hex}${lib.toHexString (builtins.ceil (alpha * 255))}";
       opaque = hex: rgba hex 1.0;
 
@@ -18,11 +19,7 @@
     in
 
     {
-      options.psychollama.presets.programs.fuzzel = {
-        enable = lib.mkEnableOption "Install the latest version of fuzzel";
-      };
-
-      config.programs.fuzzel = lib.mkIf cfg.enable {
+      programs.fuzzel = {
         enable = true;
         package = pkgs.unstable.fuzzel;
         settings = {
