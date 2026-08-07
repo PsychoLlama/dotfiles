@@ -122,7 +122,6 @@ let
         # Add custom dotfiles modules to the HM framework.
         sharedModules = [
           agenix.homeManagerModules.default
-          self.modules.homeManager.platform
           self.modules.homeManager.configs
           self.modules.homeManager.default
           self.modules.generic.configs

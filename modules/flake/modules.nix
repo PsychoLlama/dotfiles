@@ -21,7 +21,6 @@ in
     };
 
     homeManager = {
-      platform = import-tree ../homeManager/platform;
       configs = import-tree ../homeManager/psychollama;
 
       # Seeded so the output exists when nothing contributes to it.
