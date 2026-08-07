@@ -12,7 +12,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.claude-code.localPlugins.rust-lsp = {
+    programs.claude-code.plugins.rust-lsp = {
       description = "Rust Language Server for Claude Code.";
 
       lsp.servers.rust = {

@@ -5,6 +5,13 @@
   ...
 }:
 
+# Replaces home-manager's `programs.claude-code`. We use almost none of it and
+# fight the rest: its plugin support wraps the binary (which breaks Claude's CLI
+# flag parsing outright), its `marketplaces` option overwrites
+# `settings.extraKnownMarketplaces` wholesale, and its `skills` rejects
+# derivations. What's left is a thin mapping from options onto `home.file`,
+# which is what this module is.
+
 let
   cfg = config.programs.claude-code;
   json = pkgs.formats.json { };
@@ -33,36 +40,95 @@ let
       path = json.generate "mcp.json" plugin.mcp.servers;
     };
 
-  marketplace = pkgs.linkFarm "claude-marketplace-dotfiles" (
+  marketplace = pkgs.linkFarm "claude-marketplace" (
     [
       {
         name = ".claude-plugin/marketplace.json";
         path = json.generate "marketplace.json" {
-          name = "dotfiles";
-          owner.name = "dotfiles";
+          name = "managed";
+          owner.name = "Nix";
           plugins = lib.mapAttrsToList (name: plugin: {
             inherit name;
             inherit (plugin) description;
             source = "./plugins/${name}";
-          }) cfg.localPlugins;
+          }) cfg.plugins;
         };
       }
     ]
-    ++ lib.concatLists (lib.mapAttrsToList pluginEntries cfg.localPlugins)
+    ++ lib.concatLists (lib.mapAttrsToList pluginEntries cfg.plugins)
   );
+
+  # `<root>/<subdir>/<name>.md` for each entry.
+  markdownFiles =
+    subdir:
+    lib.mapAttrs' (
+      name: source: lib.nameValuePair "${cfg.root}/${subdir}/${name}.md" { inherit source; }
+    );
 in
 
 {
+  disabledModules = [ "programs/claude-code.nix" ];
+
   options.programs.claude-code = {
+    enable = lib.mkEnableOption "Claude Code, Anthropic's official CLI";
+
+    package = lib.mkPackageOption pkgs "claude-code" { };
+
+    root = lib.mkOption {
+      type = lib.types.str;
+      default = "${config.home.homeDirectory}/.claude";
+      defaultText = lib.literalExpression ''"''${config.home.homeDirectory}/.claude"'';
+      description = ''
+        Directory holding Claude Code's configuration. {env}`CLAUDE_CONFIG_DIR`
+        is exported whenever it differs from the CLI's own default.
+      '';
+    };
+
+    settings = lib.mkOption {
+      inherit (json) type;
+      default = { };
+      description = "Contents of {file}`settings.json`.";
+    };
+
+    context = lib.mkOption {
+      type = lib.types.lines;
+      default = "";
+      description = "User-scoped memory, written to {file}`CLAUDE.md`.";
+    };
+
+    rules = lib.mkOption {
+      type = lib.types.attrsOf lib.types.path;
+      default = { };
+      description = ''
+        Path-scoped rule files, written to {file}`rules/<name>.md`. Every
+        markdown file there is loaded as project memory.
+      '';
+    };
+
+    commands = lib.mkOption {
+      type = lib.types.attrsOf lib.types.path;
+      default = { };
+      description = "Slash-command prompts, written to {file}`commands/<name>.md`.";
+    };
+
+    skills = lib.mkOption {
+      type = lib.types.attrsOf lib.types.path;
+      default = { };
+      description = ''
+        Skill directories, linked to {file}`skills/<name>`. Each holds a
+        `SKILL.md` plus whatever else the skill needs. Unlike home-manager's
+        option this accepts derivations, so a skill can bundle generated files
+        alongside its prompt.
+      '';
+    };
+
     keybindings = lib.mkOption {
       default = { };
       type = lib.types.attrsOf (lib.types.attrsOf (lib.types.nullOr lib.types.str));
       description = ''
-        Keybinding overrides for Claude Code, rendered to
-        {file}`keybindings.json` inside {option}`programs.claude-code.configDir`
-        (default {file}`~/.claude/keybindings.json`). Each attribute is a
-        context whose value maps keys to commands. The schema field is added
-        automatically. Bind a key to `null` to unbind it.
+        Keybinding overrides, written to {file}`keybindings.json`. Each
+        attribute is a context whose value maps keys to commands. The schema
+        field is added automatically. Bind a key to `null` to unbind it.
       '';
 
       example = lib.literalExpression ''
@@ -75,28 +141,21 @@ in
       '';
     };
 
-    localPlugins = lib.mkOption {
+    plugins = lib.mkOption {
       default = { };
       description = ''
-        Locally-defined Claude Code plugins. Generates an inline settings
-        marketplace and enables each plugin via settings.json. Distinct from
-        the upstream `plugins` option, which loads external plugin directories.
+        Locally-defined plugins, published through an inline marketplace.
+
+        Every plugin is provisioned *disabled*: the marketplace makes it
+        available, and each repository enables the ones it wants through its own
+        project settings. Upstream's plugin support is unusable here because it
+        loads plugins by wrapping the `claude` binary, which breaks its CLI flag
+        parsing.
       '';
 
       type = lib.types.attrsOf (
         lib.types.submodule {
           options = {
-            enable = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-              description = ''
-                Default enablement for this plugin. Every plugin is published
-                to the marketplace and provisioned in settings.json regardless;
-                this only sets the default value, which can be overridden
-                per-project through project-level settings.
-              '';
-            };
-
             description = lib.mkOption {
               type = lib.types.str;
               default = "";
@@ -120,29 +179,60 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable (
-    lib.mkMerge [
-      (lib.mkIf (cfg.keybindings != { }) {
-        home.file."${cfg.configDir}/keybindings.json".source =
-          json.generate "claude-code-keybindings.json"
-            {
-              "$schema" = "https://www.schemastore.org/claude-code-keybindings.json";
-              bindings = keybindingsByContext;
-            };
+  config = lib.mkIf cfg.enable {
+    # Deliberately unwrapped. Wrapping `claude` breaks its CLI flag parsing.
+    home.packages = [ cfg.package ];
+
+    home.sessionVariables = lib.mkIf (cfg.root != "${config.home.homeDirectory}/.claude") {
+      CLAUDE_CONFIG_DIR = cfg.root;
+    };
+
+    programs.claude-code.settings = lib.mkIf (cfg.plugins != { }) {
+      # Declared here rather than in `plugins/known_marketplaces.json`, which
+      # Claude Code rewrites at runtime and cannot be a read-only store symlink.
+      extraKnownMarketplaces.managed.source = {
+        source = "directory";
+        path = "${marketplace}";
+      };
+
+      enabledPlugins = lib.mapAttrs' (name: _: lib.nameValuePair "${name}@managed" false) cfg.plugins;
+    };
+
+    home.file = lib.mkMerge [
+      (lib.mkIf (cfg.settings != { }) {
+        "${cfg.root}/settings.json".source = json.generate "claude-code-settings.json" (
+          cfg.settings
+          // {
+            "$schema" = "https://json.schemastore.org/claude-code-settings.json";
+          }
+        );
       })
 
-      (lib.mkIf (cfg.localPlugins != { }) {
-        programs.claude-code.settings = {
-          extraKnownMarketplaces.dotfiles.source = {
-            source = "directory";
-            path = "${marketplace}";
-          };
+      (lib.mkIf (cfg.context != "") {
+        "${cfg.root}/CLAUDE.md".text = cfg.context;
+      })
 
-          enabledPlugins = lib.mapAttrs' (
-            name: plugin: lib.nameValuePair "${name}@dotfiles" plugin.enable
-          ) cfg.localPlugins;
+      (lib.mkIf (cfg.keybindings != { }) {
+        "${cfg.root}/keybindings.json".source = json.generate "claude-code-keybindings.json" {
+          "$schema" = "https://www.schemastore.org/claude-code-keybindings.json";
+          bindings = keybindingsByContext;
         };
       })
-    ]
-  );
+
+      (markdownFiles "rules" cfg.rules)
+      (markdownFiles "commands" cfg.commands)
+
+      # `recursive` links each file inside the skill separately, so
+      # `skills/<name>` stays a real directory. Without it the whole thing is
+      # one symlink into the store, and nothing can be dropped alongside a
+      # skill at runtime.
+      (lib.mapAttrs' (
+        name: source:
+        lib.nameValuePair "${cfg.root}/skills/${name}" {
+          inherit source;
+          recursive = true;
+        }
+      ) cfg.skills)
+    ];
+  };
 }

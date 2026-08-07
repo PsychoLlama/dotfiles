@@ -19,7 +19,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.claude-code.localPlugins.nil-lsp = {
+    programs.claude-code.plugins.nil-lsp = {
       description = "Nil (nix) Language Server for Claude Code.";
 
       lsp.servers.nil = {
