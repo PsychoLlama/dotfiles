@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  inputs,
+  lib,
+  ...
+}:
 
 let
   inherit (lib) types;
@@ -42,6 +47,12 @@ let
 in
 
 {
+  # The substrate reads flake inputs (`agenix`, `home-manager`, `self`), so it
+  # is imported here rather than from a profile. Profiles are re-evaluated
+  # inside a consumer's flake, where those inputs do not exist -- which is why
+  # no preset references `inputs` either.
+  imports = [ ../../system/substrate.nix ];
+
   options.hosts = lib.mkOption {
     description = "NixOS machines, keyed by system then hostname.";
     default = { };
@@ -56,10 +67,24 @@ in
     _: hosts:
     lib.mapAttrs (
       _: host:
-      config.flake.lib.hosts.nixos {
-        imports = [ host.module ];
-        networking.hostName = host.name;
-        nixpkgs.hostPlatform = host.system;
+      inputs.nixpkgs.lib.nixosSystem {
+        modules = [
+          host.module
+          config.flake.modules.nixos.default
+          config.flake.modules.generic.default
+
+          {
+            networking.hostName = host.name;
+            nixpkgs.hostPlatform = host.system;
+
+            # Surface this flake's git revision in `nixos-version --json` so the
+            # running system can be traced back to the source commit. Scoped to
+            # hosts built here rather than `flake.modules.nixos.default`, which
+            # downstream flakes import: they would stamp their systems with our
+            # revision instead of their own.
+            system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+          }
+        ];
       }
     ) hosts
   ) config.hosts;
