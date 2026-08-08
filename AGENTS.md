@@ -27,13 +27,13 @@ The repeated `flake` isn't a typo. `flake.modules.<class>` keys on module class,
 
 `modules/default.nix` auto-imports only what is safe to always evaluate: the flake's own outputs, the editor platform, and the profiles. Everything else is reached by path.
 
-Hosts (`hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets.
+Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets. A host is a directory whose `default.nix` is a flake module defining its own `flake.nixosConfigurations.<name>`. Its NixOS modules take an `_` prefix, since `import-tree` walks `modules/flake` and would otherwise load them as flake modules.
 
 ## Directory Structure
 
-- `hosts/` — Machine-specific configs.
 - `modules/` — All Nix modules, one directory per concern. `flake.nix` holds inputs only.
-  - `flake/` — the flake's own outputs, one file per concern (lib, modules, nixpkgs, hosts, packages, shell, overlays, templates).
+  - `flake/` — the flake's own outputs, one file per concern (lib, modules, nixpkgs, packages, shell, overlays, templates).
+    - `hosts/` — one directory per machine, holding its `_`-prefixed NixOS modules.
   - `extensions/{programs,services}/` — platform extensions.
   - `programs/`, `services/` — presets, one file (or directory) per program or service.
   - `system/` — presets and options belonging to no single program (`fonts`, `gtk`, `identity`, `theme`, `agents`).
