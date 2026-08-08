@@ -54,11 +54,13 @@ in
 
   config.flake.nixosConfigurations = lib.concatMapAttrs (
     _: hosts:
-    config.flake.lib.hosts.nixos (
-      lib.mapAttrs (_: host: [
-        host.module
-        { nixpkgs.hostPlatform = host.system; }
-      ]) hosts
-    )
+    lib.mapAttrs (
+      _: host:
+      config.flake.lib.hosts.nixos {
+        imports = [ host.module ];
+        networking.hostName = host.name;
+        nixpkgs.hostPlatform = host.system;
+      }
+    ) hosts
   ) config.hosts;
 }

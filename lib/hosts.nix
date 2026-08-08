@@ -13,12 +13,6 @@
 let
   inherit (nixpkgs) lib;
 
-  manage-system-name = hostName: {
-    # The hostname determines the default attrset key to use when rebuilding
-    # the system.
-    networking.hostName = lib.mkDefault hostName;
-  };
-
   # Surface this flake's git revision in `nixos-version --json` so the
   # running system can be traced back to the source commit.
   configuration-revision = {
@@ -145,10 +139,12 @@ let
 in
 
 {
-  nixos = lib.mapAttrs (
-    hostName: modules:
+  nixos =
+    module:
     lib.nixosSystem {
-      modules = modules ++ [
+      modules = [
+        module
+
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager
         self.modules.nixos.default
@@ -158,9 +154,6 @@ in
         nix-flakes
         hm-substrate
         configuration-revision
-
-        (manage-system-name hostName)
       ];
-    }
-  );
+    };
 }
