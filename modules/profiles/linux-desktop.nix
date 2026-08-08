@@ -1,8 +1,4 @@
 {
-  # Consumed by other flakes: importing this picks the profile, and its
-  # presets land in `self.modules.<class>.default`.
-  flake.modules.flake.linux-desktop = ./linux-desktop.nix;
-
   imports = [
     ../programs/acpi.nix
     ../programs/bemoji.nix

@@ -17,11 +17,13 @@ Two kinds of module share the tree:
 - **Platform extensions** (`modules/extensions/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so importing one costs nothing.
 - **Presets** — opinionated configs, imported by a profile.
 
-Profiles (`modules/profiles/`) are the only entry points. A profile is a list of `imports`, and it publishes itself as `flake.modules.flake.<name>` so other flakes can pick it:
+Profiles (`modules/profiles/`) are the only entry points. A profile is a list of `imports`, and `modules/flake/profiles.nix` publishes the menu other flakes pick from:
 
 ```nix
-imports = [ dotfiles.modules.flake.linux-desktop ];
+imports = [ dotfiles.profiles.linux-desktop ];
 ```
+
+Profiles are flake-parts modules, so they can't ride on `flake.modules`; that option stamps `_class` from its attribute name, and anything but `flake` would be rejected downstream. Auto-importing the profiles is a separate act, and it's what applies them to this flake's own hosts.
 
 `modules/default.nix` auto-imports only what is safe to always evaluate: the flake's own outputs, the editor platform, and the profiles. Everything else is reached by path.
 
