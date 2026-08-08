@@ -23,10 +23,7 @@ in
       keychronSupport = true;
     };
 
-    networking = {
-      networkmanager.enable = true;
-      hostId = "daf96cd8"; # Random. Required by the ZFS pool.
-    };
+    networking.hostId = "daf96cd8"; # Random. Required by the ZFS pool.
 
     # Important! Keep this in sync with the HM user shell.
     environment.shells = [ shell ];
@@ -36,18 +33,17 @@ in
       description = name;
       shell = shell;
       extraGroups = [
+        # Serial access, for flashing keyboard firmware.
         "dialout"
-        "networkmanager"
-        "podman"
+
         "wheel"
       ];
     };
 
     home-manager.users.${username} =
-      { config, pkgs, ... }:
+      { config, ... }:
       {
         home.stateVersion = "22.05";
-        home.packages = [ pkgs.man-pages ];
 
         wayland.windowManager.sway.config.output = {
           # Built in display.

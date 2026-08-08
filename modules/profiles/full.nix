@@ -88,6 +88,10 @@
       in
 
       {
+        # The Linux man pages aren't a program, so there's no `enable` to reach
+        # for. They're what makes section 2 and 3 lookups resolve.
+        home.packages = [ pkgs.man-pages ];
+
         programs = {
           binutils.enable = mkDefault true;
           duf.enable = mkDefault true;

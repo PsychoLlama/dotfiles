@@ -23,6 +23,7 @@
     ../programs/wl-clipboard.nix
     ../services/dunst.nix
     ../services/gammastep.nix
+    ../services/network-manager.nix
     ../services/swaybg.nix
     ../services/swayidle.nix
     ../system/fonts.nix

@@ -1,8 +1,13 @@
 {
+  imports = [ ../system/identity.nix ];
+
   flake.modules.nixos.default =
     { config, lib, ... }:
 
     {
+      # Podman creates the group; joining it is what makes the socket usable.
+      users.users.${config.psychollama.identity.username}.extraGroups = [ "podman" ];
+
       virtualisation.podman = {
         enable = lib.mkDefault true;
 
