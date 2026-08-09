@@ -1,6 +1,14 @@
 { inputs, ... }:
 
 {
+  # Flake-scoped: trust follows me, not the machine.
+  trusted-directories = [
+    "~/projects/psychollama"
+    "~/projects/@scratch"
+    "~/projects/retreon"
+    "~/projects/ambient-computer"
+  ];
+
   hosts.x86_64-linux.ava.module =
     { config, lib, ... }:
 
@@ -69,19 +77,10 @@
           programs.nh.flake = "${config.home.homeDirectory}/projects/psychollama/dotfiles";
         };
 
-      psychollama = {
-        identity = {
-          username = "overlord";
-          name = "Jesse Gibson";
-          email = "JesseTheGibson@gmail.com";
-        };
-
-        trusted-directories = [
-          "~/projects/psychollama"
-          "~/projects/@scratch"
-          "~/projects/retreon"
-          "~/projects/ambient-computer"
-        ];
+      psychollama.identity = {
+        username = "overlord";
+        name = "Jesse Gibson";
+        email = "JesseTheGibson@gmail.com";
       };
 
       system.stateVersion = "20.09";

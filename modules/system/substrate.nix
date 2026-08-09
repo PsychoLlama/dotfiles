@@ -48,12 +48,6 @@ let
           modules = [
             flake-modules.editor.default
             flake-modules.generic.default
-
-            {
-              # Inherit trusted directories from the home-manager platform; the
-              # editor's own namespace derives `env.trusted` from them.
-              psychollama.trusted-directories = lib.mkDefault config.psychollama.trusted-directories;
-            }
           ];
         };
       };
@@ -132,9 +126,6 @@ in
           {
             # Inherit identity from host platform.
             psychollama.identity = lib.mapAttrs (_: lib.mkDefault) config.psychollama.identity;
-
-            # Inherit trusted directories from host platform.
-            psychollama.trusted-directories = lib.mkDefault config.psychollama.trusted-directories;
           }
         ];
       };

@@ -1,5 +1,5 @@
 # A codex `SessionStart` hook that pre-seeds directory trust so codex stops
-# prompting to trust repositories under `psychollama.trusted-directories`.
+# prompting to trust repositories under `trusted-directories`.
 #
 # Codex doesn't have a way to say "this directory tree is trusted". It forces
 # you to approve every single project. Absurd! I've got too many repos to
@@ -9,7 +9,7 @@
 # them into the codex config as a trusted directory.
 #
 # `directories` are the raw `~`-relative (or absolute) roots from
-# `psychollama.trusted-directories`; `~` is expanded at runtime against $HOME so
+# `trusted-directories`; `~` is expanded at runtime against $HOME so
 # a single /etc config stays correct per-user.
 
 {
@@ -32,7 +32,7 @@ writers.writeNuBin "codex-trusted-directories-hook"
     let codex_home = ($env.CODEX_HOME? | default ($env.HOME | path join ".codex"))
     let config_file = ($codex_home | path join "config.toml")
 
-    # Trusted roots from `psychollama.trusted-directories`. Each holds a single
+    # Trusted roots from `trusted-directories`. Each holds a single
     # layer of repositories ($root/$repo); `~` is expanded at runtime.
     let roots = (open ${rootsFile} | each { path expand })
 

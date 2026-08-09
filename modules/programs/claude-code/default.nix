@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config) trusted-directories;
+in
+
 {
   imports = [
     ./hooks/auto-format.nix
@@ -125,7 +132,7 @@
             permissions = {
               defaultMode = "auto";
 
-              additionalDirectories = map toAbsolute config.psychollama.trusted-directories;
+              additionalDirectories = map toAbsolute trusted-directories;
             };
           };
         };

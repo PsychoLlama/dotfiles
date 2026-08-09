@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config) trusted-directories;
+in
+
 {
   imports = [
     ../../system/agents
@@ -17,7 +24,7 @@
       cfg = config.psychollama.presets.programs.codex;
 
       trustedDirectoriesHook = pkgs.callPackage ./hooks/_trusted-directories.nix {
-        directories = config.psychollama.trusted-directories;
+        directories = trusted-directories;
       };
 
       localInstructionsHook = pkgs.callPackage ./hooks/_local-instructions.nix { };
@@ -69,9 +76,7 @@
           # prompting in repos I already own. Only wired when there's something to
           # trust, which also guarantees the hook always has a search path (see the
           # hook for why).
-          ++ lib.optional (config.psychollama.trusted-directories != [ ]) (
-            commandHook trustedDirectoriesHook
-          );
+          ++ lib.optional (trusted-directories != [ ]) (commandHook trustedDirectoriesHook);
 
         # Format edited files after `apply_patch`, the way Claude Code's auto-format
         # hook does. Codex surfaces `apply_patch` under the `Write`/`Edit` matcher

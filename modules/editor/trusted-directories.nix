@@ -1,13 +1,18 @@
+{ config, ... }:
+
+# The editor evaluates in its own isolated module system, so it cannot read the
+# trust list from a platform above it. Closing over the flake option sidesteps
+# that entirely: `env.trusted` is fixed at flake evaluation, wherever the editor
+# is later built. `~` is expanded at runtime by the env framework.
+
+let
+  inherit (config) trusted-directories;
+in
+
 {
-  flake.modules.editor.default =
-    { config, ... }:
+  imports = [ ../system/trusted-directories.nix ];
 
-    # The editor evaluates in its own isolated module system. `generic.default`
-    # (loaded by the editor's builders) supplies `psychollama.trusted-directories`;
-    # derive `env.trusted` from it so a project-local vimrc beneath a trusted prefix
-    # is sourced without prompting. `~` is expanded at runtime by the env framework.
-
-    {
-      config.env.trusted = config.psychollama.trusted-directories;
-    };
+  flake.modules.editor.default = {
+    config.env.trusted = trusted-directories;
+  };
 }

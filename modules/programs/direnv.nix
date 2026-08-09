@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config) trusted-directories;
+in
+
 {
   imports = [ ../system/trusted-directories.nix ];
 
@@ -27,7 +34,7 @@
         config = {
           global.hide_env_diff = true;
 
-          whitelist.prefix = map toAbsolute config.psychollama.trusted-directories;
+          whitelist.prefix = map toAbsolute trusted-directories;
         };
       };
 
