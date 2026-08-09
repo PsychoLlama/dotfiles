@@ -1,21 +1,26 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config.theme) palette;
+
+  textColor = palette.normal.white;
+  accentColor = palette.normal.blue;
+in
+
 {
   imports = [ ../system/theme.nix ];
 
   flake.modules.homeManager.default =
     {
-      config,
       lib,
       pkgs,
       ...
     }:
 
     let
-      inherit (config.theme) palette;
       rgba = hex: alpha: "${lib.substring 1 (-1) hex}${lib.toHexString (builtins.ceil (alpha * 255))}";
       opaque = hex: rgba hex 1.0;
-
-      textColor = palette.normal.white;
-      accentColor = palette.normal.blue;
     in
 
     {

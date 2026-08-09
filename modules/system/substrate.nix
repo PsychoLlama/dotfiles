@@ -130,12 +130,6 @@ in
           editor-program
 
           {
-            # Inherit theme config from host platform.
-            theme = {
-              name = lib.mkDefault config.theme.name;
-              palettes = lib.mkDefault config.theme.palettes;
-            };
-
             # Inherit identity from host platform.
             psychollama.identity = lib.mapAttrs (_: lib.mkDefault) config.psychollama.identity;
 

@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the modules below shadow `config` with their own.
+let
+  theme = config.theme.palette;
+in
+
 {
   # Keybindings reach for these programs; the modules only declare the options,
   # leaving a profile to decide whether any of them are installed.
@@ -30,7 +37,6 @@
       { config, lib, ... }:
 
       let
-        theme = config.theme.palette;
         swaylock = lib.getExe' config.programs.swaylock.package "swaylock";
         wezterm = lib.getExe' config.programs.wezterm.package "wezterm";
         fuzzel = lib.getExe' config.programs.fuzzel.package "fuzzel";

@@ -1,18 +1,20 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config.theme) palette;
+  semi-black = "${palette.normal.black}d9"; # alpha(0.85)
+in
+
 {
   imports = [ ../system/theme.nix ];
 
   flake.modules.homeManager.default =
     {
-      config,
       lib,
       pkgs,
       ...
     }:
-
-    let
-      inherit (config.theme) palette;
-      semi-black = "${palette.normal.black}d9"; # alpha(0.85)
-    in
 
     {
       programs.swaylock = {

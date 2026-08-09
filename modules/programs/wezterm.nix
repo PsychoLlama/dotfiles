@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config.theme) palette;
+in
+
 {
   imports = [
     (import ./_mk-unstable-preset.nix "wezterm")
@@ -14,7 +21,6 @@
     }:
 
     let
-      inherit (config.theme) palette;
       inline = lib.generators.mkLuaInline;
       tmux = config.programs.tmux.package;
     in

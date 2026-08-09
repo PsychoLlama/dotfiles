@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config.theme) palette;
+in
+
 {
   imports = [ ../../system/theme.nix ];
 
@@ -61,7 +68,7 @@
           inherit
             (lib.mapAttrs (
               style: colors: lib.concatMapAttrs (id: color: { ${style + "-" + id} = color; }) colors
-            ) config.theme.palette)
+            ) palette)
             bright
             normal
             ;
