@@ -8,7 +8,7 @@ This flake is consumed by other flakes. Everything must be changeable, disableab
 
 Every `.nix` file under `modules/` is a flake module (the dendritic pattern). Files are organized by concern, not by module class, so one file holds every class a concern touches — `modules/programs/sway.nix` configures both NixOS and Home Manager.
 
-Each file exports into `flake.modules.<class>.default`, typed as a `deferredModule`, so contributions from every file merge into one module per class. `lib/hosts` imports those into each substrate. Classes are `nixos`, `homeManager`, and `editor`; `generic` declares no class and loads into all three.
+Each file exports into `flake.modules.<class>.default`, typed as a `deferredModule`, so contributions from every file merge into one module per class. `modules/system/substrate.nix` assembles those into each machine. Classes are `nixos`, `homeManager`, and `editor`; `generic` declares no class and loads into all three.
 
 **Importing a module is what enables it.** Nothing is gated on `enable`; evaluating the file is the side effect. Downstream removes one with `disabledModules`.
 
@@ -39,7 +39,6 @@ Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, di
   - `system/` — presets and options belonging to no single program (`fonts`, `gtk`, `identity`, `theme`, `agents`).
   - `profiles/` — groupings of presets.
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
-- `lib/` — Nix utilities (system builders, module discovery).
 - `pkgs/` — Custom package derivations.
 
 Options that survive (settings, package pins) still mirror the directory structure: `psychollama.presets.programs.foo` lives at `programs/foo.nix` (or `foo/default.nix`). A module keeps a directory when it references sibling assets relatively (`waybar/waybar.css`, `nushell/libraries/`).
