@@ -20,7 +20,6 @@
         modules = modules ++ [
           { _module.args.pkgs = pkgs; }
           config.flake.modules.editor.default
-          config.flake.modules.generic.default
         ];
       };
     in

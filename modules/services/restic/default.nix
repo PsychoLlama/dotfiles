@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config.identity) username;
+in
+
 {
   imports = [ ../../system/identity.nix ];
 
@@ -10,7 +17,6 @@
     }:
 
     let
-      inherit (config.psychollama.identity) username;
       inherit (config.home-manager.users.${username}.home) homeDirectory;
       inherit (config.networking) hostName;
     in

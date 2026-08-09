@@ -8,7 +8,9 @@ This flake is consumed by other flakes. Everything must be changeable, disableab
 
 Every `.nix` file under `modules/` is a flake module (the dendritic pattern). Files are organized by concern, not by module class, so one file holds every class a concern touches — `modules/programs/sway.nix` configures both NixOS and Home Manager.
 
-Each file exports into `flake.modules.<class>.default`, typed as a `deferredModule`, so contributions from every file merge into one module per class. `modules/system/substrate.nix` assembles those into each machine. Classes are `nixos`, `homeManager`, and `editor`; `generic` declares no class and loads into all three.
+Each file exports into `flake.modules.<class>.default`, typed as a `deferredModule`, so contributions from every file merge into one module per class. `modules/system/substrate.nix` assembles those into each machine. Classes are `nixos`, `homeManager`, and `editor`.
+
+Values shared across classes are declared as flake options instead (`theme`, `identity`, `trusted-directories`, `agents`). A preset imports the declaring file and closes over `config.<option>` in an outer `let`, above the class module that shadows `config`. This is the only way the `editor` class can read them at all: it evaluates in its own module system with no platform above it.
 
 **Importing a module is what enables it.** Nothing is gated on `enable`; evaluating the file is the side effect. Downstream removes one with `disabledModules`.
 

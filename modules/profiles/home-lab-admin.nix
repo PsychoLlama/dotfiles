@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config.identity) username;
+in
+
 {
   # Consumed by other flakes: importing this picks the profile, and its
   # presets land in `self.modules.<class>.default`.
@@ -12,8 +19,6 @@
     # See: https://github.com/PsychoLlama/home-lab/
 
     let
-      inherit (config.psychollama.identity) username;
-
       hosts = {
         nas-001 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOx6MIH8pVfBi0dckuIgssJO5JzlnEKrJrhNSPs7giTR";
         rpi4-001 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyb4vh9xDEEV+30G0UPMTSdtVq3Tyfgl9I9VRwf226v";

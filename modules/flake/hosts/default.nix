@@ -71,7 +71,6 @@ in
         modules = [
           host.module
           config.flake.modules.nixos.default
-          config.flake.modules.generic.default
 
           {
             networking.hostName = host.name;

@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config.identity) username;
+in
+
 {
   imports = [ ../system/identity.nix ];
 
@@ -6,7 +13,7 @@
 
     {
       # Podman creates the group; joining it is what makes the socket usable.
-      users.users.${config.psychollama.identity.username}.extraGroups = [ "podman" ];
+      users.users.${username}.extraGroups = [ "podman" ];
 
       virtualisation.podman = {
         enable = lib.mkDefault true;

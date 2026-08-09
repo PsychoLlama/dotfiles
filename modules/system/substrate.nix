@@ -45,10 +45,7 @@ let
             inherit pkgs;
           };
 
-          modules = [
-            flake-modules.editor.default
-            flake-modules.generic.default
-          ];
+          modules = [ flake-modules.editor.default ];
         };
       };
 
@@ -58,12 +55,7 @@ in
 
 {
   flake.modules.nixos.default =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { lib, pkgs, ... }:
 
     {
       imports = [
@@ -120,13 +112,7 @@ in
         sharedModules = [
           agenix.homeManagerModules.default
           flake-modules.homeManager.default
-          flake-modules.generic.default
           editor-program
-
-          {
-            # Inherit identity from host platform.
-            psychollama.identity = lib.mapAttrs (_: lib.mkDefault) config.psychollama.identity;
-          }
         ];
       };
     };

@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config.identity) name email;
+in
+
 {
   imports = [
     (import ./_mk-unstable-preset.nix "git")
@@ -43,8 +50,8 @@
 
       programs.git.settings = {
         user = {
-          name = lib.mkDefault config.psychollama.identity.name;
-          email = lib.mkDefault config.psychollama.identity.email;
+          name = lib.mkDefault name;
+          email = lib.mkDefault email;
         };
 
         alias = {

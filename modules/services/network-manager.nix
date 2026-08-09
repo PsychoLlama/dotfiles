@@ -1,3 +1,10 @@
+{ config, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config.identity) username;
+in
+
 {
   imports = [ ../system/identity.nix ];
 
@@ -8,6 +15,6 @@
       networking.networkmanager.enable = lib.mkDefault true;
 
       # Lets the owner switch networks without sudo.
-      users.users.${config.psychollama.identity.username}.extraGroups = [ "networkmanager" ];
+      users.users.${username}.extraGroups = [ "networkmanager" ];
     };
 }

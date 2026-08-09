@@ -1,6 +1,17 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
+
+# Bound out here because the module below shadows `config` with its own.
+let
+  inherit (config.identity) username name;
+in
 
 {
+  identity = {
+    username = "overlord";
+    name = "Jesse Gibson";
+    email = "JesseTheGibson@gmail.com";
+  };
+
   # Flake-scoped: trust follows me, not the machine.
   trusted-directories = [
     "~/projects/psychollama"
@@ -13,7 +24,6 @@
     { config, lib, ... }:
 
     let
-      inherit (config.psychollama.identity) username name;
       shell = config.home-manager.users.${username}.programs.nushell.package;
     in
 
@@ -76,12 +86,6 @@
           # Where the flake lives on disk, used by `nh os` / `nh home`.
           programs.nh.flake = "${config.home.homeDirectory}/projects/psychollama/dotfiles";
         };
-
-      psychollama.identity = {
-        username = "overlord";
-        name = "Jesse Gibson";
-        email = "JesseTheGibson@gmail.com";
-      };
 
       system.stateVersion = "20.09";
     };
