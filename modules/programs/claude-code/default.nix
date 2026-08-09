@@ -2,7 +2,7 @@
 
 # Bound out here because the module below shadows `config` with its own.
 let
-  inherit (config) trusted-directories;
+  inherit (config) agents trusted-directories;
 in
 
 {
@@ -34,7 +34,6 @@ in
     }:
 
     let
-      inherit (config.psychollama) agents;
       cfg = config.psychollama.presets.programs.claude-code;
 
       # Claude Code needs absolute prefixes; expand a leading `~` to the home dir.

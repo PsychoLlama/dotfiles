@@ -2,7 +2,7 @@
 
 # Bound out here because the module below shadows `config` with its own.
 let
-  inherit (config) trusted-directories;
+  inherit (config) agents trusted-directories;
 in
 
 {
@@ -20,7 +20,6 @@ in
     }:
 
     let
-      inherit (config.psychollama) agents;
       cfg = config.psychollama.presets.programs.codex;
 
       trustedDirectoriesHook = pkgs.callPackage ./hooks/_trusted-directories.nix {
