@@ -51,7 +51,7 @@ in
   # is imported here rather than from a profile. Profiles are re-evaluated
   # inside a consumer's flake, where those inputs do not exist -- which is why
   # no preset references `inputs` either.
-  imports = [ ../../system/substrate.nix ];
+  imports = [ ../system/substrate.nix ];
 
   options.rhizome.hosts = lib.mkOption {
     description = "NixOS machines, keyed by system then hostname.";
