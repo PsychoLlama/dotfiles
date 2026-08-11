@@ -20,7 +20,7 @@ in
     "~/projects/ambient-computer"
   ];
 
-  hosts.x86_64-linux.ava.module =
+  rhizome.hosts.x86_64-linux.ava.module =
     { config, lib, ... }:
 
     let

@@ -53,7 +53,7 @@ in
   # no preset references `inputs` either.
   imports = [ ../../system/substrate.nix ];
 
-  options.hosts = lib.mkOption {
+  options.rhizome.hosts = lib.mkOption {
     description = "NixOS machines, keyed by system then hostname.";
     default = { };
 
@@ -86,5 +86,5 @@ in
         ];
       }
     ) hosts
-  ) config.hosts;
+  ) config.rhizome.hosts;
 }
