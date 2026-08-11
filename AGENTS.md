@@ -29,7 +29,7 @@ The repeated `flake` isn't a typo. `flake.modules.<class>` keys on module class,
 
 `modules/default.nix` auto-imports only what is safe to always evaluate: the flake's own outputs, the `rhizome` options, the editor platform, and the profiles. Everything else is reached by path.
 
-Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets. `modules/rhizome/hosts.nix` declares `options.rhizome.hosts.<system>.<hostname>`, holding the machine's `module` plus read-only `name` and `system`, and maps them through `lib.hosts.nixos` into `flake.nixosConfigurations`. `<system>` is one option per entry in `config.systems`, so a typo'd double is a missing-option error rather than a phantom host. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. The `<system>` key supplies `nixpkgs.hostPlatform`.
+Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets. `modules/rhizome/hosts.nix` declares `options.rhizome.hosts.<hostname>`, holding the machine's `module` and `system` plus a read-only `name`, and maps them through `nixosSystem` into `flake.nixosConfigurations`. `system` is an enum over `config.systems`, so a typo'd double fails at the option rather than deep inside nixpkgs. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
 
 ## Directory Structure
 
