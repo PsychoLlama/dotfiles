@@ -6,9 +6,9 @@ NixOS-based configuration-as-code for Linux and home-manager environments.
 
 This flake is consumed by other flakes. Everything must be changeable, disableable, or extendable from the outside.
 
-Every `.nix` file under `modules/` is a flake module (the dendritic pattern). Files are organized by concern, not by module class, so one file holds every class a concern touches — `modules/programs/sway.nix` configures both NixOS and Home Manager.
+Every `.nix` file under `modules/` is a flake module (the dendritic pattern). Files are organized by concern, not by module class, so one file holds every class a concern touches — `modules/aspects/programs/sway.nix` configures both NixOS and Home Manager.
 
-Each file exports into `flake.modules.<class>.default`, typed as a `deferredModule`, so contributions from every file merge into one module per class. `modules/system/substrate.nix` assembles those into each machine. Classes are `nixos`, `homeManager`, and `editor`.
+Each file exports into `flake.modules.<class>.default`, typed as a `deferredModule`, so contributions from every file merge into one module per class. `modules/aspects/system/substrate.nix` assembles those into each machine. Classes are `nixos`, `homeManager`, and `editor`.
 
 Values shared across classes are declared as flake options instead (`theme`, `identity`, `trusted-directories`, `agents`). A preset imports the declaring file and closes over `config.<option>` in an outer `let`, above the class module that shadows `config`. This is the only way the `editor` class can read them at all: it evaluates in its own module system with no platform above it.
 
@@ -19,7 +19,7 @@ Two kinds of module share the tree:
 - **Platform extensions** (`modules/extensions/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so importing one costs nothing.
 - **Presets** — opinionated configs, imported by a profile.
 
-Profiles (`modules/profiles/`) are the only entry points. A profile is a list of `imports`, and it publishes itself as `flake.modules.flake.<name>` so other flakes can pick it:
+Profiles (`modules/aspects/profiles/`) are the only entry points. A profile is a list of `imports`, and it publishes itself as `flake.modules.flake.<name>` so other flakes can pick it:
 
 ```nix
 imports = [ dotfiles.modules.flake.linux-desktop ];
@@ -38,13 +38,15 @@ Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, di
     - `hosts/` — one directory per machine, each writing into `rhizome.hosts`.
   - `rhizome/` — options this flake owns, declared for consumers (`hosts`).
   - `extensions/{programs,services}/` — platform extensions.
-  - `programs/`, `services/` — presets, one file (or directory) per program or service.
-  - `system/` — presets and options belonging to no single program (`fonts`, `gtk`, `identity`, `theme`, `agents`).
-  - `profiles/` — groupings of presets.
+  - `aspects/` — everything that configures a host.
+    - `programs/`, `services/` — presets, one file (or directory) per program or service.
+    - `system/` — presets belonging to no single program (`fonts`, `gtk`, `sound-theme`), plus `substrate`.
+    - `profiles/` — groupings of presets.
+  - `system/` — flake options shared across classes (`identity`, `theme`, `trusted-directories`, `agents`).
   - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
 - `pkgs/` — Custom package derivations.
 
-Options that survive (settings, package pins) still mirror the directory structure: `psychollama.presets.programs.foo` lives at `programs/foo.nix` (or `foo/default.nix`). A module keeps a directory when it references sibling assets relatively (`waybar/waybar.css`, `nushell/libraries/`).
+Options that survive (settings, package pins) still mirror the directory structure: `psychollama.presets.programs.foo` lives at `aspects/programs/foo.nix` (or `foo/default.nix`). A module keeps a directory when it references sibling assets relatively (`waybar/waybar.css`, `nushell/libraries/`).
 
 ## Conventions
 
@@ -57,7 +59,7 @@ Options that survive (settings, package pins) still mirror the directory structu
 ### Presets
 
 - Single-responsibility, no `enable` option. A profile decides whether it's imported.
-- Import the option modules a preset reads — its platform extension, `system/theme.nix`, `system/identity.nix`. Duplicate imports are deduped, so be generous.
+- Import the option modules a preset reads — its platform extension, `../../system/theme.nix`, `../../system/identity.nix`. Duplicate imports are deduped, so be generous.
 - Never import another preset. Depending on one is a profile's call; guard on its upstream option instead (`lib.mkIf config.programs.direnv.enable`).
 - Nested modules belong to their parent: `claude-code/default.nix` imports its own hooks, plugins and skills.
 - Install programs via `programs.<name>.enable` + `programs.<name>.package`, not `home.packages`.
@@ -71,7 +73,7 @@ Self-contained neovim framework in `modules/editor/`. No `~/.config` files.
 Its vocabulary is plugins and LSP servers rather than programs and services, so it keeps its own tree, laid out on the same convention as the root.
 
 - `platform/` — plugin system, LSP configuration, settings schema. Named for what it is: the editor module class is invented here, so there is no upstream to extend. The only editor directory that auto-imports.
-- `plugins/`, `lsp/` — presets. `profiles/` — groupings, imported by `modules/programs/editor.nix`.
+- `plugins/`, `lsp/` — presets. `profiles/` — groupings, imported by `modules/aspects/programs/editor.nix`.
 - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
 - `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.
 
