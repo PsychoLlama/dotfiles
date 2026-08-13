@@ -1,18 +1,10 @@
 { lib, ... }:
 
-# Not a flake module. This extends `rhizome.hosts.<name>`, imported by a host
-# that wants it. Underscore-prefixed so the sweep skips it.
-#
 # Shared configuration for coding agents (Claude Code, codex, ...). This is
 # *pure data*: it declares the canonical memory, rules, and skills once and
 # holds nothing tool-specific. It has no `config` side effects -- it configures
 # no program and writes no files. Each agent preset reads `agents.*` and decides
 # how to render it into its own native shape.
-#
-# A host option. `generic` was the previous answer to the same problem: the
-# codex preset is a NixOS module and the claude-code preset a Home Manager one,
-# and `generic` was the only class evaluated inside both. `host` is passed to
-# both without belonging to a class at all.
 
 {
   options.agents = {

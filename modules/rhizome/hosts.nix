@@ -8,7 +8,7 @@
 let
   inherit (lib) types;
 
-  # Bound here because the host submodule shadows `config` with its own.
+  # The host submodule shadows `config` with its own.
   defaults = config.rhizome.defaults;
   systems = config.systems;
   nixosModules = config.flake.nixosModules;
@@ -29,10 +29,7 @@ in
     description = "Machines, keyed by hostname.";
     default = { };
 
-    # `submoduleWith` rather than `submodule`: the latter sets
-    # `shorthandOnlyDefinesConfig`, which treats a host definition as config
-    # alone and silently drops its `imports`. Options a host only sometimes has
-    # -- `identity` -- are modules under `rhizome/_host/` that it imports.
+    # `submoduleWith` so a host can import the options it wants from `hosts/_*.nix`.
     type = types.attrsOf (
       types.submoduleWith {
         modules = [
@@ -105,17 +102,12 @@ in
                   description = "Aspects applied to the machine, by id.";
                   default = [ ];
 
-                  # An enum for the same reason `system` is one: the failure should
-                  # name the host and the misspelled id, not surface as a missing
-                  # attribute wherever the module is finally looked up.
+                  # An enum so a typo fails here, naming the host and the bad id.
                   type = types.listOf (types.enum (lib.attrNames nixosModules));
                 };
 
                 system = lib.mkOption {
                   description = "The machine's platform.";
-
-                  # An enum rather than `str`: a typo'd double should fail here,
-                  # not deep inside nixpkgs where the platform is finally used.
                   type = types.enum systems;
                 };
               };
@@ -133,17 +125,11 @@ in
       networking.hostName = host.name;
       nixpkgs.hostPlatform = host.system;
 
-      # Surface this flake's git revision in `nixos-version --json` so the
-      # running system can be traced back to the source commit. Scoped to hosts
-      # built here rather than `flake.nixosModules.default`, which downstream
-      # flakes import: they would stamp their systems with our revision instead
-      # of their own.
+      # Surfaces the source commit in `nixos-version --json`. Per-host, so a
+      # downstream flake stamps its own.
       system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
     };
 
-  # `install` writes relative to `flake` because the merge has to be rooted at a
-  # statically known option. At the module root it recurses: the root would have
-  # to evaluate every `install` to find out which options it defines, and
-  # `rhizome.hosts` is one of them.
+  # Rooted at `flake`: at the module root this recurses through `rhizome.hosts`.
   config.flake = lib.mkMerge (lib.mapAttrsToList (_: host: host.install host) config.rhizome.hosts);
 }

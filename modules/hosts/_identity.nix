@@ -1,12 +1,8 @@
 { lib, ... }:
 
-# Not a flake module. This extends `rhizome.hosts.<name>`, imported by a host
-# that has an owner, and read by aspects through the `host` module argument.
-# Underscore-prefixed so the sweep skips it.
-#
-# Per-host rather than per-flake because `username` keys `users.users.<name>`:
-# a flake option would mean one owner for every machine built from a given
-# flake. Not every host has one -- a headless box may never import this.
+# Personal identity for the machine's primary user, imported by a host that has
+# an owner. Consumed by anything that needs to address or attribute them (login
+# user, git, etc).
 
 {
   options.identity = {

@@ -7,11 +7,9 @@
 # (`agenix`, `home-manager`, `self`). Aspects are re-evaluated inside a
 # consumer's flake, where those inputs do not exist.
 #
-# Ported from `lib/hosts.nix`, which wrapped `lib.nixosSystem` rather than
-# contributing modules. Kept as one file for now: several of these settings do
-# not merge across definitions -- `nixpkgs.config` merges with `//`, so a
-# second `allowUnfreePredicate` would silently clobber this one -- so splitting
-# the concerns apart needs a design pass of its own.
+# One file: `nixpkgs.config` merges with `//`, so a second `allowUnfreePredicate`
+# would silently clobber this one. Splitting the concerns apart needs a design
+# pass of its own.
 
 let
   inherit (inputs)

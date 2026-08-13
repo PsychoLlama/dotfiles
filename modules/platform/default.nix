@@ -1,6 +1,5 @@
 {
-  # Seeded so the substrate has a `platform` to mount for every class, whether
-  # or not any extension defines one.
+  # Gives the substrate a `platform` to mount for every class, extensions or not.
   flake = {
     editorModules.platform = { };
     homeModules.platform = { };
