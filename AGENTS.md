@@ -96,5 +96,5 @@ All programs are declaratively managed. When changing configuration for a progra
 - `git add --intent-to-add` new files before Nix can discover them.
 - Every `.nix` file under `modules/` is a flake module, exporting to `flake.modules.<class>.default`.
 - A new preset reaches a host only once a profile imports it. Dropping the file in does nothing.
-- Importing a directory picks up its `default.nix` and nothing else. Siblings (`nushell/swizzle.nix`) must be imported by that `default.nix` or listed separately.
+- Always spell out `default.nix` when importing a directory module. Nix keys modules by path, so `foo` and `foo/default.nix` are distinct keys and evaluate twice — surfacing as a duplicate-definition error far from the import. Siblings (`nushell/swizzle.nix`) must be imported by that `default.nix` or listed separately.
 - Helpers, data, and libraries take an `_` prefix (`_auto-format.nix`) to mark them as not-a-module. `import` them explicitly where needed.

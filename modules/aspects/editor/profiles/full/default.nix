@@ -7,7 +7,7 @@
     ../../lsp/nushell.nix
     ../../lsp/rust-analyzer.nix
     ../../lsp/typescript.nix
-    ../../plugins
+    ../../plugins/default.nix
     ../../trusted-directories.nix
   ];
 

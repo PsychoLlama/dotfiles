@@ -7,8 +7,8 @@
     ../aspects/programs/bat.nix
     ../aspects/programs/bottom.nix
     ../aspects/programs/carapace.nix
-    ../aspects/programs/claude-code
-    ../aspects/programs/codex
+    ../aspects/programs/claude-code/default.nix
+    ../aspects/programs/codex/default.nix
     ../aspects/programs/delta.nix
     ../aspects/programs/dictation.nix
     ../aspects/programs/direnv.nix
@@ -24,14 +24,14 @@
     ../aspects/programs/jq.nix
     ../aspects/programs/miniserve.nix
     ../aspects/programs/nix-output-monitor.nix
-    ../aspects/programs/nushell
+    ../aspects/programs/nushell/default.nix
     ../aspects/programs/nushell/swizzle.nix
     ../aspects/programs/python3.nix
     ../aspects/programs/spotify.nix
     ../aspects/programs/starship.nix
     ../aspects/programs/sway.nix
     ../aspects/programs/termshark.nix
-    ../aspects/programs/tmux
+    ../aspects/programs/tmux/default.nix
     ../aspects/programs/viddy.nix
     ../aspects/programs/wezterm.nix
     ../aspects/programs/whois.nix
@@ -42,7 +42,7 @@
     ../aspects/services/greetd.nix
     ../aspects/services/pipewire.nix
     ../aspects/services/podman.nix
-    ../aspects/services/restic
+    ../aspects/services/restic/default.nix
     ../aspects/services/ssh-agent.nix
     ../aspects/services/syncthing.nix
     ../aspects/services/tailscale.nix

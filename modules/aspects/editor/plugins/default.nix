@@ -1,10 +1,10 @@
 {
   imports = [
-    ./alternaut
-    ./conform
-    ./markdown-preview
-    ./nvim-lint
-    ./snacks
+    ./alternaut/default.nix
+    ./conform/default.nix
+    ./markdown-preview/default.nix
+    ./nvim-lint/default.nix
+    ./snacks/default.nix
   ];
 
   flake.modules.editor.default =

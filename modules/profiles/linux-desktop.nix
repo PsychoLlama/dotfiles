@@ -17,7 +17,7 @@
     ../aspects/programs/slurp.nix
     ../aspects/programs/sway.nix
     ../aspects/programs/swaylock.nix
-    ../aspects/programs/waybar
+    ../aspects/programs/waybar/default.nix
     ../aspects/programs/wf-recorder.nix
     ../aspects/programs/wireplumber.nix
     ../aspects/programs/wl-clipboard.nix
