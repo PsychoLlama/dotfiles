@@ -3,6 +3,10 @@
 # The base substrate every machine is built on: nixpkgs configuration, the Nix
 # daemon, the Home Manager bridge, and the `programs.editor` option.
 #
+# Lives here rather than under `aspects/` because it reads flake inputs
+# (`agenix`, `home-manager`, `self`). Aspects are re-evaluated inside a
+# consumer's flake, where those inputs do not exist.
+#
 # Ported from `lib/hosts.nix`, which wrapped `lib.nixosSystem` rather than
 # contributing modules. Kept as one file for now: several of these settings do
 # not merge across definitions -- `nixpkgs.config` merges with `//`, so a

@@ -10,12 +10,6 @@ let
 in
 
 {
-  # The substrate reads flake inputs (`agenix`, `home-manager`, `self`), so it
-  # is imported here rather than from a profile. Profiles are re-evaluated
-  # inside a consumer's flake, where those inputs do not exist -- which is why
-  # no preset references `inputs` either.
-  imports = [ ../aspects/system/substrate.nix ];
-
   options.rhizome.hosts = lib.mkOption {
     description = "NixOS machines, keyed by hostname.";
     default = { };

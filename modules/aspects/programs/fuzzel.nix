@@ -9,7 +9,7 @@ let
 in
 
 {
-  imports = [ ../../system/theme.nix ];
+  imports = [ ../../rhizome/theme.nix ];
 
   flake.modules.homeManager.default =
     {

@@ -6,7 +6,7 @@ let
 in
 
 {
-  imports = [ ../../../system/identity.nix ];
+  imports = [ ../../../rhizome/identity.nix ];
 
   flake.modules.nixos.default =
     {

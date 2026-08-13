@@ -6,7 +6,7 @@ let
 in
 
 {
-  imports = [ ../../system/trusted-directories.nix ];
+  imports = [ ../../rhizome/trusted-directories.nix ];
 
   flake.modules.homeManager.default =
     {

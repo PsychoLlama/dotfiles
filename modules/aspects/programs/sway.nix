@@ -16,7 +16,7 @@ in
     ../../platform/homeManager/programs/playerctl.nix
     ../../platform/homeManager/programs/slurp.nix
     ../../platform/homeManager/programs/wl-clipboard.nix
-    ../../system/theme.nix
+    ../../rhizome/theme.nix
   ];
 
   flake.modules = {

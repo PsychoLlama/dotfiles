@@ -11,7 +11,7 @@ in
 
     ../../platform/homeManager/programs/git.nix
     ../../platform/homeManager/programs/nushell/abbreviations.nix
-    ../../system/identity.nix
+    ../../rhizome/identity.nix
   ];
 
   flake.modules.homeManager.default =

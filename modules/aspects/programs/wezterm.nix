@@ -9,7 +9,7 @@ in
   imports = [
     (import ./_mk-unstable-preset.nix "wezterm")
 
-    ../../system/theme.nix
+    ../../rhizome/theme.nix
   ];
 
   flake.modules.homeManager.default =

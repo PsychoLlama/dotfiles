@@ -10,7 +10,7 @@ let
 in
 
 {
-  imports = [ ../../system/trusted-directories.nix ];
+  imports = [ ../../rhizome/trusted-directories.nix ];
 
   flake.modules.editor.default = {
     config.env.trusted = trusted-directories;

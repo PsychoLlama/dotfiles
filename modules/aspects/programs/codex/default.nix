@@ -7,8 +7,8 @@ in
 
 {
   imports = [
-    ../../../system/agents
-    ../../../system/trusted-directories.nix
+    ../../../rhizome/agents/default.nix
+    ../../../rhizome/trusted-directories.nix
   ];
 
   flake.modules.nixos.default =
