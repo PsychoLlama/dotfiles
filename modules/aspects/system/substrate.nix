@@ -27,6 +27,7 @@ let
       lib,
       config,
       pkgs,
+      host,
       ...
     }:
 
@@ -45,7 +46,11 @@ let
             inherit pkgs;
           };
 
-          modules = [ flake-modules.editor.default ];
+          modules = [
+            flake-modules.editor.default
+
+            { _module.args.host = host; }
+          ];
         };
       };
 
@@ -55,7 +60,12 @@ in
 
 {
   flake.modules.nixos.default =
-    { lib, pkgs, ... }:
+    {
+      lib,
+      pkgs,
+      host,
+      ...
+    }:
 
     {
       imports = [
@@ -113,6 +123,8 @@ in
           agenix.homeManagerModules.default
           flake-modules.homeManager.default
           editor-program
+
+          { _module.args.host = host; }
         ];
       };
     };

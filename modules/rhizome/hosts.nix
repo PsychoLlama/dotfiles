@@ -60,6 +60,8 @@ in
         config.flake.modules.nixos.default
 
         {
+          _module.args.host = host;
+
           networking.hostName = host.name;
           nixpkgs.hostPlatform = host.system;
 
