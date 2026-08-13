@@ -31,7 +31,7 @@
     ../system/sound-theme.nix
 
     # Enabled directly below, without a preset of its own.
-    ../../extensions/programs/signal-desktop.nix
+    ../../platform/homeManager/programs/signal-desktop.nix
   ];
 
   flake.modules.homeManager.default =

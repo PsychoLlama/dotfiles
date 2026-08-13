@@ -1,6 +1,6 @@
 {
   imports = [
     (import ./_mk-unstable-preset.nix "miniserve")
-    ../../extensions/programs/miniserve.nix
+    ../../platform/homeManager/programs/miniserve.nix
   ];
 }

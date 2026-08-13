@@ -1,6 +1,6 @@
 {
   imports = [
     (import ./_mk-unstable-preset.nix "grim")
-    ../../extensions/programs/grim.nix
+    ../../platform/homeManager/programs/grim.nix
   ];
 }

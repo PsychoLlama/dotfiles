@@ -50,15 +50,15 @@
     ../system/fonts.nix
 
     # Programs enabled directly below, without a preset of their own.
-    ../../extensions/programs/binutils.nix
-    ../../extensions/programs/duf.nix
-    ../../extensions/programs/hexyl.nix
-    ../../extensions/programs/lsof.nix
-    ../../extensions/programs/onefetch.nix
-    ../../extensions/programs/parted.nix
-    ../../extensions/programs/rage.nix
-    ../../extensions/programs/tokei.nix
-    ../../extensions/programs/viu.nix
+    ../../platform/homeManager/programs/binutils.nix
+    ../../platform/homeManager/programs/duf.nix
+    ../../platform/homeManager/programs/hexyl.nix
+    ../../platform/homeManager/programs/lsof.nix
+    ../../platform/homeManager/programs/onefetch.nix
+    ../../platform/homeManager/programs/parted.nix
+    ../../platform/homeManager/programs/rage.nix
+    ../../platform/homeManager/programs/tokei.nix
+    ../../platform/homeManager/programs/viu.nix
   ];
 
   flake.modules = {

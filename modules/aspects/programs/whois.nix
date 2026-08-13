@@ -1,6 +1,6 @@
 {
   imports = [
     (import ./_mk-unstable-preset.nix "whois")
-    ../../extensions/programs/whois.nix
+    ../../platform/homeManager/programs/whois.nix
   ];
 }

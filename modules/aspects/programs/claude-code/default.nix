@@ -20,7 +20,7 @@ in
     ./skills/notify.nix
     ./statusline.nix
 
-    ../../../extensions/programs/claude-code.nix
+    ../../../platform/homeManager/programs/claude-code.nix
     ../../../system/agents
     ../../../system/trusted-directories.nix
   ];

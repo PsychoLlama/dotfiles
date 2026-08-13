@@ -2,8 +2,8 @@
   imports = [
     (import ../_mk-unstable-preset.nix "nushell")
 
-    ../../../extensions/programs/nushell/abbreviations.nix
-    ../../../extensions/programs/nushell/libraries.nix
+    ../../../platform/homeManager/programs/nushell/abbreviations.nix
+    ../../../platform/homeManager/programs/nushell/libraries.nix
   ];
 
   flake.modules.homeManager.default =

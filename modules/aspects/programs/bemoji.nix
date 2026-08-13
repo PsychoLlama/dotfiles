@@ -1,7 +1,7 @@
 {
   imports = [
-    ../../extensions/programs/bemoji.nix
-    ../../extensions/programs/wtype.nix
+    ../../platform/homeManager/programs/bemoji.nix
+    ../../platform/homeManager/programs/wtype.nix
   ];
 
   flake.modules.homeManager.default =

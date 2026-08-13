@@ -1,7 +1,7 @@
 {
   imports = [
     (import ./_mk-unstable-preset.nix "glow")
-    ../../extensions/programs/glow.nix
+    ../../platform/homeManager/programs/glow.nix
   ];
 
   flake.modules.homeManager.default.programs.glow.settings = {

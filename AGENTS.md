@@ -16,7 +16,7 @@ Values shared across classes are declared as flake options instead (`theme`, `id
 
 Two kinds of module share the tree:
 
-- **Platform extensions** (`modules/extensions/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so importing one costs nothing.
+- **Platform extensions** (`modules/platform/<class>/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so importing one costs nothing. Unlike the rest of the tree, these _are_ filed by module class: an extension adds options to one platform's module system, so its class is the thing it extends. Everything is `homeManager` today; a `nixos`-only option would live at `platform/nixos/`.
 - **Presets** — opinionated configs, imported by a profile.
 
 Profiles (`modules/aspects/profiles/`) are the only entry points. A profile is a list of `imports`, and it publishes itself as `flake.modules.flake.<name>` so other flakes can pick it:
@@ -37,7 +37,7 @@ Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, di
   - `flake/` — the flake's own outputs, one file per concern (lib, modules, nixpkgs, packages, shell, overlays, templates).
     - `hosts/` — one directory per machine, each writing into `rhizome.hosts`.
   - `rhizome/` — options this flake owns, declared for consumers (`hosts`).
-  - `extensions/{programs,services}/` — platform extensions.
+  - `platform/<class>/{programs,services}/` — platform extensions, filed by the class they extend (`platform/homeManager/programs/dive.nix`).
   - `aspects/` — everything that configures a host.
     - `programs/`, `services/` — presets, one file (or directory) per program or service.
     - `system/` — presets belonging to no single program (`fonts`, `gtk`, `sound-theme`), plus `substrate`.
@@ -72,7 +72,7 @@ Self-contained neovim framework in `modules/editor/`. No `~/.config` files.
 
 Its vocabulary is plugins and LSP servers rather than programs and services, so it keeps its own tree, laid out on the same convention as the root.
 
-- `platform/` — plugin system, LSP configuration, settings schema. Named for what it is: the editor module class is invented here, so there is no upstream to extend. The only editor directory that auto-imports.
+- `platform/` — plugin system, LSP configuration, settings schema. Named for what it is: the editor module class is invented here, so there is no upstream to extend. The only editor directory that auto-imports. (Distinct from the root `modules/platform/`, which extends platforms that already exist.)
 - `plugins/`, `lsp/` — presets. `profiles/` — groupings, imported by `modules/aspects/programs/editor.nix`.
 - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
 - `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.

@@ -2,7 +2,7 @@
   imports = [
     (import ../_mk-unstable-preset.nix "tmux")
 
-    ../../../extensions/programs/nushell/abbreviations.nix
+    ../../../platform/homeManager/programs/nushell/abbreviations.nix
   ];
 
   flake.modules.homeManager.default =

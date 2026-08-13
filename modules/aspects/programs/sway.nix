@@ -9,13 +9,13 @@ in
   # Keybindings reach for these programs; the modules only declare the options,
   # leaving a profile to decide whether any of them are installed.
   imports = [
-    ../../extensions/programs/bemoji.nix
-    ../../extensions/programs/brightnessctl.nix
-    ../../extensions/programs/grim.nix
-    ../../extensions/programs/pamixer.nix
-    ../../extensions/programs/playerctl.nix
-    ../../extensions/programs/slurp.nix
-    ../../extensions/programs/wl-clipboard.nix
+    ../../platform/homeManager/programs/bemoji.nix
+    ../../platform/homeManager/programs/brightnessctl.nix
+    ../../platform/homeManager/programs/grim.nix
+    ../../platform/homeManager/programs/pamixer.nix
+    ../../platform/homeManager/programs/playerctl.nix
+    ../../platform/homeManager/programs/slurp.nix
+    ../../platform/homeManager/programs/wl-clipboard.nix
     ../../system/theme.nix
   ];
 
