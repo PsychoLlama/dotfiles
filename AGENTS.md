@@ -86,7 +86,9 @@ Building and publishing are two more options, so a host that this flake's `nixpk
 - `output` — read-only, `builder` applied to the host. What a custom `install` publishes.
 - `install` — `host -> flake outputs`. `{ flake.nixosConfigurations.${host.name} = host.output; }` by default.
 
-Only the `flake` attribute of `install` is read. The merge is rooted there rather than at the module root because the root would have to evaluate every `install` to discover which options it defines, and `rhizome.hosts` is one of them — an infinite recursion. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
+Only the `flake` attribute of `install` is read. The merge is rooted there rather than at the module root because the root would have to evaluate every `install` to discover which options it defines, and `rhizome.hosts` is one of them — an infinite recursion.
+
+`rhizome.defaults.host` is configuration folded into every host's `module`, reading the machine through a `host` module argument. It carries `networking.hostName`, `nixpkgs.hostPlatform`, and `system.configurationRevision`. It rides on `module` rather than on the default `builder` so that a host overriding `builder` still gets it, and it merges, so a consumer can add to it. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
 
 ## Directory Structure
 

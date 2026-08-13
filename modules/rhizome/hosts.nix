@@ -9,11 +9,22 @@ let
   inherit (lib) types;
 
   # Bound here because the host submodule shadows `config` with its own.
+  defaults = config.rhizome.defaults;
   systems = config.systems;
   nixosModules = config.flake.nixosModules;
 in
 
 {
+  options.rhizome.defaults.host = lib.mkOption {
+    description = ''
+      Configuration folded into every host's `module`, so it survives a
+      custom `builder`. Reads the machine through a `host` module argument.
+    '';
+
+    type = types.deferredModule;
+    default = { };
+  };
+
   options.rhizome.hosts = lib.mkOption {
     description = "Machines, keyed by hostname.";
     default = { };
@@ -40,20 +51,7 @@ in
                     host.module
                     nixosModules.default
 
-                    {
-                      _module.args.host = host;
-
-                      networking.hostName = host.name;
-                      nixpkgs.hostPlatform = host.system;
-
-                      # Surface this flake's git revision in `nixos-version
-                      # --json` so the running system can be traced back to the
-                      # source commit. Scoped to hosts built here rather than
-                      # `flake.nixosModules.default`, which downstream flakes
-                      # import: they would stamp their systems with our revision
-                      # instead of their own.
-                      system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
-                    }
+                    { _module.args.host = host; }
                   ]
                   ++ map (id: nixosModules.${id}) host.profiles;
                 };
@@ -75,7 +73,7 @@ in
 
             module = lib.mkOption {
               description = "The machine's own configuration.";
-              type = types.deferredModule;
+              type = types.deferredModuleWith { staticModules = [ defaults.host ]; };
               default = { };
             };
 
@@ -115,6 +113,21 @@ in
       )
     );
   };
+
+  config.rhizome.defaults.host =
+    { host, ... }:
+
+    {
+      networking.hostName = host.name;
+      nixpkgs.hostPlatform = host.system;
+
+      # Surface this flake's git revision in `nixos-version --json` so the
+      # running system can be traced back to the source commit. Scoped to hosts
+      # built here rather than `flake.nixosModules.default`, which downstream
+      # flakes import: they would stamp their systems with our revision instead
+      # of their own.
+      system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+    };
 
   # Rooted at `flake` rather than the module root, which recurses: the root
   # would have to evaluate every `install` to find out which options it defines,
