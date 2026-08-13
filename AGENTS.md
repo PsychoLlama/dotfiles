@@ -17,7 +17,7 @@ Two kinds of module share the tree:
 - **Platform extensions** (`modules/platform/<class>/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so mounting all of them costs nothing. Unlike the rest of the tree, these _are_ filed by module class: an extension adds options to one platform's module system, so its class is the thing it extends. Everything is `homeManager` today; a `nixos`-only option would live at `platform/nixos/`. Extensions publish into `flake.modules.<class>.platform`, which `rhizome/substrate.nix` mounts once per class. Nothing else imports them: the platform is implied, so an aspect uses `programs.bat.*` without knowing where the option came from.
 - **Aspects** (`modules/aspects/`) — opinionated configs, selected by a profile. Each publishes under its own id.
 
-`modules/default.nix` sweeps `flake/`, `rhizome/`, and `platform/` with `import-tree`, and sweeps `aspects/` through `import-tree.map (import-aspect ./aspects)`. `import-tree` skips any path containing a `/_` segment, which is what keeps helpers like `_make-program-module.nix` (a function, not a module) out of the sweep.
+`modules/default.nix` sweeps `flake/`, `rhizome/`, and `platform/` with `import-tree`, and sweeps `aspects/` with `import-aspects` — the loader's own wrapper around `import-tree.map`, exported as `flake.lib.rhizome.import-aspects` so a consumer can grow its own aspect tree. `import-tree` skips any path containing a `/_` segment, which is what keeps helpers like `_make-program-module.nix` (a function, not a module) out of the sweep.
 
 ## Aspects
 

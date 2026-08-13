@@ -1,4 +1,4 @@
-{ lib }:
+{ lib, import-tree }:
 
 let
   classes = [
@@ -96,12 +96,10 @@ let
       });
     };
 
+  # Taken once: the sweep and the id derivation must agree on the root.
+  import-aspects = root: (import-tree.map (import-aspect root)) root;
 in
 
 {
-  inherit
-    classes
-    aspectId
-    import-aspect
-    ;
+  inherit import-aspects;
 }
