@@ -38,6 +38,11 @@ let
     root: path: args:
 
     let
+      # The flake's own `config`, closed over here so the class modules below
+      # can reach their dependencies. Referencing it from *their* `imports` is
+      # safe: they evaluate in another module system, where it is a plain value.
+      flake-modules = args.config.flake.modules;
+
       module = import path;
       body = checkExports id (if lib.isFunction module then module args else module);
 
@@ -70,42 +75,43 @@ let
 
       imports = foreign;
 
-      # Published to every class, including ones the aspect never exports. An
-      # empty module costs nothing, and it means `load-modules` can walk a
-      # pure aggregator -- which exports nothing at all -- like any other id.
+      # Published to every class, including ones the aspect never exports: an
+      # empty module costs nothing, and it keeps a pure aggregator -- which
+      # exports nothing at all -- reachable like any other id.
+      #
+      # Dependencies are resolved here rather than tracked in a registry. The
+      # explicit `key` is what makes that safe: two aspects depending on the
+      # same third one contribute the same key, so the module system loads it
+      # once. Without it every route to a dependency would be a fresh module.
       flake.modules = lib.genAttrs classes (class: {
-        ${id} = exports.${class} or { };
-      });
+        ${id} = {
+          _file = path;
+          key = "aspect:${class}:${id}";
 
-      # The dependency graph is tracked here rather than on the module itself:
-      # `flake.modules` runs its definitions through `deferredModule`, which
-      # rewraps them, so nothing smuggled alongside a module survives.
-      rhizome.aspects.${id} = { inherit dependencies; };
+          imports = [
+            (exports.${class} or { })
+          ]
+          ++ map (dependency: flake-modules.${class}.${dependency}) dependencies;
+        };
+      });
     };
 
-  # `genericClosure` dedups by key, so an import cycle terminates here rather
-  # than hanging. Whether a cycle is *legal* is a separate question, deferred
-  # until one actually shows up.
+  # An aspect already imports its own dependencies, so this is a lookup, not a
+  # walk. It exists to spell the id -- which a consumer cannot express as a
+  # relative path -- and to fail with something better than a missing attribute.
+  #
+  # A dependency cycle now recurses for real -- `stack overflow` when the
+  # module is evaluated, not when it is looked up. Deferred until one shows up;
+  # nothing in this tree has one.
   mkLoadModules =
-    {
-      aspects,
-      modules,
-      root,
-    }:
+    { modules, root }:
     class: target:
 
     let
       id = if lib.isString target then target else aspectId root target;
-
-      closure = builtins.genericClosure {
-        startSet = [ { key = id; } ];
-        operator = { key }: map (dependency: { key = dependency; }) aspects.${key}.dependencies;
-      };
     in
 
-    lib.throwIf (!(aspects ? ${id})) "No aspect named `${id}`." {
-      imports = map ({ key }: modules.${class}.${key}) closure;
-    };
+    lib.throwIf (!(modules.${class} ? ${id})) "No aspect named `${id}`." modules.${class}.${id};
 in
 
 {
