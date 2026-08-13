@@ -1,22 +1,14 @@
-{ config, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config.identity) username;
-in
-
 {
-  imports = [ ../../../rhizome/identity.nix ];
-
   exports.nixos =
     {
       config,
-      lib,
+      host,
       pkgs,
       ...
     }:
 
     let
+      inherit (host.identity) username;
       inherit (config.home-manager.users.${username}.home) homeDirectory;
       inherit (config.networking) hostName;
     in

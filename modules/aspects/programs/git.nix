@@ -1,26 +1,18 @@
-{ config, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config.identity) name email;
-in
-
 {
-  imports = [
-    (import ./_mk-unstable-preset.nix "git")
-
-    ../../rhizome/identity.nix
-  ];
+  imports = [ (import ./_mk-unstable-preset.nix "git") ];
 
   exports.homeManager =
     {
       config,
+      host,
       lib,
       pkgs,
       ...
     }:
 
     let
+      inherit (host.identity) name email;
+
       fsmonitor = config.programs.git.fsmonitor;
     in
 

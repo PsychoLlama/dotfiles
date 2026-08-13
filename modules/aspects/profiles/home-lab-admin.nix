@@ -1,20 +1,13 @@
-{ config, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config.identity) username;
-in
-
 {
-  imports = [ ../../rhizome/identity.nix ];
-
   exports.nixos =
-    { config, lib, ... }:
+    { host, lib, ... }:
 
     # Configure the machine as an admin to the home lab.
     # See: https://github.com/PsychoLlama/home-lab/
 
     let
+      inherit (host.identity) username;
+
       hosts = {
         nas-001 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOx6MIH8pVfBi0dckuIgssJO5JzlnEKrJrhNSPs7giTR";
         rpi4-001 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAyb4vh9xDEEV+30G0UPMTSdtVq3Tyfgl9I9VRwf226v";

@@ -1,17 +1,6 @@
-{ config, inputs, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config.identity) username name;
-in
+{ inputs, ... }:
 
 {
-  identity = {
-    username = "overlord";
-    name = "Jesse Gibson";
-    email = "JesseTheGibson@gmail.com";
-  };
-
   # Flake-scoped: trust follows me, not the machine.
   trusted-directories = [
     "~/projects/psychollama"
@@ -21,7 +10,15 @@ in
   ];
 
   rhizome.hosts.ava = {
+    imports = [ ../_identity.nix ];
+
     system = "x86_64-linux";
+
+    identity = {
+      username = "overlord";
+      name = "Jesse Gibson";
+      email = "JesseTheGibson@gmail.com";
+    };
 
     profiles = [
       "profiles/full"
@@ -30,9 +27,16 @@ in
     ];
 
     module =
-      { config, lib, ... }:
+      {
+        config,
+        host,
+        lib,
+        ...
+      }:
 
       let
+        inherit (host.identity) username name;
+
         shell = config.home-manager.users.${username}.programs.nushell.package;
       in
 

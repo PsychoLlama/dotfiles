@@ -29,92 +29,100 @@ in
     description = "Machines, keyed by hostname.";
     default = { };
 
+    # `submoduleWith` rather than `submodule`: the latter sets
+    # `shorthandOnlyDefinesConfig`, which treats a host definition as config
+    # alone and silently drops its `imports`. Options a host only sometimes has
+    # -- `identity` -- are modules under `rhizome/_host/` that it imports.
     type = types.attrsOf (
-      types.submodule (
-        { name, config, ... }:
+      types.submoduleWith {
+        modules = [
+          (
+            { name, config, ... }:
 
-        {
-          options = {
-            builder = lib.mkOption {
-              description = ''
-                Turns the host into whatever a machine is on its platform.
-                Override it for a host this flake's `nixpkgs` cannot build --
-                `darwinSystem`, a pinned nixpkgs, an image builder.
-              '';
+            {
+              options = {
+                builder = lib.mkOption {
+                  description = ''
+                    Turns the host into whatever a machine is on its platform.
+                    Override it for a host this flake's `nixpkgs` cannot build --
+                    `darwinSystem`, a pinned nixpkgs, an image builder.
+                  '';
 
-              type = types.functionTo types.raw;
+                  type = types.functionTo types.raw;
 
-              default =
-                host:
-                inputs.nixpkgs.lib.nixosSystem {
-                  modules = [
-                    host.module
-                    nixosModules.default
-                  ]
-                  ++ map (id: nixosModules.${id}) host.profiles;
+                  default =
+                    host:
+                    inputs.nixpkgs.lib.nixosSystem {
+                      modules = [
+                        host.module
+                        nixosModules.default
+                      ]
+                      ++ map (id: nixosModules.${id}) host.profiles;
+                    };
                 };
-            };
 
-            install = lib.mkOption {
-              description = ''
-                Flake outputs the host contributes, merged with every other
-                host's. Written relative to `flake`, and config only -- no
-                `options`, no `imports`.
+                install = lib.mkOption {
+                  description = ''
+                    Flake outputs the host contributes, merged with every other
+                    host's. Written relative to `flake`, and config only -- no
+                    `options`, no `imports`.
 
-                Override it to publish somewhere other than
-                `nixosConfigurations`, or to publish to more than one place.
-              '';
+                    Override it to publish somewhere other than
+                    `nixosConfigurations`, or to publish to more than one place.
+                  '';
 
-              type = types.functionTo types.raw;
-              default = host: { nixosConfigurations.${host.name} = host.output; };
-            };
+                  type = types.functionTo types.raw;
+                  default = host: { nixosConfigurations.${host.name} = host.output; };
+                };
 
-            module = lib.mkOption {
-              description = "The machine's own configuration.";
-              default = { };
+                module = lib.mkOption {
+                  description = "The machine's own configuration.";
+                  default = { };
 
-              type = types.deferredModuleWith {
-                staticModules = [
-                  { _module.args.host = config; }
-                  defaults.host
-                ];
+                  type = types.deferredModuleWith {
+                    staticModules = [
+                      { _module.args.host = config; }
+                      defaults.host
+                    ];
+                  };
+                };
+
+                name = lib.mkOption {
+                  description = "The machine's hostname.";
+                  type = types.str;
+                  readOnly = true;
+                  default = name;
+                };
+
+                output = lib.mkOption {
+                  description = "The built machine, as `install` publishes it.";
+                  type = types.raw;
+                  readOnly = true;
+                  default = config.builder config;
+                };
+
+                profiles = lib.mkOption {
+                  description = "Aspects applied to the machine, by id.";
+                  default = [ ];
+
+                  # An enum for the same reason `system` is one: the failure should
+                  # name the host and the misspelled id, not surface as a missing
+                  # attribute wherever the module is finally looked up.
+                  type = types.listOf (types.enum (lib.attrNames nixosModules));
+                };
+
+                system = lib.mkOption {
+                  description = "The machine's platform.";
+
+                  # An enum rather than `str`: a typo'd double should fail here,
+                  # not deep inside nixpkgs where the platform is finally used.
+                  type = types.enum systems;
+                };
               };
-            };
-
-            name = lib.mkOption {
-              description = "The machine's hostname.";
-              type = types.str;
-              readOnly = true;
-              default = name;
-            };
-
-            output = lib.mkOption {
-              description = "The built machine, as `install` publishes it.";
-              type = types.raw;
-              readOnly = true;
-              default = config.builder config;
-            };
-
-            profiles = lib.mkOption {
-              description = "Aspects applied to the machine, by id.";
-              default = [ ];
-
-              # An enum for the same reason `system` is one: the failure should
-              # name the host and the misspelled id, not surface as a missing
-              # attribute wherever the module is finally looked up.
-              type = types.listOf (types.enum (lib.attrNames nixosModules));
-            };
-
-            system = lib.mkOption {
-              description = "The machine's platform.";
-
-              # An enum rather than `str`: a typo'd double should fail here,
-              # not deep inside nixpkgs where the platform is finally used.
-              type = types.enum systems;
-            };
-          };
-        }
-      )
+            }
+          )
+        ];
+      }
     );
   };
 
