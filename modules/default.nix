@@ -9,6 +9,6 @@ in
     (import-tree ./flake)
     (import-tree ./rhizome)
     (import-tree ./platform)
-    (import-tree ./aspects/profiles)
+    (import-tree ./profiles)
   ];
 }

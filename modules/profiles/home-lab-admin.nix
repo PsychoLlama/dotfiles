@@ -10,7 +10,7 @@ in
   # presets land in `self.modules.<class>.default`.
   flake.modules.flake.home-lab-admin = ./home-lab-admin.nix;
 
-  imports = [ ../../system/identity.nix ];
+  imports = [ ../system/identity.nix ];
 
   flake.modules.nixos.default =
     { config, lib, ... }:

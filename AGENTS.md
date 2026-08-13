@@ -19,7 +19,7 @@ Two kinds of module share the tree:
 - **Platform extensions** (`modules/platform/<class>/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so importing one costs nothing. Unlike the rest of the tree, these _are_ filed by module class: an extension adds options to one platform's module system, so its class is the thing it extends. Everything is `homeManager` today; a `nixos`-only option would live at `platform/nixos/`.
 - **Presets** — opinionated configs, imported by a profile.
 
-Profiles (`modules/aspects/profiles/`) are the only entry points. A profile is a list of `imports`, and it publishes itself as `flake.modules.flake.<name>` so other flakes can pick it:
+Profiles (`modules/profiles/`) are the only entry points. A profile is a list of `imports`, and it publishes itself as `flake.modules.flake.<name>` so other flakes can pick it:
 
 ```nix
 imports = [ dotfiles.modules.flake.linux-desktop ];
@@ -40,12 +40,11 @@ Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, di
     - `hosts/` — one directory per machine, each writing into `rhizome.hosts`.
   - `rhizome/` — options this flake owns, declared for consumers (`hosts`).
   - `platform/<class>/` — the module-system layer for each class, auto-imported wholesale. `homeManager/{programs,services}/` extends upstream home-manager; `editor/` invents the `editor` class outright (see [Editor](#editor)).
-  - `aspects/` — everything that configures a host.
-    - `programs/`, `services/`, `editor/` — presets, one file (or directory) per program, service, or plugin.
+  - `aspects/` — presets: everything that configures a host, none of it enabled on its own.
+    - `programs/`, `services/`, `editor/` — one file (or directory) per program, service, or plugin.
     - `system/` — presets belonging to no single program (`fonts`, `gtk`, `sound-theme`), plus `substrate`.
-    - `profiles/` — groupings of presets.
+  - `profiles/` — groupings of presets, and the only entry points. Top-level rather than under `aspects/`: a profile configures nothing itself, it selects which aspects apply.
   - `system/` — flake options shared across classes (`identity`, `theme`, `trusted-directories`, `agents`).
-  - `editor/` — Self-contained neovim framework (see [Editor](#editor)).
 - `pkgs/` — Custom package derivations.
 
 Options that survive (settings, package pins) still mirror the directory structure: `psychollama.presets.programs.foo` lives at `aspects/programs/foo.nix` (or `foo/default.nix`). A module keeps a directory when it references sibling assets relatively (`waybar/waybar.css`, `nushell/libraries/`).
