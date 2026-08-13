@@ -10,9 +10,7 @@ Every `.nix` file under `modules/` is a flake module (the dendritic pattern). Fi
 
 Classes are `nixos`, `homeManager`, and `editor`. Where a file publishes depends on which of the two trees it is in.
 
-Values shared across classes are declared as flake options instead (`theme`, `trusted-directories`, `agents`), under `modules/rhizome/`. An aspect imports the declaring file and closes over `config.<option>` in an outer `let`, above the class module that shadows `config`. This is the only way the `editor` class can read them at all: it evaluates in its own module system with no platform above it.
-
-Values that vary by machine live on the host instead, reached through the `host` module argument (see [Hosts](#hosts)).
+Values shared across classes are declared on the host instead (`identity`, `theme`, `trusted-directories`, `agents`) and reached through the `host` module argument, which the substrate passes into all three class module systems. That is the only way the `editor` class can read them at all: it evaluates in its own module system with no platform above it. See [Hosts](#hosts).
 
 Two kinds of module share the tree:
 
@@ -90,20 +88,26 @@ Building and publishing are two more options, so a host that this flake's `nixpk
 
 `install` writes relative to `flake` because the merge has to be rooted at a statically known option. At the module root it recurses: the root would have to evaluate every `install` to discover which options that definition covers, and `rhizome.hosts` is one of them.
 
-Every class module built for a host gets the machine as a `host` module argument, so an aspect reads per-machine values directly (`host.identity.username`) rather than through a flake option. That is the whole reason `identity` is not a flake option: `username` keys `users.users.<name>`, so a flake option would mean one owner for every machine built from the flake.
+Every class module built for a host gets the machine as a `host` module argument, so an aspect reads per-machine values directly (`host.identity.username`) rather than through a flake option. `identity`, `theme`, `trusted-directories`, and `agents` all live here. `username` keys `users.users.<name>`, so a flake option would have meant one owner for every machine built from the flake; the rest follow it because they follow the owner.
 
-Options a host only sometimes has are modules beside the hosts (`hosts/_identity.nix`), imported by the hosts that want them:
+They are modules beside the hosts (`hosts/_identity.nix`, `hosts/_theme.nix`, …), imported by the hosts that want them — no machine is obliged to carry an option it has no use for:
 
 ```nix
 rhizome.hosts.ava = {
-  imports = [ ../_identity.nix ];
+  imports = [
+    ../_identity.nix
+    ../_theme.nix
+  ];
+
   identity.username = "overlord";
 };
 ```
 
 `rhizome.hosts` is a `submoduleWith` for this. `types.submodule` sets `shorthandOnlyDefinesConfig`, which treats a definition as config alone and drops its `imports` without a word — the option simply fails to exist. These files are underscore-prefixed because they are modules for the host submodule, not flake modules, so the sweep must skip them.
 
-An aspect reading `host.identity` on a host that never imported it fails with `attribute 'identity' missing`, pointing at the aspect's own line. That is the trade for not making every host carry an option it has no use for.
+An aspect reading `host.identity` on a host that never imported it fails with `attribute 'identity' missing`, pointing at the aspect's own line. That is the trade.
+
+`flake.lib.editor` takes a `host` too, defaulting to `{ }`. `packages.editor` is shared with people who are not the flake's owner, so it passes none and `editor/trusted-directories.nix` falls back to trusting nothing.
 
 `rhizome.defaults.host` is configuration folded into every host's `module`, reading the machine through a `host` module argument. It carries `networking.hostName`, `nixpkgs.hostPlatform`, and `system.configurationRevision`. It rides on `module` rather than on the default `builder` so that a host overriding `builder` still gets it, and it merges, so a consumer can add to it. `_module.args.host` rides along the same way, so a custom `builder` never has to wire it up. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
 
@@ -111,13 +115,13 @@ An aspect reading `host.identity` on a host that never imported it fails with `a
 
 - `modules/` — All Nix modules, one directory per concern. `flake.nix` holds inputs only.
   - `flake/` — the flake's own outputs, one file per concern (lib, nixpkgs, packages, shell, overlays, templates).
-  - `rhizome/` — the machinery this flake owns, always evaluated: the `hosts` option, the aspect loader (`_aspects.nix`), the per-class module outputs (`module-outputs.nix`), the flake options shared across classes (`theme`, `trusted-directories`, `agents`), and `substrate.nix` — the nixpkgs/Nix-daemon/Home-Manager base every machine is built on. The substrate lives here rather than under `aspects/` because it reads flake inputs, which a consumer's flake does not have.
+  - `rhizome/` — the machinery this flake owns, always evaluated: the `hosts` option, the aspect loader (`_aspects.nix`), the per-class module outputs (`module-outputs.nix`), and `substrate.nix` — the nixpkgs/Nix-daemon/Home-Manager base every machine is built on. The substrate lives here rather than under `aspects/` because it reads flake inputs, which a consumer's flake does not have.
   - `platform/<class>/` — the module-system layer for each class, mounted wholesale by the substrate. `default.nix` seeds an empty `platform` for every class so the substrate has something to mount before any extension exists. `homeManager/{programs,services}/` extends upstream home-manager; `editor/` invents the `editor` class outright (see [Editor](#editor)).
   - `aspects/` — everything that configures a host, none of it applied on its own.
     - `programs/`, `services/`, `editor/` — one file (or directory) per program, service, or plugin.
     - `system/` — aspects belonging to no single program (`fonts`, `gtk`, `sound-theme`).
     - `profiles/` — groupings, and the only thing a host names.
-  - `hosts/` — one directory per machine, each writing into `rhizome.hosts`. A sibling of `aspects/` rather than a child of `flake/`: a host names aspects and declares nothing of its own, so it is the last thing swept, not one of the flake's outputs. Underscore-prefixed files here (`_identity.nix`) are options a host can import, not machines.
+  - `hosts/` — one directory per machine, each writing into `rhizome.hosts`. A sibling of `aspects/` rather than a child of `flake/`: a host names aspects and declares nothing of its own, so it is the last thing swept, not one of the flake's outputs. Underscore-prefixed entries here (`_identity.nix`, `_theme.nix`, `_trusted-directories.nix`, `_agents/`) are options a host can import, not machines.
 - `pkgs/` — Custom package derivations.
 
 Options that survive (settings, package pins) still mirror the directory structure: `psychollama.presets.programs.foo` lives at `aspects/programs/foo.nix` (or `foo/default.nix`). A module keeps a directory when it references sibling assets relatively (`waybar/waybar.css`, `nushell/libraries/`).
@@ -133,7 +137,7 @@ Options that survive (settings, package pins) still mirror the directory structu
 ### Aspects
 
 - Single-responsibility, no `enable` option. A profile decides whether it applies.
-- Import the `rhizome/` option modules an aspect reads (`../../rhizome/theme.nix`, `../../rhizome/agents.nix`). Never import a platform extension — it is already mounted. Host options (`host.identity`) need no import: the host declares them.
+- Read cross-class values off the `host` module argument (`host.theme.palette`, `host.identity.username`). An aspect imports nothing for them — the host declares them. Never import a platform extension either; it is already mounted.
 - Only a profile should import another aspect for the sake of turning it on. Depending on one from an aspect is fine when the aspect genuinely cannot work without it (`claude-code/default.nix` imports its own hooks, plugins and skills); depending on one you merely want present is a profile's call, so guard on its upstream option instead (`lib.mkIf config.programs.direnv.enable`).
 - Install programs via `programs.<name>.enable` + `programs.<name>.package`, not `home.packages`.
 - Reference other programs through their `programs.<name>.package` rather than bare `pkgs.<name>`. Presets often pin `pkgs.unstable.*`, so direct references risk installing both versions.

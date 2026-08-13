@@ -1,16 +1,13 @@
 { inputs, ... }:
 
 {
-  # Flake-scoped: trust follows me, not the machine.
-  trusted-directories = [
-    "~/projects/psychollama"
-    "~/projects/@scratch"
-    "~/projects/retreon"
-    "~/projects/ambient-computer"
-  ];
-
   rhizome.hosts.ava = {
-    imports = [ ../_identity.nix ];
+    imports = [
+      ../_agents/default.nix
+      ../_identity.nix
+      ../_theme.nix
+      ../_trusted-directories.nix
+    ];
 
     system = "x86_64-linux";
 
@@ -19,6 +16,13 @@
       name = "Jesse Gibson";
       email = "JesseTheGibson@gmail.com";
     };
+
+    trusted-directories = [
+      "~/projects/psychollama"
+      "~/projects/@scratch"
+      "~/projects/retreon"
+      "~/projects/ambient-computer"
+    ];
 
     profiles = [
       "profiles/full"

@@ -1,26 +1,18 @@
-{ config, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config.theme) palette;
-in
-
 {
-  imports = [
-    (import ./_mk-unstable-preset.nix "wezterm")
-
-    ../../rhizome/theme.nix
-  ];
+  imports = [ (import ./_mk-unstable-preset.nix "wezterm") ];
 
   exports.homeManager =
     {
       config,
+      host,
       lib,
       pkgs,
       ...
     }:
 
     let
+      inherit (host.theme) palette;
+
       inline = lib.generators.mkLuaInline;
       tmux = config.programs.tmux.package;
     in

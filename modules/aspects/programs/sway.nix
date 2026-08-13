@@ -1,13 +1,4 @@
-{ config, ... }:
-
-# Bound out here because the modules below shadow `config` with their own.
-let
-  theme = config.theme.palette;
-in
-
 {
-  imports = [ ../../rhizome/theme.nix ];
-
   exports = {
     nixos =
       { lib, ... }:
@@ -23,9 +14,16 @@ in
       };
 
     homeManager =
-      { config, lib, ... }:
+      {
+        config,
+        host,
+        lib,
+        ...
+      }:
 
       let
+        theme = host.theme.palette;
+
         swaylock = lib.getExe' config.programs.swaylock.package "swaylock";
         wezterm = lib.getExe' config.programs.wezterm.package "wezterm";
         fuzzel = lib.getExe' config.programs.fuzzel.package "fuzzel";

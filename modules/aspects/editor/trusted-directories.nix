@@ -1,18 +1,11 @@
-{ config, ... }:
-
-# The editor evaluates in its own isolated module system, so it cannot read the
-# trust list from a platform above it. Closing over the flake option sidesteps
-# that entirely: `env.trusted` is fixed at flake evaluation, wherever the editor
-# is later built. `~` is expanded at runtime by the env framework.
-
-let
-  inherit (config) trusted-directories;
-in
-
 {
-  imports = [ ../../rhizome/trusted-directories.nix ];
+  exports.editor =
+    { host, ... }:
 
-  exports.editor = {
-    config.env.trusted = trusted-directories;
-  };
+    {
+      # An editor built without a host -- `packages.editor`, shared with people
+      # who are not me -- has no owner, so it trusts nothing. `~` is expanded at
+      # runtime by the env framework.
+      config.env.trusted = host.trusted-directories or [ ];
+    };
 }

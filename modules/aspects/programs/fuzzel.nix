@@ -1,24 +1,18 @@
-{ config, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config.theme) palette;
-
-  textColor = palette.normal.white;
-  accentColor = palette.normal.blue;
-in
-
 {
-  imports = [ ../../rhizome/theme.nix ];
-
   exports.homeManager =
     {
+      host,
       lib,
       pkgs,
       ...
     }:
 
     let
+      inherit (host.theme) palette;
+
+      textColor = palette.normal.white;
+      accentColor = palette.normal.blue;
+
       rgba = hex: alpha: "${lib.substring 1 (-1) hex}${lib.toHexString (builtins.ceil (alpha * 255))}";
       opaque = hex: rgba hex 1.0;
     in

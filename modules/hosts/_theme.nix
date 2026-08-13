@@ -1,18 +1,17 @@
 { config, lib, ... }:
 
+# Not a flake module. This extends `rhizome.hosts.<name>`, imported by a host
+# that wants it. Underscore-prefixed so the sweep skips it.
+#
 # Defines a centralized color palette that I can use in other configs.
 # `nix-colors` and `stylix` cover the same ground, but each landed on the wrong
 # side of what I wanted: one does too little, the other reaches into programs I
 # would rather configure myself.
 #
-# Declared on the flake rather than as a `generic` module. Nothing ever set a
-# theme per-machine, and the platform version had to be replayed into every
-# class it might be read from -- nixos declared it only so `substrate.nix`
-# could copy `name` and `palettes` down into home-manager. One flake option is
-# read directly by every preset, so adding a consumer costs nothing.
-#
-# The tradeoff: a downstream flake picks the palette once for every host it
-# builds, not per machine.
+# A host option: aspects read `host.theme.palette` through the `host` module
+# argument, in whichever class they belong to. The platform version had to be
+# replayed into every class it might be read from -- nixos declared it only so
+# `substrate.nix` could copy `name` and `palettes` down into home-manager.
 
 let
   inherit (lib) types mkOption mkDefault;

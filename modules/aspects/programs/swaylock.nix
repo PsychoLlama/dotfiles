@@ -1,20 +1,16 @@
-{ config, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config.theme) palette;
-  semi-black = "${palette.normal.black}d9"; # alpha(0.85)
-in
-
 {
-  imports = [ ../../rhizome/theme.nix ];
-
   exports.homeManager =
     {
+      host,
       lib,
       pkgs,
       ...
     }:
+
+    let
+      inherit (host.theme) palette;
+      semi-black = "${palette.normal.black}d9"; # alpha(0.85)
+    in
 
     {
       programs.swaylock = {

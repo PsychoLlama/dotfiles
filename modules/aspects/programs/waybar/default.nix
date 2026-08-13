@@ -1,22 +1,16 @@
-{ config, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config.theme) palette;
-in
-
 {
-  imports = [ ../../../rhizome/theme.nix ];
-
   exports.homeManager =
     {
       config,
+      host,
       lib,
       pkgs,
       ...
     }:
 
     let
+      inherit (host.theme) palette;
+
       # Sway's own idle inhibitor is the module's reason to exist, so key off
       # the service rather than assuming a profile wired it up.
       swayidle = config.services.swayidle;

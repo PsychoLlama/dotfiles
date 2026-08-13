@@ -1,25 +1,16 @@
-{ config, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config) agents trusted-directories;
-in
-
 {
-  imports = [
-    ../../../rhizome/agents/default.nix
-    ../../../rhizome/trusted-directories.nix
-  ];
-
   exports.nixos =
     {
       config,
+      host,
       lib,
       pkgs,
       ...
     }:
 
     let
+      inherit (host) agents trusted-directories;
+
       cfg = config.psychollama.presets.programs.codex;
 
       trustedDirectoriesHook = pkgs.callPackage ./hooks/_trusted-directories.nix {

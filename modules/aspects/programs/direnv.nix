@@ -1,22 +1,16 @@
-{ config, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config) trusted-directories;
-in
-
 {
-  imports = [ ../../rhizome/trusted-directories.nix ];
-
   exports.homeManager =
     {
       config,
+      host,
       lib,
       pkgs,
       ...
     }:
 
     let
+      inherit (host) trusted-directories;
+
       # direnv needs absolute prefixes; expand a leading `~` to the home directory.
       toAbsolute =
         dir:

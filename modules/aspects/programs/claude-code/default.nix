@@ -1,10 +1,3 @@
-{ config, ... }:
-
-# Bound out here because the module below shadows `config` with its own.
-let
-  inherit (config) agents trusted-directories;
-in
-
 {
   imports = [
     ./hooks/auto-format.nix
@@ -19,9 +12,6 @@ in
     ./plugins/typescript-lsp.nix
     ./skills/notify.nix
     ./statusline.nix
-
-    ../../../rhizome/agents/default.nix
-    ../../../rhizome/trusted-directories.nix
   ];
 
   exports.homeManager =
@@ -29,10 +19,13 @@ in
       pkgs,
       lib,
       config,
+      host,
       ...
     }:
 
     let
+      inherit (host) agents trusted-directories;
+
       cfg = config.psychollama.presets.programs.claude-code;
 
       # Claude Code needs absolute prefixes; expand a leading `~` to the home dir.
