@@ -1,7 +1,7 @@
 {
   imports = [ (import ./_mk-unstable-preset.nix "starship") ];
 
-  flake.modules.homeManager.default =
+  exports.homeManager =
     { lib, ... }:
 
     {

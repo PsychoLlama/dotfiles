@@ -11,7 +11,7 @@ in
     ../../../rhizome/trusted-directories.nix
   ];
 
-  flake.modules.nixos.default =
+  exports.nixos =
     {
       config,
       lib,

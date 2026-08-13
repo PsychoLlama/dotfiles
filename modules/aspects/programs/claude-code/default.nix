@@ -25,7 +25,7 @@ in
     ../../../rhizome/trusted-directories.nix
   ];
 
-  flake.modules.homeManager.default =
+  exports.homeManager =
     {
       pkgs,
       lib,

@@ -8,7 +8,7 @@ in
 {
   imports = [ ../../rhizome/trusted-directories.nix ];
 
-  flake.modules.homeManager.default =
+  exports.homeManager =
     {
       config,
       lib,

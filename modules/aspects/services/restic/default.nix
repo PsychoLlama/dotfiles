@@ -8,7 +8,7 @@ in
 {
   imports = [ ../../../rhizome/identity.nix ];
 
-  flake.modules.nixos.default =
+  exports.nixos =
     {
       config,
       lib,

@@ -1,5 +1,5 @@
 {
-  flake.modules.editor.default.lsp.servers.nushell = {
+  exports.editor.lsp.servers.nushell = {
     cmd = [
       "nu"
       "--lsp"

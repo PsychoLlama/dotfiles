@@ -5,7 +5,7 @@
     ../../../platform/homeManager/programs/nushell/abbreviations.nix
   ];
 
-  flake.modules.homeManager.default =
+  exports.homeManager =
     { config, pkgs, ... }:
 
     let

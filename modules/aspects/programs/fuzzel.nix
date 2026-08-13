@@ -11,7 +11,7 @@ in
 {
   imports = [ ../../rhizome/theme.nix ];
 
-  flake.modules.homeManager.default =
+  exports.homeManager =
     {
       lib,
       pkgs,

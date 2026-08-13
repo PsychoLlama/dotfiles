@@ -4,7 +4,7 @@
     ../../platform/homeManager/programs/wtype.nix
   ];
 
-  flake.modules.homeManager.default =
+  exports.homeManager =
     { pkgs, ... }:
 
     {

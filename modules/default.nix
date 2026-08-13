@@ -1,7 +1,9 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 
 let
   inherit (inputs) import-tree;
+
+  inherit (import ./rhizome/_aspects.nix { inherit lib; }) import-aspect;
 in
 
 {
@@ -9,6 +11,6 @@ in
     (import-tree ./flake)
     (import-tree ./rhizome)
     (import-tree ./platform)
-    (import-tree ./profiles)
+    ((import-tree.map (import-aspect ./aspects)) ./aspects)
   ];
 }

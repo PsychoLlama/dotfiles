@@ -6,7 +6,7 @@
     ../../../platform/homeManager/programs/nushell/libraries.nix
   ];
 
-  flake.modules.homeManager.default =
+  exports.homeManager =
     {
       config,
       lib,

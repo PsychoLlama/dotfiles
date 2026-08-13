@@ -1,7 +1,7 @@
 {
   imports = [ ../../platform/homeManager/services/swaybg.nix ];
 
-  flake.modules.homeManager.default =
+  exports.homeManager =
     { pkgs, ... }:
 
     {

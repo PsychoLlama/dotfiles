@@ -23,6 +23,12 @@ in
   rhizome.hosts.ava = {
     system = "x86_64-linux";
 
+    profiles = [
+      ../../../aspects/profiles/full.nix
+      ../../../aspects/profiles/home-lab-admin.nix
+      ../../../aspects/profiles/linux-desktop.nix
+    ];
+
     module =
       { config, lib, ... }:
 

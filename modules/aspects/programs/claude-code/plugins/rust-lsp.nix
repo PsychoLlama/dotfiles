@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.default.programs.claude-code.plugins.rust-lsp = {
+  exports.homeManager.programs.claude-code.plugins.rust-lsp = {
     description = "Rust Language Server for Claude Code.";
 
     lsp.servers.rust = {

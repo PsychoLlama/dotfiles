@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.default =
+  exports = {
+    nixos =
       { lib, pkgs, ... }:
 
       {
@@ -13,7 +13,7 @@
         fonts.fontconfig.defaultFonts.emoji = [ "Noto Color Emoji" ];
       };
 
-    homeManager.default =
+    homeManager =
       { pkgs, ... }:
 
       {

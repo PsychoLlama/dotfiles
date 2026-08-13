@@ -1,7 +1,7 @@
 {
   imports = [ (import ./_mk-unstable-preset.nix "fd") ];
 
-  flake.modules.homeManager.default = {
+  exports.homeManager = {
     # `.git/` isn't covered by any .gitignore (git special-cases it), so
     # `fd --hidden` would otherwise descend the entire internal object tree.
     # The global ignore file keeps it out of every git-visible listing.

@@ -33,6 +33,12 @@ in
               default = name;
             };
 
+            profiles = lib.mkOption {
+              description = "Aspects applied to the machine, by path or id.";
+              type = types.listOf (types.either types.str types.path);
+              default = [ ];
+            };
+
             system = lib.mkOption {
               description = "The machine's platform.";
 
@@ -66,7 +72,8 @@ in
           # revision instead of their own.
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
         }
-      ];
+      ]
+      ++ map (config.flake.lib.rhizome.load-modules "nixos") host.profiles;
     }
   ) config.rhizome.hosts;
 }

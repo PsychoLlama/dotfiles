@@ -12,7 +12,7 @@ in
 {
   imports = [ ../../rhizome/trusted-directories.nix ];
 
-  flake.modules.editor.default = {
+  exports.editor = {
     config.env.trusted = trusted-directories;
   };
 }

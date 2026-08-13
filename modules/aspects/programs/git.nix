@@ -14,7 +14,7 @@ in
     ../../rhizome/identity.nix
   ];
 
-  flake.modules.homeManager.default =
+  exports.homeManager =
     {
       config,
       lib,

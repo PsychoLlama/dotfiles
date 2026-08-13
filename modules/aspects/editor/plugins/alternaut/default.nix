@@ -1,5 +1,5 @@
 {
-  flake.modules.editor.default =
+  exports.editor =
     { lib, config, ... }:
 
     {

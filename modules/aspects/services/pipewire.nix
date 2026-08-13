@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.default =
+  exports.nixos =
     { config, lib, ... }:
 
     {

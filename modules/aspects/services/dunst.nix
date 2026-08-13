@@ -1,7 +1,7 @@
 {
   imports = [ ../system/sound-theme.nix ];
 
-  flake.modules.homeManager.default =
+  exports.homeManager =
     { config, pkgs, ... }:
 
     let

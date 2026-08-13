@@ -4,7 +4,7 @@
     ../../platform/homeManager/programs/glow.nix
   ];
 
-  flake.modules.homeManager.default.programs.glow.settings = {
+  exports.homeManager.programs.glow.settings = {
     local = true;
     pager = false;
   };

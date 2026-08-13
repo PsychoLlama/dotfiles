@@ -4,7 +4,7 @@ name:
 # needing more than a package import this alongside their own config.
 
 {
-  flake.modules.homeManager.default =
+  exports.homeManager =
     { lib, pkgs, ... }:
 
     {

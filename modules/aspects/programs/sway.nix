@@ -19,8 +19,8 @@ in
     ../../rhizome/theme.nix
   ];
 
-  flake.modules = {
-    nixos.default =
+  exports = {
+    nixos =
       { lib, ... }:
 
       {
@@ -33,7 +33,7 @@ in
         xdg.portal.wlr.enable = true;
       };
 
-    homeManager.default =
+    homeManager =
       { config, lib, ... }:
 
       let

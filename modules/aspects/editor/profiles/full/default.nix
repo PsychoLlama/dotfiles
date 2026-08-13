@@ -11,7 +11,7 @@
     ../../trusted-directories.nix
   ];
 
-  flake.modules.editor.default =
+  exports.editor =
     { lib, pkgs, ... }:
 
     {

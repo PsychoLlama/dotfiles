@@ -1,7 +1,7 @@
 {
   imports = [ (import ./_mk-unstable-preset.nix "bat") ];
 
-  flake.modules.homeManager.default = {
+  exports.homeManager = {
     home.shellAliases.cat = "bat";
 
     programs.bat.config = {

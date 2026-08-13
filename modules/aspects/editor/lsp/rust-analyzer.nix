@@ -1,5 +1,5 @@
 {
-  flake.modules.editor.default.lsp.servers.rust-analyzer = {
+  exports.editor.lsp.servers.rust-analyzer = {
     cmd = [ "rust-analyzer" ];
     filetypes = [ "rust" ];
     root_markers = [
