@@ -14,7 +14,7 @@ Values shared across classes are declared on the host instead (`identity`, `them
 
 Two kinds of module share the tree:
 
-- **Platform extensions** (`modules/platform/<class>/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so mounting all of them costs nothing. Unlike the rest of the tree, these _are_ filed by module class: an extension adds options to one platform's module system, so its class is the thing it extends. Everything is `homeManager` today; a `nixos`-only option would live at `platform/nixos/`. Extensions publish into their class's output under `platform` — `nixosModules.platform`, `homeModules.platform`, `editorModules.platform` — which `rhizome/substrate.nix` mounts once per class. Nothing else imports them: the platform is implied, so an aspect uses `programs.bat.*` without knowing where the option came from.
+- **Platform extensions** (`modules/platform/<class>/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so mounting all of them costs nothing. Unlike the rest of the tree, these _are_ filed by module class: an extension adds options to one platform's module system, so its class is the thing it extends. Everything is `homeManager` today; a `nixos`-only option would live at `platform/nixos/`. Extensions publish into their class's output under `platform` — `nixosModules.platform`, `homeModules.platform`, `editorModules.platform` — which the substrate mounts once per class. Nothing else imports them: the platform is implied, so an aspect uses `programs.bat.*` without knowing where the option came from.
 - **Aspects** (`modules/aspects/`) — opinionated configs, selected by a profile. Each publishes under its own id.
 
 `modules/default.nix` sweeps `flake/`, `rhizome/`, and `platform/` with `import-tree`, and sweeps `aspects/` with `import-aspects ./aspects { }` — the loader's own wrapper around `import-tree.map`, exported as `flake.lib.rhizome.import-aspects` so a consumer can grow its own aspect tree. Its second argument takes `classes`, so a consumer that invented a module class of its own can sweep against it. `import-tree` skips any path containing a `/_` segment, which is what keeps helpers like `_make-program-module.nix` (a function, not a module) out of the sweep.
@@ -93,7 +93,7 @@ let inherit (config.flake) homeModules nixosModules; in
 
 Building and publishing are two more options, so a host that this flake's `nixpkgs` cannot build is a per-host override rather than a fork of the loop:
 
-- `builder` — `host -> machine`. `nixosSystem` by default, over `module` and the substrate.
+- `builder` — `host -> machine`. `nixosSystem` by default, over `module`.
 - `output` — read-only, `builder` applied to the host. What a custom `install` publishes.
 - `install` — `host -> flake outputs`, written relative to `flake`. `{ nixosConfigurations.${host.name} = host.output; }` by default.
 
@@ -120,13 +120,31 @@ An aspect reading `host.identity` on a host that never imported it fails with `a
 
 `flake.lib.editor` takes a `host` too, defaulting to `{ }`. `packages.editor` is shared with people who are not the flake's owner, so it passes none and `editor/trusted-directories.nix` falls back to trusting nothing.
 
-`rhizome.defaults.host` is configuration folded into every host's `module`, reading the machine through a `host` module argument. It carries `networking.hostName`, `nixpkgs.hostPlatform`, and `system.configurationRevision`. It rides on `module` rather than on the default `builder` so that a host overriding `builder` still gets it, and it merges, so a consumer can add to it. `_module.args.host` rides along the same way, so a custom `builder` never has to wire it up. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
+`rhizome.defaults.host` is configuration folded into every host's `module`, reading the machine through a `host` module argument. It carries `networking.hostName`, `nixpkgs.hostPlatform`, `system.configurationRevision`, and the [substrate](#substrate). It rides on `module` rather than on the default `builder` so that a host overriding `builder` still gets it, and it merges, so a consumer can add to it. `_module.args.host` rides along the same way, so a custom `builder` never has to wire it up. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
+
+## Substrate
+
+The base every machine is built on, at `modules/rhizome/substrate/`. It lives under `rhizome/` rather than `aspects/` because it reads flake inputs (`agenix`, `home-manager`, `self`), which a consumer's flake does not have.
+
+One file per concern, each publishing a named module rather than configuring anything itself:
+
+| output                      | what it is                                              |
+| :-------------------------- | :------------------------------------------------------ |
+| `nixosModules.package-set`  | overlays, unfree allowlist, `<nixpkgs>` pin             |
+| `nixosModules.nix-daemon`   | daemon package, registry, settings                      |
+| `nixosModules.secrets`      | agenix (`homeModules.secrets` is the Home Manager half) |
+| `nixosModules.home-manager` | the Home Manager bridge and its `sharedModules`         |
+| `homeModules.editor`        | the `programs.editor` option                            |
+
+`nixosModules.default` imports the five, and `rhizome.defaults.host` imports that — so it rides on `module` and a host overriding `builder` still gets it. `defaults.host` only adds, so a machine this base does not fit overrides the pieces it clashes with rather than opting out.
+
+`sharedModules` carries only what every user of a machine gets: the platform, secrets, the editor option, and the `host` argument. Aspects arrive per user (see [Profiles](#profiles)).
 
 ## Directory Structure
 
 - `modules/` — All Nix modules, one directory per concern. `flake.nix` holds inputs only.
   - `flake/` — the flake's own outputs, one file per concern (lib, nixpkgs, packages, shell, overlays, templates).
-  - `rhizome/` — the machinery this flake owns, always evaluated: the `hosts` option, the aspect loader (`_aspects.nix`), the per-class module outputs (`module-outputs.nix`), and `substrate.nix` — the nixpkgs/Nix-daemon/Home-Manager base every machine is built on. The substrate lives here rather than under `aspects/` because it reads flake inputs, which a consumer's flake does not have.
+  - `rhizome/` — the machinery this flake owns, always evaluated: the `hosts` option, the aspect loader (`_aspects.nix`), the per-class module outputs (`module-outputs.nix`), and `substrate/` (see [Substrate](#substrate)).
   - `platform/<class>/` — the module-system layer for each class, mounted wholesale by the substrate. `default.nix` seeds an empty `platform` for every class so the substrate has something to mount before any extension exists. `homeManager/{programs,services}/` extends upstream home-manager; `editor/` invents the `editor` class outright (see [Editor](#editor)).
   - `aspects/` — everything that configures a host, none of it applied on its own.
     - `programs/`, `services/`, `editor/` — one file (or directory) per program, service, or plugin.

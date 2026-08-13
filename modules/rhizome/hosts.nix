@@ -11,7 +11,6 @@ let
   # The host submodule shadows `config` with its own.
   defaults = config.rhizome.defaults;
   systems = config.systems;
-  nixosModules = config.flake.nixosModules;
 in
 
 {
@@ -50,10 +49,7 @@ in
                   default =
                     host:
                     inputs.nixpkgs.lib.nixosSystem {
-                      modules = [
-                        host.module
-                        nixosModules.default
-                      ];
+                      modules = [ host.module ];
                     };
                 };
 
