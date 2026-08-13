@@ -50,8 +50,6 @@ in
                   modules = [
                     host.module
                     nixosModules.default
-
-                    { _module.args.host = host; }
                   ]
                   ++ map (id: nixosModules.${id}) host.profiles;
                 };
@@ -60,21 +58,27 @@ in
             install = lib.mkOption {
               description = ''
                 Flake outputs the host contributes, merged with every other
-                host's. Only the `flake` attribute is read, and only its
-                config -- no `options`, no `imports`.
+                host's. Written relative to `flake`, and config only -- no
+                `options`, no `imports`.
 
                 Override it to publish somewhere other than
                 `nixosConfigurations`, or to publish to more than one place.
               '';
 
               type = types.functionTo types.raw;
-              default = host: { flake.nixosConfigurations.${host.name} = host.output; };
+              default = host: { nixosConfigurations.${host.name} = host.output; };
             };
 
             module = lib.mkOption {
               description = "The machine's own configuration.";
-              type = types.deferredModuleWith { staticModules = [ defaults.host ]; };
               default = { };
+
+              type = types.deferredModuleWith {
+                staticModules = [
+                  { _module.args.host = config; }
+                  defaults.host
+                ];
+              };
             };
 
             name = lib.mkOption {
@@ -129,10 +133,9 @@ in
       system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
     };
 
-  # Rooted at `flake` rather than the module root, which recurses: the root
-  # would have to evaluate every `install` to find out which options it defines,
-  # and `rhizome.hosts` is one of them.
-  config.flake = lib.mkMerge (
-    lib.mapAttrsToList (_: host: (host.install host).flake or { }) config.rhizome.hosts
-  );
+  # `install` writes relative to `flake` because the merge has to be rooted at a
+  # statically known option. At the module root it recurses: the root would have
+  # to evaluate every `install` to find out which options it defines, and
+  # `rhizome.hosts` is one of them.
+  config.flake = lib.mkMerge (lib.mapAttrsToList (_: host: host.install host) config.rhizome.hosts);
 }

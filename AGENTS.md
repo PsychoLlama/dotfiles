@@ -84,11 +84,11 @@ Building and publishing are two more options, so a host that this flake's `nixpk
 
 - `builder` — `host -> machine`. `nixosSystem` by default, assembling `module`, the substrate, and the host's profiles.
 - `output` — read-only, `builder` applied to the host. What a custom `install` publishes.
-- `install` — `host -> flake outputs`. `{ flake.nixosConfigurations.${host.name} = host.output; }` by default.
+- `install` — `host -> flake outputs`, written relative to `flake`. `{ nixosConfigurations.${host.name} = host.output; }` by default.
 
-Only the `flake` attribute of `install` is read. The merge is rooted there rather than at the module root because the root would have to evaluate every `install` to discover which options it defines, and `rhizome.hosts` is one of them — an infinite recursion.
+`install` writes relative to `flake` because the merge has to be rooted at a statically known option. At the module root it recurses: the root would have to evaluate every `install` to discover which options that definition covers, and `rhizome.hosts` is one of them.
 
-`rhizome.defaults.host` is configuration folded into every host's `module`, reading the machine through a `host` module argument. It carries `networking.hostName`, `nixpkgs.hostPlatform`, and `system.configurationRevision`. It rides on `module` rather than on the default `builder` so that a host overriding `builder` still gets it, and it merges, so a consumer can add to it. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
+`rhizome.defaults.host` is configuration folded into every host's `module`, reading the machine through a `host` module argument. It carries `networking.hostName`, `nixpkgs.hostPlatform`, and `system.configurationRevision`. It rides on `module` rather than on the default `builder` so that a host overriding `builder` still gets it, and it merges, so a consumer can add to it. `_module.args.host` rides along the same way, so a custom `builder` never has to wire it up. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
 
 ## Directory Structure
 
