@@ -1,5 +1,5 @@
 {
-  imports = [ ../../editor/profiles/full ];
+  imports = [ ../editor/profiles/full ];
 
   flake.modules.homeManager.default =
     {

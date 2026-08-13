@@ -8,7 +8,7 @@ in
   imports = [
     (import-tree ./flake)
     (import-tree ./rhizome)
-    (import-tree ./editor/platform)
+    (import-tree ./platform)
     (import-tree ./aspects/profiles)
   ];
 }

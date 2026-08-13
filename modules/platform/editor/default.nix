@@ -25,9 +25,9 @@
       # pull in vusted/luassert, which aren't present during `buildVimPlugin`'s
       # require-check and would fail the build.
       runtimeSrc = lib.fileset.toSource {
-        root = ../runtime;
-        fileset = lib.fileset.difference ../runtime (
-          lib.fileset.fileFilter (file: lib.hasSuffix "_spec.lua" file.name) ../runtime
+        root = ./runtime;
+        fileset = lib.fileset.difference ./runtime (
+          lib.fileset.fileFilter (file: lib.hasSuffix "_spec.lua" file.name) ./runtime
         );
       };
 

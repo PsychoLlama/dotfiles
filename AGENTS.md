@@ -27,7 +27,9 @@ imports = [ dotfiles.modules.flake.linux-desktop ];
 
 The repeated `flake` isn't a typo. `flake.modules.<class>` keys on module class, and a profile is a flake-parts module, so `flake` is its class the same way `nixos` is sway's. The name is load-bearing: that attribute is what stamps `_class`, and any other spelling would make the consumer's evaluation reject the module.
 
-`modules/default.nix` auto-imports only what is safe to always evaluate: the flake's own outputs, the `rhizome` options, the editor platform, and the profiles. Everything else is reached by path.
+`modules/default.nix` auto-imports only what is safe to always evaluate: the flake's own outputs, the `rhizome` options, all of `platform/`, and the profiles. Everything else is reached by path. `platform/` is safe wholesale because extensions declare options and nothing else — evaluating one that no preset uses costs an unused option. `import-tree` skips any path containing a `/_` segment, which is what keeps helpers like `_make-program-module.nix` (a function, not a module) out of the sweep.
+
+Auto-import serves _this_ flake only. A downstream flake importing `modules.flake.<profile>` gets exactly the profile's transitive imports, so presets must still import the platform modules they read — that duplication is deliberate, and imports are deduped.
 
 Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in presets. `modules/rhizome/hosts.nix` declares `options.rhizome.hosts.<hostname>`, holding the machine's `module` and `system` plus a read-only `name`, and maps them through `nixosSystem` into `flake.nixosConfigurations`. `system` is an enum over `config.systems`, so a typo'd double fails at the option rather than deep inside nixpkgs. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
 
@@ -37,9 +39,9 @@ Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, di
   - `flake/` — the flake's own outputs, one file per concern (lib, modules, nixpkgs, packages, shell, overlays, templates).
     - `hosts/` — one directory per machine, each writing into `rhizome.hosts`.
   - `rhizome/` — options this flake owns, declared for consumers (`hosts`).
-  - `platform/<class>/{programs,services}/` — platform extensions, filed by the class they extend (`platform/homeManager/programs/dive.nix`).
+  - `platform/<class>/` — the module-system layer for each class, auto-imported wholesale. `homeManager/{programs,services}/` extends upstream home-manager; `editor/` invents the `editor` class outright (see [Editor](#editor)).
   - `aspects/` — everything that configures a host.
-    - `programs/`, `services/` — presets, one file (or directory) per program or service.
+    - `programs/`, `services/`, `editor/` — presets, one file (or directory) per program, service, or plugin.
     - `system/` — presets belonging to no single program (`fonts`, `gtk`, `sound-theme`), plus `substrate`.
     - `profiles/` — groupings of presets.
   - `system/` — flake options shared across classes (`identity`, `theme`, `trusted-directories`, `agents`).
@@ -68,13 +70,11 @@ Options that survive (settings, package pins) still mirror the directory structu
 
 ## Editor
 
-Self-contained neovim framework in `modules/editor/`. No `~/.config` files.
+A self-contained neovim framework. No `~/.config` files. Its vocabulary is plugins and LSP servers rather than programs and services, but it splits along the same platform/preset seam as everything else, so it lives in both trees rather than a directory of its own:
 
-Its vocabulary is plugins and LSP servers rather than programs and services, so it keeps its own tree, laid out on the same convention as the root.
-
-- `platform/` — plugin system, LSP configuration, settings schema. Named for what it is: the editor module class is invented here, so there is no upstream to extend. The only editor directory that auto-imports. (Distinct from the root `modules/platform/`, which extends platforms that already exist.)
-- `plugins/`, `lsp/` — presets. `profiles/` — groupings, imported by `modules/aspects/programs/editor.nix`.
-- `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP).
+- `modules/platform/editor/` — plugin system, LSP configuration, settings schema. The `editor` module class is _invented_ here rather than extended, which is what makes it a platform even though there is no upstream to defer to.
+  - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP). Built into a `neovim-core` plugin by `default.nix`, which pins the fileset to this directory so unrelated edits don't invalidate the derivation.
+- `modules/aspects/editor/` — `plugins/` and `lsp/` presets, `profiles/` groupings. Reached from `modules/aspects/programs/editor.nix`, which is what puts neovim on a host.
 - `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.
 
 ### Working with Neovim

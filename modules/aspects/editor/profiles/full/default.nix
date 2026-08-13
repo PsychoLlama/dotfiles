@@ -20,7 +20,7 @@
       lsp.enable = lib.mkDefault true;
 
       # note.nvim is configured through the manifest opts; its config hook
-      # (presets/plugins/note.lua) forwards these to `require('note').setup`.
+      # (`aspects/editor/plugins/note.lua`) forwards these to `require('note').setup`.
       plugins.note-nvim.opts.path = lib.mkDefault "~/attic/slip-box";
 
       psychollama.presets.plugins = {
