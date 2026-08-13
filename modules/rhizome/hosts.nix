@@ -53,8 +53,7 @@ in
                       modules = [
                         host.module
                         nixosModules.default
-                      ]
-                      ++ map (id: nixosModules.${id}) host.profiles;
+                      ];
                     };
                 };
 
@@ -96,14 +95,6 @@ in
                   type = types.raw;
                   readOnly = true;
                   default = config.builder config;
-                };
-
-                profiles = lib.mkOption {
-                  description = "Aspects applied to the machine, by id.";
-                  default = [ ];
-
-                  # An enum so a typo fails here, naming the host and the bad id.
-                  type = types.listOf (types.enum (lib.attrNames nixosModules));
                 };
 
                 system = lib.mkOption {

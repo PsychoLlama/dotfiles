@@ -58,31 +58,42 @@ A dependency cycle recurses for real (`stack overflow`, when the module is evalu
 
 ## Profiles
 
-Profiles (`modules/aspects/profiles/`) are aspects that only have `imports`. They select; they configure nothing themselves. A host names them by id:
+Profiles (`modules/aspects/profiles/`) are aspects that only have `imports`. They select; they configure nothing themselves.
+
+Nothing resolves them. A profile is mounted by importing it into the module system it belongs to, one class at a time, at whatever scope it should apply to:
 
 ```nix
-rhizome.hosts.ava.profiles = [ "profiles/full" "profiles/linux-desktop" ];
+imports = [ nixosModules."profiles/linux-desktop" ];
+
+home-manager.users.alice = {
+  imports = [ homeModules."profiles/linux-desktop" ];
+  programs.editor.imports = [ editorModules."profiles/linux-desktop" ];
+};
+
+home-manager.users.build-bot.imports = [ homeModules."profiles/full" ];
 ```
 
-`rhizome/hosts.nix` looks those up in `flake.nixosModules`; `rhizome/substrate.nix` looks up the same ids in `flake.homeModules` (for `sharedModules`) and `flake.editorModules` (for the `programs.editor` submodule). There is no resolver in between — a published module already imports its dependencies, so the lookup is the whole job.
+A published module already imports its dependencies, so the lookup is the whole job. Nothing forces the three classes to agree — two users on one machine can run different profiles, which they cannot if home-manager aspects only arrive through `sharedModules`.
 
-`profiles` is an enum over the published ids, for the same reason `system` is one: a typo names the host and the misspelled id instead of surfacing as a missing attribute wherever the module is finally used.
+A consumer picks the same way, since the sweep publishes every aspect regardless of what any profile selects.
 
-A consumer picks the same way, since the sweep publishes every aspect regardless of what any profile selects:
-
-```nix
-imports = [ dotfiles.nixosModules."profiles/linux-desktop" ];
-```
-
-Aspects must still import the `rhizome/` options they read, since those are closed over at flake level rather than reached through a class. Imports are deduped, so be generous.
+Imports are deduped by `key`, so be generous.
 
 ## Hosts
 
-Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in aspects. `modules/rhizome/hosts.nix` declares `options.rhizome.hosts.<hostname>`, holding the machine's `module`, `profiles`, and `system` plus a read-only `name`. `system` is an enum over `config.systems`, so a typo'd double fails at the option rather than deep inside nixpkgs.
+Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, display) and the profiles the machine mounts. All generalizable config belongs in aspects. `modules/rhizome/hosts.nix` declares `options.rhizome.hosts.<hostname>`, holding the machine's `module` and `system` plus a read-only `name`. `system` is an enum over `config.systems`, so a typo'd double fails at the option rather than deep inside nixpkgs.
+
+A host reaches the published modules by closing over the flake's `config`, which is in scope because a host file is a flake module:
+
+```nix
+{ config, ... }:
+let inherit (config.flake) homeModules nixosModules; in
+{ rhizome.hosts.ava.module = { imports = [ nixosModules."profiles/full" ]; }; }
+```
 
 Building and publishing are two more options, so a host that this flake's `nixpkgs` cannot build is a per-host override rather than a fork of the loop:
 
-- `builder` — `host -> machine`. `nixosSystem` by default, assembling `module`, the substrate, and the host's profiles.
+- `builder` — `host -> machine`. `nixosSystem` by default, over `module` and the substrate.
 - `output` — read-only, `builder` applied to the host. What a custom `install` publishes.
 - `install` — `host -> flake outputs`, written relative to `flake`. `{ nixosConfigurations.${host.name} = host.output; }` by default.
 

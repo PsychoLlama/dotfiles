@@ -1,4 +1,14 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
+
+let
+  inherit (config.flake) editorModules homeModules nixosModules;
+
+  profiles = [
+    "profiles/full"
+    "profiles/home-lab-admin"
+    "profiles/linux-desktop"
+  ];
+in
 
 {
   rhizome.hosts.ava = {
@@ -24,12 +34,6 @@
       "~/projects/ambient-computer"
     ];
 
-    profiles = [
-      "profiles/full"
-      "profiles/home-lab-admin"
-      "profiles/linux-desktop"
-    ];
-
     module =
       {
         config,
@@ -48,7 +52,8 @@
         imports = [
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
           inputs.nixpkgs.nixosModules.notDetected
-        ];
+        ]
+        ++ map (id: nixosModules.${id}) profiles;
 
         boot.loader.systemd-boot = {
           enable = true;
@@ -85,6 +90,9 @@
         home-manager.users.${username} =
           { config, ... }:
           {
+            imports = map (id: homeModules.${id}) profiles;
+            programs.editor.imports = map (id: editorModules.${id}) profiles;
+
             home.stateVersion = "22.05";
 
             wayland.windowManager.sway.config.output = {

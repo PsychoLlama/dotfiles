@@ -52,8 +52,7 @@ let
             flake-outputs.editorModules.platform
 
             { _module.args.host = host; }
-          ]
-          ++ map (id: flake-outputs.editorModules.${id}) host.profiles;
+          ];
         };
       };
 
@@ -123,14 +122,15 @@ in
         useUserPackages = lib.mkDefault true;
 
         # Add custom dotfiles modules to the HM framework.
+        # Everything every user gets. Aspects are imported per user instead, so
+        # two users can run different profiles.
         sharedModules = [
           agenix.homeManagerModules.default
           flake-outputs.homeModules.platform
           editor-program
 
           { _module.args.host = host; }
-        ]
-        ++ map (id: flake-outputs.homeModules.${id}) host.profiles;
+        ];
       };
     };
 }
