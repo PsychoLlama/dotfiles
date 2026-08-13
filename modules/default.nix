@@ -12,5 +12,6 @@ in
     (import-tree ./rhizome)
     (import-tree ./platform)
     (import-aspects ./aspects { })
+    (import-tree ./hosts)
   ];
 }

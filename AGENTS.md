@@ -78,7 +78,7 @@ Aspects must still import the `rhizome/` options they read, since those are clos
 
 ## Hosts
 
-Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in aspects. `modules/rhizome/hosts.nix` declares `options.rhizome.hosts.<hostname>`, holding the machine's `module`, `profiles`, and `system` plus a read-only `name`. `system` is an enum over `config.systems`, so a typo'd double fails at the option rather than deep inside nixpkgs.
+Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in aspects. `modules/rhizome/hosts.nix` declares `options.rhizome.hosts.<hostname>`, holding the machine's `module`, `profiles`, and `system` plus a read-only `name`. `system` is an enum over `config.systems`, so a typo'd double fails at the option rather than deep inside nixpkgs.
 
 Building and publishing are two more options, so a host that this flake's `nixpkgs` cannot build is a per-host override rather than a fork of the loop:
 
@@ -93,14 +93,14 @@ Building and publishing are two more options, so a host that this flake's `nixpk
 ## Directory Structure
 
 - `modules/` — All Nix modules, one directory per concern. `flake.nix` holds inputs only.
-  - `flake/` — the flake's own outputs, one file per concern (lib, modules, nixpkgs, packages, shell, overlays, templates).
-    - `hosts/` — one directory per machine, each writing into `rhizome.hosts`.
+  - `flake/` — the flake's own outputs, one file per concern (lib, nixpkgs, packages, shell, overlays, templates).
   - `rhizome/` — the machinery this flake owns, always evaluated: the `hosts` option, the aspect loader (`_aspects.nix`), the per-class module outputs (`module-outputs.nix`), the flake options shared across classes (`identity`, `theme`, `trusted-directories`, `agents`), and `substrate.nix` — the nixpkgs/Nix-daemon/Home-Manager base every machine is built on. The substrate lives here rather than under `aspects/` because it reads flake inputs, which a consumer's flake does not have.
   - `platform/<class>/` — the module-system layer for each class, mounted wholesale by the substrate. `default.nix` seeds an empty `platform` for every class so the substrate has something to mount before any extension exists. `homeManager/{programs,services}/` extends upstream home-manager; `editor/` invents the `editor` class outright (see [Editor](#editor)).
   - `aspects/` — everything that configures a host, none of it applied on its own.
     - `programs/`, `services/`, `editor/` — one file (or directory) per program, service, or plugin.
     - `system/` — aspects belonging to no single program (`fonts`, `gtk`, `sound-theme`).
     - `profiles/` — groupings, and the only thing a host names.
+  - `hosts/` — one directory per machine, each writing into `rhizome.hosts`. A sibling of `aspects/` rather than a child of `flake/`: a host names aspects and declares nothing of its own, so it is the last thing swept, not one of the flake's outputs.
 - `pkgs/` — Custom package derivations.
 
 Options that survive (settings, package pins) still mirror the directory structure: `psychollama.presets.programs.foo` lives at `aspects/programs/foo.nix` (or `foo/default.nix`). A module keeps a directory when it references sibling assets relatively (`waybar/waybar.css`, `nushell/libraries/`).
