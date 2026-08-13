@@ -47,7 +47,14 @@ The loader turns the file into `flake.modules.<class>.<id>`, where `<id>` is the
 
 The first case is why an aspect never imports another aspect's file into itself: the sweep already published it, and importing it again is a second module key for the same file — which surfaces as a duplicate-definition error far from the cause.
 
-Dependencies are recorded in `rhizome.aspects.<id>.dependencies` rather than on the module. `flake.modules` runs its definitions through `deferredModule` and an `apply`, both of which rewrap the value, so nothing smuggled alongside a module survives.
+A dependency becomes an `imports` entry on the published module, pointing at the dependency's module for the same class. So `flake.modules.nixos."profiles/full"` already carries its whole transitive tree; nothing has to walk it.
+
+Two details make that work:
+
+- The exported module reaches its dependencies through the flake's `config`, which the same aspect's own `imports` could not do without infinite recursion. A class module evaluates under NixOS or Home Manager — a different module system — where the flake's `config` is an ordinary closed-over value.
+- Each published module sets `key = "aspect:<class>:<id>"`. Two aspects depending on a third contribute the same key, so the module system loads it once. Without it, each route is a distinct module and the file's options are declared twice. `flake-parts` does not set a key itself, but one set on our own attrset survives the wrapping.
+
+A dependency cycle recurses for real (`stack overflow`, when the module is evaluated). Nothing in the tree has one.
 
 ## Profiles
 
@@ -57,7 +64,7 @@ Profiles (`modules/aspects/profiles/`) are aspects that only have `imports`. The
 rhizome.hosts.ava.profiles = [ ../../../aspects/profiles/full.nix ];
 ```
 
-`flake.lib.rhizome.load-modules <class> <profile>` walks the dependency graph and returns `{ imports = [ … ]; }` of the published modules. `rhizome/hosts.nix` applies it for `nixos`; `rhizome/substrate.nix` applies it for `homeManager` (via `sharedModules`) and `editor` (via the `programs.editor` submodule). The walk uses `builtins.genericClosure`, so an import cycle terminates rather than hanging.
+`flake.lib.rhizome.load-modules <class> <profile>` returns the published module — a lookup, since the module already imports its dependencies. `rhizome/hosts.nix` applies it for `nixos`; `rhizome/substrate.nix` applies it for `homeManager` (via `sharedModules`) and `editor` (via the `programs.editor` submodule).
 
 It takes a path or an id. Paths are self-checking — a typo fails at the path — so hosts in this flake use them. Downstream flakes have no relative path into this tree and use the id:
 
