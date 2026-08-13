@@ -1,26 +1,13 @@
-{
-  config,
-  inputs,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 
 {
-  options.flake = inputs.flake-parts.lib.mkSubmoduleOptions {
-    lib = lib.mkOption {
-      description = "Utilities exported to downstream flakes.";
-      type = lib.types.lazyAttrsOf lib.types.raw;
-      default = { };
-    };
+  options.flake.lib = lib.mkOption {
+    description = "Utilities exported to downstream flakes.";
+    type = lib.types.lazyAttrsOf lib.types.raw;
+    default = { };
   };
 
-  # This utility exposes the Neovim module outside the typical module system.
-  # This is useful to export an editor as a flake package output.
-  #
-  #   nix shell dotfiles#editor
-  #
-  # You can still configure it declaratively in NixOS, but you can share it on
-  # other hosts that only have the Nix command installed.
+  # Builds an editor with no host above it, for `nix shell dotfiles#editor`.
   config.flake.lib.editor =
     {
       pkgs,
