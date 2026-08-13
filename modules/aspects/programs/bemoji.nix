@@ -1,9 +1,4 @@
 {
-  imports = [
-    ../../platform/homeManager/programs/bemoji.nix
-    ../../platform/homeManager/programs/wtype.nix
-  ];
-
   exports.homeManager =
     { pkgs, ... }:
 

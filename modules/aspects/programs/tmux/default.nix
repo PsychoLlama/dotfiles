@@ -1,8 +1,6 @@
 {
   imports = [
     (import ../_mk-unstable-preset.nix "tmux")
-
-    ../../../platform/homeManager/programs/nushell/abbreviations.nix
   ];
 
   exports.homeManager =

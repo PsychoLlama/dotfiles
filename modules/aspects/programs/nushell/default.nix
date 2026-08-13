@@ -1,9 +1,6 @@
 {
   imports = [
     (import ../_mk-unstable-preset.nix "nushell")
-
-    ../../../platform/homeManager/programs/nushell/abbreviations.nix
-    ../../../platform/homeManager/programs/nushell/libraries.nix
   ];
 
   exports.homeManager =

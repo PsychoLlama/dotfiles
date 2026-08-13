@@ -20,7 +20,6 @@ in
     ./skills/notify.nix
     ./statusline.nix
 
-    ../../../platform/homeManager/programs/claude-code.nix
     ../../../rhizome/agents/default.nix
     ../../../rhizome/trusted-directories.nix
   ];

@@ -1,6 +1,4 @@
 {
-  imports = [ ../../platform/homeManager/services/swaybg.nix ];
-
   exports.homeManager =
     { pkgs, ... }:
 

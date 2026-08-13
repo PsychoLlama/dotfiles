@@ -9,8 +9,6 @@ in
   imports = [
     (import ./_mk-unstable-preset.nix "git")
 
-    ../../platform/homeManager/programs/git.nix
-    ../../platform/homeManager/programs/nushell/abbreviations.nix
     ../../rhizome/identity.nix
   ];
 

@@ -44,17 +44,6 @@
     ../services/tailscale.nix
     ../services/zfs.nix
     ../system/fonts.nix
-
-    # Programs enabled directly below, without a preset of their own.
-    ../../platform/homeManager/programs/binutils.nix
-    ../../platform/homeManager/programs/duf.nix
-    ../../platform/homeManager/programs/hexyl.nix
-    ../../platform/homeManager/programs/lsof.nix
-    ../../platform/homeManager/programs/onefetch.nix
-    ../../platform/homeManager/programs/parted.nix
-    ../../platform/homeManager/programs/rage.nix
-    ../../platform/homeManager/programs/tokei.nix
-    ../../platform/homeManager/programs/viu.nix
   ];
 
   exports = {

@@ -25,9 +25,6 @@
     ../system/fonts.nix
     ../system/gtk.nix
     ../system/sound-theme.nix
-
-    # Enabled directly below, without a preset of its own.
-    ../../platform/homeManager/programs/signal-desktop.nix
   ];
 
   exports.homeManager =

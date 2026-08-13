@@ -6,18 +6,7 @@ let
 in
 
 {
-  # Keybindings reach for these programs; the modules only declare the options,
-  # leaving a profile to decide whether any of them are installed.
-  imports = [
-    ../../platform/homeManager/programs/bemoji.nix
-    ../../platform/homeManager/programs/brightnessctl.nix
-    ../../platform/homeManager/programs/grim.nix
-    ../../platform/homeManager/programs/pamixer.nix
-    ../../platform/homeManager/programs/playerctl.nix
-    ../../platform/homeManager/programs/slurp.nix
-    ../../platform/homeManager/programs/wl-clipboard.nix
-    ../../rhizome/theme.nix
-  ];
+  imports = [ ../../rhizome/theme.nix ];
 
   exports = {
     nixos =

@@ -51,7 +51,7 @@ let
           };
 
           modules = [
-            flake-modules.editor.default
+            flake-modules.editor.platform
 
             { _module.args.host = host; }
           ]
@@ -76,6 +76,7 @@ in
       imports = [
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager
+        flake-modules.nixos.platform
       ];
 
       nixpkgs = {
@@ -126,7 +127,7 @@ in
         # Add custom dotfiles modules to the HM framework.
         sharedModules = [
           agenix.homeManagerModules.default
-          flake-modules.homeManager.default
+          flake-modules.homeManager.platform
           editor-program
 
           { _module.args.host = host; }
