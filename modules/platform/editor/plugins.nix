@@ -1,5 +1,5 @@
 {
-  flake.modules.editor.platform =
+  flake.editorModules.platform =
     {
       config,
       lib,

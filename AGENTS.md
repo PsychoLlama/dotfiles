@@ -14,7 +14,7 @@ Values shared across classes are declared as flake options instead (`theme`, `id
 
 Two kinds of module share the tree:
 
-- **Platform extensions** (`modules/platform/<class>/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so mounting all of them costs nothing. Unlike the rest of the tree, these _are_ filed by module class: an extension adds options to one platform's module system, so its class is the thing it extends. Everything is `homeManager` today; a `nixos`-only option would live at `platform/nixos/`. Extensions publish into `flake.modules.<class>.platform`, which `rhizome/substrate.nix` mounts once per class. Nothing else imports them: the platform is implied, so an aspect uses `programs.bat.*` without knowing where the option came from.
+- **Platform extensions** (`modules/platform/<class>/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so mounting all of them costs nothing. Unlike the rest of the tree, these _are_ filed by module class: an extension adds options to one platform's module system, so its class is the thing it extends. Everything is `homeManager` today; a `nixos`-only option would live at `platform/nixos/`. Extensions publish into their class's output under `platform` — `nixosModules.platform`, `homeModules.platform`, `editorModules.platform` — which `rhizome/substrate.nix` mounts once per class. Nothing else imports them: the platform is implied, so an aspect uses `programs.bat.*` without knowing where the option came from.
 - **Aspects** (`modules/aspects/`) — opinionated configs, selected by a profile. Each publishes under its own id.
 
 `modules/default.nix` sweeps `flake/`, `rhizome/`, and `platform/` with `import-tree`, and sweeps `aspects/` with `import-aspects ./aspects { }` — the loader's own wrapper around `import-tree.map`, exported as `flake.lib.rhizome.import-aspects` so a consumer can grow its own aspect tree. Its second argument takes `classes`, so a consumer that invented a module class of its own can sweep against it. `import-tree` skips any path containing a `/_` segment, which is what keeps helpers like `_make-program-module.nix` (a function, not a module) out of the sweep.
@@ -31,9 +31,11 @@ An aspect may set exactly two attributes, asserted by the loader:
 }
 ```
 
-`exports.<class>` is the module for that class. The class list is closed, so a typo is an error rather than an attribute nobody reads. Anything else — a bare `flake.modules`, a stray `perSystem` — is rejected.
+`exports.<class>` is the module for that class. The class list is closed, so a typo is an error rather than an attribute nobody reads. Anything else — a bare `flake`, a stray `perSystem` — is rejected.
 
-The loader turns the file into `flake.modules.<class>.<id>`, where `<id>` is the path relative to `aspects/` without the extension: `aspects/programs/nushell/default.nix` becomes `programs/nushell`. Every id is published to every class, empty where the aspect exports nothing, so a pure aggregator is still walkable.
+The loader publishes the file into every class's flake output under `<id>`, the path relative to `aspects/` without the extension: `aspects/programs/nushell/default.nix` becomes `nixosModules."programs/nushell"`, `homeModules."programs/nushell"`, and `editorModules."programs/nushell"`. Every id is published to every class, empty where the aspect exports nothing, so a pure aggregator is still walkable.
+
+The class-to-output mapping is the loader's `defaultClasses`, and the second argument to `import-aspects` overrides it. The names are the ecosystem's rather than derived from the class — home-manager's module class is `homeManager` but its output is `homeModules`. Only `nixosModules` is a flake output Nix itself recognizes; `homeModules` follows home-manager's own convention, and `editorModules` is ours. flake-parts declares `nixosModules`, so `rhizome/module-outputs.nix` declares the other two: an undeclared flake output is typed `unique raw`, and the second aspect to define one would fail to merge rather than adding an attribute.
 
 `imports` is split three ways by what the entry is:
 
@@ -45,7 +47,7 @@ The loader turns the file into `flake.modules.<class>.<id>`, where `<id>` is the
 
 The first case is why an aspect never imports another aspect's file into itself: the sweep already published it, and importing it again is a second module key for the same file — which surfaces as a duplicate-definition error far from the cause.
 
-A dependency becomes an `imports` entry on the published module, pointing at the dependency's module for the same class. So `flake.modules.nixos."profiles/full"` already carries its whole transitive tree; nothing has to walk it.
+A dependency becomes an `imports` entry on the published module, pointing at the dependency's module for the same class. So `nixosModules."profiles/full"` already carries its whole transitive tree; nothing has to walk it.
 
 Two details make that work:
 
@@ -62,14 +64,14 @@ Profiles (`modules/aspects/profiles/`) are aspects that only have `imports`. The
 rhizome.hosts.ava.profiles = [ "profiles/full" "profiles/linux-desktop" ];
 ```
 
-`rhizome/hosts.nix` looks those up in `flake.modules.nixos`; `rhizome/substrate.nix` looks up the same ids in `flake.modules.homeManager` (for `sharedModules`) and `flake.modules.editor` (for the `programs.editor` submodule). There is no resolver in between — a published module already imports its dependencies, so the lookup is the whole job.
+`rhizome/hosts.nix` looks those up in `flake.nixosModules`; `rhizome/substrate.nix` looks up the same ids in `flake.homeModules` (for `sharedModules`) and `flake.editorModules` (for the `programs.editor` submodule). There is no resolver in between — a published module already imports its dependencies, so the lookup is the whole job.
 
 `profiles` is an enum over the published ids, for the same reason `system` is one: a typo names the host and the misspelled id instead of surfacing as a missing attribute wherever the module is finally used.
 
 A consumer picks the same way, since the sweep publishes every aspect regardless of what any profile selects:
 
 ```nix
-imports = [ dotfiles.modules.nixos."profiles/linux-desktop" ];
+imports = [ dotfiles.nixosModules."profiles/linux-desktop" ];
 ```
 
 Aspects must still import the `rhizome/` options they read, since those are closed over at flake level rather than reached through a class. Imports are deduped, so be generous.
@@ -83,7 +85,7 @@ Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, di
 - `modules/` — All Nix modules, one directory per concern. `flake.nix` holds inputs only.
   - `flake/` — the flake's own outputs, one file per concern (lib, modules, nixpkgs, packages, shell, overlays, templates).
     - `hosts/` — one directory per machine, each writing into `rhizome.hosts`.
-  - `rhizome/` — the machinery this flake owns, always evaluated: the `hosts` option, the aspect loader (`_aspects.nix`), the flake options shared across classes (`identity`, `theme`, `trusted-directories`, `agents`), and `substrate.nix` — the nixpkgs/Nix-daemon/Home-Manager base every machine is built on. The substrate lives here rather than under `aspects/` because it reads flake inputs, which a consumer's flake does not have.
+  - `rhizome/` — the machinery this flake owns, always evaluated: the `hosts` option, the aspect loader (`_aspects.nix`), the per-class module outputs (`module-outputs.nix`), the flake options shared across classes (`identity`, `theme`, `trusted-directories`, `agents`), and `substrate.nix` — the nixpkgs/Nix-daemon/Home-Manager base every machine is built on. The substrate lives here rather than under `aspects/` because it reads flake inputs, which a consumer's flake does not have.
   - `platform/<class>/` — the module-system layer for each class, mounted wholesale by the substrate. `default.nix` seeds an empty `platform` for every class so the substrate has something to mount before any extension exists. `homeManager/{programs,services}/` extends upstream home-manager; `editor/` invents the `editor` class outright (see [Editor](#editor)).
   - `aspects/` — everything that configures a host, none of it applied on its own.
     - `programs/`, `services/`, `editor/` — one file (or directory) per program, service, or plugin.
@@ -137,7 +139,7 @@ All programs are declaratively managed. When changing configuration for a progra
 
 - Use `nix eval` to verify settings are applied correctly when refactoring.
 - `git add --intent-to-add` new files before Nix can discover them.
-- Every `.nix` file under `modules/` is a flake module. Under `aspects/` it sets `exports.<class>`, under `platform/` it sets `flake.modules.<class>.platform`, and everywhere else it writes its own flake outputs directly.
+- Every `.nix` file under `modules/` is a flake module. Under `aspects/` it sets `exports.<class>`, under `platform/` it sets `flake.<class>Modules.platform`, and everywhere else it writes its own flake outputs directly.
 - A new aspect reaches a host only once a profile imports it. Dropping the file in publishes it and nothing more.
 - Always spell out `default.nix` when importing a directory module. Nix keys modules by path, so `foo` and `foo/default.nix` are distinct keys and evaluate twice — surfacing as a duplicate-definition error far from the import. Siblings (`nushell/swizzle.nix`) must be imported by that `default.nix` or listed separately.
 - Helpers, data, and libraries take an `_` prefix (`_auto-format.nix`) to mark them as not-a-module. `import` them explicitly where needed.

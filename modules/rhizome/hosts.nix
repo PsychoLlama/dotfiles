@@ -40,7 +40,7 @@ in
               # An enum for the same reason `system` is one: the failure should
               # name the host and the misspelled id, not surface as a missing
               # attribute wherever the module is finally looked up.
-              type = types.listOf (types.enum (lib.attrNames config.flake.modules.nixos));
+              type = types.listOf (types.enum (lib.attrNames config.flake.nixosModules));
             };
 
             system = lib.mkOption {
@@ -61,7 +61,7 @@ in
     inputs.nixpkgs.lib.nixosSystem {
       modules = [
         host.module
-        config.flake.modules.nixos.default
+        config.flake.nixosModules.default
 
         {
           _module.args.host = host;
@@ -71,13 +71,13 @@ in
 
           # Surface this flake's git revision in `nixos-version --json` so the
           # running system can be traced back to the source commit. Scoped to
-          # hosts built here rather than `flake.modules.nixos.default`, which
+          # hosts built here rather than `flake.nixosModules.default`, which
           # downstream flakes import: they would stamp their systems with our
           # revision instead of their own.
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
         }
       ]
-      ++ map (id: config.flake.modules.nixos.${id}) host.profiles;
+      ++ map (id: config.flake.nixosModules.${id}) host.profiles;
     }
   ) config.rhizome.hosts;
 }

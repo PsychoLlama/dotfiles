@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.platform =
+  flake.homeModules.platform =
     { config, lib, ... }:
 
     let

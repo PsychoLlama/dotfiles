@@ -22,7 +22,7 @@ let
     ;
 
   # Bound here because the modules below shadow `config` with their own.
-  flake-modules = config.flake.modules;
+  flake-outputs = config.flake;
   flake-overlays = config.flake.overlays;
 
   # Provides `programs.editor` (Neovim config).
@@ -51,11 +51,11 @@ let
           };
 
           modules = [
-            flake-modules.editor.platform
+            flake-outputs.editorModules.platform
 
             { _module.args.host = host; }
           ]
-          ++ map (id: flake-modules.editor.${id}) host.profiles;
+          ++ map (id: flake-outputs.editorModules.${id}) host.profiles;
         };
       };
 
@@ -64,7 +64,7 @@ let
 in
 
 {
-  flake.modules.nixos.default =
+  flake.nixosModules.default =
     {
       lib,
       pkgs,
@@ -76,7 +76,7 @@ in
       imports = [
         agenix.nixosModules.default
         home-manager.nixosModules.home-manager
-        flake-modules.nixos.platform
+        flake-outputs.nixosModules.platform
       ];
 
       nixpkgs = {
@@ -127,12 +127,12 @@ in
         # Add custom dotfiles modules to the HM framework.
         sharedModules = [
           agenix.homeManagerModules.default
-          flake-modules.homeManager.platform
+          flake-outputs.homeModules.platform
           editor-program
 
           { _module.args.host = host; }
         ]
-        ++ map (id: flake-modules.homeManager.${id}) host.profiles;
+        ++ map (id: flake-outputs.homeModules.${id}) host.profiles;
       };
     };
 }

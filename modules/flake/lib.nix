@@ -32,7 +32,7 @@
         class = "editor";
         modules = modules ++ [
           { _module.args.pkgs = pkgs; }
-          config.flake.modules.editor.platform
+          config.flake.editorModules.platform
         ];
       };
     in

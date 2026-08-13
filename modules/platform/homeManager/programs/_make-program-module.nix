@@ -4,7 +4,7 @@ pkgName:
 # and package are the only options worth having.
 
 {
-  flake.modules.homeManager.platform =
+  flake.homeModules.platform =
     {
       config,
       lib,
