@@ -7,21 +7,74 @@
 
 let
   inherit (lib) types;
+
+  # Bound here because the host submodule shadows `config` with its own.
+  systems = config.systems;
+  nixosModules = config.flake.nixosModules;
 in
 
 {
   options.rhizome.hosts = lib.mkOption {
-    description = "NixOS machines, keyed by hostname.";
+    description = "Machines, keyed by hostname.";
     default = { };
 
     type = types.attrsOf (
       types.submodule (
-        { name, ... }:
+        { name, config, ... }:
 
         {
           options = {
+            builder = lib.mkOption {
+              description = ''
+                Turns the host into whatever a machine is on its platform.
+                Override it for a host this flake's `nixpkgs` cannot build --
+                `darwinSystem`, a pinned nixpkgs, an image builder.
+              '';
+
+              type = types.functionTo types.raw;
+
+              default =
+                host:
+                inputs.nixpkgs.lib.nixosSystem {
+                  modules = [
+                    host.module
+                    nixosModules.default
+
+                    {
+                      _module.args.host = host;
+
+                      networking.hostName = host.name;
+                      nixpkgs.hostPlatform = host.system;
+
+                      # Surface this flake's git revision in `nixos-version
+                      # --json` so the running system can be traced back to the
+                      # source commit. Scoped to hosts built here rather than
+                      # `flake.nixosModules.default`, which downstream flakes
+                      # import: they would stamp their systems with our revision
+                      # instead of their own.
+                      system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+                    }
+                  ]
+                  ++ map (id: nixosModules.${id}) host.profiles;
+                };
+            };
+
+            install = lib.mkOption {
+              description = ''
+                Flake outputs the host contributes, merged with every other
+                host's. Only the `flake` attribute is read, and only its
+                config -- no `options`, no `imports`.
+
+                Override it to publish somewhere other than
+                `nixosConfigurations`, or to publish to more than one place.
+              '';
+
+              type = types.functionTo types.raw;
+              default = host: { flake.nixosConfigurations.${host.name} = host.output; };
+            };
+
             module = lib.mkOption {
-              description = "The machine's NixOS configuration.";
+              description = "The machine's own configuration.";
               type = types.deferredModule;
               default = { };
             };
@@ -33,6 +86,13 @@ in
               default = name;
             };
 
+            output = lib.mkOption {
+              description = "The built machine, as `install` publishes it.";
+              type = types.raw;
+              readOnly = true;
+              default = config.builder config;
+            };
+
             profiles = lib.mkOption {
               description = "Aspects applied to the machine, by id.";
               default = [ ];
@@ -40,7 +100,7 @@ in
               # An enum for the same reason `system` is one: the failure should
               # name the host and the misspelled id, not surface as a missing
               # attribute wherever the module is finally looked up.
-              type = types.listOf (types.enum (lib.attrNames config.flake.nixosModules));
+              type = types.listOf (types.enum (lib.attrNames nixosModules));
             };
 
             system = lib.mkOption {
@@ -48,7 +108,7 @@ in
 
               # An enum rather than `str`: a typo'd double should fail here,
               # not deep inside nixpkgs where the platform is finally used.
-              type = types.enum config.systems;
+              type = types.enum systems;
             };
           };
         }
@@ -56,28 +116,10 @@ in
     );
   };
 
-  config.flake.nixosConfigurations = lib.mapAttrs (
-    _: host:
-    inputs.nixpkgs.lib.nixosSystem {
-      modules = [
-        host.module
-        config.flake.nixosModules.default
-
-        {
-          _module.args.host = host;
-
-          networking.hostName = host.name;
-          nixpkgs.hostPlatform = host.system;
-
-          # Surface this flake's git revision in `nixos-version --json` so the
-          # running system can be traced back to the source commit. Scoped to
-          # hosts built here rather than `flake.nixosModules.default`, which
-          # downstream flakes import: they would stamp their systems with our
-          # revision instead of their own.
-          system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
-        }
-      ]
-      ++ map (id: config.flake.nixosModules.${id}) host.profiles;
-    }
-  ) config.rhizome.hosts;
+  # Rooted at `flake` rather than the module root, which recurses: the root
+  # would have to evaluate every `install` to find out which options it defines,
+  # and `rhizome.hosts` is one of them.
+  config.flake = lib.mkMerge (
+    lib.mapAttrsToList (_: host: (host.install host).flake or { }) config.rhizome.hosts
+  );
 }

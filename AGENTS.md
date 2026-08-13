@@ -78,7 +78,15 @@ Aspects must still import the `rhizome/` options they read, since those are clos
 
 ## Hosts
 
-Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in aspects. `modules/rhizome/hosts.nix` declares `options.rhizome.hosts.<hostname>`, holding the machine's `module`, `profiles`, and `system` plus a read-only `name`, and maps them through `nixosSystem` into `flake.nixosConfigurations`. `system` is an enum over `config.systems`, so a typo'd double fails at the option rather than deep inside nixpkgs. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
+Hosts (`modules/flake/hosts/`) hold machine-specific settings only (hardware, disk, display). All generalizable config belongs in aspects. `modules/rhizome/hosts.nix` declares `options.rhizome.hosts.<hostname>`, holding the machine's `module`, `profiles`, and `system` plus a read-only `name`. `system` is an enum over `config.systems`, so a typo'd double fails at the option rather than deep inside nixpkgs.
+
+Building and publishing are two more options, so a host that this flake's `nixpkgs` cannot build is a per-host override rather than a fork of the loop:
+
+- `builder` — `host -> machine`. `nixosSystem` by default, assembling `module`, the substrate, and the host's profiles.
+- `output` — read-only, `builder` applied to the host. What a custom `install` publishes.
+- `install` — `host -> flake outputs`. `{ flake.nixosConfigurations.${host.name} = host.output; }` by default.
+
+Only the `flake` attribute of `install` is read. The merge is rooted there rather than at the module root because the root would have to evaluate every `install` to discover which options it defines, and `rhizome.hosts` is one of them — an infinite recursion. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
 
 ## Directory Structure
 
