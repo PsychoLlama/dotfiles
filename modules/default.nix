@@ -11,6 +11,6 @@ in
     (import-tree ./flake)
     (import-tree ./rhizome)
     (import-tree ./platform)
-    (import-aspects ./aspects)
+    (import-aspects ./aspects { })
   ];
 }

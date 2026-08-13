@@ -1,27 +1,108 @@
 { lib, import-tree }:
 
 let
-  classes = [
+  /**
+    The module classes this flake's own aspects export to. Only a default:
+    a consumer sweeping its own tree names whatever classes it invented.
+  */
+  defaultClasses = [
     "editor"
     "homeManager"
     "nixos"
   ];
 
+  /**
+    Render names as a backticked, comma-separated list for error messages.
+
+    # Type
+
+    ```
+    quote :: [String] -> String
+    ```
+  */
   quote = names: lib.concatMapStringsSep ", " (name: "`${name}`") names;
 
-  # `modules/aspects/programs/nushell/default.nix` -> `programs/nushell`
+  /**
+    The id an aspect is published under: its path relative to the aspect root,
+    without the `.nix` suffix, and without a trailing `default` naming a
+    directory module.
+
+    Throws if `path` is not under `root`, which is the failure the whole
+    scheme rests on -- a mangled id would otherwise publish silently.
+
+    # Type
+
+    ```
+    aspectId :: Path -> Path -> String
+    ```
+
+    # Examples
+
+    ```nix
+    aspectId ./aspects ./aspects/programs/nushell/default.nix
+    => "programs/nushell"
+
+    aspectId ./aspects ./aspects/programs/bat.nix
+    => "programs/bat"
+    ```
+  */
   aspectId =
     root: path:
-    lib.pipe (toString path) [
-      (lib.removePrefix "${toString root}/")
-      (lib.removeSuffix ".nix")
-      (lib.removeSuffix "/default")
-    ];
+    let
+      /**
+        The path relative to `root`, split on `/`.
+      */
+      components = lib.path.subpath.components (lib.path.removePrefix root path);
 
-  isAspectPath = root: entry: lib.isPath entry && lib.hasPrefix "${toString root}/" (toString entry);
+      /**
+        Everything above the file. Empty for an aspect sitting at the root.
+      */
+      directory = lib.init components;
 
+      /**
+        The file's own name, without the `.nix`.
+      */
+      basename = lib.removeSuffix ".nix" (lib.last components);
+    in
+    lib.concatStringsSep "/" (
+      if basename == "default" && directory != [ ] then directory else directory ++ [ basename ]
+    );
+
+  /**
+    Whether an `imports` entry names another aspect, as opposed to an inline
+    module or a path outside the tree.
+
+    # Type
+
+    ```
+    isAspectPath :: Path -> Any -> Bool
+    ```
+  */
+  isAspectPath = root: entry: lib.isPath entry && lib.path.hasPrefix root entry;
+
+  /**
+    Return an aspect body unchanged, or throw if it sets anything but `exports`
+    and `imports`, or exports to a class outside `classes`.
+
+    # Inputs
+
+    `classes`
+    : The classes an aspect may export to.
+
+    `name`
+    : What to call the body when it fails. An aspect id, usually.
+
+    `body`
+    : The evaluated aspect.
+
+    # Type
+
+    ```
+    checkExports :: [String] -> String -> AttrSet -> AttrSet
+    ```
+  */
   checkExports =
-    name: body:
+    classes: name: body:
     let
       strayKeys = lib.subtractLists [ "exports" "imports" ] (lib.attrNames body);
       strayClasses = lib.subtractLists classes (lib.attrNames (body.exports or { }));
@@ -34,36 +115,109 @@ let
         } ${quote strayClasses}. Known classes are ${quote classes}." body
       );
 
+  /**
+    Turn one aspect file into a flake module publishing
+    `flake.modules.<class>.<id>` for every class.
+
+    The aspect's own `imports` are routed by what each entry is:
+
+    | entry                | treatment                                     |
+    | :------------------- | :-------------------------------------------- |
+    | a path under `root`  | recorded as a dependency id, **not** imported |
+    | a value with no path | checked, and its exports fold into the parent |
+    | any other path       | an ordinary flake module, passed through      |
+
+    A dependency becomes an `imports` entry on the published module, pointing
+    at the dependency's module for the same class -- so a profile already
+    carries its whole transitive tree, and nothing has to walk it.
+
+    # Inputs
+
+    `classes`
+    : The classes to publish under.
+
+    `root`
+    : The aspect root that ids are relative to.
+
+    `path`
+    : The aspect file.
+
+    `args`
+    : Flake module arguments. Read for `config.flake.modules`, which is what
+      lets dependencies resolve without a registry alongside.
+
+    # Type
+
+    ```
+    import-aspect :: { classes :: [String], root :: Path } -> Path -> AttrSet -> Module
+    ```
+  */
   import-aspect =
-    root: path: args:
+    { classes, root }:
+    path: args:
 
     let
-      # The flake's own `config`, closed over here so the class modules below
-      # can reach their dependencies. Referencing it from *their* `imports` is
-      # safe: they evaluate in another module system, where it is a plain value.
+      /**
+        The flake's own module tree, closed over here so the class modules
+        below can reach their dependencies. Referencing it from *their*
+        `imports` is safe: they evaluate in another module system, where it is
+        an ordinary value rather than the `config` being defined.
+      */
       flake-modules = args.config.flake.modules;
 
+      /**
+        The aspect as written, before it is called or checked.
+      */
       module = import path;
-      body = checkExports id (if lib.isFunction module then module args else module);
 
+      /**
+        The aspect called and validated. Only `exports` and `imports` survive.
+      */
+      body = checkExports classes id (if lib.isFunction module then module args else module);
+
+      /**
+        What this aspect publishes as.
+      */
       id = aspectId root path;
+
+      /**
+        The aspect's `imports`, before routing.
+      */
       entries = body.imports or [ ];
 
-      # An entry naming another aspect becomes a dependency, recorded as an id
-      # rather than a path -- the sweep already published it. An entry with no
-      # path of its own has no id, so its exports fold into ours. Anything else
-      # is an ordinary flake module (platform extensions, rhizome options) and
-      # passes through untouched.
+      /**
+        Entries naming another aspect, as ids. Recorded rather than imported:
+        the sweep already published them, and importing the file again would
+        be a second module key for the same path.
+      */
       dependencies = map (aspectId root) (lib.filter (isAspectPath root) entries);
+
+      /**
+        Entries with no path of their own, so no id to publish under. Their
+        exports fold into this aspect's instead.
+      */
       inlined = lib.filter (entry: !(lib.isPath entry)) entries;
+
+      /**
+        Everything else -- platform extensions, `rhizome/` options. Ordinary
+        flake modules, passed through untouched.
+      */
       foreign = lib.filter (entry: lib.isPath entry && !(isAspectPath root entry)) entries;
 
+      /**
+        `exports` harvested from the inlined entries, each checked like an aspect.
+      */
       inlinedExports = map (
         entry:
-        (checkExports "${id}'s inline import" (if lib.isFunction entry then entry args else entry)).exports
-          or { }
+        (checkExports classes "${id}'s inline import" (if lib.isFunction entry then entry args else entry))
+        .exports or { }
       ) inlined;
 
+      /**
+        This aspect's exports merged with the inlined ones, per class. Merging
+        as `imports` rather than by attribute keeps each contribution a module
+        in its own right, so their options and defaults resolve normally.
+      */
       exports = lib.zipAttrsWith (_class: exported: { imports = exported; }) (
         [ (body.exports or { }) ] ++ inlinedExports
       );
@@ -79,10 +233,10 @@ let
       # empty module costs nothing, and it keeps a pure aggregator -- which
       # exports nothing at all -- reachable like any other id.
       #
-      # Dependencies are resolved here rather than tracked in a registry. The
-      # explicit `key` is what makes that safe: two aspects depending on the
-      # same third one contribute the same key, so the module system loads it
-      # once. Without it every route to a dependency would be a fresh module.
+      # The explicit `key` is what makes dependency resolution safe: two
+      # aspects depending on the same third one contribute the same key, so
+      # the module system loads it once. Without it every route would be a
+      # fresh module, and the file's options declared twice.
       flake.modules = lib.genAttrs classes (class: {
         ${id} = {
           _file = path;
@@ -96,8 +250,47 @@ let
       });
     };
 
-  # Taken once: the sweep and the id derivation must agree on the root.
-  import-aspects = root: (import-tree.map (import-aspect root)) root;
+  /**
+    Sweep a directory of aspects into a single flake module, publishing every
+    file in it under `flake.modules.<class>.<id>`.
+
+    Paths containing a `/_` segment are skipped, which is what keeps helpers
+    and data files out.
+
+    # Inputs
+
+    `root`
+    : The directory to sweep. Taken once rather than twice: the sweep and the
+      id derivation must agree on it, and two roots that disagree would
+      publish every aspect under a mangled id with nothing to catch it.
+
+    Structured function argument:
+
+    `classes`
+    : The module classes to publish under, and the closed set an aspect's
+      `exports` are checked against. Defaults to `defaultClasses`.
+
+    # Type
+
+    ```
+    import-aspects :: Path -> { classes :: [String] } -> Module
+    ```
+
+    # Examples
+
+    ```nix
+    imports = [ (import-aspects ./aspects { }) ];
+    ```
+  */
+  import-aspects =
+    root:
+    {
+      classes ? defaultClasses,
+    }:
+    let
+      importer = import-aspect { inherit classes root; };
+    in
+    (import-tree.map importer) root;
 in
 
 {
