@@ -58,21 +58,23 @@ A dependency cycle recurses for real (`stack overflow`, when the module is evalu
 
 ## Profiles
 
-Profiles (`modules/aspects/profiles/`) are aspects that only have `imports`. They select; they configure nothing themselves. A host names them:
+Profiles (`modules/aspects/profiles/`) are aspects that only have `imports`. They select; they configure nothing themselves. A host names them by id:
 
 ```nix
-rhizome.hosts.ava.profiles = [ ../../../aspects/profiles/full.nix ];
+rhizome.hosts.ava.profiles = [ "profiles/full" "profiles/linux-desktop" ];
 ```
 
-`flake.lib.rhizome.load-modules <class> <profile>` returns the published module — a lookup, since the module already imports its dependencies. `rhizome/hosts.nix` applies it for `nixos`; `rhizome/substrate.nix` applies it for `homeManager` (via `sharedModules`) and `editor` (via the `programs.editor` submodule).
+`rhizome/hosts.nix` looks those up in `flake.modules.nixos`; `rhizome/substrate.nix` looks up the same ids in `flake.modules.homeManager` (for `sharedModules`) and `flake.modules.editor` (for the `programs.editor` submodule). There is no resolver in between — a published module already imports its dependencies, so the lookup is the whole job.
 
-It takes a path or an id. Paths are self-checking — a typo fails at the path — so hosts in this flake use them. Downstream flakes have no relative path into this tree and use the id:
+`profiles` is an enum over the published ids, for the same reason `system` is one: a typo names the host and the misspelled id instead of surfacing as a missing attribute wherever the module is finally used.
+
+A consumer picks the same way, since the sweep publishes every aspect regardless of what any profile selects:
 
 ```nix
-imports = [ (dotfiles.lib.rhizome.load-modules "nixos" "profiles/linux-desktop") ];
+imports = [ dotfiles.modules.nixos."profiles/linux-desktop" ];
 ```
 
-Because the sweep publishes every aspect, a consumer gets the whole catalogue and picks from it. Presets must still import the platform modules and `rhizome/` options they read — that duplication is deliberate, and imports are deduped.
+Aspects must still import the platform modules and `rhizome/` options they read — that duplication is deliberate, and imports are deduped.
 
 ## Hosts
 

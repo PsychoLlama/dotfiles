@@ -34,9 +34,13 @@ in
             };
 
             profiles = lib.mkOption {
-              description = "Aspects applied to the machine, by path or id.";
-              type = types.listOf (types.either types.str types.path);
+              description = "Aspects applied to the machine, by id.";
               default = [ ];
+
+              # An enum for the same reason `system` is one: the failure should
+              # name the host and the misspelled id, not surface as a missing
+              # attribute wherever the module is finally looked up.
+              type = types.listOf (types.enum (lib.attrNames config.flake.modules.nixos));
             };
 
             system = lib.mkOption {
@@ -73,7 +77,7 @@ in
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
         }
       ]
-      ++ map (config.flake.lib.rhizome.load-modules "nixos") host.profiles;
+      ++ map (id: config.flake.modules.nixos.${id}) host.profiles;
     }
   ) config.rhizome.hosts;
 }

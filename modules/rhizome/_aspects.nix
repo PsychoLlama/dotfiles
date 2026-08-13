@@ -96,22 +96,6 @@ let
       });
     };
 
-  # An aspect already imports its own dependencies, so this is a lookup, not a
-  # walk. It exists to spell the id -- which a consumer cannot express as a
-  # relative path -- and to fail with something better than a missing attribute.
-  #
-  # A dependency cycle now recurses for real -- `stack overflow` when the
-  # module is evaluated, not when it is looked up. Deferred until one shows up;
-  # nothing in this tree has one.
-  mkLoadModules =
-    { modules, root }:
-    class: target:
-
-    let
-      id = if lib.isString target then target else aspectId root target;
-    in
-
-    lib.throwIf (!(modules.${class} ? ${id})) "No aspect named `${id}`." modules.${class}.${id};
 in
 
 {
@@ -119,6 +103,5 @@ in
     classes
     aspectId
     import-aspect
-    mkLoadModules
     ;
 }

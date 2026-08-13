@@ -24,9 +24,9 @@ in
     system = "x86_64-linux";
 
     profiles = [
-      ../../../aspects/profiles/full.nix
-      ../../../aspects/profiles/home-lab-admin.nix
-      ../../../aspects/profiles/linux-desktop.nix
+      "profiles/full"
+      "profiles/home-lab-admin"
+      "profiles/linux-desktop"
     ];
 
     module =

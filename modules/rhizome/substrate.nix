@@ -25,8 +25,6 @@ let
   flake-modules = config.flake.modules;
   flake-overlays = config.flake.overlays;
 
-  inherit (config.flake.lib.rhizome) load-modules;
-
   # Provides `programs.editor` (Neovim config).
   editor-program =
     {
@@ -57,7 +55,7 @@ let
 
             { _module.args.host = host; }
           ]
-          ++ map (load-modules "editor") host.profiles;
+          ++ map (id: flake-modules.editor.${id}) host.profiles;
         };
       };
 
@@ -133,7 +131,7 @@ in
 
           { _module.args.host = host; }
         ]
-        ++ map (load-modules "homeManager") host.profiles;
+        ++ map (id: flake-modules.homeManager.${id}) host.profiles;
       };
     };
 }
