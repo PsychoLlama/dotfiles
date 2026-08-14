@@ -17,7 +17,7 @@ Two kinds of module share the tree:
 - **Platform extensions** (`modules/platform/<class>/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so mounting all of them costs nothing. Unlike the rest of the tree, these _are_ filed by module class: an extension adds options to one platform's module system, so its class is the thing it extends. Everything is `homeManager` today; a `nixos`-only option would live at `platform/nixos/`. Extensions publish into their class's output under `platform` — `nixosModules.platform`, `homeModules.platform`, `editorModules.platform` — which the substrate mounts once per class. Nothing else imports them: the platform is implied, so an aspect uses `programs.bat.*` without knowing where the option came from.
 - **Aspects** (`modules/aspects/`) — opinionated configs, selected by a profile. Each publishes under its own id.
 
-`modules/default.nix` sweeps `flake/`, `rhizome/`, and `platform/` with `import-tree`, and sweeps `aspects/` with `import-aspects ./aspects { }` — the loader's own wrapper around `import-tree.map`, exported as `flake.lib.rhizome.import-aspects` so a consumer can grow its own aspect tree. Its second argument takes `classes`, so a consumer that invented a module class of its own can sweep against it. `import-tree` skips any path containing a `/_` segment, which is what keeps helpers like `_make-program-module.nix` (a function, not a module) out of the sweep.
+`modules/default.nix` sweeps `flake/`, `rhizome/`, and `platform/` with `import-tree`, and sweeps `aspects/` with `import-aspects ./aspects { }` — the loader's own wrapper around `import-tree.map`, exported as `flake.lib.rhizome.import-aspects` so a consumer can grow its own aspect tree. Its second argument takes `classes`, so a consumer that invented a module class of its own can sweep against it. `import-tree` skips any path containing a `/_` segment, which is what keeps helpers like `_mk-unstable-preset.nix` (a function, not a module) out of the sweep.
 
 ## Aspects
 
@@ -161,7 +161,8 @@ Options that survive (settings, package pins) still mirror the directory structu
 
 - Prefer upstream `home-manager`/`nixos` options. Only add custom modules when upstream lacks support.
 - Prefer `home-manager` over per-OS modules; it's the most cross-platform option.
-- `_make-program-module.nix` and `_mk-unstable-preset.nix` cover programs whose only options are enable and package. A program needing more imports the helper alongside its own config, keeping settings and pin in one file.
+- A program whose only options are enable and package gets a name in the list in `platform/homeManager/programs/default.nix` rather than a file. One earning settings of its own gets a file beside it.
+- `_mk-unstable-preset.nix` covers the aspect half: a preset that only enables a program and pins it to unstable. A preset needing more imports the helper alongside its own config, keeping settings and pin in one file.
 
 ### Aspects
 
