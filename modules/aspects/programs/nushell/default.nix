@@ -12,9 +12,11 @@
     }:
 
     let
-      zoxideCommandSetup = pkgs.runCommand "zoxide-init" { buildInputs = [ pkgs.unstable.zoxide ]; } ''
-        zoxide init nushell > "$out"
-      '';
+      zoxideCommandSetup =
+        pkgs.runCommand "zoxide-init" { buildInputs = [ config.programs.zoxide.package ]; }
+          ''
+            zoxide init nushell > "$out"
+          '';
 
       # Some modules use POSIX interpolation, which Nushell obviously doesn't
       # support. Just ignore them.

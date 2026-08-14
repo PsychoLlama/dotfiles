@@ -1,9 +1,14 @@
 {
   exports.homeManager =
-    { lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
 
     let
-      jq = lib.getExe pkgs.jq;
+      jq = lib.getExe config.programs.jq.package;
 
       autoFormat =
         pkgs.writers.writeDash "auto-format"

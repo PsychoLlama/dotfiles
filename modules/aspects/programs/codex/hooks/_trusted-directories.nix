@@ -14,7 +14,7 @@
 
 {
   lib,
-  writers,
+  writeNuBin,
   fd,
   formats,
   directories,
@@ -26,7 +26,7 @@ let
   rootsFile = (formats.json { }).generate "codex-trusted-roots.json" directories;
 in
 
-writers.writeNuBin "codex-trusted-directories-hook"
+writeNuBin "codex-trusted-directories-hook"
   # nu
   ''
     let codex_home = ($env.CODEX_HOME? | default ($env.HOME | path join ".codex"))

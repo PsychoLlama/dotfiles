@@ -11,10 +11,10 @@
 # that into the model's context. Outside a repo we do nothing.
 
 {
-  writers,
+  writeNuBin,
 }:
 
-writers.writeNuBin "codex-local-instructions-hook"
+writeNuBin "codex-local-instructions-hook"
   # nu
   ''
     use std/iter

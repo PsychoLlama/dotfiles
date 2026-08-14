@@ -1,12 +1,17 @@
 {
   exports.homeManager =
-    { lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
 
     let
       notifyPermissionRequest = pkgs.writeShellApplication {
         name = "notify-permission-request";
         runtimeInputs = [
-          pkgs.jq
+          config.programs.jq.package
           pkgs.libnotify
         ];
         text = ''

@@ -15,6 +15,8 @@
       toAbsolute =
         dir:
         if lib.hasPrefix "~/" dir then "${config.home.homeDirectory}/${lib.removePrefix "~/" dir}" else dir;
+
+      direnv = lib.getExe config.programs.direnv.package;
     in
 
     {
@@ -39,7 +41,7 @@
         $env.config = ($env.config | update hooks ($env.config.hooks | default [] pre_prompt))
         $env.config = ($env.config | update hooks.pre_prompt ($env.config.hooks.pre_prompt | append {
           code: "
-            let direnv = (${pkgs.direnv}/bin/direnv export json | from json)
+            let direnv = (${direnv} export json | from json)
             let direnv = if $direnv == null { {} } else { $direnv }
             $direnv | load-env
           "

@@ -1,11 +1,16 @@
 {
   exports.homeManager =
-    { lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
 
     let
       blockEnvFiles = pkgs.writeShellApplication {
         name = "block-env-files";
-        runtimeInputs = [ pkgs.jq ];
+        runtimeInputs = [ config.programs.jq.package ];
         text = ''
           file_path=$(jq -r '.tool_input.file_path // ""')
           basename=$(basename "$file_path")

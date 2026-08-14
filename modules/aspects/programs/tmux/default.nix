@@ -8,6 +8,7 @@
 
     let
       tmux = config.programs.tmux.package;
+      fzf = config.programs.fzf.package;
     in
 
     {
@@ -24,7 +25,7 @@
 
           bind-key C-s display-popup -E ${pkgs.writers.writeBash "tmux-jump" ''
             sessions="$(${tmux}/bin/tmux list-sessions -F "#{session_name}")"
-            session_name="$(echo -e "$sessions" | ${pkgs.fzf}/bin/fzf)"
+            session_name="$(echo -e "$sessions" | ${fzf}/bin/fzf)"
 
             if [[ -n "$session_name" ]]; then
               ${tmux}/bin/tmux switch-client -t "$session_name"

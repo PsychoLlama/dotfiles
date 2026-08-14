@@ -1,9 +1,14 @@
 {
   exports.homeManager =
-    { lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
 
     let
-      nu = lib.getExe pkgs.nushell;
+      nu = lib.getExe config.programs.nushell.package;
 
       # Own the shebang so we can pass `--stdin` (bind stdin to `$in`, required
       # because Claude Code's stdin is a socket) alongside `--no-config-file`.

@@ -13,13 +13,30 @@
 
       cfg = config.psychollama.presets.programs.codex;
 
+      # `writers.writeNuBin` bakes in `pkgs.nushell`, but the nushell preset pins
+      # `pkgs.unstable.nushell`, so the default writer drags a second nushell
+      # (~57MB) into the closure. Rebuild the writer over the pinned interpreter.
+      # This is a NixOS module, so the home-manager `programs.nushell.package`
+      # isn't reachable from here; the preset's pin is the same value.
+      writeNuBin =
+        name:
+        pkgs.writers.makeScriptWriter {
+          interpreter = "${lib.getExe pkgs.unstable.nushell} --no-config-file";
+        } "/bin/${name}";
+
       trustedDirectoriesHook = pkgs.callPackage ./hooks/_trusted-directories.nix {
         directories = trusted-directories;
+        fd = pkgs.unstable.fd;
+        inherit writeNuBin;
       };
 
-      localInstructionsHook = pkgs.callPackage ./hooks/_local-instructions.nix { };
+      localInstructionsHook = pkgs.callPackage ./hooks/_local-instructions.nix {
+        inherit writeNuBin;
+      };
 
-      autoFormatHook = pkgs.callPackage ./hooks/_auto-format.nix { };
+      autoFormatHook = pkgs.callPackage ./hooks/_auto-format.nix {
+        nushell = pkgs.unstable.nushell;
+      };
 
       # A `hooks.SessionStart` matcher group that runs one command hook.
       commandHook = command: {
