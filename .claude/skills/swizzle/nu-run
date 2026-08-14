@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Run a nushell command with the user's config loaded, so custom commands like
+# `swizzle` are in scope. `nu -c` alone loads no config and won't find them.
+set -euo pipefail
+
+if [ $# -eq 0 ]; then
+  echo "Usage: nu-run <nushell command>" >&2
+  exit 1
+fi
+
+exec nu \
+  --env-config "${HOME}/.config/nushell/env.nu" \
+  --config "${HOME}/.config/nushell/config.nu" \
+  --commands "$*"
