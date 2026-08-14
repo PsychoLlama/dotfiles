@@ -1,206 +1,80 @@
-# Dotfiles
+# Overview
 
-NixOS-based configuration-as-code for Linux and home-manager environments.
+Nix configs for my workstations. Includes many custom features.
 
-## Architecture
+## Structure
 
-This flake is consumed by other flakes. Everything must be changeable, disableable, or extendable from the outside.
+- `pkgs/`: Custom package derivations. Overlayed as `pkgs.custom`.
+  - `*.nvim/`: Custom neovim plugins.
+- `flake.nix`: Inputs only; outputs derived by `flake-parts`.
+- `modules/`: All Nix modules.
+  - `flake/`: Flake outputs.
+  - `rhizome/`: Custom flake tools for managing hosts and aspects.
+    - `substrate/`: Opinionated defaults for all hosts.
+  - `platform/<class>/`: Extensions. Matches underlying platform conventions.
+    - `editor/`: Unopinionated nixvim alternative.
+      - `runtime/`: Lua `core` library. Binds Nix configs.
+  - `aspects/`: Opinionated configs enabled by hosts. One file per concern.
+    - `system/`: Aspects belonging to no single program.
+    - `profiles/`: Holds no opinions itself; enables sets of other aspects.
+    - `editor/`: Opinionated editor aspects.
+  - `hosts/`: Workstation configs. One dir per host. Only contains workstation-specific configs - the rest is aspects and profiles.
+  - `templates/`: Scaffolds other projects as `dotfiles#<tpl>`.
 
-Every `.nix` file under `modules/` is a flake module (the dendritic pattern). Files are organized by concern, not by module class, so one file holds every class a concern touches — `modules/aspects/programs/sway.nix` configures both NixOS and Home Manager.
+## Downstream
 
-Classes are `nixos`, `homeManager`, and `editor`. Where a file publishes depends on which of the two trees it is in.
-
-Values shared across classes are declared on the host instead (`identity`, `theme`, `trusted-directories`, `agents`) and reached through the `host` module argument, which the substrate passes into all three class module systems. That is the only way the `editor` class can read them at all: it evaluates in its own module system with no platform above it. See [Hosts](#hosts).
-
-Two kinds of module share the tree:
-
-- **Platform extensions** (`modules/platform/<class>/`) — new programs, services, and DSLs. Keep opinions out; these should be upstreamable. They only declare options, so mounting all of them costs nothing. Unlike the rest of the tree, these _are_ filed by module class: an extension adds options to one platform's module system, so its class is the thing it extends. Everything is `homeManager` today; a `nixos`-only option would live at `platform/nixos/`. Extensions publish into their class's output under `platform` — `nixosModules.platform`, `homeModules.platform`, `editorModules.platform` — which the substrate mounts once per class. Nothing else imports them: the platform is implied, so an aspect uses `programs.bat.*` without knowing where the option came from.
-- **Aspects** (`modules/aspects/`) — opinionated configs, selected by a profile. Each publishes under its own id.
-
-`modules/default.nix` sweeps `flake/`, `rhizome/`, and `platform/` with `import-tree`, and sweeps `aspects/` with `import-aspects ./aspects { }` — the loader's own wrapper around `import-tree.map`, exported as `flake.lib.rhizome.import-aspects` so a consumer can grow its own aspect tree. Its second argument takes `classes`, so a consumer that invented a module class of its own can sweep against it. `import-tree` skips any path containing a `/_` segment, which is what keeps helpers like `_mk-unstable-preset.nix` (a function, not a module) out of the sweep.
-
-## Aspects
-
-An aspect may set exactly two attributes, asserted by the loader:
-
-```nix
-{
-  exports.homeManager =
-    { lib, ... }:
-    { programs.bat.enable = lib.mkDefault true; };
-}
-```
-
-`exports.<class>` is the module for that class. The class list is closed, so a typo is an error rather than an attribute nobody reads. Anything else — a bare `flake`, a stray `perSystem` — is rejected.
-
-The loader publishes the file into every class's flake output under `<id>`, the path relative to `aspects/` without the extension: `aspects/programs/nushell/default.nix` becomes `nixosModules."programs/nushell"`, `homeModules."programs/nushell"`, and `editorModules."programs/nushell"`. Every id is published to every class, empty where the aspect exports nothing, so a pure aggregator is still walkable.
-
-The class-to-output mapping is the loader's `defaultClasses`, and the second argument to `import-aspects` overrides it. The names are the ecosystem's rather than derived from the class — home-manager's module class is `homeManager` but its output is `homeModules`. Only `nixosModules` is a flake output Nix itself recognizes; `homeModules` follows home-manager's own convention, and `editorModules` is ours. flake-parts declares `nixosModules`, so `rhizome/module-outputs.nix` declares the other two: an undeclared flake output is typed `unique raw`, and the second aspect to define one would fail to merge rather than adding an attribute.
-
-`imports` is split three ways by what the entry is:
-
-| entry                                           | treatment                                     |
-| :---------------------------------------------- | :-------------------------------------------- |
-| a path under `aspects/`                         | recorded as a dependency id, **not** imported |
-| a value with no path (`import ./_helper.nix x`) | checked, and its exports fold into the parent |
-| any other path                                  | an ordinary flake module, passed through      |
-
-The first case is why an aspect never imports another aspect's file into itself: the sweep already published it, and importing it again is a second module key for the same file — which surfaces as a duplicate-definition error far from the cause.
-
-A dependency becomes an `imports` entry on the published module, pointing at the dependency's module for the same class. So `nixosModules."profiles/full"` already carries its whole transitive tree; nothing has to walk it.
-
-Two details make that work:
-
-- The exported module reaches its dependencies through the flake's `config`, which the same aspect's own `imports` could not do without infinite recursion. A class module evaluates under NixOS or Home Manager — a different module system — where the flake's `config` is an ordinary closed-over value.
-- Each published module sets `key = "aspect:<class>:<id>"`. Two aspects depending on a third contribute the same key, so the module system loads it once. Without it, each route is a distinct module and the file's options are declared twice. `flake-parts` does not set a key itself, but one set on our own attrset survives the wrapping.
-
-A dependency cycle recurses for real (`stack overflow`, when the module is evaluated). Nothing in the tree has one.
-
-## Profiles
-
-Profiles (`modules/aspects/profiles/`) are aspects that only have `imports`. They select; they configure nothing themselves.
-
-Nothing resolves them. A profile is mounted by importing it into the module system it belongs to, one class at a time, at whatever scope it should apply to:
-
-```nix
-imports = [ nixosModules."profiles/linux-desktop" ];
-
-home-manager.users.alice = {
-  imports = [ homeModules."profiles/linux-desktop" ];
-  programs.editor.imports = [ editorModules."profiles/linux-desktop" ];
-};
-
-home-manager.users.build-bot.imports = [ homeModules."profiles/full" ];
-```
-
-A published module already imports its dependencies, so the lookup is the whole job. Nothing forces the three classes to agree — two users on one machine can run different profiles, which they cannot if home-manager aspects only arrive through `sharedModules`.
-
-A consumer picks the same way, since the sweep publishes every aspect regardless of what any profile selects.
-
-Imports are deduped by `key`, so be generous.
+- Only me. Breaking changes are expected.
+- Private workstations. Work computers consume and build on this flake.
 
 ## Hosts
 
-Hosts (`modules/hosts/`) hold machine-specific settings only (hardware, disk, display) and the profiles the machine mounts. All generalizable config belongs in aspects. `modules/rhizome/hosts.nix` declares `options.rhizome.hosts.<hostname>`, holding the machine's `module` and `system` plus a read-only `name`. `system` is an enum over `config.systems`, so a typo'd double fails at the option rather than deep inside nixpkgs.
+- `rhizome.hosts.<name>` holds config per host.
+- Hosts carry arbitrary data (theme, identity, etc).
+- The `host` object is a module arg to every aspect.
+- Custom data is defined via `imports` on each host.
+- Default modules for all hosts are assigned to `rhizome.defaults.host`. Rare.
+- Hosts enable specific aspects and profiles. Each class is explicitly stated and placed.
 
-A host reaches the published modules by closing over the flake's `config`, which is in scope because a host file is a flake module:
+## Aspects
 
-```nix
-{ config, ... }:
-let inherit (config.flake) homeModules nixosModules; in
-{ rhizome.hosts.ava.module = { imports = [ nixosModules."profiles/full" ]; }; }
-```
+- All aspects are loaded AOT in `flake-parts` scope.
+- Aspects are wrapped with rhizome's custom loader.
+- The loader restricts module fields to `imports` and `exports`.
+- `exports.<class>` is a deferred module for that class.
+- Supported classes are `editor`, `homeManager`, and `nixos`.
+- Exports are automatically assigned to flake outputs as `<scope>Modules.<id>`.
+- Aspect IDs are generated by the file path.
+- Aspects dependent on other aspects must use `imports`.
+- Aspect imports are automatically injected into each exported class.
+- `imports` are automatically wrapped with the same aspect loader.
+- Aspect files are organized by feature they provide.
+- Importing an aspect is a side effect. No `enable` gating.
+- `foo` and `foo/default.nix` are distinct keys and evaluate twice. Spell out `default.nix` on import.
 
-Building and publishing are two more options, so a host that this flake's `nixpkgs` cannot build is a per-host override rather than a fork of the loop:
+## Profiles
 
-- `builder` — `host -> machine`. `nixosSystem` by default, over `module`.
-- `output` — read-only, `builder` applied to the host. What a custom `install` publishes.
-- `install` — `host -> flake outputs`, written relative to `flake`. `{ nixosConfigurations.${host.name} = host.output; }` by default.
+- Profiles are aspects with a convention.
+- Profiles import other aspects.
+- Profiles do not define new features: only groupings of aspects.
+- Hosts prefer profiles over specific aspects.
 
-`install` writes relative to `flake` because the merge has to be rooted at a statically known option. At the module root it recurses: the root would have to evaluate every `install` to discover which options that definition covers, and `rhizome.hosts` is one of them.
+## Extensions (`platform/`)
 
-Every class module built for a host gets the machine as a `host` module argument, so an aspect reads per-machine values directly (`host.identity.username`) rather than through a flake option. `identity`, `theme`, `trusted-directories`, and `agents` all live here. `username` keys `users.users.<name>`, so a flake option would have meant one owner for every machine built from the flake; the rest follow it because they follow the owner.
-
-They are modules beside the hosts (`hosts/_identity.nix`, `hosts/_theme.nix`, …), imported by the hosts that want them — no machine is obliged to carry an option it has no use for:
-
-```nix
-rhizome.hosts.ava = {
-  imports = [
-    ../_identity.nix
-    ../_theme.nix
-  ];
-
-  identity.username = "overlord";
-};
-```
-
-`rhizome.hosts` is a `submoduleWith` for this. `types.submodule` sets `shorthandOnlyDefinesConfig`, which treats a definition as config alone and drops its `imports` without a word — the option simply fails to exist. These files are underscore-prefixed because they are modules for the host submodule, not flake modules, so the sweep must skip them.
-
-An aspect reading `host.identity` on a host that never imported it fails with `attribute 'identity' missing`, pointing at the aspect's own line. That is the trade.
-
-`flake.lib.editor` takes a `host` too, defaulting to `{ }`. `packages.editor` is shared with people who are not the flake's owner, so it passes none and `editor/trusted-directories.nix` falls back to trusting nothing.
-
-`rhizome.defaults.host` is configuration folded into every host's `module`, reading the machine through a `host` module argument. It carries `networking.hostName`, `nixpkgs.hostPlatform`, `system.configurationRevision`, and the [substrate](#substrate). It rides on `module` rather than on the default `builder` so that a host overriding `builder` still gets it, and it merges, so a consumer can add to it. `_module.args.host` rides along the same way, so a custom `builder` never has to wire it up. A host is a directory of flake modules that each write into their own key, so a machine spreads across as many files as it needs (`ava/default.nix`, `ava/hardware-configuration.nix`) and they merge. `system` supplies `nixpkgs.hostPlatform`.
-
-## Substrate
-
-The base every machine is built on, at `modules/rhizome/substrate/`. It lives under `rhizome/` rather than `aspects/` because it reads flake inputs (`agenix`, `home-manager`, `self`), which a consumer's flake does not have.
-
-One file per concern, each publishing a named module rather than configuring anything itself:
-
-| output                      | what it is                                              |
-| :-------------------------- | :------------------------------------------------------ |
-| `nixosModules.package-set`  | overlays, unfree allowlist, `<nixpkgs>` pin             |
-| `nixosModules.nix-daemon`   | daemon package, registry, settings                      |
-| `nixosModules.secrets`      | agenix (`homeModules.secrets` is the Home Manager half) |
-| `nixosModules.home-manager` | the Home Manager bridge and its `sharedModules`         |
-| `homeModules.editor`        | the `programs.editor` option                            |
-
-`nixosModules.default` imports the five, and `rhizome.defaults.host` imports that — so it rides on `module` and a host overriding `builder` still gets it. `defaults.host` only adds, so a machine this base does not fit overrides the pieces it clashes with rather than opting out.
-
-`sharedModules` carries only what every user of a machine gets: the platform, secrets, the editor option, and the `host` argument. Aspects arrive per user (see [Profiles](#profiles)).
-
-## Directory Structure
-
-- `modules/` — All Nix modules, one directory per concern. `flake.nix` holds inputs only.
-  - `flake/` — the flake's own outputs, one file per concern (lib, nixpkgs, packages, shell, overlays, templates).
-  - `rhizome/` — the machinery this flake owns, always evaluated: the `hosts` option, the aspect loader (`_aspects.nix`), the per-class module outputs (`module-outputs.nix`), and `substrate/` (see [Substrate](#substrate)).
-  - `platform/<class>/` — the module-system layer for each class, mounted wholesale by the substrate. `default.nix` seeds an empty `platform` for every class so the substrate has something to mount before any extension exists. `homeManager/{programs,services}/` extends upstream home-manager; `editor/` invents the `editor` class outright (see [Editor](#editor)).
-  - `aspects/` — everything that configures a host, none of it applied on its own.
-    - `programs/`, `services/`, `editor/` — one file (or directory) per program, service, or plugin.
-    - `system/` — aspects belonging to no single program (`fonts`, `gtk`, `sound-theme`).
-    - `profiles/` — groupings, and the only thing a host names.
-  - `hosts/` — one directory per machine, each writing into `rhizome.hosts`. A sibling of `aspects/` rather than a child of `flake/`: a host names aspects and declares nothing of its own, so it is the last thing swept, not one of the flake's outputs. Underscore-prefixed entries here (`_identity.nix`, `_theme.nix`, `_trusted-directories.nix`, `_agents/`) are options a host can import, not machines.
-- `pkgs/` — Custom package derivations.
-
-Options that survive (settings, package pins) still mirror the directory structure: `psychollama.presets.programs.foo` lives at `aspects/programs/foo.nix` (or `foo/default.nix`). A module keeps a directory when it references sibling assets relatively (`waybar/waybar.css`, `nushell/libraries/`).
+- Platform extensions overlay existing options with new capabilities.
+- Prefer upstream `home-manager`/`nixos` options. Only add custom modules when upstream lacks support.
+- Prefer `home-manager` over per-OS modules; it's the most cross-platform option.
+- Simple programs (`enable` + `package`) are generated inline by `platform/homeManager/programs/default.nix`.
 
 ## Conventions
 
-### Platform Extensions
-
-- Prefer upstream `home-manager`/`nixos` options. Only add custom modules when upstream lacks support.
-- Prefer `home-manager` over per-OS modules; it's the most cross-platform option.
-- A program whose only options are enable and package gets a name in the list in `platform/homeManager/programs/default.nix` rather than a file. One earning settings of its own gets a file beside it.
-- `_mk-unstable-preset.nix` covers the aspect half: a preset that only enables a program and pins it to unstable. A preset needing more imports the helper alongside its own config, keeping settings and pin in one file.
-
-### Aspects
-
-- Single-responsibility, no `enable` option. A profile decides whether it applies.
-- Read cross-class values off the `host` module argument (`host.theme.palette`, `host.identity.username`). An aspect imports nothing for them — the host declares them. Never import a platform extension either; it is already mounted.
-- Only a profile should import another aspect for the sake of turning it on. Depending on one from an aspect is fine when the aspect genuinely cannot work without it (`claude-code/default.nix` imports its own hooks, plugins and skills); depending on one you merely want present is a profile's call, so guard on its upstream option instead (`lib.mkIf config.programs.direnv.enable`).
 - Install programs via `programs.<name>.enable` + `programs.<name>.package`, not `home.packages`.
-- Reference other programs through their `programs.<name>.package` rather than bare `pkgs.<name>`. Presets often pin `pkgs.unstable.*`, so direct references risk installing both versions.
-- Resolve executable paths with `lib.getExe` (single main binary) or `lib.getExe'` (explicit binary name); bind in `let` at top of file.
+- Prefer `config.programs.<name>.package` over `pkgs.<name>` to avoid stable/unstable copies in closures.
+- Resolve executables with `lib.getExe` or `lib.getExe'`. Bind at top of file.
+- `import-tree` auto-imports Nix files as `flake-parts` modules. Prefix with `_` if you need control over import.
+- `git add --intent-to-add` new files so Nix can discover them.
+- Use code comments to say the bare minimum. No historical decisions. Short facts or no comment at all.
 
-## Editor
+## Editing Configs
 
-A self-contained neovim framework. No `~/.config` files. Its vocabulary is plugins and LSP servers rather than programs and services, but it splits along the same platform/aspect seam as everything else, so it lives in both trees rather than a directory of its own:
-
-- `modules/platform/editor/` — plugin system, LSP configuration, settings schema. The `editor` module class is _invented_ here rather than extended, which is what makes it a platform even though there is no upstream to defer to.
-  - `runtime/lua/core/` — Lua framework for Nix integration (package loading, deferred plugins, settings, LSP). Built into a `neovim-core` plugin by `default.nix`, which pins the fileset to this directory so unrelated edits don't invalidate the derivation.
-- `modules/aspects/editor/` — `plugins/` and `lsp/` aspects, `profiles/` groupings. Reached from `modules/aspects/programs/editor.nix`, which is what puts neovim on a host.
-- `pkgs/dotfiles.nvim/` — neovim utilities beyond `init.vim`.
-
-### Working with Neovim
-
-Always check help pages when working with the neovim API:
-
-```bash
-# Find plugin help pages
-nvim --headless -c 'help <name> | echo expand("%:p") | qa'
-
-# Find the neovim runtime
-nvim --headless -c 'echo $VIMRUNTIME | qa'
-```
-
-## Developing
-
-All programs are declaratively managed. When changing configuration for a program (e.g. Claude Code settings, shell aliases, git config), edit the corresponding Nix module — never the dotfiles directly.
-
-- Use `nix eval` to verify settings are applied correctly when refactoring.
-- `git add --intent-to-add` new files before Nix can discover them.
-- Every `.nix` file under `modules/` is a flake module. Under `aspects/` it sets `exports.<class>`, under `platform/` it sets `flake.<class>Modules.platform`, and everywhere else it writes its own flake outputs directly.
-- A new aspect reaches a host only once a profile imports it. Dropping the file in publishes it and nothing more.
-- Always spell out `default.nix` when importing a directory module. Nix keys modules by path, so `foo` and `foo/default.nix` are distinct keys and evaluate twice — surfacing as a duplicate-definition error far from the import. Siblings (`nushell/swizzle.nix`) must be imported by that `default.nix` or listed separately.
-- Helpers, data, and libraries take an `_` prefix (`_auto-format.nix`) to mark them as not-a-module. `import` them explicitly where needed.
+- All programs are declaratively managed.
+- Default to editing Nix, not source files (e.g. `~/.claude/settings.json`).
