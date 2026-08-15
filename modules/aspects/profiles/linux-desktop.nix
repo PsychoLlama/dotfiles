@@ -14,7 +14,6 @@
     ../programs/sway.nix
     ../programs/swaylock.nix
     ../programs/waybar/default.nix
-    ../programs/wf-recorder.nix
     ../programs/wireplumber.nix
     ../programs/wl-clipboard.nix
     ../services/dunst.nix

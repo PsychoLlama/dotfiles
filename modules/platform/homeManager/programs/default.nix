@@ -71,7 +71,6 @@ in
     "termshark"
     "tokei"
     "viddy"
-    "wf-recorder"
     "whois"
     "wireplumber"
     "wl-clipboard"
