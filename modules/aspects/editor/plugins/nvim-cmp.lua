@@ -18,8 +18,12 @@ local function get_visible_buffers()
     :totable()
 end
 
--- Use system popup theme.
 local custom_popup_menu = cmp.config.window.bordered({
+  -- Setting `side_padding` doesn't adjust width. Content clips.
+  -- Equivalent of `padding-right: 1`.
+  border = { '', '', ' ', ' ', ' ', '', '', '' },
+
+  -- Theme from system popup.
   winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel',
 })
 
