@@ -7,19 +7,21 @@
 
 buildNpmPackage rec {
   pname = "chrome-devtools-mcp";
-  version = "1.6.0";
+  version = "1.7.0";
 
   src = fetchFromGitHub {
     owner = "ChromeDevTools";
     repo = "chrome-devtools-mcp";
     rev = "${pname}-v${version}";
-    hash = "sha256-aHbBrM/bluFjFRUfJkbxGZpdm0m3XAcAiScARKsnIm4=";
+    # The build compiles devtools-frontend sources vendored as a submodule.
+    fetchSubmodules = true;
+    hash = "sha256-NLm/YGoZXyKCnfoyp20hzNRHMe80ljUnq/Q2uXif/5A=";
   };
 
-  npmDepsHash = "sha256-Aqin4Y///f1j4MWcG3gA4FGvIfC4lBEGKaKfAMSFdDw=";
+  npmDepsHash = "sha256-sIgr/umxN6hMWbsHXU17VSXRp7b1ky55ds0A8dKHW00=";
   npmBuildScript = "bundle";
 
-  # TS2717: type conflict between chrome-devtools-frontend and @paulirish/trace_engine.
+  # TS2717: type conflict between devtools-frontend and @paulirish/trace_engine.
   # The error is in a .ts source (not .d.ts), so skipLibCheck doesn't help.
   # Use --noCheck (TS 5.5+) to skip type checking so the build can succeed.
   postPatch = ''

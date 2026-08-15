@@ -19,7 +19,8 @@
     {
       programs.git.fsmonitor = {
         enable = lib.mkDefault true;
-        package = lib.mkDefault pkgs.unstable.watchman;
+        # Same version as unstable, which currently fails to build (folly vs gcc 15.3).
+        package = lib.mkDefault pkgs.watchman;
       };
 
       programs.nushell.abbreviations = {
