@@ -8,7 +8,6 @@
 
     let
       tmux = config.programs.tmux.package;
-      fzf = config.programs.fzf.package;
     in
 
     {
@@ -22,15 +21,6 @@
         shell = "${config.programs.nushell.package}/bin/nu";
         extraConfig = ''
           ${builtins.readFile ./tmux.conf}
-
-          bind-key C-s display-popup -E ${pkgs.writers.writeBash "tmux-jump" ''
-            sessions="$(${tmux}/bin/tmux list-sessions -F "#{session_name}")"
-            session_name="$(echo -e "$sessions" | ${fzf}/bin/fzf)"
-
-            if [[ -n "$session_name" ]]; then
-              ${tmux}/bin/tmux switch-client -t "$session_name"
-            fi
-          ''}
 
           bind-key v display-popup -E ${pkgs.writers.writeBash "tmux-dictation" ''
             target_pane="$TMUX_PANE"
