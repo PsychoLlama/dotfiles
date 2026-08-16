@@ -9,7 +9,7 @@
     }:
 
     let
-      inherit (host) agents trusted-directories;
+      inherit (host) agents;
 
       cfg = config.psychollama.presets.programs.codex;
 
@@ -23,12 +23,6 @@
         pkgs.writers.makeScriptWriter {
           interpreter = "${lib.getExe pkgs.unstable.nushell} --no-config-file";
         } "/bin/${name}";
-
-      trustedDirectoriesHook = pkgs.callPackage ./hooks/_trusted-directories.nix {
-        directories = trusted-directories;
-        fd = pkgs.unstable.fd;
-        inherit writeNuBin;
-      };
 
       localInstructionsHook = pkgs.callPackage ./hooks/_local-instructions.nix {
         inherit writeNuBin;
@@ -76,14 +70,8 @@
         # per-user home files. Sad.
         developer_instructions = agents.context;
 
-        hooks.SessionStart =
-          # Inject CLAUDE.local.md into context, the way Claude Code does.
-          [ (commandHook localInstructionsHook) ]
-          # Seed trust for repos under my trusted directories, so codex stops
-          # prompting in repos I already own. Only wired when there's something to
-          # trust, which also guarantees the hook always has a search path (see the
-          # hook for why).
-          ++ lib.optional (trusted-directories != [ ]) (commandHook trustedDirectoriesHook);
+        # Inject CLAUDE.local.md into context, the way Claude Code does.
+        hooks.SessionStart = [ (commandHook localInstructionsHook) ];
 
         # Format edited files after `apply_patch`, the way Claude Code's auto-format
         # hook does. Codex surfaces `apply_patch` under the `Write`/`Edit` matcher
