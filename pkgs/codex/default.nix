@@ -18,16 +18,24 @@ let
   stdenv = stdenvNoCC;
   manifest = lib.importJSON ./manifest.json;
   inherit (manifest) repo;
-  inherit (manifest.platforms.${stdenv.hostPlatform.system}) target hash;
+  inherit (manifest.platforms.${stdenv.hostPlatform.system}) target hash codeModeHostHash;
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "codex-bin";
   inherit (manifest) version;
 
-  src = fetchurl {
-    url = "https://github.com/${repo}/releases/download/rust-v${finalAttrs.version}/codex-${target}.tar.gz";
-    inherit hash;
-  };
+  srcs = [
+    (fetchurl {
+      url = "https://github.com/${repo}/releases/download/rust-v${finalAttrs.version}/codex-${target}.tar.gz";
+      inherit hash;
+    })
+
+    # Out-of-process V8 runtime for code mode. Shipped as its own release asset.
+    (fetchurl {
+      url = "https://github.com/${repo}/releases/download/rust-v${finalAttrs.version}/codex-code-mode-host-${target}.tar.gz";
+      hash = codeModeHostHash;
+    })
+  ];
 
   sourceRoot = ".";
   dontBuild = true;
@@ -50,6 +58,7 @@ stdenv.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
     install -Dm755 codex-${target} $out/bin/codex
+    install -Dm755 codex-code-mode-host-${target} $out/bin/codex-code-mode-host
     runHook postInstall
   '';
 

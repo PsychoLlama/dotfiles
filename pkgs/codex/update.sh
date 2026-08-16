@@ -16,18 +16,25 @@ declare -A targets=(
   [aarch64-darwin]=aarch64-apple-darwin
 )
 
-platforms=$(jq -n '{}')
-for system in "${!targets[@]}"; do
-  target="${targets[$system]}"
-  asset="codex-$target.tar.gz"
+# Resolves the SRI hash of a release asset from its recorded digest.
+asset_hash() {
+  local asset="$1" digest
   digest=$(jq -er --arg asset "$asset" \
     '.assets[] | select(.name == $asset) | .digest' <<<"$release") || {
     echo "error: latest $repo release ($version) has no digest for $asset" >&2
     exit 1
   }
-  hash=$(nix hash convert --hash-algo sha256 --to sri "${digest#sha256:}")
+  nix hash convert --hash-algo sha256 --to sri "${digest#sha256:}"
+}
+
+platforms=$(jq -n '{}')
+for system in "${!targets[@]}"; do
+  target="${targets[$system]}"
+  hash=$(asset_hash "codex-$target.tar.gz")
+  code_mode_host_hash=$(asset_hash "codex-code-mode-host-$target.tar.gz")
   platforms=$(jq --arg s "$system" --arg t "$target" --arg h "$hash" \
-    '.[$s] = { target: $t, hash: $h }' <<<"$platforms")
+    --arg c "$code_mode_host_hash" \
+    '.[$s] = { target: $t, hash: $h, codeModeHostHash: $c }' <<<"$platforms")
 done
 
 tmp=$(mktemp)
