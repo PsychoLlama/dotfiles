@@ -6,7 +6,7 @@ let
 in
 
 {
-  flake.nixosModules.home-manager =
+  exports.nixos =
     { host, lib, ... }:
 
     {
@@ -16,11 +16,9 @@ in
         useGlobalPkgs = lib.mkDefault true;
         useUserPackages = lib.mkDefault true;
 
-        # Everything every user gets; aspects are imported per user.
+        # Extensions every user gets. Aspects are imported per user.
         sharedModules = [
           homeModules.platform
-          homeModules.secrets
-          homeModules.editor
 
           { _module.args.host = host; }
         ];

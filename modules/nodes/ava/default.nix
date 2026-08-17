@@ -4,6 +4,7 @@ let
   inherit (config.flake) rhizomeModules;
 
   profiles = [
+    "profiles/substrate"
     "profiles/full"
     "profiles/home-lab-admin"
     "profiles/linux-desktop"

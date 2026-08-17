@@ -5,7 +5,7 @@ let
 in
 
 {
-  flake.nixosModules.nix-daemon =
+  exports.nixos =
     { pkgs, ... }:
 
     {

@@ -5,7 +5,7 @@ let
 in
 
 {
-  flake.homeModules.editor =
+  flake.homeModules.platform =
     {
       config,
       host,

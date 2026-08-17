@@ -6,7 +6,7 @@ let
 in
 
 {
-  flake.nixosModules.package-set =
+  exports.nixos =
     { lib, ... }:
 
     {

@@ -33,6 +33,7 @@ description: Use when reading or writing Nix modules in this repo — aspects, p
 - Profiles import other aspects.
 - Profiles do not define new features: only groupings of aspects.
 - Nodes prefer profiles over specific aspects.
+- `profiles/substrate` is the baseline every node needs: package set, nix daemon, home-manager, secrets.
 
 ## Extensions (`platform/`)
 

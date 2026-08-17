@@ -9,8 +9,7 @@ Nix configs for my workstations. Includes many custom features.
 - `flake.nix`: Inputs only; outputs derived by `flake-parts`.
 - `modules/`: All Nix modules.
   - `flake/`: Flake outputs.
-  - `rhizome/`: Custom flake tools for managing nodes and aspects.
-    - `substrate/`: Opinionated defaults for all nodes.
+  - `rhizome/`: Custom flake tools for managing nodes and aspects. Holds no opinions.
   - `platform/<class>/`: Extensions. Matches underlying platform conventions.
     - `editor/`: Unopinionated nixvim alternative.
       - `runtime/`: Lua `core` library. Binds Nix configs.
