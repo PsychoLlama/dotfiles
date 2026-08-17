@@ -9,16 +9,16 @@ Nix configs for my workstations. Includes many custom features.
 - `flake.nix`: Inputs only; outputs derived by `flake-parts`.
 - `modules/`: All Nix modules.
   - `flake/`: Flake outputs.
-  - `rhizome/`: Custom flake tools for managing hosts and aspects.
-    - `substrate/`: Opinionated defaults for all hosts.
+  - `rhizome/`: Custom flake tools for managing nodes and aspects.
+    - `substrate/`: Opinionated defaults for all nodes.
   - `platform/<class>/`: Extensions. Matches underlying platform conventions.
     - `editor/`: Unopinionated nixvim alternative.
       - `runtime/`: Lua `core` library. Binds Nix configs.
-  - `aspects/`: Opinionated configs enabled by hosts. One file per concern.
+  - `aspects/`: Opinionated configs enabled by nodes. One file per concern.
     - `system/`: Aspects belonging to no single program.
     - `profiles/`: Holds no opinions itself; enables sets of other aspects.
     - `editor/`: Opinionated editor aspects.
-  - `hosts/`: Workstation configs. One dir per host. Only contains workstation-specific configs - the rest is aspects and profiles.
+  - `nodes/`: Workstation configs. One dir per node. Only contains workstation-specific configs - the rest is aspects and profiles.
   - `templates/`: Scaffolds other projects as `dotfiles#<tpl>`.
 
 ## Downstream

@@ -1,15 +1,15 @@
 ---
-description: Use when reading or writing Nix modules in this repo — aspects, profiles, hosts, and platform extensions. Covers how the module tree is loaded, what each kind of module may declare, and the conventions they follow.
+description: Use when reading or writing Nix modules in this repo — aspects, profiles, nodes, and platform extensions. Covers how the module tree is loaded, what each kind of module may declare, and the conventions they follow.
 ---
 
-## Hosts
+## Nodes
 
-- `rhizome.nodes.<name>` holds config per host.
-- Hosts carry arbitrary data (theme, identity, etc).
-- The `host` object is a module arg to every aspect.
-- Custom data is defined via `imports` on each host.
-- Default modules for all hosts are assigned to `rhizome.defaults.node`. Rare.
-- Hosts enable specific aspects and profiles. Each class is explicitly stated and placed.
+- `rhizome.nodes.<name>` holds config per node. Defined under `modules/nodes/`.
+- Nodes carry arbitrary data (theme, identity, etc).
+- The node is passed to every aspect as the `host` module arg.
+- Custom data is defined via `imports` on each node.
+- Default modules for all nodes are assigned to `rhizome.defaults.node`. Rare.
+- Nodes enable specific aspects and profiles. Each class is explicitly stated and placed.
 
 ## Aspects
 
@@ -32,7 +32,7 @@ description: Use when reading or writing Nix modules in this repo — aspects, p
 - Profiles are aspects with a convention.
 - Profiles import other aspects.
 - Profiles do not define new features: only groupings of aspects.
-- Hosts prefer profiles over specific aspects.
+- Nodes prefer profiles over specific aspects.
 
 ## Extensions (`platform/`)
 

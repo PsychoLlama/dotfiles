@@ -28,7 +28,7 @@ in
     description = "Machines, keyed by hostname.";
     default = { };
 
-    # `submoduleWith` so a node can import the options it wants from `hosts/_*.nix`.
+    # `submoduleWith` so a node can import the options it wants from `nodes/_*.nix`.
     type = types.attrsOf (
       types.submoduleWith {
         modules = [
