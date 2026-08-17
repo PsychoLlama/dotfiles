@@ -14,9 +14,9 @@ let
 in
 
 {
-  options.rhizome.defaults.host = lib.mkOption {
+  options.rhizome.defaults.node = lib.mkOption {
     description = ''
-      Configuration folded into every host's `module`, so it survives a
+      Configuration folded into every node's `module`, so it survives a
       custom `builder`. Reads the machine through a `host` module argument.
     '';
 
@@ -24,11 +24,11 @@ in
     default = { };
   };
 
-  options.rhizome.hosts = lib.mkOption {
+  options.rhizome.nodes = lib.mkOption {
     description = "Machines, keyed by hostname.";
     default = { };
 
-    # `submoduleWith` so a host can import the options it wants from `hosts/_*.nix`.
+    # `submoduleWith` so a node can import the options it wants from `hosts/_*.nix`.
     type = types.attrsOf (
       types.submoduleWith {
         modules = [
@@ -74,7 +74,7 @@ in
                   type = types.deferredModuleWith {
                     staticModules = [
                       { _module.args.host = config; }
-                      defaults.host
+                      defaults.node
                     ];
                   };
                 };
@@ -105,7 +105,7 @@ in
     );
   };
 
-  config.rhizome.defaults.host =
+  config.rhizome.defaults.node =
     { host, ... }:
 
     {
@@ -117,6 +117,6 @@ in
       system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
     };
 
-  # Rooted at `flake`: at the module root this recurses through `rhizome.hosts`.
-  config.flake = lib.mkMerge (lib.mapAttrsToList (_: host: host.install host) config.rhizome.hosts);
+  # Rooted at `flake`: at the module root this recurses through `rhizome.nodes`.
+  config.flake = lib.mkMerge (lib.mapAttrsToList (_: host: host.install host) config.rhizome.nodes);
 }

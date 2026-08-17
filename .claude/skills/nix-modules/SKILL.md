@@ -4,11 +4,11 @@ description: Use when reading or writing Nix modules in this repo — aspects, p
 
 ## Hosts
 
-- `rhizome.hosts.<name>` holds config per host.
+- `rhizome.nodes.<name>` holds config per host.
 - Hosts carry arbitrary data (theme, identity, etc).
 - The `host` object is a module arg to every aspect.
 - Custom data is defined via `imports` on each host.
-- Default modules for all hosts are assigned to `rhizome.defaults.host`. Rare.
+- Default modules for all hosts are assigned to `rhizome.defaults.node`. Rare.
 - Hosts enable specific aspects and profiles. Each class is explicitly stated and placed.
 
 ## Aspects

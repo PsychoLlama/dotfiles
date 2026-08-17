@@ -15,7 +15,7 @@ in
     ];
   };
 
-  rhizome.defaults.host = {
+  rhizome.defaults.node = {
     imports = [ nixosModules.default ];
   };
 }

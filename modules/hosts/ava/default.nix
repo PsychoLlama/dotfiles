@@ -11,7 +11,7 @@ let
 in
 
 {
-  rhizome.hosts.ava = {
+  rhizome.nodes.ava = {
     imports = [
       ../_agents/default.nix
       ../_identity.nix
