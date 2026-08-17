@@ -6,7 +6,7 @@ let
     flake-parts gives `nixosModules`.
 
     flake-parts only ships that one. An undeclared flake output is typed
-    `unique raw`, so without a declaration here the *second* aspect to define
+    `unique raw`, so without a declaration here the *second* definition of
     `homeModules.<id>` fails to merge rather than adding an attribute.
 
     # Inputs
@@ -51,6 +51,18 @@ in
     homeModules = moduleOutput {
       class = "homeManager";
       output = "homeModules";
+    };
+
+    # Classes are left open: a downstream sweep names whatever classes it
+    # invented, and the loader stamps `_class` on each module it publishes.
+    rhizomeModules = lib.mkOption {
+      description = ''
+        Aspects published by the flake, keyed by id. Each holds one module per
+        class, already carrying its dependencies.
+      '';
+
+      type = lib.types.lazyAttrsOf (lib.types.lazyAttrsOf lib.types.deferredModule);
+      default = { };
     };
   };
 }

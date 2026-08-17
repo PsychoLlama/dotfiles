@@ -1,7 +1,7 @@
 { config, inputs, ... }:
 
 let
-  inherit (config.flake) editorModules homeModules nixosModules;
+  inherit (config.flake) rhizomeModules;
 
   profiles = [
     "profiles/full"
@@ -53,7 +53,7 @@ in
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
           inputs.nixpkgs.nixosModules.notDetected
         ]
-        ++ map (id: nixosModules.${id}) profiles;
+        ++ map (id: rhizomeModules.${id}.nixos) profiles;
 
         boot.loader.systemd-boot = {
           enable = true;
@@ -90,8 +90,8 @@ in
         home-manager.users.${username} =
           { config, ... }:
           {
-            imports = map (id: homeModules.${id}) profiles;
-            programs.editor.imports = map (id: editorModules.${id}) profiles;
+            imports = map (id: rhizomeModules.${id}.homeManager) profiles;
+            programs.editor.imports = map (id: rhizomeModules.${id}.editor) profiles;
 
             home.stateVersion = "22.05";
 

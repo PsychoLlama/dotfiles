@@ -2,18 +2,14 @@
 
 let
   /**
-    The module classes this flake's own aspects export to, each mapped to the
-    flake output it publishes under. Only a default: a consumer sweeping its
-    own tree names whatever classes it invented.
-
-    The output names are the ecosystem's, not derived from the class --
-    home-manager's class is `homeManager` but its output is `homeModules`.
+    The module classes this flake's own aspects export to. Only a default: a
+    consumer sweeping its own tree names whatever classes it invented.
   */
-  defaultClasses = {
-    editor = "editorModules";
-    homeManager = "homeModules";
-    nixos = "nixosModules";
-  };
+  defaultClasses = [
+    "editor"
+    "homeManager"
+    "nixos"
+  ];
 
   /**
     Render names as a backticked, comma-separated list for error messages.
@@ -91,7 +87,7 @@ let
     # Inputs
 
     `classes`
-    : The classes an aspect may export to, keyed by class name.
+    : The classes an aspect may export to.
 
     `name`
     : What to call the body when it fails. An aspect id, usually.
@@ -102,26 +98,26 @@ let
     # Type
 
     ```
-    checkExports :: AttrSet -> String -> AttrSet -> AttrSet
+    checkExports :: [String] -> String -> AttrSet -> AttrSet
     ```
   */
   checkExports =
     classes: name: body:
     let
       strayKeys = lib.subtractLists [ "exports" "imports" ] (lib.attrNames body);
-      strayClasses = lib.subtractLists (lib.attrNames classes) (lib.attrNames (body.exports or { }));
+      strayClasses = lib.subtractLists classes (lib.attrNames (body.exports or { }));
     in
     lib.throwIf (strayKeys != [ ])
       "Aspect `${name}` sets ${quote strayKeys}. An aspect may only set `exports` and `imports`."
       (
         lib.throwIf (strayClasses != [ ]) "Aspect `${name}` exports unknown ${
           if lib.length strayClasses == 1 then "class" else "classes"
-        } ${quote strayClasses}. Known classes are ${quote (lib.attrNames classes)}." body
+        } ${quote strayClasses}. Known classes are ${quote classes}." body
       );
 
   /**
-    Turn one aspect file into a flake module publishing `<id>` into every
-    class's output -- `nixosModules.<id>`, `homeModules.<id>`, and so on.
+    Turn one aspect file into a flake module publishing the aspect as
+    `rhizomeModules.<id>.<class>`, one module per class.
 
     The aspect's own `imports` are routed by what each entry is:
 
@@ -138,7 +134,7 @@ let
     # Inputs
 
     `classes`
-    : The classes to publish under, mapped to their flake outputs.
+    : The classes to publish under.
 
     `root`
     : The aspect root that ids are relative to.
@@ -153,7 +149,7 @@ let
     # Type
 
     ```
-    import-aspect :: { classes :: AttrSet, root :: Path } -> Path -> AttrSet -> Module
+    import-aspect :: { classes :: [String], root :: Path } -> Path -> AttrSet -> Module
     ```
   */
   import-aspect =
@@ -241,25 +237,21 @@ let
       # aspects depending on the same third one contribute the same key, so
       # the module system loads it once. Without it every route would be a
       # fresh module, and the file's options declared twice.
-      flake = lib.mapAttrs' (
-        class: output:
-        lib.nameValuePair output {
-          ${id} = {
-            _file = path;
-            key = "aspect:${class}:${id}";
+      flake.rhizomeModules.${id} = lib.genAttrs classes (class: {
+        _class = class;
+        _file = path;
+        key = "aspect:${class}:${id}";
 
-            imports = [
-              (exports.${class} or { })
-            ]
-            ++ map (dependency: flake-outputs.${output}.${dependency}) dependencies;
-          };
-        }
-      ) classes;
+        imports = [
+          (exports.${class} or { })
+        ]
+        ++ map (dependency: flake-outputs.rhizomeModules.${dependency}.${class}) dependencies;
+      });
     };
 
   /**
     Sweep a directory of aspects into a single flake module, publishing every
-    file in it into each class's flake output under its own id.
+    file in it as `rhizomeModules.<id>.<class>`.
 
     Paths containing a `/_` segment are skipped, which is what keeps helpers
     and data files out.
@@ -274,13 +266,13 @@ let
     Structured function argument:
 
     `classes`
-    : Module class to flake output, and the closed set an aspect's `exports`
+    : The classes to publish under, and the closed set an aspect's `exports`
       are checked against. Defaults to `defaultClasses`.
 
     # Type
 
     ```
-    import-aspects :: Path -> { classes :: AttrSet } -> Module
+    import-aspects :: Path -> { classes :: [String] } -> Module
     ```
 
     # Examples
