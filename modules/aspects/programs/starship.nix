@@ -19,11 +19,14 @@
         ];
 
         directory = {
-          format = "[$path](blue)";
+          format = "[$path](blue) ";
           truncation_length = 1;
         };
 
-        git_branch.format = "[\\[](yellow)[$branch](cyan)[\\]](yellow) ";
+        git_branch = {
+          format = "[$branch]($style) ";
+          style = "none";
+        };
 
         git_state.format = "\\([$state( $progress_current/$progress_total)]($style)\\) ";
 
