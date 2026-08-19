@@ -6,6 +6,7 @@
     ../../lsp/nil.nix
     ../../lsp/nushell.nix
     ../../lsp/rust-analyzer.nix
+    ../../lsp/taplo.nix
     ../../lsp/typescript.nix
     ../../plugins/default.nix
     ../../trusted-directories.nix
