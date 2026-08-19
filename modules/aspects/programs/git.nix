@@ -25,7 +25,6 @@
 
       programs.nushell.abbreviations = {
         g = "git";
-        s = "git status";
         b = "git branch";
         ch = "git checkout";
         h = "git diff HEAD --staged";
