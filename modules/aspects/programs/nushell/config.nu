@@ -67,19 +67,6 @@ def --env md [directory: path] {
   cd $directory
 }
 
-# Show git status.
-def s [] {
-  let repo_check = do --ignore-errors {
-    git rev-parse --is-inside-work-tree | complete
-  }
-
-  if $repo_check.exit_code == 0 {
-    git status
-  } else {
-    echo 'Not a git repo.'
-  }
-}
-
 # Encrypt stdin using public keys from GitHub.
 def encrypt [
   username: string # Any GitHub username.
