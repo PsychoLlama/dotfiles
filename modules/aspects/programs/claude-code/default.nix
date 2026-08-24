@@ -77,6 +77,9 @@
             # Too repetitive.
             spinnerTipsEnabled = false;
 
+            # Default style narrates too much.
+            outputStyle = "Concise";
+
             # Offensive.
             autoInstallIdeExtension = false;
 
