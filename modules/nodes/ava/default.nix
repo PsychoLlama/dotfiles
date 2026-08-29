@@ -97,14 +97,13 @@ in
             home.stateVersion = "22.05";
 
             wayland.windowManager.sway.config.output = {
-              # Built in display.
-              "eDP-1".position = "1440 2360";
+              # Built in display. Sits below the external, horizontally centered:
+              # (3440 - 1920) / 2 = 760.
+              "eDP-1".position = "760 1440";
 
               # External monitor.
               "LG Electronics LG ULTRAWIDE 404NTLEDA584" = {
-                # Most of my time is spent reading. Using an ultrawide in
-                # portrait looks super weird but wow is it a game changer.
-                transform = "90";
+                transform = "normal";
                 position = "0 0";
               };
             };
