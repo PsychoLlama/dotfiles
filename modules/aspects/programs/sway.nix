@@ -18,6 +18,7 @@
         config,
         host,
         lib,
+        pkgs,
         ...
       }:
 
@@ -28,13 +29,40 @@
         wezterm = lib.getExe' config.programs.wezterm.package "wezterm";
         fuzzel = lib.getExe' config.programs.fuzzel.package "fuzzel";
         bemoji = lib.getExe' config.programs.bemoji.package "bemoji";
-        grim = lib.getExe' config.programs.grim.package "grim";
-        slurp = lib.getExe' config.programs.slurp.package "slurp";
-        wlCopy = lib.getExe' config.programs."wl-clipboard".package "wl-copy";
         playerctl = lib.getExe' config.programs.playerctl.package "playerctl";
         brightnessctl = lib.getExe' config.programs.brightnessctl.package "brightnessctl";
         pamixer = lib.getExe' config.programs.pamixer.package "pamixer";
         waybar = lib.getExe' config.programs.waybar.package "waybar";
+
+        # Aborting the region selection must not leave an empty file behind.
+        screenshot = pkgs.writeShellApplication {
+          name = "screenshot";
+
+          runtimeInputs = [
+            pkgs.coreutils
+            pkgs.util-linux
+            config.programs.grim.package
+            config.programs.slurp.package
+            config.programs."wl-clipboard".package
+          ];
+
+          text = ''
+            # Ignore the keypress while another capture is in flight.
+            exec 9>"''${XDG_RUNTIME_DIR:-/tmp}/screenshot.lock"
+            flock --nonblock 9 || exit 0
+
+            region="$(slurp)" || exit 0
+
+            directory="$HOME/screenshots"
+            mkdir -p "$directory"
+
+            file="$directory/$(date --iso-8601=seconds).png"
+            grim -g "$region" "$file"
+            # wl-copy backgrounds itself to serve the clipboard; without closing
+            # the inherited lock it would hold the lock forever.
+            wl-copy < "$file" 9>&-
+          '';
+        };
 
         # Laptop built-in keyboard. Find identifiers with `swaymsg -t get_inputs`.
         thinkpadKeyboard = "1:1:AT_Translated_Set_2_keyboard";
@@ -73,7 +101,7 @@
               "${modifier}+period" = "exec ${bemoji} -t";
 
               # Screenshot: select region, save to ~/screenshots/, copy to clipboard.
-              Print = ''exec ${grim} -g "$(${slurp})" - | tee ~/screenshots/"$(date --iso-8601=seconds).png" | ${wlCopy}'';
+              Print = "exec ${lib.getExe screenshot}";
 
               "${modifier}+Shift+r" = "reload";
 
