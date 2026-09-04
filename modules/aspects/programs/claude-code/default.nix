@@ -26,8 +26,6 @@
     let
       inherit (host) agents trusted-directories;
 
-      cfg = config.psychollama.presets.programs.claude-code;
-
       # Claude Code needs absolute prefixes; expand a leading `~` to the home dir.
       toAbsolute =
         dir:
@@ -35,16 +33,8 @@
     in
 
     {
-      options.psychollama.presets.programs.claude-code = {
-        voice.package = lib.mkPackageOption pkgs.unstable "sox" {
-          nullable = true;
-        };
-      };
-
       config = {
         programs.nushell.abbreviations.a = "claude"; # `a` short for `agent`
-
-        home.packages = lib.optionals (cfg.voice.package != null) [ cfg.voice.package ];
 
         programs.claude-code = {
           enable = lib.mkDefault true;
@@ -106,11 +96,6 @@
               commit = "";
               pr = "";
               sessionUrl = false;
-            };
-
-            voice = {
-              enabled = cfg.voice.package != null;
-              mode = "hold";
             };
 
             worktree = {
