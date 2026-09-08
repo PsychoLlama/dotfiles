@@ -47,7 +47,7 @@
 
         alias = {
           c = "commit";
-          review = ''!git diff "$(git merge-base --fork-point origin/HEAD)"'';
+          review = ''!git show "$(git merge-base --fork-point origin/HEAD)"..HEAD'';
           f = "fetch origin";
           pf = "push --force-with-lease";
           s = "stash";
