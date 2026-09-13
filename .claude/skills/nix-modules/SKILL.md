@@ -1,4 +1,5 @@
 ---
+name: nix-modules
 description: Use when reading or writing Nix modules in this repo — aspects, profiles, nodes, and platform extensions. Covers how the module tree is loaded, what each kind of module may declare, and the conventions they follow.
 ---
 

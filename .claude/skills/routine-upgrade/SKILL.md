@@ -1,7 +1,7 @@
 ---
+name: routine-upgrade
 description: Perform a routine upgrade.
 disable-model-invocation: true
-user-invocable: true
 ---
 
 ## Steps
