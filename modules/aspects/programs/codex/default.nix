@@ -1,4 +1,16 @@
 {
+  exports.homeManager =
+    { host, lib, ... }:
+
+    {
+      home.file = lib.mapAttrs' (
+        name: source:
+        lib.nameValuePair ".agents/skills/${name}" {
+          inherit source;
+        }
+      ) host.agents.skills;
+    };
+
   exports.nixos =
     {
       config,
