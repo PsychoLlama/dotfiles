@@ -1,8 +1,3 @@
----
-name: nushell-development
-description: Nushell reference. Use when writing, editing, or reviewing `.nu` files, authoring custom commands / modules, writing standalone `nu` scripts, or validating changes with `nu-check`.
----
-
 ## Conventions
 
 - Libraries with subcommands: give the module an `export def main [] { help modules <name> }`. The bare command then surfaces its help; real behavior lives in subcommands (`export def 'name action' [...]`).

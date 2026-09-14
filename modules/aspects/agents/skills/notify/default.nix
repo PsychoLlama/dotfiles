@@ -1,13 +1,19 @@
 {
   exports.homeManager =
-    { lib, pkgs, ... }:
+    { pkgs, lib, ... }:
 
     let
       notify = pkgs.writeShellApplication {
         name = "notify";
         runtimeInputs = [ pkgs.libnotify ];
         text = ''
-          title="Claude Code"
+          title="Agent"
+          if [ -n "''${CLAUDE_CODE_SESSION_ID:-}" ]; then
+            title="Claude Code"
+          elif [ -n "''${CODEX_SESSION_ID:-}" ]; then
+            title="Codex"
+          fi
+
           icon="dialog-information"
 
           while [ $# -gt 0 ]; do
@@ -27,22 +33,13 @@
           notify-send --urgency=normal --icon="$icon" "$title" "$message"
         '';
       };
-
-      # SKILL.md tells the model to run `$CLAUDE_SKILL_DIR/notify`, so the wrapper
-      # has to sit beside it in the skill directory.
-      notifySkill = pkgs.linkFarm "claude-skill-notify" [
-        {
-          name = "SKILL.md";
-          path = ./notify/SKILL.md;
-        }
-        {
-          name = "notify";
-          path = lib.getExe notify;
-        }
-      ];
     in
 
     {
-      programs.claude-code.skills.notify = notifySkill;
+      agents.skills.notify = {
+        files.notify = lib.getExe notify;
+        template.body = ./SKILL.md;
+        description = "Send a desktop notification to get the user's attention. Use after a long-running task finishes, or when you need a response and the user is likely away from the terminal.";
+      };
     };
 }

@@ -1,15 +1,9 @@
 {
-  exports.homeManager =
-    { host, lib, ... }:
-
-    {
-      home.file = lib.mapAttrs' (
-        name: source:
-        lib.nameValuePair ".agents/skills/${name}" {
-          inherit source;
-        }
-      ) host.agents.skills;
-    };
+  exports.homeManager = { config, lib, ... }: {
+    config.home.file = lib.mapAttrs' (
+      _: skill: lib.nameValuePair ".agents/skills/${skill.name}" { source = skill.output.codex; }
+    ) (lib.filterAttrs (_: skill: lib.elem "codex" skill.targets) config.agents.skills);
+  };
 
   exports.nixos =
     {

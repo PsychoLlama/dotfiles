@@ -1,7 +1,3 @@
----
-description: Run `codex review` and surface only the final review. Use whenever asked to "ask codex to review", "get a codex review", or otherwise invoke codex's code review subagent. Captures full transcript to a tempfile so failures stay debuggable.
----
-
 # Running `codex review` cleanly
 
 `codex review` writes its banner and every tool call it makes to **stderr**. The _final_ review prose is the only thing on **stdout**. Exploit this.

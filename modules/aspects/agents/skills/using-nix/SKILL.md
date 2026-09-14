@@ -1,8 +1,3 @@
----
-name: using-nix
-description: ALWAYS use this skill for anything related to Nix, NixOS, home-manager, or nixpkgs. This includes writing Nix code, looking up modules/options/packages, answering questions, and debugging Nix errors.
----
-
 - Use `nix eval` and `nix build` to experiment with your changes.
 - New files are not discoverable by Nix until you `git add` them.
 - Prefer `lib` functions over `builtins` when both exist (e.g. `lib.map` over `builtins.map`).

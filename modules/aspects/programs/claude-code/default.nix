@@ -10,7 +10,6 @@
     ./plugins/nushell-lsp.nix
     ./plugins/rust-lsp.nix
     ./plugins/typescript-lsp.nix
-    ./skills/notify.nix
     ./statusline.nix
   ];
 
@@ -42,9 +41,9 @@
 
           # Shared stuff across all agent tools.
           inherit (agents) rules context commands;
-          skills = agents.skills // {
-            codex-review = ./skills/codex-review;
-          };
+          skills = lib.mapAttrs' (_: skill: lib.nameValuePair skill.name skill.output.claude) (
+            lib.filterAttrs (_: skill: lib.elem "claude" skill.targets) config.agents.skills
+          );
 
           keybindings.Chat = {
             # Default keybind toggles fast mode. Emulator interprets `<esc>o`

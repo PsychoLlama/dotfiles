@@ -1,11 +1,5 @@
 { lib, ... }:
 
-# Shared configuration for coding agents (Claude Code, codex, ...). This is
-# *pure data*: it declares the canonical memory, rules, and skills once and
-# holds nothing tool-specific. It has no `config` side effects -- it configures
-# no program and writes no files. Each agent preset reads `agents.*` and decides
-# how to render it into its own native shape.
-
 {
   options.agents = {
     context = lib.mkOption {
@@ -47,20 +41,6 @@
       };
     };
 
-    skills = lib.mkOption {
-      type = lib.types.attrsOf lib.types.path;
-      description = ''
-        Named skill directories shared across agents, keyed by skill name. Each
-        points at a directory holding a `SKILL.md` (the format both Claude Code
-        and codex load). Tool-specific skills stay in their own preset.
-      '';
-
-      default = {
-        nushell-development = ./skills/nushell-development;
-        using-nix = ./skills/using-nix;
-      };
-    };
-
     commands = lib.mkOption {
       type = lib.types.attrsOf lib.types.path;
       description = ''
@@ -72,4 +52,5 @@
       default = { };
     };
   };
+
 }

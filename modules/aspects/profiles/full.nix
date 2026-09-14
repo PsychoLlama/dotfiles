@@ -1,5 +1,6 @@
 {
   imports = [
+    ./agent-skills.nix
     ../programs/bat.nix
     ../programs/bottom.nix
     ../programs/carapace.nix

@@ -114,7 +114,7 @@
         };
 
         skills = lib.mkOption {
-          type = lib.types.attrsOf lib.types.path;
+          type = lib.types.attrsOf (lib.types.either lib.types.path lib.types.package);
           default = { };
           description = ''
             Skill directories, linked to {file}`skills/<name>`. Each holds a
