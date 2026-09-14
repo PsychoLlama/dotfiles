@@ -55,7 +55,10 @@
         "$schema" = "https://learn.chatgpt.com/docs/config-schema.json";
 
         # Everything must be vim.
-        tui.vim_mode_default = true;
+        tui = {
+          vim_mode_default = true;
+          notification_method = "bel";
+        };
 
         # Updates are managed by Nix.
         check_for_update_on_startup = false;
