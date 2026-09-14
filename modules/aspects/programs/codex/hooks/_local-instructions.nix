@@ -37,7 +37,7 @@ writeNuBin "codex-local-instructions-hook"
       $ancestors
       | where {|dir| $dir | str starts-with $"($home)/" }
       | reverse
-      | iter find {|dir| $dir | path join ".git" | path exists }
+      | iter find {|dir| $dir | path join ".git/" | path exists }
     )
 
     if ($root | is-not-empty) {
