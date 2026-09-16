@@ -58,6 +58,9 @@
         tui = {
           vim_mode_default = true;
           notification_method = "bel";
+
+          # Disable the animating starfield. It's super distracting.
+          whimsy = false;
         };
 
         # Updates are managed by Nix.
