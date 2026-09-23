@@ -25,14 +25,17 @@
 
           paths = [
             homeDirectory
-            "${homeDirectory}/projects/psychollama"
-            "${homeDirectory}/projects/taylor1791"
-            "${homeDirectory}/projects/@scratch"
+            "/root"
+            "/var/log"
           ];
 
           exclude = [
-            # Exclude all projects (specific ones added via paths above)
-            "${homeDirectory}/projects"
+            # Exclude all projects except these. Must match children, not the
+            # parent, or the negations never apply.
+            "${homeDirectory}/projects/*"
+            "!${homeDirectory}/projects/psychollama"
+            "!${homeDirectory}/projects/taylor1791"
+            "!${homeDirectory}/projects/@scratch"
 
             # Caches and temp
             "${homeDirectory}/.cache"
