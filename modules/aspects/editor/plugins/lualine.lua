@@ -1,13 +1,18 @@
+-- Disable the `-- INSERT --` text. It's owned by lualine.
+vim.o.showmode = false
+
 local lualine_theme = require('lualine.themes.onedark')
 
-lualine_theme.normal.c.bg = nil
-lualine_theme.inactive.c.bg = nil
+local function invert_colors(m)
+  m.fg, m.bg = m.bg, m.fg
+end
 
--- Disable branch name mode colors.
-lualine_theme.normal.b.fg = nil
-lualine_theme.insert.b.fg = nil
-lualine_theme.visual.b.fg = nil
-lualine_theme.command.b.fg = nil
+-- Customize the theme.
+lualine_theme.inactive.c.bg = nil
+invert_colors(lualine_theme.normal.b)
+invert_colors(lualine_theme.insert.b)
+invert_colors(lualine_theme.visual.b)
+invert_colors(lualine_theme.command.b)
 
 require('lualine').setup({
   options = {
@@ -15,7 +20,7 @@ require('lualine').setup({
   },
   sections = {
     lualine_a = {},
-    lualine_b = { 'branch' },
+    lualine_b = { 'mode' },
     lualine_c = { 'filename', 'diagnostics' },
     lualine_x = { vim.ui.progress_status, 'filetype' },
     lualine_y = { 'progress' },
