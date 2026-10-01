@@ -14,6 +14,7 @@
       # Sway's own idle inhibitor is the module's reason to exist, so key off
       # the service rather than assuming a profile wired it up.
       swayidle = config.services.swayidle;
+      inherit (config.psychollama.presets.services.swayidle) path-condition;
 
       # Sway ignores every idle inhibitor that isn't attached to the lock surface
       # while a session lock is held (`sway_idle_inhibit_v1_is_active`), so waybar's
@@ -22,6 +23,7 @@
       idleLock = pkgs.writeShellApplication {
         name = "waybar-idle-lock";
         runtimeInputs = [
+          pkgs.coreutils
           pkgs.systemd
           pkgs.procps
         ];
@@ -30,8 +32,11 @@
           case "''${1-status}" in
             toggle)
               if systemctl --user --quiet is-active swayidle; then
+                mkdir -p "${lib.dirOf path-condition}"
+                touch "${path-condition}"
                 systemctl --user stop swayidle
               else
+                rm -f "${path-condition}"
                 systemctl --user start swayidle
               fi
 
