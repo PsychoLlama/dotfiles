@@ -32,7 +32,7 @@ mv "$tmp" "$manifest"
 
 # npm dependencies change with the lockfile, so resolve the hash from a build.
 npm_deps_hash=$(
-  nix build --no-link ".#chrome-devtools-mcp.npmDeps" 2>&1 \
+  { nix build --no-link ".#chrome-devtools-mcp.npmDeps" 2>&1 || true; } \
     | awk '/got: /{ print $2 }'
 )
 
