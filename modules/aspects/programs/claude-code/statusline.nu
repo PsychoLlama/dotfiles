@@ -72,8 +72,8 @@ def main [] {
     return
   }
 
-  # Claude Code reserves a few columns on the right; don't fill to the edge.
-  let right_margin = 3
+  # Claude Code's built-in spacing eats 4 columns; overflow is ellipsized.
+  let right_margin = 4
   let width = ((term-width) - $right_margin)
   let left_width = ($left | ansi strip | str length)
   let right_width = ($right | ansi strip | str length)
