@@ -1,26 +1,26 @@
 {
   "repo": "openai/codex",
-  "version": "0.160.0",
+  "version": "0.163.0",
   "platforms": {
     "aarch64-linux": {
       "target": "aarch64-unknown-linux-musl",
-      "hash": "sha256-iDYgE5kl9nfloSyVuoeh1/QhOI67eXscEKukKgTt6dc=",
-      "codeModeHostHash": "sha256-lAZv3xP/7NL1h3bsXLj8MEAoOmQuPW/yXF2CBIxBA44="
+      "hash": "sha256-pyYeZfSpbY9MploGnGzy3Cwz3vw0HkgHis79qUYf/+Q=",
+      "codeModeHostHash": "sha256-KENWrvsZfwC3a5Eu/f266Mzz6h+JuXbd4GS3zLQyFO8="
     },
     "x86_64-linux": {
       "target": "x86_64-unknown-linux-musl",
-      "hash": "sha256-MGhlQX1O56kneFhSkQpSf0Hh4Vmt05CsWuOsy2fUShM=",
-      "codeModeHostHash": "sha256-rGzWKI8OOfRqM+uhz9N3EWUfFPM9vHPWobgutF4DjKw="
+      "hash": "sha256-vrM56OzZugV6a7Lcga2MpHSBLt+/D8UFbKgYeXZI3eQ=",
+      "codeModeHostHash": "sha256-MUJjEoumWS5+gHwmXe6vkoppK3Lcv+teCyDJQjtwNSk="
     },
     "x86_64-darwin": {
       "target": "x86_64-apple-darwin",
-      "hash": "sha256-pQwQYG5OgbjdL3trq2NVlaq8dzyEzyBxdz+68GeCX78=",
-      "codeModeHostHash": "sha256-sCTro2bsLjtnNJcqAN+O2be/FOZwV5vFuhgZRhLZ9EE="
+      "hash": "sha256-Vioa6g5Whig6RnaH0miuM3BfAv1NQPG8QRCkFcXBx7E=",
+      "codeModeHostHash": "sha256-UhHG7VBiyEuleW5VWQPCKm44/Mz2/hHuEdfhtWh84f0="
     },
     "aarch64-darwin": {
       "target": "aarch64-apple-darwin",
-      "hash": "sha256-B8PHyjdqj3kRFTQvUxON2jfpfPopuBJdBlLZN4SJS10=",
-      "codeModeHostHash": "sha256-3HD7x26dyuWuPVQkgIyOfC314NtKyCfd1PvjOQFarXU="
+      "hash": "sha256-YcTZqSUhvbQrDB2fh8Zz9tpiigbeWUXL3ZoAEGMvbRA=",
+      "codeModeHostHash": "sha256-Lij0mkdnqXWGhDySaSuWSBvnTYNxmbSQOPcxzsiOmUE="
     }
   }
 }

@@ -1,14 +1,14 @@
 {
   "baseUrl": "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases",
-  "version": "2.1.289",
+  "version": "2.1.302",
   "platforms": {
-    "darwin-arm64": "03d66745e3bb69ec727d66023696f3820bc0a00a8a5ba725eb6706d0c67cbe69",
-    "darwin-x64": "358aa0e31666c48b2340ad9fa4003436105086ca12e1ecd4c5266d18598c2f7f",
-    "linux-arm64": "d100d5e41dcbee220c80d3a3099292e4b5a508b57cafd181856efedf29f84f28",
-    "linux-x64": "a186b99e4a9c88366cd49df2f7dad56c61fc306ef0140b19ee64b7c42a8d1348",
-    "linux-arm64-musl": "e9dfa4a0df412a1204c6a5efe3964c0e9f36f05fd86ebec1d9c84abf333e7d65",
-    "linux-x64-musl": "a35123e65344b82ab10870f5842cac7e593e4a56b1f6bddaed96bd9b9d42953d",
-    "win32-x64": "bcc6d9117aec30ad9414490302a25414359c871f5647e32e49b055c92bf84e0b",
-    "win32-arm64": "fc96c5a93fb84972332fd6fb55895829e55005106e3e5ad6d8153f1eb6762f91"
+    "darwin-arm64": "5262ce9de86243fed0d21edc39b271555d56780d0112e2b194439fe1c6662d37",
+    "darwin-x64": "b9a913114f42870ec8e38848c88c855d73f73187871ec2e1ad05bbe54029d9ac",
+    "linux-arm64": "2bd4f4e5ed5cb09955b490098f745321cb5491e7ea8c752ba1e3bb010cdadb10",
+    "linux-x64": "60d7eb7f12fbb28a52533fe8be5884097403562aa02dc73991a021c7067e29a5",
+    "linux-arm64-musl": "58dd401b704351f4b70a0bb6faecbc1eb1405057b4dd4cf48a7beae93b4ca143",
+    "linux-x64-musl": "39395c4d6fef3e38bf59d75890593a5474181c8e96534b54562312503685f787",
+    "win32-x64": "3ab075f78998efef8b87f491c2e4a39c309dddf44e51d0103eba4f3713d2a0ae",
+    "win32-arm64": "e2c445a4fa8a8c92b64f29bf56dc7addd1770764214ed18023bab8f544f584ed"
   }
 }

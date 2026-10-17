@@ -1,11 +1,11 @@
 {
   "repo": "ChromeDevTools/chrome-devtools-mcp",
-  "version": "1.10.1",
-  "hash": "sha256-s/uU0ItvxAYrjiNNgEOwoTIM3LfPmw9w/5fNK0aCvVg=",
-  "npmDepsHash": "sha256-tLjVNhC8no+JeESBEsUdCxOT87sTO3lZbndbdVKC1Zs=",
+  "version": "1.11.0",
+  "hash": "sha256-jx3BCVKDo0vjt8IwfLy7ghpDiB0cbisqG+EJAhFSoT0=",
+  "npmDepsHash": "sha256-CedK4xMCGLnryGL+dve2S1OYtetlr7/wg/pnpMBy5IQ=",
   "devtoolsFrontend": {
     "repo": "ChromeDevTools/devtools-frontend",
-    "rev": "61277feec01840bfa7cffb21d90bed500f973c70",
-    "hash": "sha256-2P8VP3YR8MXVo7JAn5SZQASlp3yOqSOIM1QMmWEHLR8="
+    "rev": "f7e7785de52d6f5955d6a9c5956c2fe2d520d091",
+    "hash": "sha256-GfIU5l9jWStxIbiT5Ewpm/gM6WAO7V4aiSEf8skCOto="
   }
 }

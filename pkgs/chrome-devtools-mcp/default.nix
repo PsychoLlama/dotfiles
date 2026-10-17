@@ -2,6 +2,7 @@
   lib,
   buildNpmPackage,
   fetchFromGitHub,
+  jq,
 }:
 
 let
@@ -32,7 +33,19 @@ buildNpmPackage {
   # TS2717: type conflict between devtools-frontend and @paulirish/trace_engine.
   # The error is in a .ts source (not .d.ts), so skipLibCheck doesn't help.
   # Use --noCheck (TS 5.5+) to skip type checking so the build can succeed.
+  # Upstream lockfile omits most `resolved` URLs, which the npm deps fetcher
+  # needs. Restores them from the public registry. Also applies to `npmDeps`.
   postPatch = ''
+    ${lib.getExe jq} '
+      .packages |= with_entries(
+        if .key != "" and (.value.link | not) and (.value.resolved | not) then
+          (.key | split("node_modules/") | last) as $name
+          | .value.resolved = "https://registry.npmjs.org/\($name)/-/\($name | split("/") | last)-\(.value.version).tgz"
+        else . end
+      )
+    ' package-lock.json > package-lock.json.tmp
+    mv package-lock.json.tmp package-lock.json
+
     cp -r --no-preserve=mode,ownership \
       ${devtools-frontend}/. third_party/devtools-frontend
 
