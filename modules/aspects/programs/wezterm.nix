@@ -64,6 +64,9 @@
           font = inline "wezterm.font('FiraCode Nerd Font', { weight = 'Light' })";
           font_size = 14;
 
+          # Sway tiles the window; resize the grid, not the window.
+          adjust_window_size_when_changing_font_size = false;
+
           # Disable ligatures.
           harfbuzz_features = [
             "calt=0"
