@@ -77,6 +77,7 @@
           ff = "only";
         };
 
+        advice.forceDeleteBranch = false;
         init.defaultBranch = "main";
         rebase.autoStash = true;
         interactive.singleKey = true;
