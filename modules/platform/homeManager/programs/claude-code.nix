@@ -42,23 +42,29 @@
           path = json.generate "mcp.json" plugin.mcp.servers;
         };
 
-      marketplace = pkgs.linkFarm "claude-marketplace" (
-        [
-          {
-            name = ".claude-plugin/marketplace.json";
-            path = json.generate "marketplace.json" {
-              name = "managed";
-              owner.name = "Nix";
-              plugins = lib.mapAttrsToList (name: plugin: {
-                inherit name;
-                inherit (plugin) description;
-                source = "./plugins/${name}";
-              }) cfg.plugins;
-            };
-          }
-        ]
-        ++ lib.concatLists (lib.mapAttrsToList pluginEntries cfg.plugins)
+      # Copied, not linked. Claude refuses manifests that resolve outside the
+      # plugin directory.
+      marketplace = pkgs.runCommand "claude-marketplace" { } (
+        lib.concatMapStrings (entry: ''
+          install -Dm644 ${entry.path} "$out/${entry.name}"
+        '') marketplaceEntries
       );
+
+      marketplaceEntries = [
+        {
+          name = ".claude-plugin/marketplace.json";
+          path = json.generate "marketplace.json" {
+            name = "managed";
+            owner.name = "Nix";
+            plugins = lib.mapAttrsToList (name: plugin: {
+              inherit name;
+              inherit (plugin) description;
+              source = "./plugins/${name}";
+            }) cfg.plugins;
+          };
+        }
+      ]
+      ++ lib.concatLists (lib.mapAttrsToList pluginEntries cfg.plugins);
 
       # `<root>/<subdir>/<name>.md` for each entry.
       markdownFiles =
