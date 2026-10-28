@@ -27,6 +27,12 @@
           "nohibernate"
         ];
 
+        # ARC defaults to nearly all RAM. It doesn't free on contention fast
+        # enough and heavy processes swap to disk instead. It kills perf.
+        extraModprobeConfig = ''
+          options zfs zfs_arc_max=${toString (16 * 1024 * 1024 * 1024)}
+        '';
+
         loader = {
           # Fixes a potential issue where too many hardlinks in the nix store can
           # brick the boot process. Recommended for ZFS.

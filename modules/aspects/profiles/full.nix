@@ -46,6 +46,7 @@
     ../services/zfs.nix
     ../system/fonts.nix
     ../system/observability.nix
+    ../system/zram.nix
   ];
 
   exports = {
