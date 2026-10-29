@@ -24,6 +24,9 @@
     boot.kernelParams = [ "nouveau.runpm=0" ];
     hardware.bluetooth.enable = true;
 
+    # `/tmp` is persisted on ZFS. Wipe it to keep tmpfs semantics.
+    boot.tmp.cleanOnBoot = true;
+
     fileSystems =
       let
         zfs = path: {
@@ -48,6 +51,7 @@
         };
 
         "/nix" = zfs "nixos/nix";
+        "/tmp" = zfs "nixos/tmp";
         "/etc" = zfs "nixos/etc";
         "/var" = zfs "nixos/var";
         "/var/lib" = zfs "nixos/var/lib";
