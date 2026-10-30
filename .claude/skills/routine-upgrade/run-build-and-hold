@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Run `just build`, tee output to the given log, then wait for confirmation.
+set -uo pipefail
+
+if (( $# != 1 )); then
+  echo "Usage: run-build-and-hold <log file>" >&2
+  exit 1
+fi
+
+log="$1"
+
+just build 2>&1 | (trap '' INT && exec tee "$log")
+status=${PIPESTATUS[0]}
+echo -e "\nexit status: $status" | tee -a "$log"
+
+echo -e "\nLog file: $log"
+read -rp "[Press enter to close]"
+exit "$status"

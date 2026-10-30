@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Spawn a system build as a new window in a dedicated tmux session.
+#
+# This is a workaround for Claude, which happily accumulates memory but never
+# seems to free it. A max utilization of 12GB RAM will continue holding 12GB
+# at rest. The only way to release it is quitting the process, and sometimes
+# it leaks into other Claude processes (although I haven't nailed this down).
+#
+# Tmux has no such limitation. Tmux is blessed; tmux is life.
+
+session="dotfiles@builds"
+dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+root="$(git -C "$dir" rev-parse --show-toplevel)"
+log="$(mktemp --tmpdir routine-upgrade-build.XXXXXX.log)"
+
+cmd="$(printf '%q %q' "$dir/run-build-and-hold" "$log")"
+name="build-$(date +%H%M%S)"
+
+if tmux has-session -t "=$session" 2>/dev/null; then
+  tmux new-window -d -t "=$session:" -n "$name" -c "$root" "$cmd"
+else
+  tmux new-session -d -s "$session" -n "$name" -c "$root" "$cmd"
+fi
+
+echo "$log"
