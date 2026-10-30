@@ -23,7 +23,7 @@
     "alternaut-nvim": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "systems": [
           "systems"
@@ -46,7 +46,7 @@
     "deja-view-nvim": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "systems": [
           "systems"
@@ -89,7 +89,7 @@
     "gutenberg-nvim": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "systems": [
           "systems"
@@ -148,7 +148,7 @@
     "navitron-nvim": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "systems": [
           "systems"
@@ -255,7 +255,7 @@
     "teleport-vim": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "systems": [
           "systems"

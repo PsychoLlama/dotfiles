@@ -25,7 +25,7 @@
     alternaut-nvim = {
       url = "github:PsychoLlama/alternaut.nvim";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "nixpkgs-unstable";
         systems.follows = "systems";
       };
     };
@@ -33,7 +33,7 @@
     navitron-nvim = {
       url = "github:PsychoLlama/navitron.nvim";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "nixpkgs-unstable";
         systems.follows = "systems";
       };
     };
@@ -41,7 +41,7 @@
     deja-view-nvim = {
       url = "github:PsychoLlama/deja-view.nvim";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "nixpkgs-unstable";
         systems.follows = "systems";
       };
     };
@@ -49,7 +49,7 @@
     gutenberg-nvim = {
       url = "github:PsychoLlama/gutenberg.nvim";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "nixpkgs-unstable";
         systems.follows = "systems";
       };
     };
@@ -57,7 +57,7 @@
     teleport-vim = {
       url = "github:PsychoLlama/teleport.vim";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "nixpkgs-unstable";
         systems.follows = "systems";
       };
     };

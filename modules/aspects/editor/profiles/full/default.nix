@@ -16,7 +16,7 @@
     { lib, pkgs, ... }:
 
     {
-      package = if pkgs.stdenv.hostPlatform.isLinux then pkgs.custom.nvim-rs else pkgs.unstable.neovim;
+      package = if pkgs.stdenv.hostPlatform.isLinux then pkgs.unstable.custom.nvim-rs else pkgs.unstable.neovim;
 
       lsp.enable = lib.mkDefault true;
 

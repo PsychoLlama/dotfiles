@@ -32,12 +32,12 @@
       };
 
       # This is the generated `&packpath` directory for all plugins.
-      packdir = pkgs.vimUtils.packDir {
+      packdir = pkgs.unstable.vimUtils.packDir {
         managed-by-nix = {
           start = [
             # Core framework, automatically loaded. Provides package loading and
             # language server support.
-            (pkgs.vimUtils.buildVimPlugin {
+            (pkgs.unstable.vimUtils.buildVimPlugin {
               pname = "neovim-core";
               version = "latest";
               src = runtimeSrc;
