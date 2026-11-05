@@ -1,5 +1,6 @@
 {
   imports = [
+    ./hooks/agent-history.nix
     ./hooks/auto-format.nix
     ./hooks/block-env-files.nix
     ./hooks/direnv.nix

@@ -107,6 +107,7 @@ def 'wallpaper set' [image: path] {
 }
 
 # Custom libraries
+use dotfiles/agent *
 use dotfiles/project *
 use dotfiles/socket *
 use dotfiles/swizzle *
