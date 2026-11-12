@@ -46,10 +46,21 @@
             lib.filterAttrs (_: skill: lib.elem "claude" skill.targets) config.agents.skills
           );
 
-          keybindings.Chat = {
-            # Default keybind toggles fast mode. Emulator interprets `<esc>o`
-            # as `meta+o`, conflicting with vim mode if I'm typing quickly.
-            "meta+o" = "chat:newline";
+          # Swap `ctrl+o` (transcript) and `ctrl+g` (editor).
+          keybindings = {
+            # Global bindings take precedence over Chat.
+            Global = {
+              "ctrl+o" = "chat:externalEditor";
+              "ctrl+g" = "app:toggleTranscript";
+            };
+
+            Chat = {
+              # Default keybind toggles fast mode. Emulator interprets `<esc>o`
+              # as `meta+o`, conflicting with vim mode if I'm typing quickly.
+              "meta+o" = "chat:newline";
+              "ctrl+g" = null;
+              "ctrl+o" = "chat:externalEditor";
+            };
           };
 
           settings = {
