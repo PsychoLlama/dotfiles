@@ -39,6 +39,8 @@
         grrr = "git reset --hard HEAD~1";
       };
 
+      programs.git.ignores = [ ".ignore/" ];
+
       programs.git.settings = {
         user = {
           name = lib.mkDefault name;
