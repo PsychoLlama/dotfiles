@@ -6,10 +6,10 @@ in
 
 rhizome.component "codex" {
   uses = {
-    context = units.agents.context;
+    inherit (units.agents) memory;
   };
 
-  config = { context }: [
+  config = { memory }: [
     (home-manager.module (
       { config, lib, ... }: {
         config.home.file = lib.mapAttrs' (
@@ -91,7 +91,7 @@ rhizome.component "codex" {
           #
           # Codex has real support, but since this is a NixOS profile, we can't do
           # per-user home files. Sad.
-          developer_instructions = context;
+          developer_instructions = memory.context;
 
           # Inject CLAUDE.local.md into context, the way Claude Code does.
           hooks.SessionStart = [ (commandHook localInstructionsHook) ];

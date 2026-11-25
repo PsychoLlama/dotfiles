@@ -6,7 +6,7 @@ in
 
 rhizome.component "syncthing" {
   uses = {
-    identity = user.identity;
+    inherit (user) identity;
   };
 
   config = { identity }: [

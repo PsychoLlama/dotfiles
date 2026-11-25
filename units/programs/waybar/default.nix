@@ -6,7 +6,7 @@ in
 
 rhizome.component "waybar" {
   uses = {
-    palette = theme.palette;
+    inherit (theme) palette;
   };
 
   config = { palette }: [

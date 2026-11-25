@@ -6,7 +6,7 @@ in
 
 rhizome.component "wezterm" {
   uses = {
-    palette = theme.palette;
+    inherit (theme) palette;
   };
 
   config = { palette }: [

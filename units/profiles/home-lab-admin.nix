@@ -6,7 +6,7 @@ in
 
 rhizome.component "profiles.home-lab-admin" {
   uses = {
-    identity = user.identity;
+    inherit (user) identity;
   };
 
   config = { identity }: [

@@ -11,9 +11,6 @@ in
   _module.args.units = units;
 
   flake = {
-    # For a downstream flake to build trees of its own from.
-    inherit units;
-
     # One machine per tree in `units/hosts`.
     nixosConfigurations = lib.mapAttrs (
       _: tree:

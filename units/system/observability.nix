@@ -17,13 +17,11 @@ in
 
 rhizome.component "observability" {
   uses = {
-    identity = user.identity;
+    inherit (user) identity;
   };
 
   config = { identity }: [
     (nixos.module (
-      _:
-
       let
         inherit (identity) username;
       in

@@ -6,7 +6,7 @@ in
 
 rhizome.component "git" {
   uses = {
-    identity = user.identity;
+    inherit (user) identity;
   };
 
   config = { identity }: [

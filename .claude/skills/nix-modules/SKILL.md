@@ -18,7 +18,7 @@ description: Use when reading or writing Nix config in this repo — units, prof
 
 - `nixos.module`, `home-manager.module`, `editor.module`: a module for that class. Units write to them; the host and user scopes hand them over.
 - `home-manager.program "name"`: installs a program from `pkgs.unstable` through its Home Manager module.
-- `user.identity`, `user.trusted-directory`, `theme.palette`, `agents.*`: facts. A unit that needs one names it in `uses` and receives the value in `config`.
+- `user.identity`, `user.trusted-directory`, `theme.palette`, `agents.memory`: facts. A unit that needs one names it in `uses` and receives the value in `config`.
 - Facts are not module arguments. There is no `host` argument.
 
 ## Profiles

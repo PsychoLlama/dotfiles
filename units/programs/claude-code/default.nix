@@ -7,17 +7,13 @@ in
 [
   (rhizome.component "claude-code" {
     uses = {
-      context = units.agents.context;
-      rules = units.agents.rules;
-      commands = units.agents.commands;
+      inherit (units.agents) memory;
       trusted-directories = user.trusted-directory;
     };
 
     config =
       {
-        context,
-        rules,
-        commands,
+        memory,
         trusted-directories,
       }:
       [
@@ -47,7 +43,7 @@ in
                 package = lib.mkDefault pkgs.unstable.custom.claude-code-bin;
 
                 # Shared stuff across all agent tools.
-                inherit rules context commands;
+                inherit (memory) rules context commands;
                 skills = lib.mapAttrs' (_: skill: lib.nameValuePair skill.name skill.output.claude) (
                   lib.filterAttrs (_: skill: lib.elem "claude" skill.targets) config.agents.skills
                 );

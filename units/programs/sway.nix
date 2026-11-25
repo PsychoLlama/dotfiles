@@ -11,7 +11,7 @@ in
 
 rhizome.component "sway" {
   uses = {
-    palette = theme.palette;
+    inherit (theme) palette;
   };
 
   config = { palette }: [

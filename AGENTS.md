@@ -22,7 +22,7 @@ Nix configs for my workstations. Includes many custom features.
 ## Downstream
 
 - Only me. Breaking changes are expected.
-- Private workstations. Work computers consume and build on this flake.
+- Private workstations. Nothing else consumes this flake.
 
 ## Conventions
 
