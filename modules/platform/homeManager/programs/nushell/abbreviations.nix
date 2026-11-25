@@ -21,11 +21,14 @@
         };
       };
 
-      config.programs.nushell.extraConfig =
-        lib.mkIf (cfg != { })
+      # Ordered after the rest of the config, which is free to replace
+      # `$env.config`. Without it the position depends on module order.
+      config.programs.nushell.extraConfig = lib.mkIf (cfg != { }) (
+        lib.mkOrder 1100
           # nu
           ''
             $env.config.abbreviations = ($env.config.abbreviations | merge ${lib.hm.nushell.toNushell { } cfg})
-          '';
+          ''
+      );
     };
 }

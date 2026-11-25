@@ -1,0 +1,39 @@
+{ rhizome, units, ... }:
+
+let
+  inherit (units.platform) home-manager;
+in
+
+rhizome.component "claude-code.plugins.typescript-lsp" [
+  (home-manager.module (
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
+
+    let
+      cfg = config.psychollama.presets.programs.claude-code.plugins.typescript-lsp;
+    in
+
+    {
+      options.psychollama.presets.programs.claude-code.plugins.typescript-lsp = {
+        package = lib.mkPackageOption pkgs.unstable "typescript-language-server" { };
+      };
+
+      config.programs.claude-code.plugins.typescript-lsp = {
+        description = "TypeScript Language Server for Claude Code.";
+
+        lsp.servers.typescript = {
+          command = lib.getExe' cfg.package "typescript-language-server";
+          args = [ "--stdio" ];
+          extensionToLanguage = {
+            ".ts" = "typescript";
+            ".tsx" = "typescriptreact";
+          };
+        };
+      };
+    }
+  ))
+]

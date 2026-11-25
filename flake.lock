@@ -230,11 +230,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795567028,
-        "narHash": "sha256-NHkTnjurQkx9WgLtDrhAa3ogfgvnhBZuhleYFYJtOac=",
+        "lastModified": 1795568278,
+        "narHash": "sha256-TrsX2RXd/ftclTxJYHBBnNY+LRb+2VtQbox6o+9yi4g=",
         "ref": "wip/channels",
-        "rev": "eadfdb229f460576ed0342937144515680ade8a2",
-        "revCount": 2,
+        "rev": "ddfc94c4a7ecb5c2472277eaedec372fa55fe97b",
+        "revCount": 3,
         "type": "git",
         "url": "file:///home/overlord/projects/psychollama/rhizome.nix"
       },

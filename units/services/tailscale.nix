@@ -1,0 +1,24 @@
+{ rhizome, units, ... }:
+
+let
+  inherit (units.platform) nixos;
+in
+
+rhizome.component "tailscale" [
+  (nixos.module (
+    { config, lib, ... }:
+
+    {
+      services.tailscale = {
+        enable = true;
+        extraUpFlags = [ "--advertise-tags=tag:laptop" ];
+      };
+
+      # Use systemd-resolved for DNS. Tailscale integrates with it to provide
+      # split DNS (MagicDNS for tailnet, system DNS for everything else). This
+      # also fixes DNS breaking after suspend/resume cycles.
+      services.resolved.enable = true;
+      networking.networkmanager.dns = "systemd-resolved";
+    }
+  ))
+]

@@ -55,14 +55,5 @@ in
 
     # Classes are left open: a downstream sweep names whatever classes it
     # invented, and the loader stamps `_class` on each module it publishes.
-    rhizomeModules = lib.mkOption {
-      description = ''
-        Aspects published by the flake, keyed by id. Each holds one module per
-        class, already carrying its dependencies.
-      '';
-
-      type = lib.types.lazyAttrsOf (lib.types.lazyAttrsOf lib.types.deferredModule);
-      default = { };
-    };
   };
 }

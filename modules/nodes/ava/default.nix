@@ -6,19 +6,9 @@
 }:
 
 let
-  inherit (config.flake) rhizomeModules;
-
   node = config.rhizome.nodes.ava;
 
-  # The part of this machine that has moved to `units/`.
   tree = inputs.rhizome.lib.eval { } (units.hosts.ava { inherit (node.identity) username; });
-
-  profiles = [
-    "profiles/substrate"
-    "profiles/full"
-    "profiles/home-lab-admin"
-    "profiles/linux-desktop"
-  ];
 in
 
 {
@@ -64,7 +54,6 @@ in
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
           inputs.nixpkgs.nixosModules.notDetected
         ]
-        ++ map (id: rhizomeModules.${id}.nixos) profiles
         ++ tree.collect units.platform.nixos.modules;
 
         boot.loader.systemd-boot = {
@@ -102,9 +91,6 @@ in
         home-manager.users.${username} =
           { config, ... }:
           {
-            imports = map (id: rhizomeModules.${id}.homeManager) profiles;
-            programs.editor.imports = map (id: rhizomeModules.${id}.editor) profiles;
-
             home.stateVersion = "22.05";
 
             wayland.windowManager.sway.config.output = {

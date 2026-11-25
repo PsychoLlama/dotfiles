@@ -1,0 +1,45 @@
+{ rhizome, units, ... }:
+
+let
+  inherit (units.platform) editor;
+in
+
+rhizome.component "editor.lsp.luals" [
+  (editor.module (
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
+
+    let
+      cfg = config.psychollama.presets.lsp.servers.luals;
+    in
+
+    {
+      options.psychollama.presets.lsp.servers.luals = {
+        package = lib.mkPackageOption pkgs.unstable "lua-language-server" { };
+      };
+
+      config.lsp.servers.luals = {
+        cmd = [ "${cfg.package}/bin/lua-language-server" ];
+        filetypes = [ "lua" ];
+        root_markers = [
+          ".git/"
+          ".luarc.json"
+        ];
+
+        # Reference: https://luals.github.io/wiki/settings/
+        settings.Lua = {
+          # Using stylua instead.
+          format.enable = false;
+
+          # Don't try to dynamically manage library type defs.
+          workspace.checkThirdParty = false;
+          addonManager.enable = false;
+        };
+      };
+    }
+  ))
+]

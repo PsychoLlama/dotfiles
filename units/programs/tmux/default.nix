@@ -1,0 +1,47 @@
+{ rhizome, units, ... }:
+
+let
+  inherit (units.platform) home-manager;
+in
+
+rhizome.component "tmux" [
+  (home-manager.program "tmux")
+
+  (home-manager.module (
+    { config, pkgs, ... }:
+
+    let
+      tmux = config.programs.tmux.package;
+    in
+
+    {
+      programs.nushell.abbreviations.t = "tmux";
+
+      programs.tmux = {
+        customPaneNavigationAndResize = true;
+        escapeTime = 0;
+        historyLimit = 100000;
+        keyMode = "vi";
+        shell = "${config.programs.nushell.package}/bin/nu";
+        extraConfig = ''
+          ${builtins.readFile ./tmux.conf}
+
+          bind-key v display-popup -E ${pkgs.writers.writeBash "tmux-dictation" ''
+            target_pane="$TMUX_PANE"
+            text="$(dictation)"
+
+            if [[ -n "$text" ]]; then
+              ${tmux}/bin/tmux send-keys -t "$target_pane" -- "$text"
+            fi
+          ''}
+        '';
+      };
+
+      # The default session variable attempts POSIX interpolation, which
+      # obviously doesn't work in Nushell.
+      programs.nushell.extraEnv = ''
+        $env.TMUX_TMPDIR = $env.XDG_RUNTIME_DIR
+      '';
+    }
+  ))
+]
