@@ -1,7 +1,17 @@
-{ config, inputs, ... }:
+{
+  config,
+  inputs,
+  units,
+  ...
+}:
 
 let
   inherit (config.flake) rhizomeModules;
+
+  node = config.rhizome.nodes.ava;
+
+  # The part of this machine that has moved to `units/`.
+  tree = inputs.rhizome.lib.eval { } (units.hosts.ava { inherit (node.identity) username; });
 
   profiles = [
     "profiles/substrate"
@@ -54,7 +64,8 @@ in
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
           inputs.nixpkgs.nixosModules.notDetected
         ]
-        ++ map (id: rhizomeModules.${id}.nixos) profiles;
+        ++ map (id: rhizomeModules.${id}.nixos) profiles
+        ++ tree.collect units.platform.nixos.modules;
 
         boot.loader.systemd-boot = {
           enable = true;

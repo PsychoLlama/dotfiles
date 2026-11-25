@@ -1,7 +1,6 @@
 {
   imports = [
     ./agent-skills.nix
-    ../programs/bat.nix
     ../programs/bottom.nix
     ../programs/carapace.nix
     ../programs/claude-code/default.nix

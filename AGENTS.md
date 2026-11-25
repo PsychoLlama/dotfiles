@@ -7,6 +7,8 @@ Nix configs for my workstations. Includes many custom features.
 - `pkgs/`: Custom package derivations. Overlayed as `pkgs.custom`.
   - `*.nvim/`: Custom neovim plugins.
 - `flake.nix`: Inputs only; outputs derived by `flake-parts`.
+- `units/`: Configs moved to the `rhizome` input (typed channels). Loaded as `units.<path>`. Replaces `aspects/` one unit at a time.
+  - `platform/`: Levels and channels. `programs/`: one unit per program. `hosts/`: one tree per machine.
 - `modules/`: All Nix modules.
   - `flake/`: Flake outputs.
   - `rhizome/`: Custom flake tools for managing nodes and aspects. Holds no opinions.

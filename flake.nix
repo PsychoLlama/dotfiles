@@ -62,6 +62,14 @@
       };
     };
 
+    rhizome = {
+      url = "git+file:///home/overlord/projects/psychollama/rhizome.nix?ref=wip/channels";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
+    };
+
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";

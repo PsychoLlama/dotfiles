@@ -220,6 +220,30 @@
         "type": "github"
       }
     },
+    "rhizome": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795567028,
+        "narHash": "sha256-NHkTnjurQkx9WgLtDrhAa3ogfgvnhBZuhleYFYJtOac=",
+        "ref": "wip/channels",
+        "rev": "eadfdb229f460576ed0342937144515680ade8a2",
+        "revCount": 2,
+        "type": "git",
+        "url": "file:///home/overlord/projects/psychollama/rhizome.nix"
+      },
+      "original": {
+        "ref": "wip/channels",
+        "type": "git",
+        "url": "file:///home/overlord/projects/psychollama/rhizome.nix"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -233,6 +257,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "rhizome": "rhizome",
         "systems": "systems",
         "teleport-vim": "teleport-vim"
       }
