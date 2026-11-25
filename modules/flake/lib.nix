@@ -12,7 +12,6 @@
     {
       pkgs,
       modules ? [ ],
-      host ? { },
     }:
 
     let
@@ -20,7 +19,6 @@
         class = "editor";
         modules = modules ++ [
           { _module.args.pkgs = pkgs; }
-          { _module.args.host = host; }
           config.flake.editorModules.platform
         ];
       };

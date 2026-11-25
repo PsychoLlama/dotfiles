@@ -5,6 +5,7 @@
 let
   t = rhizome.types;
   inherit (units.platform) level nixos;
+  inherit (units.platform.user) identity;
 in
 
 rec {
@@ -14,18 +15,22 @@ rec {
     merge = rhizome.merge.entries;
   };
 
+  # A person on the machine. Starts their user scope, says who they are, and
+  # hands what the scope wrote for Home Manager to their account.
   user = rhizome.scope "user" (input: {
     level = level.user;
-    type.input.name = t.str;
-    label = input.name;
+    type.input = identity.type.input;
+    label = input.username;
 
     members = [
+      (identity input)
+
       (rhizome.component "home-manager" {
         uses.entries = module;
 
         config =
           { entries }:
-          [ (nixos.module { home-manager.users.${input.name}.imports = map nixos.locate entries; }) ];
+          [ (nixos.module { home-manager.users.${input.username}.imports = map nixos.locate entries; }) ];
       })
     ];
   });

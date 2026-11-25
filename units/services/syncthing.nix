@@ -1,61 +1,66 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) nixos;
+  inherit (units.platform) nixos user;
 in
 
-rhizome.component "syncthing" [
-  (nixos.module (
-    {
-      config,
-      host,
-      pkgs,
-      ...
-    }:
+rhizome.component "syncthing" {
+  uses = {
+    identity = user.identity;
+  };
 
-    let
-      inherit (host.identity) username;
-      inherit (config.home-manager.users.${username}.home) homeDirectory;
-    in
+  config = { identity }: [
+    (nixos.module (
+      {
+        config,
+        pkgs,
+        ...
+      }:
 
-    {
-      services.syncthing = {
-        enable = true;
+      let
+        inherit (identity) username;
+        inherit (config.home-manager.users.${username}.home) homeDirectory;
+      in
 
-        # Use stable. New version expects flags in a different style.
-        package = pkgs.syncthing;
+      {
+        services.syncthing = {
+          enable = true;
 
-        user = username;
-        group = "users";
-        dataDir = homeDirectory;
+          # Use stable. New version expects flags in a different style.
+          package = pkgs.syncthing;
 
-        settings = {
-          options.urAccepted = 3;
-          gui.theme = "dark";
+          user = username;
+          group = "users";
+          dataDir = homeDirectory;
 
-          # A general-purpose box for reliable storage.
-          folders."${homeDirectory}/attic" = {
-            id = "attic";
-            label = "Attic";
-            devices = [
-              "file-server"
-              "phone"
-            ];
-          };
+          settings = {
+            options.urAccepted = 3;
+            gui.theme = "dark";
 
-          devices = {
-            file-server = {
-              addresses = [ "tcp://nas-001" ];
-              id = "SJZG6UN-EOBGJV6-RAV5X5F-6QBWY6U-AE5TXOT-2E57WP7-CAWQJRX-F3AO5QG";
+            # A general-purpose box for reliable storage.
+            folders."${homeDirectory}/attic" = {
+              id = "attic";
+              label = "Attic";
+              devices = [
+                "file-server"
+                "phone"
+              ];
             };
 
-            phone = {
-              addresses = [ "tcp://google-pixel-7" ];
-              id = "7B5KM6T-7NXKMY5-KM7TIQJ-WFX2OBO-OHMZOPA-HAXTV5B-5RNKXFM-OEF5AAL";
+            devices = {
+              file-server = {
+                addresses = [ "tcp://nas-001" ];
+                id = "SJZG6UN-EOBGJV6-RAV5X5F-6QBWY6U-AE5TXOT-2E57WP7-CAWQJRX-F3AO5QG";
+              };
+
+              phone = {
+                addresses = [ "tcp://google-pixel-7" ];
+                id = "7B5KM6T-7NXKMY5-KM7TIQJ-WFX2OBO-OHMZOPA-HAXTV5B-5RNKXFM-OEF5AAL";
+              };
             };
           };
         };
-      };
-    }
-  ))
-]
+      }
+    ))
+  ];
+}

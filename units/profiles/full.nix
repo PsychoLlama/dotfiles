@@ -55,6 +55,7 @@ in
       }
     ))
   ])
+  units.agents.unit
   units.profiles.agent-skills
   units.programs.bat
   units.programs.bottom

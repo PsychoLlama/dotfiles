@@ -1,64 +1,68 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.platform) home-manager user;
 in
 
-rhizome.component "direnv" [
-  (home-manager.module (
-    {
-      config,
-      host,
-      lib,
-      pkgs,
-      ...
-    }:
+rhizome.component "direnv" {
+  uses = {
+    trusted-directories = user.trusted-directory;
+  };
 
-    let
-      inherit (host) trusted-directories;
+  config = { trusted-directories }: [
+    (home-manager.module (
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
 
-      # direnv needs absolute prefixes; expand a leading `~` to the home directory.
-      toAbsolute =
-        dir:
-        if lib.hasPrefix "~/" dir then "${config.home.homeDirectory}/${lib.removePrefix "~/" dir}" else dir;
+      let
 
-      direnv = lib.getExe config.programs.direnv.package;
-    in
+        # direnv needs absolute prefixes; expand a leading `~` to the home directory.
+        toAbsolute =
+          dir:
+          if lib.hasPrefix "~/" dir then "${config.home.homeDirectory}/${lib.removePrefix "~/" dir}" else dir;
 
-    {
-      programs.direnv = {
-        enable = lib.mkDefault true;
-        package = lib.mkDefault pkgs.unstable.direnv;
+        direnv = lib.getExe config.programs.direnv.package;
+      in
 
-        enableNushellIntegration = false;
-        nix-direnv.enable = true;
+      {
+        programs.direnv = {
+          enable = lib.mkDefault true;
+          package = lib.mkDefault pkgs.unstable.direnv;
 
-        config = {
-          global.hide_env_diff = true;
+          enableNushellIntegration = false;
+          nix-direnv.enable = true;
 
-          whitelist.prefix = map toAbsolute trusted-directories;
+          config = {
+            global.hide_env_diff = true;
+
+            whitelist.prefix = map toAbsolute trusted-directories;
+          };
         };
-      };
 
-      # Forked from home-manager. Nushell removed the `let-env` command.
-      programs.nushell.extraConfig = lib.mkAfter ''
-        $env.config = ($env | default {} config).config
-        $env.config = ($env.config | default {} hooks)
-        $env.config = ($env.config | update hooks ($env.config.hooks | default [] pre_prompt))
-        $env.config = ($env.config | update hooks.pre_prompt ($env.config.hooks.pre_prompt | append {
-          code: "
-            let direnv = (${direnv} export json | from json)
-            let direnv = if $direnv == null { {} } else { $direnv }
-            $direnv | load-env
-          "
-        }))
-      '';
+        # Forked from home-manager. Nushell removed the `let-env` command.
+        programs.nushell.extraConfig = lib.mkAfter ''
+          $env.config = ($env | default {} config).config
+          $env.config = ($env.config | default {} hooks)
+          $env.config = ($env.config | update hooks ($env.config.hooks | default [] pre_prompt))
+          $env.config = ($env.config | update hooks.pre_prompt ($env.config.hooks.pre_prompt | append {
+            code: "
+              let direnv = (${direnv} export json | from json)
+              let direnv = if $direnv == null { {} } else { $direnv }
+              $direnv | load-env
+            "
+          }))
+        '';
 
-      programs.git.ignores = [
-        # No trailing slash so it also matches the bare symlink worktrees use.
-        ".direnv"
-        ".envrc"
-      ];
-    }
-  ))
-]
+        programs.git.ignores = [
+          # No trailing slash so it also matches the bare symlink worktrees use.
+          ".direnv"
+          ".envrc"
+        ];
+      }
+    ))
+  ];
+}

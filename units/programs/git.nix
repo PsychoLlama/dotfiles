@@ -1,123 +1,128 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.platform) home-manager user;
 in
 
-rhizome.component "git" [
-  (home-manager.program "git")
+rhizome.component "git" {
+  uses = {
+    identity = user.identity;
+  };
 
-  (home-manager.module (
-    {
-      config,
-      host,
-      lib,
-      pkgs,
-      ...
-    }:
+  config = { identity }: [
+    (home-manager.program "git")
 
-    let
-      inherit (host.identity) name email;
+    (home-manager.module (
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
 
-      fsmonitor = config.programs.git.fsmonitor;
-    in
+      let
+        inherit (identity) name email;
 
-    {
-      programs.git.fsmonitor = {
-        enable = lib.mkDefault true;
-        # Same version as unstable, which currently fails to build (folly vs gcc 15.3).
-        package = lib.mkDefault pkgs.watchman;
-      };
+        fsmonitor = config.programs.git.fsmonitor;
+      in
 
-      programs.nushell.abbreviations = {
-        g = "git";
-        b = "git branch";
-        ch = "git checkout";
-        h = "git diff HEAD --staged";
-        hh = "git diff HEAD~1";
-        gd = "git diff";
-        gl = "git log";
-        gp = "git push";
-        ga = "git add --intent-to-add .";
-        gaa = "git add --all";
-        gr = "git reset";
-        grr = "git reset --hard HEAD";
-        grrr = "git reset --hard HEAD~1";
-      };
-
-      programs.git.ignores = [ ".ignore/" ];
-
-      programs.git.settings = {
-        user = {
-          name = lib.mkDefault name;
-          email = lib.mkDefault email;
+      {
+        programs.git.fsmonitor = {
+          enable = lib.mkDefault true;
+          # Same version as unstable, which currently fails to build (folly vs gcc 15.3).
+          package = lib.mkDefault pkgs.watchman;
         };
 
-        alias = {
-          c = "commit";
-          review = ''!git show "$(git merge-base --fork-point origin/HEAD)"..HEAD'';
-          f = "fetch origin";
-          pf = "push --force-with-lease";
-          s = "stash";
-          ss = "stash push --staged --message";
-          pl = "pull origin";
-          amend = "commit --amend";
-
-          watch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.watchScript}";
-          unwatch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.unwatchScript}";
+        programs.nushell.abbreviations = {
+          g = "git";
+          b = "git branch";
+          ch = "git checkout";
+          h = "git diff HEAD --staged";
+          hh = "git diff HEAD~1";
+          gd = "git diff";
+          gl = "git log";
+          gp = "git push";
+          ga = "git add --intent-to-add .";
+          gaa = "git add --all";
+          gr = "git reset";
+          grr = "git reset --hard HEAD";
+          grrr = "git reset --hard HEAD~1";
         };
 
-        push = {
-          autoSetupRemote = true;
-          default = "current";
-          followTags = true;
+        programs.git.ignores = [ ".ignore/" ];
+
+        programs.git.settings = {
+          user = {
+            name = lib.mkDefault name;
+            email = lib.mkDefault email;
+          };
+
+          alias = {
+            c = "commit";
+            review = ''!git show "$(git merge-base --fork-point origin/HEAD)"..HEAD'';
+            f = "fetch origin";
+            pf = "push --force-with-lease";
+            s = "stash";
+            ss = "stash push --staged --message";
+            pl = "pull origin";
+            amend = "commit --amend";
+
+            watch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.watchScript}";
+            unwatch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.unwatchScript}";
+          };
+
+          push = {
+            autoSetupRemote = true;
+            default = "current";
+            followTags = true;
+          };
+
+          fetch = {
+            prune = true;
+            pruneTags = true;
+            writeCommitGraph = true;
+            negotiationAlgorithm = "skipping";
+          };
+
+          pull = {
+            rebase = true;
+            ff = "only";
+          };
+
+          advice.forceDeleteBranch = false;
+          init.defaultBranch = "main";
+          rebase.autoStash = true;
+          interactive.singleKey = true;
+
+          feature.manyFiles = true;
+
+          core = {
+            editor = "nvim";
+            untrackedCache = true;
+          };
+
+          index.skipHash = true;
+          pack.useBitmapBoundaryTraversal = true;
+          transfer.fsckObjects = true;
+
+          diff.algorithm = "histogram";
+          merge.conflictStyle = "zdiff3";
+
+          rerere = {
+            enabled = true;
+            autoUpdate = true;
+          };
+
+          branch.sort = "-committerdate";
+          tag.sort = "version:refname";
+          log.date = "iso";
+
+          submodule = {
+            recurse = true;
+            fetchJobs = 0;
+          };
         };
-
-        fetch = {
-          prune = true;
-          pruneTags = true;
-          writeCommitGraph = true;
-          negotiationAlgorithm = "skipping";
-        };
-
-        pull = {
-          rebase = true;
-          ff = "only";
-        };
-
-        advice.forceDeleteBranch = false;
-        init.defaultBranch = "main";
-        rebase.autoStash = true;
-        interactive.singleKey = true;
-
-        feature.manyFiles = true;
-
-        core = {
-          editor = "nvim";
-          untrackedCache = true;
-        };
-
-        index.skipHash = true;
-        pack.useBitmapBoundaryTraversal = true;
-        transfer.fsckObjects = true;
-
-        diff.algorithm = "histogram";
-        merge.conflictStyle = "zdiff3";
-
-        rerere = {
-          enabled = true;
-          autoUpdate = true;
-        };
-
-        branch.sort = "-committerdate";
-        tag.sort = "version:refname";
-        log.date = "iso";
-
-        submodule = {
-          recurse = true;
-          fetchJobs = 0;
-        };
-      };
-    }
-  ))
-]
+      }
+    ))
+  ];
+}

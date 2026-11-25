@@ -25,6 +25,10 @@ fmt:
 fmt-check:
   treefmt --ci
 
+# Draw how a host's units are connected, as `<host>.svg`.
+graph host="ava":
+  nix eval --raw '.#graphs.{{ host }}' | nix shell nixpkgs#graphviz -c dot -Tsvg > {{ host }}.svg
+
 # Update all flake inputs and custom packages.
 update:
   nix flake update

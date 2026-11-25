@@ -1,61 +1,65 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.platform) home-manager theme;
 in
 
-rhizome.component "fuzzel" [
-  (home-manager.module (
-    {
-      host,
-      lib,
-      pkgs,
-      ...
-    }:
+rhizome.component "fuzzel" {
+  uses = {
+    palette = theme.palette;
+  };
 
-    let
-      inherit (host.theme) palette;
+  config = { palette }: [
+    (home-manager.module (
+      {
+        lib,
+        pkgs,
+        ...
+      }:
 
-      textColor = palette.normal.white;
-      accentColor = palette.normal.blue;
+      let
 
-      rgba = hex: alpha: "${lib.substring 1 (-1) hex}${lib.toHexString (builtins.ceil (alpha * 255))}";
-      opaque = hex: rgba hex 1.0;
-    in
+        textColor = palette.normal.white;
+        accentColor = palette.normal.blue;
 
-    {
-      programs.fuzzel = {
-        enable = true;
-        package = pkgs.unstable.fuzzel;
-        settings = {
-          main = {
-            horizontal-pad = 16;
-            vertical-pad = 8;
-            inner-pad = 8;
-            match-counter = "yes";
-          };
+        rgba = hex: alpha: "${lib.substring 1 (-1) hex}${lib.toHexString (builtins.ceil (alpha * 255))}";
+        opaque = hex: rgba hex 1.0;
+      in
 
-          border = {
-            radius = 4;
-            width = 0;
-            selection-radius = 2;
-          };
+      {
+        programs.fuzzel = {
+          enable = true;
+          package = pkgs.unstable.fuzzel;
+          settings = {
+            main = {
+              horizontal-pad = 16;
+              vertical-pad = 8;
+              inner-pad = 8;
+              match-counter = "yes";
+            };
 
-          colors = {
-            background = rgba palette.normal.black 0.8;
-            text = opaque textColor;
-            prompt = opaque palette.bright.black;
-            placeholder = opaque textColor;
-            input = opaque textColor;
-            match = opaque accentColor;
-            selection = rgba palette.bright.black 0.8;
-            selection-text = opaque palette.normal.white;
-            selection-match = opaque accentColor;
-            counter = opaque palette.bright.black;
-            border = opaque palette.normal.black;
+            border = {
+              radius = 4;
+              width = 0;
+              selection-radius = 2;
+            };
+
+            colors = {
+              background = rgba palette.normal.black 0.8;
+              text = opaque textColor;
+              prompt = opaque palette.bright.black;
+              placeholder = opaque textColor;
+              input = opaque textColor;
+              match = opaque accentColor;
+              selection = rgba palette.bright.black 0.8;
+              selection-text = opaque palette.normal.white;
+              selection-match = opaque accentColor;
+              counter = opaque palette.bright.black;
+              border = opaque palette.normal.black;
+            };
           };
         };
-      };
-    }
-  ))
-]
+      }
+    ))
+  ];
+}

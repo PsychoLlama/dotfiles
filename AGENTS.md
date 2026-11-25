@@ -7,19 +7,16 @@ Nix configs for my workstations. Includes many custom features.
 - `pkgs/`: Custom package derivations. Overlayed as `pkgs.custom`.
   - `*.nvim/`: Custom neovim plugins.
 - `flake.nix`: Inputs only; outputs derived by `flake-parts`.
-- `units/`: Configs moved to the `rhizome` input (typed channels). Loaded as `units.<path>`. Replaces `aspects/` one unit at a time.
-  - `platform/`: Levels and channels. `programs/`: one unit per program. `hosts/`: one tree per machine.
-- `modules/`: All Nix modules.
+- `units/`: Opinionated configs, composed with `rhizome` (typed channels). Loaded as `units.<path>`.
+  - `platform/`: Levels and channels. The vocabulary every unit shares.
+  - `programs/`, `services/`, `system/`, `editor/`, `agents/`: One unit per concern.
+  - `profiles/`: Lists of units. Hold no opinions themselves.
+  - `hosts/`: One tree per machine. Becomes `nixosConfigurations.<name>`.
+- `modules/`: `flake-parts` modules.
   - `flake/`: Flake outputs.
-  - `rhizome/`: Custom flake tools for managing nodes and aspects. Holds no opinions.
   - `platform/<class>/`: Extensions. Matches underlying platform conventions.
     - `editor/`: Unopinionated nixvim alternative.
       - `runtime/`: Lua `core` library. Binds Nix configs.
-  - `aspects/`: Opinionated configs enabled by nodes. One file per concern.
-    - `system/`: Aspects belonging to no single program.
-    - `profiles/`: Holds no opinions itself; enables sets of other aspects.
-    - `editor/`: Opinionated editor aspects.
-  - `nodes/`: Workstation configs. One dir per node. Only contains workstation-specific configs - the rest is aspects and profiles.
   - `templates/`: Scaffolds other projects as `dotfiles#<tpl>`.
 
 ## Downstream

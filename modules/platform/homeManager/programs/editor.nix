@@ -8,7 +8,6 @@ in
   flake.homeModules.platform =
     {
       config,
-      host,
       lib,
       pkgs,
       ...
@@ -32,8 +31,6 @@ in
 
           modules = [
             editorModules.platform
-
-            { _module.args.host = host; }
           ];
         };
       };

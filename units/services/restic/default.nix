@@ -1,75 +1,80 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) nixos;
+  inherit (units.platform) nixos user;
 in
 
-rhizome.component "restic" [
-  (nixos.module (
-    {
-      config,
-      host,
-      pkgs,
-      ...
-    }:
+rhizome.component "restic" {
+  uses = {
+    identity = user.identity;
+  };
 
-    let
-      inherit (host.identity) username;
-      inherit (config.home-manager.users.${username}.home) homeDirectory;
-      inherit (config.networking) hostName;
-    in
+  config = { identity }: [
+    (nixos.module (
+      {
+        config,
+        pkgs,
+        ...
+      }:
 
-    {
-      config = {
-        age.secrets.restic-env.file = ./env.age;
+      let
+        inherit (identity) username;
+        inherit (config.home-manager.users.${username}.home) homeDirectory;
+        inherit (config.networking) hostName;
+      in
 
-        services.restic.backups.${username} = {
-          repository = "rest:https://restic.selfhosted.city/workstation-${hostName}/";
-          initialize = true;
-          environmentFile = config.age.secrets.restic-env.path;
-          package = pkgs.unstable.restic;
+      {
+        config = {
+          age.secrets.restic-env.file = ./env.age;
 
-          paths = [
-            homeDirectory
-            "/root"
-            "/var/log"
-          ];
+          services.restic.backups.${username} = {
+            repository = "rest:https://restic.selfhosted.city/workstation-${hostName}/";
+            initialize = true;
+            environmentFile = config.age.secrets.restic-env.path;
+            package = pkgs.unstable.restic;
 
-          exclude = [
-            # Exclude all projects except these. Must match children, not the
-            # parent, or the negations never apply.
-            "${homeDirectory}/projects/*"
-            "!${homeDirectory}/projects/psychollama"
-            "!${homeDirectory}/projects/taylor1791"
-            "!${homeDirectory}/projects/@scratch"
+            paths = [
+              homeDirectory
+              "/root"
+              "/var/log"
+            ];
 
-            # Caches and temp
-            "${homeDirectory}/.cache"
-            "${homeDirectory}/.local/share/Trash"
-            "${homeDirectory}/.npm"
-            "${homeDirectory}/.cargo/registry"
-            "${homeDirectory}/.cargo/git"
+            exclude = [
+              # Exclude all projects except these. Must match children, not the
+              # parent, or the negations never apply.
+              "${homeDirectory}/projects/*"
+              "!${homeDirectory}/projects/psychollama"
+              "!${homeDirectory}/projects/taylor1791"
+              "!${homeDirectory}/projects/@scratch"
 
-            # Build artifacts
-            "**/node_modules"
-            "**/target/debug"
-            "**/target/release"
-            "**/dist/"
-            "**/.direnv"
-            "**/result"
+              # Caches and temp
+              "${homeDirectory}/.cache"
+              "${homeDirectory}/.local/share/Trash"
+              "${homeDirectory}/.npm"
+              "${homeDirectory}/.cargo/registry"
+              "${homeDirectory}/.cargo/git"
 
-            # Git object store (working tree still backed up)
-            "**/.git/objects"
-            "**/.git/lfs"
-          ];
+              # Build artifacts
+              "**/node_modules"
+              "**/target/debug"
+              "**/target/release"
+              "**/dist/"
+              "**/.direnv"
+              "**/result"
 
-          timerConfig = {
-            OnCalendar = "daily";
-            Persistent = true;
-            RandomizedDelaySec = "1h";
+              # Git object store (working tree still backed up)
+              "**/.git/objects"
+              "**/.git/lfs"
+            ];
+
+            timerConfig = {
+              OnCalendar = "daily";
+              Persistent = true;
+              RandomizedDelaySec = "1h";
+            };
           };
         };
-      };
-    }
-  ))
-]
+      }
+    ))
+  ];
+}

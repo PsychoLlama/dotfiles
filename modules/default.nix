@@ -7,8 +7,6 @@ in
 {
   imports = [
     (import-tree ./flake)
-    (import-tree ./rhizome)
     (import-tree ./platform)
-    (import-tree ./nodes)
   ];
 }

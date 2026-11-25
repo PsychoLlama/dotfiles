@@ -16,7 +16,7 @@ in
 
 rhizome.component "home-manager" [
   (nixos.module (
-    { host, lib, ... }:
+    { lib, ... }:
 
     {
       imports = [ home-manager.nixosModules.home-manager ];
@@ -28,8 +28,6 @@ rhizome.component "home-manager" [
         # Extensions every user gets. Aspects are imported per user.
         sharedModules = [
           homeModules.platform
-
-          { _module.args.host = host; }
         ];
       };
     }

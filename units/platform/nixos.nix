@@ -1,4 +1,9 @@
-{ rhizome, units, ... }:
+{
+  rhizome,
+  units,
+  inputs,
+  ...
+}:
 
 let
   t = rhizome.types;
@@ -27,15 +32,30 @@ rec {
       imports = [ value ];
     };
 
-  host = rhizome.scope "host" {
+  # A machine. Starts its host scope and hands what the scope wrote to
+  # `nixosSystem`.
+  host = rhizome.scope "host" (input: {
     level = level.host;
+    type.input = {
+      name = t.str;
+      system = t.str;
+    };
+    label = input.name;
 
     members = [
+      (module {
+        networking.hostName = input.name;
+        nixpkgs.hostPlatform = input.system;
+
+        # Surfaces the source commit in `nixos-version --json`.
+        system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+      })
+
       (rhizome.component "nixos" {
         uses.entries = module;
         emits = [ modules ];
         config = { entries }: map (entry: modules (locate entry)) entries;
       })
     ];
-  };
+  });
 }
