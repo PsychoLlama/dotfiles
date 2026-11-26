@@ -4,20 +4,18 @@ Nix configs for my workstations. Includes many custom features.
 
 ## Structure
 
+- `flake.nix`: Inputs and every output.
 - `pkgs/`: Custom package derivations. Overlayed as `pkgs.custom`.
+  - `overlays.nix`: Every overlay the package set is built with.
   - `*.nvim/`: Custom neovim plugins.
-- `flake.nix`: Inputs only; outputs derived by `flake-parts`.
-- `units/`: Opinionated configs, composed with `rhizome` (typed channels). Loaded as `units.<path>`.
-  - `platform/`: Levels and channels. The vocabulary every unit shares.
-  - `programs/`, `services/`, `system/`, `editor/`, `agents/`: One unit per concern.
+- `units/`: Everything else, composed with `rhizome` (typed channels). Loaded as `units.<path>`.
+  - `platform/`: The `host` and `user` levels and scopes, and the channels every unit shares.
+  - `programs/`, `services/`, `system/`, `agents/`: One unit per concern.
+  - `editor/`: Neovim, assembled from channels. An unopinionated nixvim alternative.
+    - `runtime/`: Lua `core` library. Reads what the build generates.
   - `profiles/`: Lists of units. Hold no opinions themselves.
   - `hosts/`: One tree per machine. Becomes `nixosConfigurations.<name>`.
-- `modules/`: `flake-parts` modules.
-  - `flake/`: Flake outputs.
-  - `platform/<class>/`: Extensions. Matches underlying platform conventions.
-    - `editor/`: Unopinionated nixvim alternative.
-      - `runtime/`: Lua `core` library. Binds Nix configs.
-  - `templates/`: Scaffolds other projects as `dotfiles#<tpl>`.
+- `templates/`: Scaffolds other projects as `dotfiles#<tpl>`.
 
 ## Downstream
 
