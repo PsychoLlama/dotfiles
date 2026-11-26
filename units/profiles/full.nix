@@ -4,8 +4,8 @@ let
   inherit (units.platform) home-manager nixos;
 in
 
-[
-  (rhizome.component "profiles.full" [
+rhizome.unit "profiles.full" (full: {
+  main = rhizome.component [
 
     (nixos.module (
       { lib, ... }:
@@ -54,53 +54,57 @@ in
         };
       }
     ))
-  ])
-  units.agents.unit
-  units.profiles.agent-skills
-  units.programs.bat
-  units.programs.bottom
-  units.programs.carapace
-  units.programs.claude-code.unit
-  units.programs.codex.unit
-  units.programs.delta
-  units.programs.dictation
-  units.programs.direnv
-  (home-manager.program "dive")
-  (home-manager.program "dix")
-  (home-manager.program "doggo")
-  units.programs.editor
-  units.programs.fd
-  (home-manager.program "fzf")
-  units.programs.gh
-  units.programs.git
-  units.programs.glow
-  (home-manager.program "jq")
-  (home-manager.program "miniserve")
-  (home-manager.program "nix-output-monitor")
-  units.programs.nushell.unit
-  units.programs.nushell.swizzle
-  (home-manager.program "python3")
-  units.programs.spotify
-  units.programs.starship
-  units.programs.sway
-  (home-manager.program "termshark")
-  units.programs.tmux.unit
-  (home-manager.program "viddy")
-  units.programs.wezterm
-  (home-manager.program "whois")
-  units.programs.wireshark
-  (home-manager.program "zoxide")
-  units.services.agenix
-  units.services.avahi
-  units.services.greetd
-  units.services.pipewire
-  units.services.podman
-  units.services.restic.unit
-  units.services.ssh-agent
-  units.services.syncthing
-  units.services.tailscale
-  units.services.zfs
-  units.system.fonts
-  units.system.observability
-  units.system.zram
-]
+  ];
+
+  unit = [
+    full.main
+    units.agents.unit
+    units.profiles.agent-skills.unit
+    units.programs.bat.unit
+    units.programs.bottom.unit
+    units.programs.carapace.unit
+    units.programs.claude-code.unit
+    units.programs.codex.unit
+    units.programs.delta.unit
+    units.programs.dictation.unit
+    units.programs.direnv.unit
+    (home-manager.program "dive")
+    (home-manager.program "dix")
+    (home-manager.program "doggo")
+    units.programs.editor.unit
+    units.programs.fd.unit
+    (home-manager.program "fzf")
+    units.programs.gh.unit
+    units.programs.git.unit
+    units.programs.glow.unit
+    (home-manager.program "jq")
+    (home-manager.program "miniserve")
+    (home-manager.program "nix-output-monitor")
+    units.programs.nushell.unit
+    units.programs.nushell.swizzle.unit
+    (home-manager.program "python3")
+    units.programs.spotify.unit
+    units.programs.starship.unit
+    units.programs.sway.unit
+    (home-manager.program "termshark")
+    units.programs.tmux.unit
+    (home-manager.program "viddy")
+    units.programs.wezterm.unit
+    (home-manager.program "whois")
+    units.programs.wireshark.unit
+    (home-manager.program "zoxide")
+    units.services.agenix.unit
+    units.services.avahi.unit
+    units.services.greetd.unit
+    units.services.pipewire.unit
+    units.services.podman.unit
+    units.services.restic.unit
+    units.services.ssh-agent.unit
+    units.services.syncthing.unit
+    units.services.tailscale.unit
+    units.services.zfs.unit
+    units.system.fonts.unit
+    units.system.observability.unit
+    units.system.zram.unit
+  ];
+})

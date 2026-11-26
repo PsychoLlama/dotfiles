@@ -4,145 +4,147 @@ let
   inherit (units.platform) home-manager theme;
 in
 
-rhizome.component "wezterm" {
-  uses = {
-    inherit (theme) palette;
-  };
+rhizome.unit "wezterm" {
+  unit = rhizome.component {
+    uses = {
+      inherit (theme) palette;
+    };
 
-  config = { palette }: [
-    (home-manager.program "wezterm")
+    config = { palette }: [
+      (home-manager.program "wezterm")
 
-    (home-manager.module (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }:
+      (home-manager.module (
+        {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
 
-      let
+        let
 
-        inline = lib.generators.mkLuaInline;
-        tmux = config.programs.tmux.package;
-      in
+          inline = lib.generators.mkLuaInline;
+          tmux = config.programs.tmux.package;
+        in
 
-      {
-        programs.wezterm = {
-          colorSchemes.OneDarkPro = {
-            ansi = [
-              palette.normal.black
-              palette.normal.red
-              palette.normal.green
-              palette.normal.yellow
-              palette.normal.blue
-              palette.normal.magenta
-              palette.normal.cyan
-              palette.normal.white
-            ];
+        {
+          programs.wezterm = {
+            colorSchemes.OneDarkPro = {
+              ansi = [
+                palette.normal.black
+                palette.normal.red
+                palette.normal.green
+                palette.normal.yellow
+                palette.normal.blue
+                palette.normal.magenta
+                palette.normal.cyan
+                palette.normal.white
+              ];
 
-            brights = [
-              palette.bright.black
-              palette.bright.red
-              palette.bright.green
-              palette.bright.yellow
-              palette.bright.blue
-              palette.bright.magenta
-              palette.bright.cyan
-              palette.bright.white
-            ];
+              brights = [
+                palette.bright.black
+                palette.bright.red
+                palette.bright.green
+                palette.bright.yellow
+                palette.bright.blue
+                palette.bright.magenta
+                palette.bright.cyan
+                palette.bright.white
+              ];
 
-            background = palette.normal.black;
-            foreground = palette.normal.white;
+              background = palette.normal.black;
+              foreground = palette.normal.white;
 
-            selection_bg = palette.bright.black;
-            selection_fg = palette.normal.black;
+              selection_bg = palette.bright.black;
+              selection_fg = palette.normal.black;
 
-            cursor_bg = palette.normal.white;
-            cursor_border = palette.normal.white;
-            cursor_fg = palette.normal.black;
-          };
-
-          settings = {
-            # Assumes `pkgs.wezterm.terminfo` exists in `$TERMINFO_DIRS`.
-            term = "wezterm";
-
-            color_scheme = "OneDarkPro";
-            window_background_opacity = 0.9;
-            hide_tab_bar_if_only_one_tab = true;
-
-            font = inline "wezterm.font('FiraCode Nerd Font', { weight = 'Light' })";
-            font_size = 14;
-
-            # Sway tiles the window; resize the grid, not the window.
-            adjust_window_size_when_changing_font_size = false;
-
-            # Disable ligatures.
-            harfbuzz_features = [
-              "calt=0"
-              "clig=0"
-              "liga=0"
-            ];
-
-            window_padding = {
-              left = 0;
-              right = 0;
-              top = 0;
-              bottom = 0;
+              cursor_bg = palette.normal.white;
+              cursor_border = palette.normal.white;
+              cursor_fg = palette.normal.black;
             };
 
-            default_prog = map toString [
-              (pkgs.writeShellScript "start-tmux" ''
-                first_session="$(
-                  ${tmux}/bin/tmux list-sessions \
-                  -F '#{session_id}' 2>/dev/null \
-                  | head -1 || true
-                )"
+            settings = {
+              # Assumes `pkgs.wezterm.terminfo` exists in `$TERMINFO_DIRS`.
+              term = "wezterm";
 
-                if [[ -n "$first_session" ]]; then
-                  ${tmux}/bin/tmux attach-session -t "$first_session"
-                else
-                  ${tmux}/bin/tmux new-session
-                fi
-              '')
-            ];
+              color_scheme = "OneDarkPro";
+              window_background_opacity = 0.9;
+              hide_tab_bar_if_only_one_tab = true;
 
-            keys = [
-              {
-                key = "L";
-                mods = "CTRL";
-                action = inline "wezterm.action.ShowDebugOverlay";
-              }
+              font = inline "wezterm.font('FiraCode Nerd Font', { weight = 'Light' })";
+              font_size = 14;
 
-              {
-                key = "C";
-                mods = "CTRL|SHIFT";
-                action = inline "wezterm.action.CopyTo('Clipboard')";
-              }
+              # Sway tiles the window; resize the grid, not the window.
+              adjust_window_size_when_changing_font_size = false;
 
-              {
-                key = "V";
-                mods = "CTRL|SHIFT";
-                action = inline "wezterm.action.PasteFrom('Clipboard')";
-              }
+              # Disable ligatures.
+              harfbuzz_features = [
+                "calt=0"
+                "clig=0"
+                "liga=0"
+              ];
 
-            ];
+              window_padding = {
+                left = 0;
+                right = 0;
+                top = 0;
+                bottom = 0;
+              };
 
-            font_rules = [
-              {
-                # Hack: Handle dimmed text since this doesn't happen automatically.
-                # https://github.com/wezterm/wezterm/discussions/4026
-                intensity = "Half";
-                font = inline ''
-                  wezterm.font('FiraCode Nerd Font', {
-                    weight = 'Light',
-                    foreground = "${palette.bright.black}",
-                  })
-                '';
-              }
-            ];
+              default_prog = map toString [
+                (pkgs.writeShellScript "start-tmux" ''
+                  first_session="$(
+                    ${tmux}/bin/tmux list-sessions \
+                    -F '#{session_id}' 2>/dev/null \
+                    | head -1 || true
+                  )"
+
+                  if [[ -n "$first_session" ]]; then
+                    ${tmux}/bin/tmux attach-session -t "$first_session"
+                  else
+                    ${tmux}/bin/tmux new-session
+                  fi
+                '')
+              ];
+
+              keys = [
+                {
+                  key = "L";
+                  mods = "CTRL";
+                  action = inline "wezterm.action.ShowDebugOverlay";
+                }
+
+                {
+                  key = "C";
+                  mods = "CTRL|SHIFT";
+                  action = inline "wezterm.action.CopyTo('Clipboard')";
+                }
+
+                {
+                  key = "V";
+                  mods = "CTRL|SHIFT";
+                  action = inline "wezterm.action.PasteFrom('Clipboard')";
+                }
+
+              ];
+
+              font_rules = [
+                {
+                  # Hack: Handle dimmed text since this doesn't happen automatically.
+                  # https://github.com/wezterm/wezterm/discussions/4026
+                  intensity = "Half";
+                  font = inline ''
+                    wezterm.font('FiraCode Nerd Font', {
+                      weight = 'Light',
+                      foreground = "${palette.bright.black}",
+                    })
+                  '';
+                }
+              ];
+            };
           };
-        };
-      }
-    ))
-  ];
+        }
+      ))
+    ];
+  };
 }

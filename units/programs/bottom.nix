@@ -4,8 +4,10 @@ let
   inherit (units.platform) home-manager;
 in
 
-rhizome.component "bottom" [
-  (home-manager.program "bottom")
+rhizome.unit "bottom" {
+  unit = rhizome.component [
+    (home-manager.program "bottom")
 
-  (home-manager.module ({ programs.bottom.settings.flags.temperature_type = "f"; }))
-]
+    (home-manager.module ({ programs.bottom.settings.flags.temperature_type = "f"; }))
+  ];
+}

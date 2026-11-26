@@ -14,8 +14,8 @@ let
   inherit (units.platform) home-manager nixos;
 in
 
-[
-  (rhizome.component "profiles.substrate" [
+rhizome.unit "profiles.substrate" (substrate: {
+  main = rhizome.component [
 
     (nixos.module ({
       imports = [
@@ -25,8 +25,12 @@ in
     }))
 
     (home-manager.module ({ imports = [ agenix.homeManagerModules.default ]; }))
-  ])
-  units.system.home-manager
-  units.system.nix-daemon
-  units.system.package-set
-]
+  ];
+
+  unit = [
+    substrate.main
+    units.system.home-manager.unit
+    units.system.nix-daemon.unit
+    units.system.package-set.unit
+  ];
+})

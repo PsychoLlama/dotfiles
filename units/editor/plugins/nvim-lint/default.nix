@@ -4,52 +4,54 @@ let
   inherit (units.platform) editor;
 in
 
-rhizome.component "editor.plugins.nvim-lint" [
-  (editor.module (
-    {
-      lib,
-      config,
-      pkgs,
-      ...
-    }:
+rhizome.unit "editor.plugins.nvim-lint" {
+  unit = rhizome.component [
+    (editor.module (
+      {
+        lib,
+        config,
+        pkgs,
+        ...
+      }:
 
-    {
-      config.plugins.nvim-lint = {
-        opts = {
-          linters = {
-            eslint_d.cmd = "${pkgs.unstable.eslint_d}/bin/eslint_d";
-            shellcheck.cmd = "${pkgs.unstable.shellcheck}/bin/shellcheck";
+      {
+        config.plugins.nvim-lint = {
+          opts = {
+            linters = {
+              eslint_d.cmd = "${pkgs.unstable.eslint_d}/bin/eslint_d";
+              shellcheck.cmd = "${pkgs.unstable.shellcheck}/bin/shellcheck";
 
-            # Built-in vint config does not support stdin.
-            vint = {
-              cmd = "${pkgs.unstable.vim-vint}/bin/vint";
-              stdin = true;
-              args = [
-                "--enable-neovim"
-                "--style-problem"
-                "--json"
-                "-"
-              ];
+              # Built-in vint config does not support stdin.
+              vint = {
+                cmd = "${pkgs.unstable.vim-vint}/bin/vint";
+                stdin = true;
+                args = [
+                  "--enable-neovim"
+                  "--style-problem"
+                  "--json"
+                  "-"
+                ];
+              };
+
+              # Assumes this is installed in the local dev shell.
+              luacheck.cmd = "luacheck";
             };
 
-            # Assumes this is installed in the local dev shell.
-            luacheck.cmd = "luacheck";
-          };
+            linters_by_ft = rec {
+              sh = bash;
+              bash = [ "shellcheck" ];
+              vim = [ "vint" ];
+              lua = [ "luacheck" ];
+              rust = [ "clippy" ];
 
-          linters_by_ft = rec {
-            sh = bash;
-            bash = [ "shellcheck" ];
-            vim = [ "vint" ];
-            lua = [ "luacheck" ];
-            rust = [ "clippy" ];
-
-            javascript = typescript;
-            javascriptreact = typescript;
-            typescriptreact = typescript;
-            typescript = [ "eslint_d" ];
+              javascript = typescript;
+              javascriptreact = typescript;
+              typescriptreact = typescript;
+              typescript = [ "eslint_d" ];
+            };
           };
         };
-      };
-    }
-  ))
-]
+      }
+    ))
+  ];
+}

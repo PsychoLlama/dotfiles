@@ -9,15 +9,18 @@
 let
   inherit (units.platform)
     home-manager
+    host
     nixos
     theme
     user
     ;
 
   inherit (units) profiles;
+in
 
+rhizome.unit "ava" (ava: {
   # The login, and what only this machine wants in it.
-  account = rhizome.component "ava.account" {
+  account = rhizome.component {
     uses = { inherit (user) identity; };
 
     config =
@@ -74,7 +77,7 @@ let
       ];
   };
 
-  hardware = rhizome.component "ava.hardware" [
+  hardware = rhizome.component [
     (nixos.module (
       { lib, ... }:
 
@@ -105,37 +108,37 @@ let
       }
     ))
   ];
-in
-
-nixos.host
-  {
-    name = "ava";
-    system = "x86_64-linux";
-  }
-  [
-    hardware
-    (theme.palette theme.palettes.one-dark)
-
-    (home-manager.user
+  unit =
+    host.scope
       {
-        username = "overlord";
-        name = "Jesse Gibson";
-        email = "JesseTheGibson@gmail.com";
+        name = "ava";
+        system = "x86_64-linux";
       }
       [
-        account
+        ava.hardware
+        (theme.palette theme.palettes.one-dark)
 
-        (map user.trusted-directory [
-          "~/projects/psychollama"
-          "~/projects/@scratch"
-          "~/projects/retreon"
-          "~/projects/ambient-computer"
-        ])
+        (user.scope
+          {
+            username = "overlord";
+            name = "Jesse Gibson";
+            email = "JesseTheGibson@gmail.com";
+          }
+          [
+            ava.account
 
-        profiles.substrate
-        profiles.full
-        profiles.home-lab-admin
-        profiles.linux-desktop
-      ]
-    )
-  ]
+            (map user.trusted-directory [
+              "~/projects/psychollama"
+              "~/projects/@scratch"
+              "~/projects/retreon"
+              "~/projects/ambient-computer"
+            ])
+
+            profiles.substrate.unit
+            profiles.full.unit
+            profiles.home-lab-admin.unit
+            profiles.linux-desktop.unit
+          ]
+        )
+      ];
+})

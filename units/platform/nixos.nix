@@ -1,61 +1,64 @@
-{
-  rhizome,
-  units,
-  inputs,
-  ...
-}:
+{ rhizome, units, ... }:
 
 let
   t = rhizome.types;
-  inherit (units.platform) level;
+  inherit (units.platform) host;
 in
 
-rec {
+rhizome.unit "nixos" (nixos: {
   # A NixOS module for the host.
-  module = rhizome.channel "nixos.module" {
-    level = level.host;
-    type.input = t.any;
+  module = rhizome.channel {
+    level = host.level;
+    type = t.any;
     merge = rhizome.merge.entries;
   };
 
-  # Everything a host hands to `nixosSystem`.
-  modules = rhizome.channel "nixos.modules" {
-    type.input = t.any;
+  # A machine to build, with every module written for it.
+  machine = rhizome.channel {
     merge = rhizome.merge.list;
-  };
 
-  # Errors name the unit that wrote the module.
-  locate =
-    { from, value }:
-    {
-      _file = from;
-      imports = [ value ];
-    };
-
-  # A machine. Starts its host scope and hands what the scope wrote to
-  # `nixosSystem`.
-  host = rhizome.scope "host" (input: {
-    level = level.host;
-    type.input = {
+    type = {
       name = t.str;
       system = t.str;
+      modules = t.list t.any;
     };
-    label = input.name;
+  };
 
-    members = [
-      (module {
-        networking.hostName = input.name;
-        nixpkgs.hostPlatform = input.system;
+  lib = {
+    /**
+      A module as its writer emitted it, wrapped so errors name the unit.
 
-        # Surfaces the source commit in `nixos-version --json`.
-        system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
-      })
+      # Type
 
-      (rhizome.component "nixos" {
-        uses.entries = module;
-        emits = [ modules ];
-        config = { entries }: map (entry: modules (locate entry)) entries;
-      })
-    ];
-  });
-}
+      ```
+      locate :: { from :: String, value :: Module } -> Module
+      ```
+    */
+    locate =
+      { from, value }:
+      {
+        _file = from;
+        imports = [ value ];
+      };
+  };
+
+  unit = rhizome.component {
+    uses = {
+      inherit (host) name system;
+      entries = nixos.module;
+    };
+
+    config =
+      {
+        name,
+        system,
+        entries,
+      }:
+      [
+        (nixos.machine {
+          inherit name system;
+          modules = map nixos.lib.locate entries;
+        })
+      ];
+  };
+})

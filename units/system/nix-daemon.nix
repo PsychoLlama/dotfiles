@@ -13,24 +13,26 @@ let
   inherit (units.platform) nixos;
 in
 
-rhizome.component "nix-daemon" [
-  (nixos.module (
-    { pkgs, ... }:
+rhizome.unit "nix-daemon" {
+  unit = rhizome.component [
+    (nixos.module (
+      { pkgs, ... }:
 
-    {
-      nix = {
-        package = pkgs.nixVersions.latest;
+      {
+        nix = {
+          package = pkgs.nixVersions.latest;
 
-        registry = {
-          dotfiles.flake = self;
-          unstable.flake = nixpkgs-unstable;
+          registry = {
+            dotfiles.flake = self;
+            unstable.flake = nixpkgs-unstable;
+          };
+
+          settings = {
+            experimental-features = "nix-command flakes";
+            flake-registry = null; # Disable default listings.
+          };
         };
-
-        settings = {
-          experimental-features = "nix-command flakes";
-          flake-registry = null; # Disable default listings.
-        };
-      };
-    }
-  ))
-]
+      }
+    ))
+  ];
+}

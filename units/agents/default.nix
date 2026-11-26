@@ -4,14 +4,14 @@
 
 let
   t = rhizome.types;
-  inherit (units.platform) level;
+  inherit (units.platform) user;
 in
 
-rec {
-  memory = rhizome.channel "agents.memory" {
-    level = level.user;
+rhizome.unit "agents" (agents: {
+  memory = rhizome.channel {
+    level = user.level;
 
-    type.input = {
+    type = {
       # Global memory: Claude Code's `CLAUDE.md` context, codex's session
       # instructions, and so on.
       context = t.str;
@@ -28,8 +28,8 @@ rec {
     optional = true;
   };
 
-  unit = rhizome.component "agents" [
-    (memory {
+  unit = rhizome.component [
+    (agents.memory {
       context = ''
         # Environment
 
@@ -51,4 +51,4 @@ rec {
       };
     })
   ];
-}
+})

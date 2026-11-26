@@ -4,17 +4,19 @@ let
   inherit (units.platform) home-manager;
 in
 
-rhizome.component "spotify" [
-  (home-manager.module (
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+rhizome.unit "spotify" {
+  unit = rhizome.component [
+    (home-manager.module (
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
 
-    {
-      home.packages = [ pkgs.unstable.spotify ];
-    }
-  ))
-]
+      {
+        home.packages = [ pkgs.unstable.spotify ];
+      }
+    ))
+  ];
+}

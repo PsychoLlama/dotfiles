@@ -2,7 +2,7 @@
 
 let
   rhizome = inputs.rhizome.lib;
-  units = import ../../units { inherit lib inputs rhizome; };
+  units = rhizome.load ../../units { inherit inputs lib; };
 
   trees = lib.mapAttrs (_: host: rhizome.eval { } host.unit) units.hosts;
 in
@@ -15,7 +15,7 @@ in
     nixosConfigurations = lib.mapAttrs (
       _: tree:
       inputs.nixpkgs.lib.nixosSystem {
-        modules = tree.collect units.platform.nixos.modules;
+        modules = lib.concatMap (machine: machine.modules) (tree.collect units.platform.nixos.machine);
       }
     ) trees;
 

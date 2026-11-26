@@ -4,57 +4,59 @@ let
   inherit (units.platform) home-manager theme;
 in
 
-rhizome.component "swaylock" {
-  uses = {
-    inherit (theme) palette;
-  };
+rhizome.unit "swaylock" {
+  unit = rhizome.component {
+    uses = {
+      inherit (theme) palette;
+    };
 
-  config = { palette }: [
-    (home-manager.module (
-      {
-        lib,
-        pkgs,
-        ...
-      }:
+    config = { palette }: [
+      (home-manager.module (
+        {
+          lib,
+          pkgs,
+          ...
+        }:
 
-      let
-        semi-black = "${palette.normal.black}d9"; # alpha(0.85)
-      in
+        let
+          semi-black = "${palette.normal.black}d9"; # alpha(0.85)
+        in
 
-      {
-        programs.swaylock = {
-          enable = lib.mkDefault true;
-          package = lib.mkDefault pkgs.unstable.swaylock;
+        {
+          programs.swaylock = {
+            enable = lib.mkDefault true;
+            package = lib.mkDefault pkgs.unstable.swaylock;
 
-          settings = {
-            image = "attic/images/wallpapers/current";
-            daemonize = true;
-            show-failed-attempts = true;
-            ignore-empty-password = true;
+            settings = {
+              image = "attic/images/wallpapers/current";
+              daemonize = true;
+              show-failed-attempts = true;
+              ignore-empty-password = true;
 
-            color = palette.normal.black;
-            line-color = palette.normal.black;
+              color = palette.normal.black;
+              line-color = palette.normal.black;
 
-            ring-color = semi-black;
-            inside-color = semi-black;
-            text-color = palette.normal.red;
-            key-hl-color = palette.normal.green;
-            bs-hl-color = palette.normal.red;
+              ring-color = semi-black;
+              inside-color = semi-black;
+              text-color = palette.normal.red;
+              key-hl-color = palette.normal.green;
+              bs-hl-color = palette.normal.red;
 
-            ring-clear-color = palette.bright.white;
-            inside-clear-color = semi-black;
-            text-clear-color = palette.bright.white;
+              ring-clear-color = palette.bright.white;
+              inside-clear-color = semi-black;
+              text-clear-color = palette.bright.white;
 
-            ring-ver-color = palette.normal.yellow;
-            inside-ver-color = semi-black;
-            text-ver-color = palette.normal.yellow;
+              ring-ver-color = palette.normal.yellow;
+              inside-ver-color = semi-black;
+              text-ver-color = palette.normal.yellow;
 
-            ring-wrong-color = palette.normal.red;
-            inside-wrong-color = semi-black;
-            text-wrong-color = palette.normal.red;
+              ring-wrong-color = palette.normal.red;
+              inside-wrong-color = semi-black;
+              text-wrong-color = palette.normal.red;
+            };
           };
-        };
-      }
-    ))
-  ];
+        }
+      ))
+    ];
+  };
 }

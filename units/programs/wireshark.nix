@@ -4,15 +4,17 @@ let
   inherit (units.platform) nixos;
 in
 
-rhizome.component "wireshark" [
-  (nixos.module (
-    { pkgs, ... }:
+rhizome.unit "wireshark" {
+  unit = rhizome.component [
+    (nixos.module (
+      { pkgs, ... }:
 
-    {
-      programs.wireshark = {
-        enable = true;
-        package = pkgs.unstable.wireshark;
-      };
-    }
-  ))
-]
+      {
+        programs.wireshark = {
+          enable = true;
+          package = pkgs.unstable.wireshark;
+        };
+      }
+    ))
+  ];
+}

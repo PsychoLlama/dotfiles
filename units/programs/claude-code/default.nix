@@ -4,8 +4,8 @@ let
   inherit (units.platform) home-manager user;
 in
 
-[
-  (rhizome.component "claude-code" {
+rhizome.unit "claude-code" (claude-code: {
+  main = rhizome.component {
     uses = {
       inherit (units.agents) memory;
       trusted-directories = user.trusted-directory;
@@ -141,17 +141,21 @@ in
           }
         ))
       ];
-  })
-  units.programs.claude-code.hooks.agent-history
-  units.programs.claude-code.hooks.auto-format
-  units.programs.claude-code.hooks.block-env-files
-  units.programs.claude-code.hooks.direnv
-  units.programs.claude-code.hooks.notify-permission-request
-  units.programs.claude-code.plugins.chrome-devtools
-  units.programs.claude-code.plugins.lua-lsp
-  units.programs.claude-code.plugins.nil-lsp
-  units.programs.claude-code.plugins.nushell-lsp
-  units.programs.claude-code.plugins.rust-lsp
-  units.programs.claude-code.plugins.typescript-lsp
-  units.programs.claude-code.statusline
-]
+  };
+
+  unit = [
+    claude-code.main
+    units.programs.claude-code.hooks.agent-history.unit
+    units.programs.claude-code.hooks.auto-format.unit
+    units.programs.claude-code.hooks.block-env-files.unit
+    units.programs.claude-code.hooks.direnv.unit
+    units.programs.claude-code.hooks.notify-permission-request.unit
+    units.programs.claude-code.plugins.chrome-devtools.unit
+    units.programs.claude-code.plugins.lua-lsp.unit
+    units.programs.claude-code.plugins.nil-lsp.unit
+    units.programs.claude-code.plugins.nushell-lsp.unit
+    units.programs.claude-code.plugins.rust-lsp.unit
+    units.programs.claude-code.plugins.typescript-lsp.unit
+    units.programs.claude-code.statusline.unit
+  ];
+})

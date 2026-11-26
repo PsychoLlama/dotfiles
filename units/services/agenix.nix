@@ -4,37 +4,39 @@ let
   inherit (units.platform) nixos;
 in
 
-rhizome.component "agenix" [
-  (nixos.module (
-    {
-      config,
-      lib,
-      ...
-    }:
+rhizome.unit "agenix" {
+  unit = rhizome.component [
+    (nixos.module (
+      {
+        config,
+        lib,
+        ...
+      }:
 
-    let
-      keyPath = "/etc/ssh/ssh_host_agenix_key";
-    in
+      let
+        keyPath = "/etc/ssh/ssh_host_agenix_key";
+      in
 
-    {
-      config = {
-        services.openssh = {
-          enable = true;
-          openFirewall = false;
+      {
+        config = {
+          services.openssh = {
+            enable = true;
+            openFirewall = false;
 
-          # Generate a dedicated host key for agenix.
-          hostKeys = [
-            {
-              type = "ed25519";
-              path = keyPath;
-              comment = "agenix";
-            }
-          ];
+            # Generate a dedicated host key for agenix.
+            hostKeys = [
+              {
+                type = "ed25519";
+                path = keyPath;
+                comment = "agenix";
+              }
+            ];
+          };
+
+          # Point agenix to the key.
+          age.identityPaths = [ keyPath ];
         };
-
-        # Point agenix to the key.
-        age.identityPaths = [ keyPath ];
-      };
-    }
-  ))
-]
+      }
+    ))
+  ];
+}

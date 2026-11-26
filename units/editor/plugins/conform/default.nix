@@ -4,79 +4,81 @@ let
   inherit (units.platform) editor;
 in
 
-rhizome.component "editor.plugins.conform" [
-  (editor.module (
-    {
-      lib,
-      config,
-      pkgs,
-      ...
-    }:
+rhizome.unit "editor.plugins.conform" {
+  unit = rhizome.component [
+    (editor.module (
+      {
+        lib,
+        config,
+        pkgs,
+        ...
+      }:
 
-    {
-      config.plugins.conform-nvim = {
-        opts = {
-          default_format_opts.undojoin = true;
+      {
+        config.plugins.conform-nvim = {
+          opts = {
+            default_format_opts.undojoin = true;
 
-          formatters = {
-            nixfmt = {
-              command = "${pkgs.unstable.nixfmt}/bin/nixfmt";
-              args = [ "--quiet" ];
+            formatters = {
+              nixfmt = {
+                command = "${pkgs.unstable.nixfmt}/bin/nixfmt";
+                args = [ "--quiet" ];
+              };
+
+              prettier = {
+                command = "${pkgs.unstable.prettierd}/bin/prettierd";
+                args = [ "$FILENAME" ];
+              };
+
+              stylua = {
+                command = "${pkgs.unstable.stylua}/bin/stylua";
+                args = [
+                  "--search-parent-directories"
+                  "--allow-hidden"
+                  "--stdin-filepath"
+                  "$FILENAME"
+                  "-"
+                ];
+              };
+
+              # Dynamic dependency. Assumes `rustfmt` is provided by direnv and
+              # so will only work if neovim was spawned from the project.
+              rustfmt = {
+                command = "rustfmt";
+                args = [ "--emit=stdout" ];
+              };
+
+              # Dynamic dependency. Assumes `gofmt` is provided by direnv.
+              gofmt = {
+                command = "gofmt";
+              };
+
             };
 
-            prettier = {
-              command = "${pkgs.unstable.prettierd}/bin/prettierd";
-              args = [ "$FILENAME" ];
+            formatters_by_ft = rec {
+              javascript = typescript;
+              javascriptreact = typescript;
+              typescriptreact = typescript;
+              typescript = [ "prettier" ];
+
+              css = [ "prettier" ];
+              graphql = [ "prettier" ];
+              html = [ "prettier" ];
+              json = [ "prettier" ];
+              json5 = [ "prettier" ];
+              jsonc = [ "prettier" ];
+              less = [ "prettier" ];
+              lua = [ "stylua" ];
+              markdown = [ "prettier" ];
+              nix = [ "nixfmt" ];
+              rust = [ "rustfmt" ];
+              vue = [ "prettier" ];
+              yaml = [ "prettier" ];
+              go = [ "gofmt" ];
             };
-
-            stylua = {
-              command = "${pkgs.unstable.stylua}/bin/stylua";
-              args = [
-                "--search-parent-directories"
-                "--allow-hidden"
-                "--stdin-filepath"
-                "$FILENAME"
-                "-"
-              ];
-            };
-
-            # Dynamic dependency. Assumes `rustfmt` is provided by direnv and
-            # so will only work if neovim was spawned from the project.
-            rustfmt = {
-              command = "rustfmt";
-              args = [ "--emit=stdout" ];
-            };
-
-            # Dynamic dependency. Assumes `gofmt` is provided by direnv.
-            gofmt = {
-              command = "gofmt";
-            };
-
-          };
-
-          formatters_by_ft = rec {
-            javascript = typescript;
-            javascriptreact = typescript;
-            typescriptreact = typescript;
-            typescript = [ "prettier" ];
-
-            css = [ "prettier" ];
-            graphql = [ "prettier" ];
-            html = [ "prettier" ];
-            json = [ "prettier" ];
-            json5 = [ "prettier" ];
-            jsonc = [ "prettier" ];
-            less = [ "prettier" ];
-            lua = [ "stylua" ];
-            markdown = [ "prettier" ];
-            nix = [ "nixfmt" ];
-            rust = [ "rustfmt" ];
-            vue = [ "prettier" ];
-            yaml = [ "prettier" ];
-            go = [ "gofmt" ];
           };
         };
-      };
-    }
-  ))
-]
+      }
+    ))
+  ];
+}

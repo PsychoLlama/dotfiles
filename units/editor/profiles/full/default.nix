@@ -4,8 +4,8 @@ let
   inherit (units.platform) editor;
 in
 
-[
-  (rhizome.component "editor.profiles.full" [
+rhizome.unit "editor.profiles.full" (full: {
+  main = rhizome.component [
 
     (editor.module (
       { lib, pkgs, ... }:
@@ -50,15 +50,19 @@ in
         '';
       }
     ))
-  ])
-  units.editor.lsp.clangd
-  units.editor.lsp.jsonls
-  units.editor.lsp.luals
-  units.editor.lsp.nil
-  units.editor.lsp.nushell
-  units.editor.lsp.rust-analyzer
-  units.editor.lsp.taplo
-  units.editor.lsp.typescript
-  units.editor.plugins.unit
-  units.editor.trusted-directories
-]
+  ];
+
+  unit = [
+    full.main
+    units.editor.lsp.clangd.unit
+    units.editor.lsp.jsonls.unit
+    units.editor.lsp.luals.unit
+    units.editor.lsp.nil.unit
+    units.editor.lsp.nushell.unit
+    units.editor.lsp.rust-analyzer.unit
+    units.editor.lsp.taplo.unit
+    units.editor.lsp.typescript.unit
+    units.editor.plugins.unit
+    units.editor.trusted-directories.unit
+  ];
+})

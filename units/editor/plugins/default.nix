@@ -4,8 +4,8 @@ let
   inherit (units.platform) editor;
 in
 
-[
-  (rhizome.component "editor.plugins" [
+rhizome.unit "editor.plugins" (plugins: {
+  main = rhizome.component [
 
     (editor.module (
       {
@@ -98,10 +98,14 @@ in
         ];
       }
     ))
-  ])
-  units.editor.plugins.alternaut.unit
-  units.editor.plugins.conform.unit
-  units.editor.plugins.markdown-preview.unit
-  units.editor.plugins.nvim-lint.unit
-  units.editor.plugins.snacks.unit
-]
+  ];
+
+  unit = [
+    plugins.main
+    units.editor.plugins.alternaut.unit
+    units.editor.plugins.conform.unit
+    units.editor.plugins.markdown-preview.unit
+    units.editor.plugins.nvim-lint.unit
+    units.editor.plugins.snacks.unit
+  ];
+})

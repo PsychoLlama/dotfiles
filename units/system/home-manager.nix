@@ -14,22 +14,24 @@ let
   inherit (units.platform) nixos;
 in
 
-rhizome.component "home-manager" [
-  (nixos.module (
-    { lib, ... }:
+rhizome.unit "home-manager" {
+  unit = rhizome.component [
+    (nixos.module (
+      { lib, ... }:
 
-    {
-      imports = [ home-manager.nixosModules.home-manager ];
+      {
+        imports = [ home-manager.nixosModules.home-manager ];
 
-      home-manager = {
-        useGlobalPkgs = lib.mkDefault true;
-        useUserPackages = lib.mkDefault true;
+        home-manager = {
+          useGlobalPkgs = lib.mkDefault true;
+          useUserPackages = lib.mkDefault true;
 
-        # Extensions every user gets. Aspects are imported per user.
-        sharedModules = [
-          homeModules.platform
-        ];
-      };
-    }
-  ))
-]
+          # Extensions every user gets. Aspects are imported per user.
+          sharedModules = [
+            homeModules.platform
+          ];
+        };
+      }
+    ))
+  ];
+}

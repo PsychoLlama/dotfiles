@@ -6,13 +6,13 @@
 }:
 
 let
-  inherit (units.platform) editor level;
+  inherit (units.platform) editor host user;
 
   # The editor's units, evaluated with no machine around them.
   standalone = inputs.rhizome.lib.eval {
     levels = [
-      level.host
-      level.user
+      host.level
+      user.level
     ];
   } units.editor.profiles.full.unit;
 in
@@ -24,7 +24,7 @@ in
       packages = {
         editor = config.flake.lib.editor {
           inherit pkgs;
-          modules = editor.modules (standalone.collect editor.module);
+          modules = editor.lib.modules (standalone.collect editor.module);
         };
 
         inherit (pkgs.custom) chrome-devtools-mcp claude-code-bin codex-bin;

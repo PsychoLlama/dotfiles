@@ -6,7 +6,7 @@
 
 let
   t = rhizome.types;
-  inherit (units.platform) level;
+  inherit (units.platform) host;
 
   colors = {
     black = t.str;
@@ -20,16 +20,17 @@ let
   };
 in
 
-{
+rhizome.unit "theme" {
   # The two halves of a base16 palette.
-  palette = rhizome.channel "theme.palette" {
-    level = level.host;
-    type.input = {
+  palette = rhizome.channel {
+    level = host.level;
+    merge = rhizome.merge.one;
+    optional = true;
+
+    type = {
       normal = colors;
       bright = colors;
     };
-    merge = rhizome.merge.one;
-    optional = true;
   };
 
   palettes.one-dark = {

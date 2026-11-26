@@ -4,41 +4,29 @@
 
 let
   t = rhizome.types;
-  inherit (units.platform) level nixos;
-  inherit (units.platform.user) identity;
+  inherit (units.platform) nixos user;
 in
 
-rec {
-  module = rhizome.channel "home-manager.module" {
-    level = level.user;
-    type.input = t.any;
+rhizome.unit "home-manager" (home-manager: {
+  # A Home Manager module for the user.
+  module = rhizome.channel {
+    level = user.level;
+    type = t.any;
     merge = rhizome.merge.entries;
   };
 
-  # A person on the machine. Starts their user scope, says who they are, and
-  # hands what the scope wrote for Home Manager to their account.
-  user = rhizome.scope "user" (input: {
-    level = level.user;
-    type.input = identity.type.input;
-    label = input.username;
+  /**
+    Installs a program from `pkgs.unstable` through its Home Manager module.
 
-    members = [
-      (identity input)
+    # Type
 
-      (rhizome.component "home-manager" {
-        uses.entries = module;
-
-        config =
-          { entries }:
-          [ (nixos.module { home-manager.users.${input.username}.imports = map nixos.locate entries; }) ];
-      })
-    ];
-  });
-
-  # Installs a program from `pkgs.unstable` through its Home Manager module.
+    ```
+    program :: String -> Emission
+    ```
+  */
   program =
     name:
-    module (
+    home-manager.module (
       { lib, pkgs, ... }:
       {
         programs.${name} = {
@@ -47,4 +35,20 @@ rec {
         };
       }
     );
-}
+
+  # Hands what the user's scope wrote to their account.
+  unit = rhizome.component {
+    uses = {
+      inherit (user) identity;
+      entries = home-manager.module;
+    };
+
+    config =
+      { identity, entries }:
+      [
+        (nixos.module {
+          home-manager.users.${identity.username}.imports = map nixos.lib.locate entries;
+        })
+      ];
+  };
+})

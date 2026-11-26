@@ -4,8 +4,8 @@ let
   inherit (units.platform) home-manager;
 in
 
-[
-  (rhizome.component "editor" [
+rhizome.unit "editor" (editor: {
+  main = rhizome.component [
 
     (home-manager.module (
       {
@@ -33,7 +33,11 @@ in
         };
       }
     ))
-  ])
-  units.platform.editor.component
-  units.editor.profiles.full.unit
-]
+  ];
+
+  unit = [
+    editor.main
+    units.platform.editor.unit
+    units.editor.profiles.full.unit
+  ];
+})

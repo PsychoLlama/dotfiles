@@ -4,48 +4,50 @@ let
   inherit (units.platform) editor;
 in
 
-rhizome.component "editor.lsp.typescript" [
-  (editor.module (
-    {
-      lib,
-      config,
-      pkgs,
-      ...
-    }:
+rhizome.unit "editor.lsp.typescript" {
+  unit = rhizome.component [
+    (editor.module (
+      {
+        lib,
+        config,
+        pkgs,
+        ...
+      }:
 
-    let
-      cfg = config.psychollama.presets.lsp.servers.typescript;
-    in
+      let
+        cfg = config.psychollama.presets.lsp.servers.typescript;
+      in
 
-    {
-      options.psychollama.presets.lsp.servers.typescript = {
-        package = lib.mkPackageOption pkgs.unstable "typescript-language-server" { };
-      };
-
-      config = {
-        lsp.servers.typescript = {
-          cmd = [
-            "${cfg.package}/bin/typescript-language-server"
-            "--stdio"
-          ];
-          filetypes = [
-            "typescript"
-            "typescriptreact"
-            "javascript"
-            "javascriptreact"
-          ];
-
-          root_markers = [
-            "tsconfig.json"
-            ".git/"
-          ];
+      {
+        options.psychollama.presets.lsp.servers.typescript = {
+          package = lib.mkPackageOption pkgs.unstable "typescript-language-server" { };
         };
 
-        extraPackages = [
-          pkgs.unstable.unzip
-          pkgs.unstable.yarn
-        ];
-      };
-    }
-  ))
-]
+        config = {
+          lsp.servers.typescript = {
+            cmd = [
+              "${cfg.package}/bin/typescript-language-server"
+              "--stdio"
+            ];
+            filetypes = [
+              "typescript"
+              "typescriptreact"
+              "javascript"
+              "javascriptreact"
+            ];
+
+            root_markers = [
+              "tsconfig.json"
+              ".git/"
+            ];
+          };
+
+          extraPackages = [
+            pkgs.unstable.unzip
+            pkgs.unstable.yarn
+          ];
+        };
+      }
+    ))
+  ];
+}

@@ -7,42 +7,44 @@ let
   inherit (units.platform) home-manager;
 in
 
-rhizome.component "claude-code.hooks.agent-history" [
-  (home-manager.module (
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+rhizome.unit "claude-code.hooks.agent-history" {
+  unit = rhizome.component [
+    (home-manager.module (
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
 
-    let
-      nu = lib.getExe config.programs.nushell.package;
+      let
+        nu = lib.getExe config.programs.nushell.package;
 
-      # `--stdin` binds the hook payload to `$in`.
-      agentHistory = pkgs.writeScript "agent-history" ''
-        #!/usr/bin/env -S ${nu} --stdin --no-config-file
-        ${builtins.readFile ./agent-history.nu}
-      '';
+        # `--stdin` binds the hook payload to `$in`.
+        agentHistory = pkgs.writeScript "agent-history" ''
+          #!/usr/bin/env -S ${nu} --stdin --no-config-file
+          ${builtins.readFile ./agent-history.nu}
+        '';
 
-      hook = [
-        {
-          matcher = "Bash";
-          hooks = [
-            {
-              type = "command";
-              command = "${agentHistory}";
-            }
-          ];
-        }
-      ];
-    in
+        hook = [
+          {
+            matcher = "Bash";
+            hooks = [
+              {
+                type = "command";
+                command = "${agentHistory}";
+              }
+            ];
+          }
+        ];
+      in
 
-    {
-      programs.claude-code.settings.hooks = {
-        PostToolUse = hook;
-        PostToolUseFailure = hook;
-      };
-    }
-  ))
-]
+      {
+        programs.claude-code.settings.hooks = {
+          PostToolUse = hook;
+          PostToolUseFailure = hook;
+        };
+      }
+    ))
+  ];
+}

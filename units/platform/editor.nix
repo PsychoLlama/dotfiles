@@ -4,21 +4,25 @@
 
 let
   t = rhizome.types;
-  inherit (units.platform) home-manager level nixos;
+  inherit (units.platform) home-manager nixos user;
 in
 
-rec {
-  module = rhizome.channel "editor.module" {
-    level = level.user;
-    type.input = t.any;
+rhizome.unit "editor" (editor: {
+  # A module of the editor's own class.
+  module = rhizome.channel {
+    level = user.level;
+    type = t.any;
     merge = rhizome.merge.entries;
   };
 
   # Modules ready for an editor evaluation.
-  modules = map nixos.locate;
+  lib.modules = map nixos.lib.locate;
 
-  component = rhizome.component "editor.modules" {
-    uses.entries = module;
-    config = { entries }: [ (home-manager.module { programs.editor.imports = modules entries; }) ];
+  unit = rhizome.component {
+    uses.entries = editor.module;
+
+    config =
+      { entries }:
+      [ (home-manager.module { programs.editor.imports = editor.lib.modules entries; }) ];
   };
-}
+})

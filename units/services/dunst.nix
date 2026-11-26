@@ -4,8 +4,8 @@ let
   inherit (units.platform) home-manager;
 in
 
-[
-  (rhizome.component "dunst" [
+rhizome.unit "dunst" (dunst: {
+  main = rhizome.component [
 
     (home-manager.module (
       { config, pkgs, ... }:
@@ -77,6 +77,10 @@ in
         };
       }
     ))
-  ])
-  units.system.sound-theme
-]
+  ];
+
+  unit = [
+    dunst.main
+    units.system.sound-theme.unit
+  ];
+})
