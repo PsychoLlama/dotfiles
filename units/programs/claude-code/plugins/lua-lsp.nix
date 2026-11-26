@@ -1,12 +1,12 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.programs) claude-code;
 in
 
 rhizome.unit "claude-code.plugins.lua-lsp" {
   unit = rhizome.component [
-    (home-manager.module (
+    (claude-code.plugin (
       { lib, pkgs, ... }:
 
       let
@@ -44,13 +44,12 @@ rhizome.unit "claude-code.plugins.lua-lsp" {
       in
 
       {
-        programs.claude-code.plugins.lua-lsp = {
-          description = "Lua Language Server for Claude Code.";
+        name = "lua-lsp";
+        description = "Lua Language Server for Claude Code.";
 
-          lsp.servers.lua = {
-            command = lib.getExe server;
-            extensionToLanguage.".lua" = "lua";
-          };
+        lsp.lua = {
+          command = lib.getExe server;
+          extensionToLanguage.".lua" = "lua";
         };
       }
     ))

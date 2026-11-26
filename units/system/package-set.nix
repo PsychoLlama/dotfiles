@@ -21,12 +21,7 @@ rhizome.unit "package-set" {
 
       {
         nixpkgs = {
-          overlays = [
-            overlays.unstable-packages
-            overlays.custom-packages
-            overlays.custom-patches
-            overlays.vim-plugins
-          ];
+          overlays = lib.attrValues overlays;
 
           config = {
             # Unfree licenses. To be replaced with libre alternatives.

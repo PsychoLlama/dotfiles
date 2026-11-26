@@ -1,12 +1,12 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.programs) claude-code;
 in
 
 rhizome.unit "claude-code.hooks.auto-format" {
   unit = rhizome.component [
-    (home-manager.module (
+    (claude-code.settings (
       {
         config,
         lib,
@@ -32,7 +32,7 @@ rhizome.unit "claude-code.hooks.auto-format" {
       in
 
       {
-        programs.claude-code.settings.hooks.PostToolUse = [
+        hooks.PostToolUse = [
           {
             matcher = "Write|Edit";
             hooks = [

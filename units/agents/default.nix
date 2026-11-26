@@ -1,6 +1,11 @@
 # What every agent is told, whichever agent it is. Each tool reads these and
 # renders them its own way.
-{ rhizome, units, ... }:
+{
+  lib,
+  rhizome,
+  units,
+  ...
+}:
 
 let
   t = rhizome.types;
@@ -26,6 +31,81 @@ rhizome.unit "agents" (agents: {
 
     merge = rhizome.merge.one;
     optional = true;
+  };
+
+  # Something an agent can be taught to do. Each tool renders it its own way.
+  skill = rhizome.channel {
+    level = user.level;
+    merge = rhizome.merge.list;
+    optional = true;
+
+    type = {
+      # Written to frontmatter and used as its directory name.
+      name = t.str;
+
+      # When the agent should use this skill.
+      description = t.str;
+
+      # Markdown body without frontmatter. A minijinja template.
+      body = t.any;
+
+      # Agents for which this skill is provisioned.
+      targets = t.default (t.list t.str) [
+        "claude"
+        "codex"
+      ];
+
+      # More YAML frontmatter fields.
+      frontmatter = t.default t.attrs { };
+
+      # Template variables by name, then by agent.
+      vars = t.default (t.attrs-of t.attrs) { };
+
+      # Files or directories linked alongside `SKILL.md`: shared paths, or
+      # paths by agent. Given `pkgs` if it is a function.
+      files = t.default t.any { };
+    };
+  };
+
+  lib = {
+    /**
+      The skills written for one agent, rendered, by name.
+
+      # Type
+
+      ```
+      skills :: Pkgs -> String -> [Skill] -> { [String] :: Package }
+      ```
+    */
+    skills =
+      pkgs: agent: skills:
+      lib.listToAttrs (
+        map (
+          skill:
+          lib.nameValuePair skill.name (
+            pkgs.callPackage ./_render.nix {
+              inherit agent;
+
+              skill = {
+                inherit (skill) name body;
+                files = if lib.isFunction skill.files then skill.files pkgs else skill.files;
+                frontmatter = {
+                  inherit (skill) name description;
+                }
+                // skill.frontmatter;
+
+                vars = {
+                  SKILL_DIRECTORY = {
+                    claude = "\${CLAUDE_SKILL_DIR}";
+                    codex = "~/.agents/skills/${skill.name}";
+                  };
+                }
+                // skill.vars;
+              };
+            }
+          )
+        ) (lib.filter (skill: lib.elem agent skill.targets) skills)
+      );
   };
 
   unit = rhizome.component [

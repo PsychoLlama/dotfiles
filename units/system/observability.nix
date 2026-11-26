@@ -88,8 +88,8 @@ rhizome.unit "observability" {
         }
       ))
 
-      (home-manager.module ({
-        programs.claude-code.settings.env = {
+      (units.programs.claude-code.settings {
+        env = {
           CLAUDE_CODE_ENABLE_TELEMETRY = "1";
           OTEL_METRICS_EXPORTER = "otlp";
           OTEL_LOGS_EXPORTER = "otlp";
@@ -110,7 +110,7 @@ rhizome.unit "observability" {
           # bodies useless. Note this is the dominant cost of raw body capture.
           CLAUDE_CODE_OTEL_CONTENT_MAX_LENGTH = "1048576";
         };
-      }))
+      })
     ];
   };
 }

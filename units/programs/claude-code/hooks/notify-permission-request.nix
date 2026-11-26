@@ -1,12 +1,12 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.programs) claude-code;
 in
 
 rhizome.unit "claude-code.hooks.notify-permission-request" {
   unit = rhizome.component [
-    (home-manager.module (
+    (claude-code.settings (
       {
         config,
         lib,
@@ -39,7 +39,7 @@ rhizome.unit "claude-code.hooks.notify-permission-request" {
       in
 
       {
-        programs.claude-code.settings.hooks.Notification = [
+        hooks.Notification = [
           {
             matcher = "permission_prompt";
             hooks = [

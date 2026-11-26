@@ -66,26 +66,6 @@
         "type": "github"
       }
     },
-    "flake-parts": {
-      "inputs": {
-        "nixpkgs-lib": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1793576659,
-        "narHash": "sha256-V1h85lUaJBQoHFrB2vpXZOE0Ju1MYSnIpsehoVZYlDo=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "ea2630b7470978622c7689a1ff75d2b389175399",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
     "gutenberg-nvim": {
       "inputs": {
         "nixpkgs": [
@@ -127,21 +107,6 @@
         "owner": "nix-community",
         "ref": "release-26.05",
         "repo": "home-manager",
-        "type": "github"
-      }
-    },
-    "import-tree": {
-      "locked": {
-        "lastModified": 1788467110,
-        "narHash": "sha256-ljEMTXP/rH0tOvDzc9gzwww6KcHRPRnEHzd9lK48V7s=",
-        "owner": "denful",
-        "repo": "import-tree",
-        "rev": "eb1b52eaecc57f7c136d07ae8a93e724dfecac46",
-        "type": "github"
-      },
-      "original": {
-        "owner": "denful",
-        "repo": "import-tree",
         "type": "github"
       }
     },
@@ -249,10 +214,8 @@
         "agenix": "agenix",
         "alternaut-nvim": "alternaut-nvim",
         "deja-view-nvim": "deja-view-nvim",
-        "flake-parts": "flake-parts",
         "gutenberg-nvim": "gutenberg-nvim",
         "home-manager": "home-manager",
-        "import-tree": "import-tree",
         "navitron-nvim": "navitron-nvim",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",

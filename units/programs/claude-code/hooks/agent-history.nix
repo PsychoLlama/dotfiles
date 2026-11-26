@@ -4,12 +4,12 @@
 # that's queried similar to nushell's `history` builtin.
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.programs) claude-code;
 in
 
 rhizome.unit "claude-code.hooks.agent-history" {
   unit = rhizome.component [
-    (home-manager.module (
+    (claude-code.settings (
       {
         config,
         lib,
@@ -40,7 +40,7 @@ rhizome.unit "claude-code.hooks.agent-history" {
       in
 
       {
-        programs.claude-code.settings.hooks = {
+        hooks = {
           PostToolUse = hook;
           PostToolUseFailure = hook;
         };

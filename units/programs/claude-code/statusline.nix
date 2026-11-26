@@ -1,12 +1,12 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.programs) claude-code;
 in
 
 rhizome.unit "claude-code.statusline" {
   unit = rhizome.component [
-    (home-manager.module (
+    (claude-code.settings (
       {
         config,
         lib,
@@ -28,7 +28,7 @@ rhizome.unit "claude-code.statusline" {
       in
 
       {
-        programs.claude-code.settings.statusLine = {
+        statusLine = {
           type = "command";
           command = "${statusline}";
         };

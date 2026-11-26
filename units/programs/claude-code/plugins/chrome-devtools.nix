@@ -1,12 +1,12 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.programs) claude-code;
 in
 
 rhizome.unit "claude-code.plugins.chrome-devtools" {
   unit = rhizome.component [
-    (home-manager.module (
+    (claude-code.plugin (
       {
         config,
         lib,
@@ -32,10 +32,9 @@ rhizome.unit "claude-code.plugins.chrome-devtools" {
       in
 
       {
-        programs.claude-code.plugins.chrome-devtools = {
-          description = "Chrome DevTools MCP server for Claude Code.";
-          mcp.servers.chrome-devtools.command = lib.getExe wrapper;
-        };
+        name = "chrome-devtools";
+        description = "Chrome DevTools MCP server for Claude Code.";
+        mcp.chrome-devtools.command = lib.getExe wrapper;
       }
     ))
   ];

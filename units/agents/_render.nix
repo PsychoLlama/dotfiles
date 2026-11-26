@@ -14,7 +14,7 @@ let
   json = formats.json { };
   yaml = formats.yaml { };
 
-  vars = lib.mapAttrs (_: values: values.${agent}) skill.template.vars;
+  vars = lib.mapAttrs (_: values: values.${agent}) skill.vars;
   context = json.generate "${name}-vars.json" vars;
   frontmatter = yaml.generate "${name}-metadata.yaml" skill.frontmatter;
   files = lib.mapAttrs (_: value: if lib.isAttrs value then value.${agent} else value) skill.files;
@@ -48,7 +48,7 @@ let
         printf '%s\n' '---'
         cat ${frontmatter}
         printf '%s\n\n' '---'
-        cat ${skill.template.body}
+        cat ${skill.body}
       } > template.md
 
       runHook postBuild

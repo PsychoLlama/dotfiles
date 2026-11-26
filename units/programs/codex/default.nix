@@ -1,21 +1,24 @@
 { rhizome, units, ... }:
 
 let
+  inherit (units) agents;
   inherit (units.platform) home-manager nixos;
 in
 
 rhizome.unit "codex" {
   unit = rhizome.component {
     uses = {
-      inherit (units.agents) memory;
+      inherit (agents) memory;
+      skills = agents.skill;
     };
 
-    config = { memory }: [
+    config = { memory, skills }: [
       (home-manager.module (
-        { config, lib, ... }: {
-          config.home.file = lib.mapAttrs' (
-            _: skill: lib.nameValuePair ".agents/skills/${skill.name}" { source = skill.output.codex; }
-          ) (lib.filterAttrs (_: skill: lib.elem "codex" skill.targets) config.agents.skills);
+        { lib, pkgs, ... }:
+        {
+          home.file = lib.mapAttrs' (
+            name: source: lib.nameValuePair ".agents/skills/${name}" { inherit source; }
+          ) (agents.lib.skills pkgs "codex" skills);
         }
       ))
 
@@ -28,8 +31,6 @@ rhizome.unit "codex" {
         }:
 
         let
-
-          cfg = config.psychollama.presets.programs.codex;
 
           # `writers.writeNuBin` bakes in `pkgs.nushell`, but the nushell preset pins
           # `pkgs.unstable.nushell`, so the default writer drags a second nushell
@@ -105,17 +106,9 @@ rhizome.unit "codex" {
         in
 
         {
-          options.psychollama.presets.programs.codex = {
-            package = lib.mkOption {
-              type = lib.types.package;
-              default = pkgs.unstable.custom.codex-bin;
-              defaultText = lib.literalExpression "pkgs.unstable.custom.codex-bin";
-              description = "The codex package to install.";
-            };
-          };
 
           config = {
-            environment.systemPackages = [ cfg.package ];
+            environment.systemPackages = [ pkgs.unstable.custom.codex-bin ];
 
             # User config is left writable and untracked because codex *insists* on
             # mutating it. So we provision a system-level config instead.

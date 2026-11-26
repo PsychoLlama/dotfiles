@@ -1,12 +1,12 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.programs) claude-code;
 in
 
 rhizome.unit "claude-code.hooks.direnv" {
   unit = rhizome.component [
-    (home-manager.module (
+    (claude-code.settings (
       {
         config,
         lib,
@@ -26,22 +26,21 @@ rhizome.unit "claude-code.hooks.direnv" {
         '';
       in
 
-      {
-        # Wired only when direnv is already installed. Importing the direnv preset
-        # from here would make Claude Code the reason it exists; that's a profile's
-        # call.
-        config = lib.mkIf config.programs.direnv.enable {
-          programs.claude-code.settings.hooks.SessionStart = [
-            {
-              hooks = [
-                {
-                  type = "command";
-                  command = injectDirenv;
-                }
-              ];
-            }
-          ];
-        };
+      # Wired only when direnv is already installed. Importing the direnv preset
+      # from here would make Claude Code the reason it exists; that's a profile's
+      # call.
+      lib.optionalAttrs config.programs.direnv.enable {
+
+        hooks.SessionStart = [
+          {
+            hooks = [
+              {
+                type = "command";
+                command = injectDirenv;
+              }
+            ];
+          }
+        ];
       }
     ))
   ];

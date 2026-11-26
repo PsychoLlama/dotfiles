@@ -5,12 +5,6 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     systems.url = "github:nix-systems/default";
-    import-tree.url = "github:denful/import-tree";
-
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
 
     nixos-hardware = {
       url = "github:nixos/nixos-hardware";
@@ -76,5 +70,108 @@
     };
   };
 
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } ./modules;
+  outputs =
+    inputs:
+
+    let
+      inherit (inputs) self;
+      inherit (inputs.nixpkgs) lib;
+
+      rhizome = inputs.rhizome.lib;
+      units = rhizome.load ./units { inherit inputs lib; };
+      inherit (units) editor;
+
+      # One tree per machine in `units/hosts`.
+      hosts = lib.mapAttrs (_: host: rhizome.eval { } host.unit) units.hosts;
+
+      # The editor's units, evaluated with no machine around them.
+      standalone = rhizome.eval {
+        levels = [
+          units.platform.host.level
+          units.platform.user.level
+        ];
+      } editor.profiles.full.unit;
+
+      loadPkgs =
+        system:
+        import inputs.nixpkgs {
+          inherit system;
+          overlays = lib.attrValues self.overlays;
+        };
+
+      packages = lib.genAttrs (import inputs.systems) loadPkgs;
+      eachSystem = lib.flip lib.mapAttrs packages;
+    in
+
+    {
+      overlays = import ./pkgs/overlays.nix inputs;
+
+      nixosConfigurations = lib.mapAttrs (
+        _: host:
+        lib.nixosSystem {
+          modules = lib.concatMap (machine: machine.modules) (host.collect units.platform.nixos.machine);
+        }
+      ) hosts;
+
+      # Who writes what to whom, as Graphviz. See `just graph`.
+      graphs = lib.mapAttrs (_: host: rhizome.graph.dot host.routes) hosts;
+
+      packages = eachSystem (
+        _: pkgs: {
+          # `nix shell dotfiles#editor`
+          editor = editor.lib.build pkgs {
+            neovim = standalone.collect editor.neovim;
+            plugins = standalone.collect editor.plugin;
+            servers = standalone.collect editor.server;
+            config = standalone.collect editor.config;
+            tools = standalone.collect editor.tool;
+          };
+
+          inherit (pkgs.custom) chrome-devtools-mcp claude-code-bin codex-bin;
+        }
+      );
+
+      devShells = eachSystem (
+        system: pkgs: {
+          default = pkgs.mkShell {
+            packages = [
+              inputs.agenix.packages.${system}.default
+              pkgs.unstable.just
+              pkgs.unstable.lua-language-server
+              pkgs.unstable.luajitPackages.luacheck
+              pkgs.unstable.luajitPackages.vusted
+              pkgs.unstable.nh
+              pkgs.unstable.nix-update
+              pkgs.unstable.nixfmt
+              pkgs.unstable.prettier
+              pkgs.unstable.stylua
+              pkgs.unstable.treefmt
+            ];
+          };
+        }
+      );
+
+      # Scaffolds for other projects: `nix flake init -t dotfiles#rust`.
+      templates = {
+        project = {
+          description = "Flake environment with no assumptions";
+          path = ./templates/project;
+        };
+
+        typescript = {
+          description = "Flake environment for building TypeScript projects";
+          path = ./templates/typescript;
+        };
+
+        rust = {
+          description = "Flake environment for building Rust projects";
+          path = ./templates/rust;
+        };
+
+        nvim = {
+          description = "Flake environment for building Neovim plugins";
+          path = ./templates/nvim;
+        };
+      };
+    };
 }

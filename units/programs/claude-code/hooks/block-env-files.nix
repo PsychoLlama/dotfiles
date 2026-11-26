@@ -1,12 +1,12 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.programs) claude-code;
 in
 
 rhizome.unit "claude-code.hooks.block-env-files" {
   unit = rhizome.component [
-    (home-manager.module (
+    (claude-code.settings (
       {
         config,
         lib,
@@ -31,7 +31,7 @@ rhizome.unit "claude-code.hooks.block-env-files" {
       in
 
       {
-        programs.claude-code.settings.hooks.PreToolUse = [
+        hooks.PreToolUse = [
           {
             matcher = "Read|Edit|Write";
             hooks = [

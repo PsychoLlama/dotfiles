@@ -1,19 +1,18 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  inherit (units.programs) claude-code;
 in
 
 rhizome.unit "claude-code.plugins.rust-lsp" {
   unit = rhizome.component [
-    (home-manager.module ({
-      programs.claude-code.plugins.rust-lsp = {
-        description = "Rust Language Server for Claude Code.";
+    (claude-code.plugin ({
+      name = "rust-lsp";
+      description = "Rust Language Server for Claude Code.";
 
-        lsp.servers.rust = {
-          command = "rust-analyzer";
-          extensionToLanguage.".rs" = "rust";
-        };
+      lsp.rust = {
+        command = "rust-analyzer";
+        extensionToLanguage.".rs" = "rust";
       };
     }))
   ];
