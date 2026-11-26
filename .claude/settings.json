@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "rhizome": {
+      "source": {
+        "source": "github",
+        "repo": "PsychoLlama/rhizome.nix"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "rhizome@rhizome": true
+  }
+}
