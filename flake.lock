@@ -195,18 +195,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1795720973,
-        "narHash": "sha256-x7grM7niwyQ8l7DZnxFYYryq40nrx2Tf8722SIWbeyo=",
-        "ref": "wip/channels",
-        "rev": "6dbaffb66db95507586aa0eaf93f7265942d3924",
-        "revCount": 7,
-        "type": "git",
-        "url": "file:///home/overlord/projects/psychollama/rhizome.nix"
+        "lastModified": 1795737050,
+        "narHash": "sha256-nvnEIMWOFXWqhUPyAUEINBqwhiKrg8J/THI93guBPMI=",
+        "owner": "PsychoLlama",
+        "repo": "rhizome.nix",
+        "rev": "0ea982098be870b760ee08e7feae11b29693ff90",
+        "type": "github"
       },
       "original": {
-        "ref": "wip/channels",
-        "type": "git",
-        "url": "file:///home/overlord/projects/psychollama/rhizome.nix"
+        "owner": "PsychoLlama",
+        "repo": "rhizome.nix",
+        "type": "github"
       }
     },
     "root": {

@@ -57,7 +57,7 @@
     };
 
     rhizome = {
-      url = "git+file:///home/overlord/projects/psychollama/rhizome.nix?ref=wip/channels";
+      url = "github:PsychoLlama/rhizome.nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         systems.follows = "systems";
