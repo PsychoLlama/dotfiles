@@ -1,20 +1,19 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) editor;
+  inherit (units) editor;
 in
 
 rhizome.unit "editor.lsp.nushell" {
   unit = rhizome.component [
-    (editor.module ({
-      lsp.servers.nushell = {
-        cmd = [
-          "nu"
-          "--lsp"
-        ];
-        filetypes = [ "nu" ];
-        root_markers = [ ".git/" ];
-      };
-    }))
+    (editor.server {
+      name = "nushell";
+      cmd = [
+        "nu"
+        "--lsp"
+      ];
+      filetypes = [ "nu" ];
+      root_markers = [ ".git/" ];
+    })
   ];
 }

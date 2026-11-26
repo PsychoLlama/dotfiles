@@ -71,7 +71,8 @@ rhizome.unit "profiles.full" (full: {
     (home-manager.program "dive")
     (home-manager.program "dix")
     (home-manager.program "doggo")
-    units.programs.editor.unit
+    units.editor.unit
+    units.editor.profiles.full.unit
     units.programs.fd.unit
     (home-manager.program "fzf")
     units.programs.gh.unit

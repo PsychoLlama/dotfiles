@@ -1,16 +1,18 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) editor;
+  inherit (units) editor;
 in
 
 rhizome.unit "editor.plugins.snacks" {
   unit = rhizome.component [
-    (editor.module ({
-      plugins.snacks-nvim.opts = {
+    (editor.plugin {
+      name = "snacks-nvim";
+      config = ./config.lua;
+      opts = {
         input.enabled = true;
         notifier.enabled = true;
       };
-    }))
+    })
   ];
 }

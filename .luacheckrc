@@ -4,7 +4,7 @@ ignore = {
 
 include_files = {
   'pkgs/**/*.lua',
-  'modules/**/*.lua',
+  'units/**/*.lua',
 }
 
 exclude_files = {

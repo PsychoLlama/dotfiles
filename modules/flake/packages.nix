@@ -1,12 +1,12 @@
 {
-  config,
   inputs,
   units,
   ...
 }:
 
 let
-  inherit (units.platform) editor host user;
+  inherit (units) editor;
+  inherit (units.platform) host user;
 
   # The editor's units, evaluated with no machine around them.
   standalone = inputs.rhizome.lib.eval {
@@ -14,7 +14,7 @@ let
       host.level
       user.level
     ];
-  } units.editor.profiles.full.unit;
+  } editor.profiles.full.unit;
 in
 
 {
@@ -22,9 +22,12 @@ in
     { pkgs, ... }:
     {
       packages = {
-        editor = config.flake.lib.editor {
-          inherit pkgs;
-          modules = editor.lib.modules (standalone.collect editor.module);
+        editor = editor.lib.build pkgs {
+          neovim = standalone.collect editor.neovim;
+          plugins = standalone.collect editor.plugin;
+          servers = standalone.collect editor.server;
+          config = standalone.collect editor.config;
+          tools = standalone.collect editor.tool;
         };
 
         inherit (pkgs.custom) chrome-devtools-mcp claude-code-bin codex-bin;

@@ -1,111 +1,106 @@
+# Every plugin. One with settings of its own gets a directory beside this.
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) editor;
+  inherit (units) editor;
+  inherit (units.editor) plugins;
+
+  plugin = name: config: editor.plugin { inherit name config; };
 in
 
-rhizome.unit "editor.plugins" (plugins: {
+rhizome.unit "editor.plugins" (self: {
   main = rhizome.component [
+    (plugin "cmp-buffer" null)
+    (plugin "cmp-cmdline" null)
+    (plugin "cmp-nvim-lsp" null)
+    (plugin "cmp-path" null)
+    (plugin "deja-view-nvim" null)
+    (plugin "dotfiles-nvim" null)
+    (plugin "fzf-vim" null)
+    (plugin "gitlinker-nvim" ./gitlinker.lua)
+    (plugin "gutenberg-nvim" ./gutenberg.lua)
 
-    (editor.module (
-      {
-        lib,
-        config,
-        ...
-      }:
+    # Defer gitsigns until a buffer is read (~18ms saved)
+    (editor.plugin {
+      name = "gitsigns-nvim";
+      config = ./gitsigns.lua;
+      defer.event = "BufReadPre";
+    })
 
-      let
-        # Simple preset: just a name and optional config file
-        mkPluginPreset = name: extraConfig: mkPluginPresetFull name { inherit extraConfig; };
+    (plugin "lualine-nvim" ./lualine.lua)
 
-        # Full preset with all options including defer
-        mkPluginPresetFull =
-          name:
-          {
-            extraConfig ? null,
-            defer ? null,
-          }:
+    # Defer the markdown preview until markdown files are opened. It runs a
+    # Node.js server to render the preview.
+    (editor.plugin {
+      name = "markdown-preview-nvim";
+      config = ./markdown-preview/config.lua;
+      defer.ft = "markdown";
+      nodejs = true;
+    })
 
-          let
-            cfg = config.psychollama.presets.plugins.${name};
-          in
+    (plugin "navitron-nvim" ./navitron.lua)
 
-          {
-            # Install the latest version of a vim plugin.
-            options.psychollama.presets.plugins.${name} = {
-              package = lib.mkPackageOption config.plugin.pkgs name { };
-            };
+    # Configured through `opts`; its config forwards them to
+    # `require('note').setup`.
+    (editor.plugin {
+      name = "note-nvim";
+      config = ./note.lua;
+      opts.path = "~/attic/slip-box";
+    })
 
-            config.plugins.${name} = {
-              enable = lib.mkDefault true;
-              package = lib.mkDefault cfg.package;
-              inherit extraConfig defer;
-            };
+    (plugin "nvim-autopairs" ./autopairs.lua)
+    (plugin "nvim-cmp" ./nvim-cmp.lua)
+
+    # Bundle every grammar. `withAllGrammars` keeps the `nvim-treesitter`
+    # pname, so this stays a single manifest entry rather than shadowing a
+    # grammar-less copy installed separately.
+    (editor.plugin {
+      name = "nvim-treesitter";
+      package = pkgs: pkgs.unstable.vimPlugins.nvim-treesitter.withAllGrammars;
+    })
+
+    # Nixpkgs tracks frozen master branch; main branch has nvim-treesitter compat fixes
+    (editor.plugin {
+      name = "nvim-treesitter-textobjects";
+      config = ./nvim-treesitter-textobjects.lua;
+
+      package =
+        pkgs:
+        pkgs.unstable.vimPlugins.nvim-treesitter-textobjects.overrideAttrs {
+          doCheck = false;
+          version = "0-unstable-2026-01-02";
+          src = pkgs.fetchFromGitHub {
+            owner = "nvim-treesitter";
+            repo = "nvim-treesitter-textobjects";
+            rev = "28a3494c075ef0f353314f627546537e43c09592";
+            hash = "sha256-5VeIAW09my+4fqXbzVG7RnLXrjpXAk/g2vd7RbhNws8=";
           };
-      in
+        };
+    })
 
-      {
-        imports = [
-          (mkPluginPreset "alternaut-nvim" ./alternaut/config.lua)
-          (mkPluginPreset "cmp-buffer" null)
-          (mkPluginPreset "cmp-cmdline" null)
-          (mkPluginPreset "cmp-nvim-lsp" null)
-          (mkPluginPreset "cmp-path" null)
-          (mkPluginPreset "conform-nvim" ./conform/config.lua)
-          (mkPluginPreset "deja-view-nvim" null)
-          (mkPluginPreset "dotfiles-nvim" null)
-          (mkPluginPreset "fzf-vim" null)
-          (mkPluginPreset "gitlinker-nvim" ./gitlinker.lua)
-          (mkPluginPreset "gutenberg-nvim" ./gutenberg.lua)
+    (plugin "onedarkpro-nvim" ./onedarkpro.lua)
+    (plugin "teleport-vim" ./teleport.lua)
+    (plugin "telescope-fzf-native-nvim" ./telescope-fzf-native.lua)
+    (plugin "telescope-nvim" ./telescope.lua)
 
-          # Defer gitsigns until a buffer is read (~18ms saved)
-          (mkPluginPresetFull "gitsigns-nvim" {
-            extraConfig = ./gitsigns.lua;
-            defer.event = "BufReadPre";
-          })
+    # Defer treesj until its keymap is used (~13ms saved)
+    (editor.plugin {
+      name = "treesj";
+      config = ./treesj.lua;
+      defer.keys = "<leader>j";
+    })
 
-          (mkPluginPreset "lualine-nvim" ./lualine.lua)
-
-          # Defer the markdown preview until markdown files are opened
-          (mkPluginPresetFull "markdown-preview-nvim" {
-            extraConfig = ./markdown-preview/config.lua;
-            defer.ft = "markdown";
-          })
-
-          (mkPluginPreset "navitron-nvim" ./navitron.lua)
-          (mkPluginPreset "note-nvim" ./note.lua)
-          (mkPluginPreset "nvim-autopairs" ./autopairs.lua)
-          (mkPluginPreset "nvim-cmp" ./nvim-cmp.lua)
-          (mkPluginPreset "nvim-lint" ./nvim-lint/config.lua)
-          (mkPluginPreset "nvim-treesitter" null)
-          (mkPluginPreset "nvim-treesitter-textobjects" ./nvim-treesitter-textobjects.lua)
-          (mkPluginPreset "onedarkpro-nvim" ./onedarkpro.lua)
-          (mkPluginPreset "snacks-nvim" ./snacks/config.lua)
-          (mkPluginPreset "teleport-vim" ./teleport.lua)
-          (mkPluginPreset "telescope-fzf-native-nvim" ./telescope-fzf-native.lua)
-          (mkPluginPreset "telescope-nvim" ./telescope.lua)
-
-          # Defer treesj until its keymap is used (~13ms saved)
-          (mkPluginPresetFull "treesj" {
-            extraConfig = ./treesj.lua;
-            defer.keys = "<leader>j";
-          })
-
-          (mkPluginPreset "vim-endwise" null)
-          (mkPluginPreset "vim-fugitive" null)
-          (mkPluginPreset "vim-repeat" null)
-          (mkPluginPreset "vim-surround" null)
-        ];
-      }
-    ))
+    (plugin "vim-endwise" null)
+    (plugin "vim-fugitive" null)
+    (plugin "vim-repeat" null)
+    (plugin "vim-surround" null)
   ];
 
   unit = [
-    plugins.main
-    units.editor.plugins.alternaut.unit
-    units.editor.plugins.conform.unit
-    units.editor.plugins.markdown-preview.unit
-    units.editor.plugins.nvim-lint.unit
-    units.editor.plugins.snacks.unit
+    self.main
+    plugins.alternaut.unit
+    plugins.conform.unit
+    plugins.nvim-lint.unit
+    plugins.snacks.unit
   ];
 })

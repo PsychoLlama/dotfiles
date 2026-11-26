@@ -1,47 +1,29 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) editor;
+  inherit (units) editor;
 in
 
 rhizome.unit "editor.lsp.luals" {
   unit = rhizome.component [
-    (editor.module (
-      {
-        lib,
-        config,
-        pkgs,
-        ...
-      }:
+    (editor.server {
+      name = "luals";
+      cmd = pkgs: [ "${pkgs.unstable.lua-language-server}/bin/lua-language-server" ];
+      filetypes = [ "lua" ];
+      root_markers = [
+        ".git/"
+        ".luarc.json"
+      ];
 
-      let
-        cfg = config.psychollama.presets.lsp.servers.luals;
-      in
+      # Reference: https://luals.github.io/wiki/settings/
+      settings.Lua = {
+        # Using stylua instead.
+        format.enable = false;
 
-      {
-        options.psychollama.presets.lsp.servers.luals = {
-          package = lib.mkPackageOption pkgs.unstable "lua-language-server" { };
-        };
-
-        config.lsp.servers.luals = {
-          cmd = [ "${cfg.package}/bin/lua-language-server" ];
-          filetypes = [ "lua" ];
-          root_markers = [
-            ".git/"
-            ".luarc.json"
-          ];
-
-          # Reference: https://luals.github.io/wiki/settings/
-          settings.Lua = {
-            # Using stylua instead.
-            format.enable = false;
-
-            # Don't try to dynamically manage library type defs.
-            workspace.checkThirdParty = false;
-            addonManager.enable = false;
-          };
-        };
-      }
-    ))
+        # Don't try to dynamically manage library type defs.
+        workspace.checkThirdParty = false;
+        addonManager.enable = false;
+      };
+    })
   ];
 }

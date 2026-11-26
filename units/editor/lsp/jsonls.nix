@@ -1,41 +1,23 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) editor;
+  inherit (units) editor;
 in
 
 rhizome.unit "editor.lsp.jsonls" {
   unit = rhizome.component [
-    (editor.module (
-      {
-        lib,
-        config,
-        pkgs,
-        ...
-      }:
-
-      let
-        cfg = config.psychollama.presets.lsp.servers.jsonls;
-      in
-
-      {
-        options.psychollama.presets.lsp.servers.jsonls = {
-          package = lib.mkPackageOption pkgs.unstable "vscode-langservers-extracted" { };
-        };
-
-        config.lsp.servers.jsonls = {
-          cmd = [
-            "${cfg.package}/bin/vscode-json-language-server"
-            "--stdio"
-          ];
-          root_markers = [ ".git/" ];
-          filetypes = [
-            "json"
-            "jsonc"
-            "json5"
-          ];
-        };
-      }
-    ))
+    (editor.server {
+      name = "jsonls";
+      cmd = pkgs: [
+        "${pkgs.unstable.vscode-langservers-extracted}/bin/vscode-json-language-server"
+        "--stdio"
+      ];
+      root_markers = [ ".git/" ];
+      filetypes = [
+        "json"
+        "jsonc"
+        "json5"
+      ];
+    })
   ];
 }
