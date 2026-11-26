@@ -10,16 +10,12 @@ rhizome.unit "bemoji" {
       { pkgs, ... }:
 
       {
-        programs.bemoji = {
-          enable = true;
-          package = pkgs.unstable.bemoji;
-        };
+        home.packages = [
+          pkgs.unstable.bemoji
 
-        # bemoji uses wtype to type the selected emoji into the focused window.
-        programs.wtype = {
-          enable = true;
-          package = pkgs.unstable.wtype;
-        };
+          # bemoji uses wtype to type the selected emoji into the focused window.
+          pkgs.unstable.wtype
+        ];
 
         home.sessionVariables.BEMOJI_PICKER_CMD = "fuzzel -d";
       }

@@ -7,6 +7,7 @@ in
 rhizome.unit "tmux" {
   unit = rhizome.component [
     (home-manager.program "tmux")
+    (units.programs.nushell.abbreviation { t = "tmux"; })
 
     (home-manager.module (
       { config, pkgs, ... }:
@@ -16,8 +17,6 @@ rhizome.unit "tmux" {
       in
 
       {
-        programs.nushell.abbreviations.t = "tmux";
-
         programs.tmux = {
           customPaneNavigationAndResize = true;
           escapeTime = 0;

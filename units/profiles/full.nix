@@ -36,21 +36,22 @@ rhizome.unit "profiles.full" (full: {
       {
         # The Linux man pages aren't a program, so there's no `enable` to reach
         # for. They're what makes section 2 and 3 lookups resolve.
-        home.packages = [ pkgs.man-pages ];
+        home.packages = [
+          pkgs.man-pages
+
+          pkgs.binutils
+          pkgs.duf
+          pkgs.hexyl
+          pkgs.lsof
+          pkgs.onefetch
+          pkgs.rage
+          pkgs.tokei
+        ];
 
         programs = {
-          binutils.enable = mkDefault true;
-          duf.enable = mkDefault true;
-          hexyl.enable = mkDefault true;
-          lsof.enable = mkDefault true;
           man.generateCaches = mkDefault true;
           nh.enable = mkDefault true;
-          onefetch.enable = mkDefault true;
-          parted.enable = mkDefault pkgs.stdenv.isLinux;
-          rage.enable = mkDefault true;
           ripgrep.enable = mkDefault true;
-          tokei.enable = mkDefault true;
-          viu.enable = mkDefault true;
         };
       }
     ))
@@ -68,9 +69,9 @@ rhizome.unit "profiles.full" (full: {
     units.programs.delta.unit
     units.programs.dictation.unit
     units.programs.direnv.unit
-    (home-manager.program "dive")
-    (home-manager.program "dix")
-    (home-manager.program "doggo")
+    (home-manager.package "dive")
+    (home-manager.package "dix")
+    (home-manager.package "doggo")
     units.editor.unit
     units.editor.profiles.full.unit
     units.programs.fd.unit
@@ -79,19 +80,20 @@ rhizome.unit "profiles.full" (full: {
     units.programs.git.unit
     units.programs.glow.unit
     (home-manager.program "jq")
-    (home-manager.program "miniserve")
-    (home-manager.program "nix-output-monitor")
+    (home-manager.package "miniserve")
+    (home-manager.package "nix-output-monitor")
     units.programs.nushell.unit
     units.programs.nushell.swizzle.unit
-    (home-manager.program "python3")
+    (home-manager.package "python3")
     units.programs.spotify.unit
     units.programs.starship.unit
     units.programs.sway.unit
-    (home-manager.program "termshark")
+    (home-manager.package "termshark")
     units.programs.tmux.unit
-    (home-manager.program "viddy")
+    units.programs.viu.unit
+    (home-manager.package "viddy")
     units.programs.wezterm.unit
-    (home-manager.program "whois")
+    (home-manager.package "whois")
     units.programs.wireshark.unit
     (home-manager.program "zoxide")
     units.services.agenix.unit

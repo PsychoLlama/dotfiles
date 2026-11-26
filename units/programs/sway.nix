@@ -44,10 +44,10 @@ rhizome.unit "sway" {
           swaylock = lib.getExe' config.programs.swaylock.package "swaylock";
           wezterm = lib.getExe' config.programs.wezterm.package "wezterm";
           fuzzel = lib.getExe' config.programs.fuzzel.package "fuzzel";
-          bemoji = lib.getExe' config.programs.bemoji.package "bemoji";
-          playerctl = lib.getExe' config.programs.playerctl.package "playerctl";
-          brightnessctl = lib.getExe' config.programs.brightnessctl.package "brightnessctl";
-          pamixer = lib.getExe' config.programs.pamixer.package "pamixer";
+          bemoji = lib.getExe' pkgs.unstable.bemoji "bemoji";
+          playerctl = lib.getExe' pkgs.unstable.playerctl "playerctl";
+          brightnessctl = lib.getExe' pkgs.unstable.brightnessctl "brightnessctl";
+          pamixer = lib.getExe' pkgs.unstable.pamixer "pamixer";
           waybar = lib.getExe' config.programs.waybar.package "waybar";
 
           # Aborting the region selection must not leave an empty file behind.
@@ -57,9 +57,9 @@ rhizome.unit "sway" {
             runtimeInputs = [
               pkgs.coreutils
               pkgs.util-linux
-              config.programs.grim.package
-              config.programs.slurp.package
-              config.programs."wl-clipboard".package
+              pkgs.unstable.grim
+              pkgs.unstable.slurp
+              pkgs.unstable.wl-clipboard
             ];
 
             text = ''

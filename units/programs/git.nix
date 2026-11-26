@@ -2,6 +2,7 @@
 
 let
   inherit (units.platform) home-manager user;
+  inherit (units.programs) nushell;
 in
 
 rhizome.unit "git" {
@@ -12,6 +13,22 @@ rhizome.unit "git" {
 
     config = { identity }: [
       (home-manager.program "git")
+
+      (nushell.abbreviation {
+        g = "git";
+        b = "git branch";
+        ch = "git checkout";
+        h = "git diff HEAD --staged";
+        hh = "git diff HEAD~1";
+        gd = "git diff";
+        gl = "git log";
+        gp = "git push";
+        ga = "git add --intent-to-add .";
+        gaa = "git add --all";
+        gr = "git reset";
+        grr = "git reset --hard HEAD";
+        grrr = "git reset --hard HEAD~1";
+      })
 
       (home-manager.module (
         {
@@ -24,31 +41,44 @@ rhizome.unit "git" {
         let
           inherit (identity) name email;
 
-          fsmonitor = config.programs.git.fsmonitor;
+          git = config.programs.git.package;
+
+          # Upstream git has no Linux fsmonitor daemon, so watching is
+          # delegated to watchman (inotify/fanotify under the hood). Same
+          # version as unstable, which currently fails to build (folly vs gcc
+          # 15.3).
+          watchman = pkgs.watchman;
+
+          # Git ships a reference watchman hook for fsmonitor protocol v2
+          # (perl, v2 tokens).
+          hook = "${git}/share/git-core/templates/hooks/fsmonitor-watchman.sample";
+
+          # Opts the current repo into watchman fsmonitor.
+          watch = pkgs.writeShellApplication {
+            name = "git-fsmonitor-watch";
+            runtimeInputs = [
+              git
+              watchman
+            ];
+            text = ''
+              git config core.fsmonitor ${hook}
+              git update-index --fsmonitor
+            '';
+          };
+
+          # Opts the current repo out of it.
+          unwatch = pkgs.writeShellApplication {
+            name = "git-fsmonitor-unwatch";
+            runtimeInputs = [ git ];
+            text = ''
+              git config --unset core.fsmonitor
+              git update-index --no-fsmonitor
+            '';
+          };
         in
 
         {
-          programs.git.fsmonitor = {
-            enable = lib.mkDefault true;
-            # Same version as unstable, which currently fails to build (folly vs gcc 15.3).
-            package = lib.mkDefault pkgs.watchman;
-          };
-
-          programs.nushell.abbreviations = {
-            g = "git";
-            b = "git branch";
-            ch = "git checkout";
-            h = "git diff HEAD --staged";
-            hh = "git diff HEAD~1";
-            gd = "git diff";
-            gl = "git log";
-            gp = "git push";
-            ga = "git add --intent-to-add .";
-            gaa = "git add --all";
-            gr = "git reset";
-            grr = "git reset --hard HEAD";
-            grrr = "git reset --hard HEAD~1";
-          };
+          home.packages = [ watchman ];
 
           programs.git.ignores = [ ".ignore/" ];
 
@@ -68,8 +98,8 @@ rhizome.unit "git" {
               pl = "pull origin";
               amend = "commit --amend";
 
-              watch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.watchScript}";
-              unwatch = lib.mkIf fsmonitor.enable "!${lib.getExe fsmonitor.unwatchScript}";
+              watch = "!${lib.getExe watch}";
+              unwatch = "!${lib.getExe unwatch}";
             };
 
             push = {

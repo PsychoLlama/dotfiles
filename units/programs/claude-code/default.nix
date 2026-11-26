@@ -17,6 +17,8 @@ rhizome.unit "claude-code" (claude-code: {
         trusted-directories,
       }:
       [
+        # `a` short for `agent`
+        (units.programs.nushell.abbreviation { a = "claude"; })
 
         (home-manager.module (
           {
@@ -36,8 +38,6 @@ rhizome.unit "claude-code" (claude-code: {
 
           {
             config = {
-              programs.nushell.abbreviations.a = "claude"; # `a` short for `agent`
-
               programs.claude-code = {
                 enable = lib.mkDefault true;
                 package = lib.mkDefault pkgs.unstable.custom.claude-code-bin;

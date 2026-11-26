@@ -7,33 +7,27 @@ in
 rhizome.unit "profiles.linux-desktop" (linux-desktop: {
   main = rhizome.component [
 
-    (home-manager.module (
-      { lib, ... }:
-
-      {
-        programs.signal-desktop.enable = lib.mkDefault true;
-      }
-    ))
+    (home-manager.module ({ pkgs, ... }: { home.packages = [ pkgs.signal-desktop ]; }))
   ];
 
   unit = [
     linux-desktop.main
-    (home-manager.program "acpi")
+    (home-manager.package "acpi")
     units.programs.bemoji.unit
-    (home-manager.program "brightnessctl")
+    (home-manager.package "brightnessctl")
     units.programs.chromium.unit
     units.programs.firefox.unit
     units.programs.fuzzel.unit
-    (home-manager.program "grim")
-    (home-manager.program "pamixer")
-    (home-manager.program "parted")
-    (home-manager.program "playerctl")
-    (home-manager.program "slurp")
+    (home-manager.package "grim")
+    (home-manager.package "pamixer")
+    (home-manager.package "parted")
+    (home-manager.package "playerctl")
+    (home-manager.package "slurp")
     units.programs.sway.unit
     units.programs.swaylock.unit
     units.programs.waybar.unit
-    (home-manager.program "wireplumber")
-    (home-manager.program "wl-clipboard")
+    (home-manager.package "wireplumber")
+    (home-manager.package "wl-clipboard")
     units.services.dunst.unit
     units.services.gammastep.unit
     units.services.network-manager.unit

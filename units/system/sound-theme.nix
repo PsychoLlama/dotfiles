@@ -4,52 +4,43 @@ let
   inherit (units.platform) home-manager;
 in
 
-rhizome.unit "sound-theme" {
+rhizome.unit "sound-theme" (sound-theme: {
+  /**
+    Plays a sound from the theme by name: `play-sound message-new-instant`.
+
+    # Type
+
+    ```
+    player :: Pkgs -> Package
+    ```
+  */
+  player =
+    pkgs:
+    pkgs.writeShellApplication {
+      name = "play-sound";
+      runtimeInputs = [
+        pkgs.pipewire
+        pkgs.procps
+      ];
+
+      text = ''
+        pkill -x pw-play || true
+        pw-play "${pkgs.unstable.kdePackages.ocean-sound-theme}/share/sounds/ocean/stereo/$1.oga"
+      '';
+    };
+
   unit = rhizome.component [
     (home-manager.module (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }:
-
-      let
-        oceanSounds = "${pkgs.unstable.kdePackages.ocean-sound-theme}/share/sounds/ocean/stereo";
-
-        playSound = pkgs.writeShellApplication {
-          name = "play-sound";
-          runtimeInputs = [
-            pkgs.pipewire
-            pkgs.procps
-          ];
-
-          text = ''
-            pkill -x pw-play || true
-            pw-play "${oceanSounds}/$1.oga"
-          '';
-        };
-      in
+      { pkgs, ... }:
 
       {
-        options.psychollama.presets.sound-theme = {
-          play = lib.mkOption {
-            type = lib.types.str;
-            readOnly = true;
-            default = lib.getExe' playSound "play-sound";
-            description = "Path to the play-sound executable.";
-          };
-        };
+        home.packages = [ (sound-theme.player pkgs) ];
 
-        config = {
-          home.packages = [ playSound ];
-
-          dconf.settings."org/gnome/desktop/sound" = {
-            theme-name = "ocean";
-            event-sounds = true;
-          };
+        dconf.settings."org/gnome/desktop/sound" = {
+          theme-name = "ocean";
+          event-sounds = true;
         };
       }
     ))
   ];
-}
+})

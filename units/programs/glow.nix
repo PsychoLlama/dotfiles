@@ -1,18 +1,18 @@
 { rhizome, units, ... }:
 
-let
-  inherit (units.platform) home-manager;
-in
-
 rhizome.unit "glow" {
   unit = rhizome.component [
-    (home-manager.program "glow")
+    (units.platform.home-manager.module (
+      { pkgs, ... }:
 
-    (home-manager.module ({
-      programs.glow.settings = {
-        local = true;
-        pager = false;
-      };
-    }))
+      {
+        home.packages = [ pkgs.unstable.glow ];
+
+        xdg.configFile."glow/glow.yml".source = (pkgs.formats.yaml { }).generate "glow-config" {
+          local = true;
+          pager = false;
+        };
+      }
+    ))
   ];
 }

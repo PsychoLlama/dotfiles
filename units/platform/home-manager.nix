@@ -16,6 +16,24 @@ rhizome.unit "home-manager" (home-manager: {
   };
 
   /**
+    Installs a package from `pkgs.unstable`.
+
+    # Type
+
+    ```
+    package :: String -> Emission
+    ```
+  */
+  package =
+    name:
+    home-manager.module (
+      { pkgs, ... }:
+      {
+        home.packages = [ pkgs.unstable.${name} ];
+      }
+    );
+
+  /**
     Installs a program from `pkgs.unstable` through its Home Manager module.
 
     # Type

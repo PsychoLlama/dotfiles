@@ -1,65 +1,92 @@
 { rhizome, units, ... }:
 
 let
-  inherit (units.platform) home-manager;
+  t = rhizome.types;
+  inherit (units.platform) home-manager user;
 in
 
-rhizome.unit "nushell" {
-  unit = rhizome.component [
-    (home-manager.program "nushell")
+rhizome.unit "nushell" (nushell: {
+  # Abbreviations expanded inline at the prompt, by what is typed. Unlike
+  # aliases, the expansion is committed to history, keeping substring search
+  # reliable.
+  abbreviation = rhizome.channel {
+    level = user.level;
+    type = t.attrs-of t.str;
+    merge = rhizome.merge.list;
+    optional = true;
+  };
 
-    (home-manager.module (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }:
+  unit = rhizome.component {
+    uses.abbreviations = nushell.abbreviation;
 
-      let
-        zoxideCommandSetup =
-          pkgs.runCommand "zoxide-init" { buildInputs = [ config.programs.zoxide.package ]; }
-            ''
-              zoxide init nushell > "$out"
-            '';
+    config =
+      { abbreviations }:
+      [
+        (home-manager.program "nushell")
 
-        # Some modules use POSIX interpolation, which Nushell obviously doesn't
-        # support. Just ignore them.
-        safeSessionVariables = lib.filterAttrs (
-          _: value: !(lib.isString value && lib.strings.hasInfix "\${" value)
-        ) config.home.sessionVariables;
-      in
+        (home-manager.module (
+          {
+            config,
+            lib,
+            pkgs,
+            ...
+          }:
 
-      {
-        programs.nushell = {
-          libraries = {
-            enable = true;
-            path = [ ./libraries ];
-          };
+          let
+            zoxideCommandSetup =
+              pkgs.runCommand "zoxide-init" { buildInputs = [ config.programs.zoxide.package ]; }
+                ''
+                  zoxide init nushell > "$out"
+                '';
 
-          abbreviations.p = "project";
+            # Some modules use POSIX interpolation, which Nushell obviously doesn't
+            # support. Just ignore them.
+            safeSessionVariables = lib.filterAttrs (
+              _: value: !(lib.isString value && lib.strings.hasInfix "\${" value)
+            ) config.home.sessionVariables;
+          in
 
-          # Use the default aliases, except for `ls` overrides. Nushell has
-          # a great `ls` replacement.
-          shellAliases = lib.filterAttrs (key: value: key != "l" && key != "ls") config.home.shellAliases // {
-            l = "ls --all";
-          };
+          {
+            programs.nushell = {
+              # Use the default aliases, except for `ls` overrides. Nushell has
+              # a great `ls` replacement.
+              shellAliases = lib.filterAttrs (key: value: key != "l" && key != "ls") config.home.shellAliases // {
+                l = "ls --all";
+              };
 
-          extraConfig = ''
-            source ${./config.nu}
-            source ${zoxideCommandSetup}
+              extraConfig = lib.mkMerge [
+                ''
+                  source ${./config.nu}
+                  source ${zoxideCommandSetup}
 
-            load-env ${lib.hm.nushell.toNushell { } safeSessionVariables}
-          '';
+                  load-env ${lib.hm.nushell.toNushell { } safeSessionVariables}
+                ''
 
-          extraEnv = ''
-            source ${./env.nu}
-          '';
-        };
+                # Ordered after the rest of the config, which is free to replace
+                # `$env.config`. Without it the position depends on module order.
+                (lib.mkOrder 1100 ''
+                  $env.config.abbreviations = ($env.config.abbreviations | merge ${
+                    lib.hm.nushell.toNushell { } (lib.mergeAttrsList abbreviations // { p = "project"; })
+                  })
+                '')
+              ];
 
-        # The default completions are incompatible with newer versions of Nushell.
-        programs.zoxide.enableNushellIntegration = false;
-      }
-    ))
-  ];
-}
+              extraEnv = lib.mkMerge [
+                ''
+                  ### Add custom libraries to the search path ###
+                  $env.NU_LIB_DIRS ++= ${lib.hm.nushell.toNushell { } [ (toString ./libraries) ]}
+                ''
+
+                ''
+                  source ${./env.nu}
+                ''
+              ];
+            };
+
+            # The default completions are incompatible with newer versions of Nushell.
+            programs.zoxide.enableNushellIntegration = false;
+          }
+        ))
+      ];
+  };
+})

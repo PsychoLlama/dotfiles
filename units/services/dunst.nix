@@ -8,10 +8,10 @@ rhizome.unit "dunst" (dunst: {
   main = rhizome.component [
 
     (home-manager.module (
-      { config, pkgs, ... }:
+      { lib, pkgs, ... }:
 
       let
-        soundTheme = config.psychollama.presets.sound-theme;
+        play-sound = lib.getExe (units.system.sound-theme.player pkgs);
 
         notificationSound = pkgs.writeShellApplication {
           name = "dunst-notification-sound";
@@ -20,7 +20,7 @@ rhizome.unit "dunst" (dunst: {
               critical) sound="dialog-error" ;;
               *) sound="message-new-instant" ;;
             esac
-            ${soundTheme.play} "$sound" &
+            ${play-sound} "$sound" &
           '';
         };
       in

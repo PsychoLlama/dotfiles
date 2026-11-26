@@ -15,7 +15,8 @@ rhizome.unit "dictation" {
       }:
 
       let
-        cfg = config.psychollama.presets.programs.dictation;
+        # tiny.en, base.en, small.en, medium.en, or large.
+        model = "base.en";
         recordCommand = ''pw-record "$audio_file"'';
 
         dictation = pkgs.writeShellApplication {
@@ -28,7 +29,7 @@ rhizome.unit "dictation" {
 
           text = ''
             MODEL_URL="https://huggingface.co/ggerganov/whisper.cpp/resolve/main"
-            MODEL="''${DICTATION_MODEL:-${cfg.model}}"
+            MODEL="''${DICTATION_MODEL:-${model}}"
             MODEL_DIR="''${XDG_DATA_HOME:-$HOME/.local/share}/whisper"
             MODEL_PATH="$MODEL_DIR/ggml-$MODEL.bin"
 
@@ -67,15 +68,7 @@ rhizome.unit "dictation" {
       in
 
       {
-        options.psychollama.presets.programs.dictation = {
-          model = lib.mkOption {
-            type = lib.types.str;
-            default = "base.en";
-            description = "Whisper model to use (tiny.en, base.en, small.en, medium.en, large)";
-          };
-        };
-
-        config.home.packages = [ dictation ];
+        home.packages = [ dictation ];
       }
     ))
   ];
