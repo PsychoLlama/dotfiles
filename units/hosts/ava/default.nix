@@ -112,41 +112,37 @@ in
     ];
   };
 
-  unit = define.group {
-    includes = [
-      (host.instance
-        {
-          name = "ava";
-          system = "x86_64-linux";
-        }
-        [
-          self.hardware
-          (theme.palette theme.values.palettes.one-dark)
+  unit =
+    host.instance
+      {
+        name = "ava";
+        system = "x86_64-linux";
+      }
+      [
+        self.hardware
+        (theme.palette theme.values.palettes.one-dark)
 
-          (user.instance
-            {
-              username = "overlord";
-              name = "Jesse Gibson";
-              email = "JesseTheGibson@gmail.com";
-            }
-            [
-              self.account
+        (user.instance
+          {
+            username = "overlord";
+            name = "Jesse Gibson";
+            email = "JesseTheGibson@gmail.com";
+          }
+          [
+            self.account
 
-              (map user.trusted-directory [
-                "~/projects/psychollama"
-                "~/projects/@scratch"
-                "~/projects/retreon"
-                "~/projects/ambient-computer"
-              ])
+            (map user.trusted-directory [
+              "~/projects/psychollama"
+              "~/projects/@scratch"
+              "~/projects/retreon"
+              "~/projects/ambient-computer"
+            ])
 
-              profiles.substrate.unit
-              profiles.full.unit
-              profiles.home-lab-admin.unit
-              profiles.linux-desktop.unit
-            ]
-          )
-        ]
-      )
-    ];
-  };
+            profiles.substrate.unit
+            profiles.full.unit
+            profiles.home-lab-admin.unit
+            profiles.linux-desktop.unit
+          ]
+        )
+      ];
 }

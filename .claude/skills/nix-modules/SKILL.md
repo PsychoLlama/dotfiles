@@ -39,7 +39,7 @@ description: Use when reading or writing Nix config in this repo — units, prof
 
 ## Hosts
 
-- `units/hosts/<name>/default.nix` is a group around a `host.instance` holding a `user.instance`.
+- `units/hosts/<name>/default.nix` exports a `host.instance` holding a `user.instance` as its `unit`.
 - The host writes the facts: identity, trusted directories, palette.
 - Every host becomes `nixosConfigurations.<name>`.
 
