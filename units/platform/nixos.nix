@@ -16,7 +16,7 @@ in
   module = define.collection {
     scope = host.scope;
     type = t.module;
-    combine = entries: entries;
+    combine = map self.lib.locate;
   };
 
   # A machine to build, with every module written for it.
@@ -49,19 +49,19 @@ in
   unit = define.unit {
     uses = {
       inherit (host) name system;
-      entries = self.module;
+      modules = self.module;
     };
 
     provides =
       {
         name,
         system,
-        entries,
+        modules,
       }:
       [
         (self.machine {
           inherit name system;
-          modules = map self.lib.locate entries;
+          inherit modules;
         })
       ];
   };

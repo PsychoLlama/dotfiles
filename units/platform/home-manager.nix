@@ -19,7 +19,7 @@ in
   module = define.collection {
     scope = user.scope;
     type = t.module;
-    combine = entries: entries;
+    combine = map nixos.lib.locate;
   };
 
   /**
@@ -65,11 +65,11 @@ in
   unit = define.unit {
     uses = {
       inherit (user) identity;
-      entries = self.module;
+      modules = self.module;
     };
 
     provides =
-      { identity, entries }:
+      { identity, modules }:
       [
         (nixos.module (
           { lib, ... }:
@@ -79,7 +79,7 @@ in
             home-manager = {
               useGlobalPkgs = lib.mkDefault true;
               useUserPackages = lib.mkDefault true;
-              users.${identity.username}.imports = map nixos.lib.locate entries;
+              users.${identity.username}.imports = modules;
             };
           }
         ))
