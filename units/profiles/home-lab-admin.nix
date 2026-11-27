@@ -1,11 +1,11 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) nixos user;
 in
 
-rhizome.unit "profiles.home-lab-admin" {
-  unit = rhizome.component {
+{
+  unit = module.component "unit" {
     uses = {
       inherit (user) identity;
     };

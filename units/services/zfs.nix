@@ -1,58 +1,60 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) nixos;
 in
 
-rhizome.unit "zfs" {
-  unit = rhizome.component [
-    (nixos.module (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }:
+{
+  unit = module.component "unit" {
+    config = [
+      (nixos.module (
+        {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
 
-      {
-        boot = {
-          initrd.supportedFilesystems = [ "zfs" ];
-          supportedFilesystems = [ "zfs" ];
+        {
+          boot = {
+            initrd.supportedFilesystems = [ "zfs" ];
+            supportedFilesystems = [ "zfs" ];
 
-          # Don't force-import a pool that wasn't cleanly exported. Reduces the risk
-          # of data loss; this is the default from 26.11 onward.
-          zfs.forceImportRoot = false;
+            # Don't force-import a pool that wasn't cleanly exported. Reduces the risk
+            # of data loss; this is the default from 26.11 onward.
+            zfs.forceImportRoot = false;
 
-          # Use stable kernel. This is the default, but I'd rather be explicit.
-          # Using non-LTS kernels may corrupt the drive since ZFS has spotty
-          # support for newer kernels.
-          kernelPackages = pkgs.linuxPackages;
+            # Use stable kernel. This is the default, but I'd rather be explicit.
+            # Using non-LTS kernels may corrupt the drive since ZFS has spotty
+            # support for newer kernels.
+            kernelPackages = pkgs.linuxPackages;
 
-          # ZFS doesn't support freeze/thaw APIs. Hibernation could corrupt files.
-          # https://github.com/openzfs/zfs/issues/260
-          kernelParams = [
-            "nohibernate"
-          ];
+            # ZFS doesn't support freeze/thaw APIs. Hibernation could corrupt files.
+            # https://github.com/openzfs/zfs/issues/260
+            kernelParams = [
+              "nohibernate"
+            ];
 
-          # ARC defaults to nearly all RAM. It doesn't free on contention fast
-          # enough and heavy processes swap to disk instead. It kills perf.
-          extraModprobeConfig = ''
-            options zfs zfs_arc_max=${toString (16 * 1024 * 1024 * 1024)}
-          '';
+            # ARC defaults to nearly all RAM. It doesn't free on contention fast
+            # enough and heavy processes swap to disk instead. It kills perf.
+            extraModprobeConfig = ''
+              options zfs zfs_arc_max=${toString (16 * 1024 * 1024 * 1024)}
+            '';
 
-          loader = {
-            # Fixes a potential issue where too many hardlinks in the nix store can
-            # brick the boot process. Recommended for ZFS.
-            grub.copyKernels = true;
-            efi.canTouchEfiVariables = true;
+            loader = {
+              # Fixes a potential issue where too many hardlinks in the nix store can
+              # brick the boot process. Recommended for ZFS.
+              grub.copyKernels = true;
+              efi.canTouchEfiVariables = true;
+            };
           };
-        };
 
-        services.zfs = {
-          trim.enable = true;
-          autoScrub.enable = true;
-        };
-      }
-    ))
-  ];
+          services.zfs = {
+            trim.enable = true;
+            autoScrub.enable = true;
+          };
+        }
+      ))
+    ];
+  };
 }

@@ -1,8 +1,9 @@
 # What everything else stands on.
 {
-  rhizome,
   units,
   inputs,
+  self,
+  module,
   ...
 }:
 
@@ -11,15 +12,19 @@ let
   inherit (units.platform) home-manager nixos;
 in
 
-rhizome.unit "profiles.substrate" (substrate: {
-  main = rhizome.component [
-    (nixos.module { imports = [ agenix.nixosModules.default ]; })
-    (home-manager.module { imports = [ agenix.homeManagerModules.default ]; })
-  ];
+{
+  main = module.component "main" {
+    config = [
+      (nixos.module { imports = [ agenix.nixosModules.default ]; })
+      (home-manager.module { imports = [ agenix.homeManagerModules.default ]; })
+    ];
+  };
 
-  unit = [
-    substrate.main
-    units.system.nix-daemon.unit
-    units.system.package-set.unit
-  ];
-})
+  unit = module.group "unit" {
+    config = [
+      self.main
+      units.system.nix-daemon.unit
+      units.system.package-set.unit
+    ];
+  };
+}

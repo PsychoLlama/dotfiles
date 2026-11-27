@@ -1,11 +1,11 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) home-manager theme;
 in
 
-rhizome.unit "waybar" {
-  unit = rhizome.component {
+{
+  unit = module.component "unit" {
     uses = {
       inherit (theme) palette;
     };
@@ -24,7 +24,7 @@ rhizome.unit "waybar" {
           # Sway's own idle inhibitor is the module's reason to exist, so key off
           # the service rather than assuming a profile wired it up.
           swayidle = config.services.swayidle;
-          path-condition = units.services.swayidle.disabled-flag config.home.username;
+          path-condition = units.services.swayidle.lib.disabled-flag config.home.username;
 
           # Sway ignores every idle inhibitor that isn't attached to the lock surface
           # while a session lock is held (`sway_idle_inhibit_v1_is_active`), so waybar's

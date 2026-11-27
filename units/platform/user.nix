@@ -1,18 +1,24 @@
 # A person on the machine, and facts about them.
-{ rhizome, units, ... }:
+{
+  rhizome,
+  units,
+  self,
+  module,
+  ...
+}:
 
 let
   t = rhizome.types;
   inherit (units.platform) home-manager host;
 in
 
-rhizome.unit "user" (user: {
-  level = rhizome.level { within = host.level; };
+{
+  level = module.level "level" { within = host.level; };
 
   # Who they are, for anything that addresses or attributes them: the login,
   # git, group membership.
-  identity = rhizome.channel {
-    level = user.level;
+  identity = module.channel "identity" {
+    level = self.level;
     merge = rhizome.merge.one;
     optional = true;
 
@@ -27,20 +33,20 @@ rhizome.unit "user" (user: {
   # sources a project-local vimrc, direnv loads `.envrc`, and Claude Code is
   # granted filesystem access, all without prompting. `~`-relative; readers
   # that need absolute paths expand it.
-  trusted-directory = rhizome.channel {
-    level = user.level;
+  trusted-directory = module.channel "trusted-directory" {
+    level = self.level;
     type = t.str;
     merge = rhizome.merge.list;
     optional = true;
   };
 
-  scope = user.level.scope (cfg: {
+  scope = self.level.scope module "scope" (cfg: {
     label = cfg.username;
-    type = user.identity.type;
+    input = self.identity.type;
 
     config = [
-      (user.identity cfg)
+      (self.identity cfg)
       home-manager.unit
     ];
   });
-})
+}

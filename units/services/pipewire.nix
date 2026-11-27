@@ -1,25 +1,27 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) nixos;
 in
 
-rhizome.unit "pipewire" {
-  unit = rhizome.component [
-    (nixos.module (
-      { config, lib, ... }:
+{
+  unit = module.component "unit" {
+    config = [
+      (nixos.module (
+        { config, lib, ... }:
 
-      {
-        # Used by Pipewire to get real-time thread priority.
-        security.rtkit.enable = lib.mkDefault true;
+        {
+          # Used by Pipewire to get real-time thread priority.
+          security.rtkit.enable = lib.mkDefault true;
 
-        services.pipewire = {
-          enable = lib.mkDefault true;
-          audio.enable = lib.mkDefault true;
-          alsa.enable = lib.mkDefault true;
-          pulse.enable = lib.mkDefault true;
-        };
-      }
-    ))
-  ];
+          services.pipewire = {
+            enable = lib.mkDefault true;
+            audio.enable = lib.mkDefault true;
+            alsa.enable = lib.mkDefault true;
+            pulse.enable = lib.mkDefault true;
+          };
+        }
+      ))
+    ];
+  };
 }

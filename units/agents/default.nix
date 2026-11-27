@@ -4,6 +4,8 @@
   lib,
   rhizome,
   units,
+  self,
+  module,
   ...
 }:
 
@@ -12,8 +14,8 @@ let
   inherit (units.platform) user;
 in
 
-rhizome.unit "agents" (agents: {
-  memory = rhizome.channel {
+{
+  memory = module.channel "memory" {
     level = user.level;
 
     type = {
@@ -34,7 +36,7 @@ rhizome.unit "agents" (agents: {
   };
 
   # Something an agent can be taught to do. Each tool renders it its own way.
-  skill = rhizome.channel {
+  skill = module.channel "skill" {
     level = user.level;
     merge = rhizome.merge.list;
     optional = true;
@@ -108,27 +110,29 @@ rhizome.unit "agents" (agents: {
       );
   };
 
-  unit = rhizome.component [
-    (agents.memory {
-      context = ''
-        # Environment
+  unit = module.component "unit" {
+    config = [
+      (self.memory {
+        context = ''
+          # Environment
 
-        - Nix is installed with `nix-command flakes` enabled.
-        - Prefer the `nix` command (`nix build` over `nix-build`, `nix shell` over `nix-shell`, etc).
-        - Prefer `fd` over `find`.
+          - Nix is installed with `nix-command flakes` enabled.
+          - Prefer the `nix` command (`nix build` over `nix-build`, `nix shell` over `nix-shell`, etc).
+          - Prefer `fd` over `find`.
 
-        # Commit Messages
+          # Commit Messages
 
-        - Imperative title, descriptive body (markdown).
-        - Capture context not otherwise available (goal, failed approaches, decisions, etc).
-      '';
+          - Imperative title, descriptive body (markdown).
+          - Capture context not otherwise available (goal, failed approaches, decisions, etc).
+        '';
 
-      rules = {
-        authoring-agent-files = ./rules/authoring-agent-files.md;
-        authoring-memory-files = ./rules/authoring-memory-files.md;
-        neovim-development = ./rules/neovim-development.md;
-        neovim-local-vimrc = ./rules/neovim-local-vimrc.md;
-      };
-    })
-  ];
-})
+        rules = {
+          authoring-agent-files = ./rules/authoring-agent-files.md;
+          authoring-memory-files = ./rules/authoring-memory-files.md;
+          neovim-development = ./rules/neovim-development.md;
+          neovim-local-vimrc = ./rules/neovim-local-vimrc.md;
+        };
+      })
+    ];
+  };
+}

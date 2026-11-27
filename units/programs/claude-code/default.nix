@@ -1,4 +1,10 @@
-{ rhizome, units, ... }:
+{
+  rhizome,
+  units,
+  self,
+  module,
+  ...
+}:
 
 let
   t = rhizome.types;
@@ -8,8 +14,8 @@ let
   # Everything written here may hold packages, so it may be a function of
   # the Home Manager module's arguments: `{ config, lib, pkgs, ... }: { }`.
   written =
-    type:
-    rhizome.channel {
+    name: type:
+    module.channel name {
       level = user.level;
       type = t.either type t.function;
       merge = rhizome.merge.list;
@@ -27,29 +33,29 @@ let
   };
 in
 
-rhizome.unit "claude-code" (claude-code: {
+{
   # Part of `settings.json`. Attrsets merge and lists join.
-  settings = written t.attrs;
+  settings = written "settings" t.attrs;
 
   # A locally-defined plugin, published through an inline marketplace.
   #
   # Every plugin is provisioned *disabled*: the marketplace makes it
   # available, and each repository enables the ones it wants through its own
   # project settings.
-  plugin = written plugin;
+  plugin = written "plugin" plugin;
 
   # Replaces home-manager's `programs.claude-code`. We use almost none of it
   # and fight the rest: its plugin support wraps the binary (which breaks
   # Claude's CLI flag parsing outright), its `marketplaces` option overwrites
   # `settings.extraKnownMarketplaces` wholesale, and its `skills` rejects
   # derivations. What's left is a thin mapping onto `home.file`.
-  main = rhizome.component {
+  main = module.component "main" {
     uses = {
       inherit (agents) memory;
       skills = agents.skill;
       trusted-directories = user.trusted-directory;
-      settings = claude-code.settings;
-      plugins = claude-code.plugin;
+      settings = self.settings;
+      plugins = self.plugin;
     };
 
     config =
@@ -287,19 +293,21 @@ rhizome.unit "claude-code" (claude-code: {
       ];
   };
 
-  unit = [
-    claude-code.main
-    units.programs.claude-code.hooks.agent-history.unit
-    units.programs.claude-code.hooks.auto-format.unit
-    units.programs.claude-code.hooks.block-env-files.unit
-    units.programs.claude-code.hooks.direnv.unit
-    units.programs.claude-code.hooks.notify-permission-request.unit
-    units.programs.claude-code.plugins.chrome-devtools.unit
-    units.programs.claude-code.plugins.lua-lsp.unit
-    units.programs.claude-code.plugins.nil-lsp.unit
-    units.programs.claude-code.plugins.nushell-lsp.unit
-    units.programs.claude-code.plugins.rust-lsp.unit
-    units.programs.claude-code.plugins.typescript-lsp.unit
-    units.programs.claude-code.statusline.unit
-  ];
-})
+  unit = module.group "unit" {
+    config = [
+      self.main
+      units.programs.claude-code.hooks.agent-history.unit
+      units.programs.claude-code.hooks.auto-format.unit
+      units.programs.claude-code.hooks.block-env-files.unit
+      units.programs.claude-code.hooks.direnv.unit
+      units.programs.claude-code.hooks.notify-permission-request.unit
+      units.programs.claude-code.plugins.chrome-devtools.unit
+      units.programs.claude-code.plugins.lua-lsp.unit
+      units.programs.claude-code.plugins.nil-lsp.unit
+      units.programs.claude-code.plugins.nushell-lsp.unit
+      units.programs.claude-code.plugins.rust-lsp.unit
+      units.programs.claude-code.plugins.typescript-lsp.unit
+      units.programs.claude-code.statusline.unit
+    ];
+  };
+}

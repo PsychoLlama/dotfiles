@@ -5,6 +5,8 @@
   lib,
   rhizome,
   units,
+  self,
+  module,
   ...
 }:
 
@@ -15,8 +17,8 @@ let
   optional = type: t.default (t.either type t.null) null;
 
   channel =
-    type:
-    rhizome.channel {
+    name: type:
+    module.channel name {
       level = user.level;
       inherit type;
       merge = rhizome.merge.list;
@@ -27,9 +29,9 @@ let
   resolve = pkgs: value: if lib.isFunction value then value pkgs else value;
 in
 
-rhizome.unit "editor" (editor: {
+{
   # The editor itself, given `pkgs`. Defaults to `pkgs.unstable.neovim`.
-  neovim = rhizome.channel {
+  neovim = module.channel "neovim" {
     level = user.level;
     type = t.function;
     merge = rhizome.merge.one-or-none;
@@ -37,7 +39,7 @@ rhizome.unit "editor" (editor: {
   };
 
   # A plugin to install.
-  plugin = channel {
+  plugin = channel "plugin" {
     # Its attribute in `vimPlugins`, or in `pkgs.custom.vimPlugins`.
     name = t.str;
 
@@ -59,7 +61,7 @@ rhizome.unit "editor" (editor: {
   };
 
   # A language server. Fields mirror `vim.lsp.Config`.
-  server = channel {
+  server = channel "server" {
     name = t.str;
 
     # The executable and its arguments. Given `pkgs` if it is a function.
@@ -75,10 +77,10 @@ rhizome.unit "editor" (editor: {
   };
 
   # Lines of `init.lua`. Given `pkgs` if it is a function.
-  config = channel (t.either t.str t.function);
+  config = channel "config" (t.either t.str t.function);
 
   # A program on the editor's `PATH`, given `pkgs`.
-  tool = channel t.function;
+  tool = channel "tool" t.function;
 
   lib = {
     /**
@@ -229,13 +231,13 @@ rhizome.unit "editor" (editor: {
   };
 
   # Builds the editor and installs it for the user.
-  unit = rhizome.component {
+  unit = module.component "unit" {
     uses = {
-      inherit (editor) neovim;
-      plugins = editor.plugin;
-      servers = editor.server;
-      config = editor.config;
-      tools = editor.tool;
+      inherit (self) neovim;
+      plugins = self.plugin;
+      servers = self.server;
+      config = self.config;
+      tools = self.tool;
 
       # At or beneath one, a project-local vimrc is sourced without
       # prompting. `~` is expanded at runtime by the env framework.
@@ -247,7 +249,7 @@ rhizome.unit "editor" (editor: {
         { pkgs, ... }:
 
         let
-          neovim = editor.lib.build pkgs collected;
+          neovim = self.lib.build pkgs collected;
         in
 
         {
@@ -263,4 +265,4 @@ rhizome.unit "editor" (editor: {
       ))
     ];
   };
-})
+}

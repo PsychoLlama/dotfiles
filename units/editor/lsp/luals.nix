@@ -1,29 +1,31 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units) editor;
 in
 
-rhizome.unit "editor.lsp.luals" {
-  unit = rhizome.component [
-    (editor.server {
-      name = "luals";
-      cmd = pkgs: [ "${pkgs.unstable.lua-language-server}/bin/lua-language-server" ];
-      filetypes = [ "lua" ];
-      root_markers = [
-        ".git/"
-        ".luarc.json"
-      ];
+{
+  unit = module.component "unit" {
+    config = [
+      (editor.server {
+        name = "luals";
+        cmd = pkgs: [ "${pkgs.unstable.lua-language-server}/bin/lua-language-server" ];
+        filetypes = [ "lua" ];
+        root_markers = [
+          ".git/"
+          ".luarc.json"
+        ];
 
-      # Reference: https://luals.github.io/wiki/settings/
-      settings.Lua = {
-        # Using stylua instead.
-        format.enable = false;
+        # Reference: https://luals.github.io/wiki/settings/
+        settings.Lua = {
+          # Using stylua instead.
+          format.enable = false;
 
-        # Don't try to dynamically manage library type defs.
-        workspace.checkThirdParty = false;
-        addonManager.enable = false;
-      };
-    })
-  ];
+          # Don't try to dynamically manage library type defs.
+          workspace.checkThirdParty = false;
+          addonManager.enable = false;
+        };
+      })
+    ];
+  };
 }

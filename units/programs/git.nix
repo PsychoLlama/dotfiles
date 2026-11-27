@@ -1,18 +1,18 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) home-manager user;
   inherit (units.programs) nushell;
 in
 
-rhizome.unit "git" {
-  unit = rhizome.component {
+{
+  unit = module.component "unit" {
     uses = {
       inherit (user) identity;
     };
 
     config = { identity }: [
-      (home-manager.program "git")
+      (home-manager.lib.program "git")
 
       (nushell.abbreviation {
         g = "git";

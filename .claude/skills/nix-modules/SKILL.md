@@ -4,24 +4,25 @@ description: Use when reading or writing Nix config in this repo — units, prof
 ---
 
 - Config is composed with rhizome. The `rhizome` skill documents the library; this one covers only what is specific to this repo.
-- `flake.nix` loads `units/` with `rhizome.load`. Every file takes `{ lib, rhizome, inputs, units, ... }`.
+- `flake.nix` loads `units/` with `rhizome.load`. Every file takes `{ lib, rhizome, inputs, units, self, module, ... }` and returns an attrset.
 
 ## House conventions
 
-- A unit's function argument is named after the unit: `rhizome.unit "nushell" (nushell: { ... })`.
+- `unit` is what a consumer includes: a component, or a group.
 - Typed input is named `cfg`.
 - A unit that is a group names its own component `main`.
+- A file reaches its own definitions through `self`, never `rec`.
 - No NixOS or Home Manager `options`. A unit's settings are its input or a channel.
 
 ## Channels
 
 - `nixos.module`, `home-manager.module`: a module for that class. Units write to them; the host and user scopes hand them over.
-- `home-manager.program "name"` installs through a Home Manager module that exists upstream. `home-manager.package "name"` installs a bare package. Both from `pkgs.unstable`.
+- `home-manager.lib.program "name"` installs through a Home Manager module that exists upstream. `home-manager.lib.package "name"` installs a bare package. Both from `pkgs.unstable`.
 - `user.identity`, `user.trusted-directory`, `theme.palette`, `agents.memory`: facts. There is no `host` module argument.
 - `nushell.abbreviation`: shell abbreviations, from any unit.
 - `agents.skill`: a skill for every agent. `claude-code.settings` and `claude-code.plugin`: Claude Code only.
 - A value that holds a package is a function of `pkgs` (`cmd = pkgs: [ ... ]`), or of the Home Manager module's arguments where the channel says so.
-- What another unit needs that is not a channel is a plain attribute: `swayidle.disabled-flag`, `sound-theme.player`.
+- What another unit needs that is not a channel is a function in `lib` or a constant in `values`: `swayidle.lib.disabled-flag`, `sound-theme.lib.player`, `theme.values.palettes`.
 
 ## Editor (`units/editor/`)
 
@@ -30,14 +31,14 @@ description: Use when reading or writing Nix config in this repo — units, prof
 
 ## Profiles
 
-- A profile is a list of units.
+- A profile is a group of units.
 - Profiles do not define new features: only groupings.
 - Hosts prefer profiles over specific units.
 - `profiles/substrate` is the baseline every host needs: package set, nix daemon, secrets.
 
 ## Hosts
 
-- `units/hosts/<name>/default.nix` is a `host.scope` holding a `user.scope`.
+- `units/hosts/<name>/default.nix` is a group around a `host.scope` holding a `user.scope`.
 - The host writes the facts: identity, trusted directories, palette.
 - Every host becomes `nixosConfigurations.<name>`.
 

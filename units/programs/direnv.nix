@@ -1,11 +1,11 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) home-manager user;
 in
 
-rhizome.unit "direnv" {
-  unit = rhizome.component {
+{
+  unit = module.component "unit" {
     uses = {
       trusted-directories = user.trusted-directory;
     };

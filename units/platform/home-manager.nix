@@ -4,6 +4,8 @@
   rhizome,
   units,
   inputs,
+  self,
+  module,
   ...
 }:
 
@@ -12,9 +14,9 @@ let
   inherit (units.platform) nixos user;
 in
 
-rhizome.unit "home-manager" (home-manager: {
+{
   # A Home Manager module for the user.
-  module = rhizome.channel {
+  module = module.channel "module" {
     level = user.level;
     type = t.any;
     merge = rhizome.merge.entries;
@@ -29,9 +31,9 @@ rhizome.unit "home-manager" (home-manager: {
     package :: String -> Emission
     ```
   */
-  package =
+  lib.package =
     name:
-    home-manager.module (
+    self.module (
       { pkgs, ... }:
       {
         home.packages = [ pkgs.unstable.${name} ];
@@ -47,9 +49,9 @@ rhizome.unit "home-manager" (home-manager: {
     program :: String -> Emission
     ```
   */
-  program =
+  lib.program =
     name:
-    home-manager.module (
+    self.module (
       { lib, pkgs, ... }:
       {
         programs.${name} = {
@@ -60,10 +62,10 @@ rhizome.unit "home-manager" (home-manager: {
     );
 
   # Hands what the user's scope wrote to their account.
-  unit = rhizome.component {
+  unit = module.component "unit" {
     uses = {
       inherit (user) identity;
-      entries = home-manager.module;
+      entries = self.module;
     };
 
     config =
@@ -83,4 +85,4 @@ rhizome.unit "home-manager" (home-manager: {
         ))
       ];
   };
-})
+}

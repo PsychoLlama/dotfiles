@@ -1,29 +1,31 @@
 # The wallpaper.
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
-rhizome.unit "swaybg" {
-  unit = rhizome.component [
-    (units.platform.home-manager.module (
-      { pkgs, ... }:
+{
+  unit = module.component "unit" {
+    config = [
+      (units.platform.home-manager.module (
+        { pkgs, ... }:
 
-      {
-        systemd.user.services.swaybg = {
-          Install.WantedBy = [ "sway-session.target" ];
+        {
+          systemd.user.services.swaybg = {
+            Install.WantedBy = [ "sway-session.target" ];
 
-          Unit = {
-            Description = "Sway wallpaper and background service";
-            PartOf = [ "sway-session.target" ];
-            Documentation = "man:swaybg(1)";
+            Unit = {
+              Description = "Sway wallpaper and background service";
+              PartOf = [ "sway-session.target" ];
+              Documentation = "man:swaybg(1)";
+            };
+
+            Service = {
+              Type = "simple";
+
+              # The image is relative to `$HOME`.
+              ExecStart = "${pkgs.unstable.swaybg}/bin/swaybg --image attic/images/wallpapers/current --mode fill --output *";
+            };
           };
-
-          Service = {
-            Type = "simple";
-
-            # The image is relative to `$HOME`.
-            ExecStart = "${pkgs.unstable.swaybg}/bin/swaybg --image attic/images/wallpapers/current --mode fill --output *";
-          };
-        };
-      }
-    ))
-  ];
+        }
+      ))
+    ];
+  };
 }

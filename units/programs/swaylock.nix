@@ -1,11 +1,11 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) home-manager theme;
 in
 
-rhizome.unit "swaylock" {
-  unit = rhizome.component {
+{
+  unit = module.component "unit" {
     uses = {
       inherit (theme) palette;
     };

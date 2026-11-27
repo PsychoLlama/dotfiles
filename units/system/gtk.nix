@@ -1,29 +1,31 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) home-manager;
 in
 
-rhizome.unit "gtk" {
-  unit = rhizome.component [
-    (home-manager.module (
-      { pkgs, ... }:
+{
+  unit = module.component "unit" {
+    config = [
+      (home-manager.module (
+        { pkgs, ... }:
 
-      {
-        gtk = {
-          enable = true;
-          colorScheme = "dark";
-        };
+        {
+          gtk = {
+            enable = true;
+            colorScheme = "dark";
+          };
 
-        home.pointerCursor = {
-          name = "Adwaita";
-          package = pkgs.unstable.adwaita-icon-theme;
-          size = 24;
-          gtk.enable = true;
-        };
+          home.pointerCursor = {
+            name = "Adwaita";
+            package = pkgs.unstable.adwaita-icon-theme;
+            size = 24;
+            gtk.enable = true;
+          };
 
-        dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
-      }
-    ))
-  ];
+          dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+        }
+      ))
+    ];
+  };
 }

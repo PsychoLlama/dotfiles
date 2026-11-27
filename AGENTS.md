@@ -13,7 +13,7 @@ Nix configs for my workstations. Includes many custom features.
   - `programs/`, `services/`, `system/`, `agents/`: One unit per concern.
   - `editor/`: Neovim, assembled from channels. An unopinionated nixvim alternative.
     - `runtime/`: Lua `core` library. Reads what the build generates.
-  - `profiles/`: Lists of units. Hold no opinions themselves.
+  - `profiles/`: Groups of units. Hold no opinions themselves.
   - `hosts/`: One tree per machine. Becomes `nixosConfigurations.<name>`.
 - `templates/`: Scaffolds other projects as `dotfiles#<tpl>`.
 

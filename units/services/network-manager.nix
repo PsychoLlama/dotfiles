@@ -1,11 +1,11 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) nixos user;
 in
 
-rhizome.unit "network-manager" {
-  unit = rhizome.component {
+{
+  unit = module.component "unit" {
     uses = {
       inherit (user) identity;
     };

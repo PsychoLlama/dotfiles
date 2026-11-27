@@ -1,20 +1,26 @@
-{ rhizome, units, ... }:
+{
+  rhizome,
+  units,
+  self,
+  module,
+  ...
+}:
 
 let
   t = rhizome.types;
   inherit (units.platform) host;
 in
 
-rhizome.unit "nixos" (nixos: {
+{
   # A NixOS module for the host.
-  module = rhizome.channel {
+  module = module.channel "module" {
     level = host.level;
     type = t.any;
     merge = rhizome.merge.entries;
   };
 
   # A machine to build, with every module written for it.
-  machine = rhizome.channel {
+  machine = module.channel "machine" {
     merge = rhizome.merge.list;
 
     type = {
@@ -42,10 +48,10 @@ rhizome.unit "nixos" (nixos: {
       };
   };
 
-  unit = rhizome.component {
+  unit = module.component "unit" {
     uses = {
       inherit (host) name system;
-      entries = nixos.module;
+      entries = self.module;
     };
 
     config =
@@ -55,10 +61,10 @@ rhizome.unit "nixos" (nixos: {
         entries,
       }:
       [
-        (nixos.machine {
+        (self.machine {
           inherit name system;
-          modules = map nixos.lib.locate entries;
+          modules = map self.lib.locate entries;
         })
       ];
   };
-})
+}

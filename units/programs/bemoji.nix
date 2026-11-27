@@ -1,24 +1,26 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) home-manager;
 in
 
-rhizome.unit "bemoji" {
-  unit = rhizome.component [
-    (home-manager.module (
-      { pkgs, ... }:
+{
+  unit = module.component "unit" {
+    config = [
+      (home-manager.module (
+        { pkgs, ... }:
 
-      {
-        home.packages = [
-          pkgs.unstable.bemoji
+        {
+          home.packages = [
+            pkgs.unstable.bemoji
 
-          # bemoji uses wtype to type the selected emoji into the focused window.
-          pkgs.unstable.wtype
-        ];
+            # bemoji uses wtype to type the selected emoji into the focused window.
+            pkgs.unstable.wtype
+          ];
 
-        home.sessionVariables.BEMOJI_PICKER_CMD = "fuzzel -d";
-      }
-    ))
-  ];
+          home.sessionVariables.BEMOJI_PICKER_CMD = "fuzzel -d";
+        }
+      ))
+    ];
+  };
 }

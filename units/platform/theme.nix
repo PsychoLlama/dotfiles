@@ -2,7 +2,12 @@
 # `nix-colors` and `stylix` cover the same ground, but each landed on the
 # wrong side of what I wanted: one does too little, the other reaches into
 # programs I would rather configure myself.
-{ rhizome, units, ... }:
+{
+  rhizome,
+  units,
+  module,
+  ...
+}:
 
 let
   t = rhizome.types;
@@ -20,9 +25,9 @@ let
   };
 in
 
-rhizome.unit "theme" {
+{
   # The two halves of a base16 palette.
-  palette = rhizome.channel {
+  palette = module.channel "palette" {
     level = host.level;
     merge = rhizome.merge.one;
     optional = true;
@@ -33,7 +38,7 @@ rhizome.unit "theme" {
     };
   };
 
-  palettes.one-dark = {
+  values.palettes.one-dark = {
     normal = {
       black = "#1e1e1e";
       red = "#e06c75";

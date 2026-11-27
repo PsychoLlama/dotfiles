@@ -1,8 +1,9 @@
 # My personal laptop and primary development machine.
 {
-  rhizome,
   units,
   inputs,
+  self,
+  module,
   ...
 }:
 
@@ -18,9 +19,9 @@ let
   inherit (units) profiles;
 in
 
-rhizome.unit "ava" (ava: {
+{
   # The login, and what only this machine wants in it.
-  account = rhizome.component {
+  account = module.component "account" {
     uses = { inherit (user) identity; };
 
     config =
@@ -77,68 +78,75 @@ rhizome.unit "ava" (ava: {
       ];
   };
 
-  hardware = rhizome.component [
-    (nixos.module (
-      { lib, ... }:
+  hardware = module.component "hardware" {
+    config = [
+      (nixos.module (
+        { lib, ... }:
 
-      {
-        imports = [
-          inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
-          inputs.nixpkgs.nixosModules.notDetected
-          ./_hardware-configuration.nix
-        ];
+        {
+          imports = [
+            inputs.nixos-hardware.nixosModules.lenovo-thinkpad-p1-gen3
+            inputs.nixpkgs.nixosModules.notDetected
+            ./_hardware-configuration.nix
+          ];
 
-        boot.loader.systemd-boot = {
-          enable = true;
-          configurationLimit = 5;
-        };
+          boot.loader.systemd-boot = {
+            enable = true;
+            configurationLimit = 5;
+          };
 
-        # Enabled by nixos-hardware. It breaks login. The pam module takes
-        # over and password entry stops working.
-        services.fprintd.enable = lib.mkForce false;
+          # Enabled by nixos-hardware. It breaks login. The pam module takes
+          # over and password entry stops working.
+          services.fprintd.enable = lib.mkForce false;
 
-        hardware.keyboard.qmk = {
-          enable = true;
-          keychronSupport = true;
-        };
+          hardware.keyboard.qmk = {
+            enable = true;
+            keychronSupport = true;
+          };
 
-        networking.hostId = "daf96cd8"; # Random. Required by the ZFS pool.
+          networking.hostId = "daf96cd8"; # Random. Required by the ZFS pool.
 
-        system.stateVersion = "20.09";
-      }
-    ))
-  ];
-  unit =
-    host.scope
-      {
-        name = "ava";
-        system = "x86_64-linux";
-      }
-      [
-        ava.hardware
-        (theme.palette theme.palettes.one-dark)
+          system.stateVersion = "20.09";
+        }
+      ))
+    ];
+  };
 
-        (user.scope
-          {
-            username = "overlord";
-            name = "Jesse Gibson";
-            email = "JesseTheGibson@gmail.com";
-          }
-          [
-            ava.account
+  unit = module.group "unit" {
+    config = [
+      (host.scope
+        {
+          name = "ava";
+          system = "x86_64-linux";
+        }
+        [
+          self.hardware
+          (theme.palette theme.values.palettes.one-dark)
 
-            (map user.trusted-directory [
-              "~/projects/psychollama"
-              "~/projects/@scratch"
-              "~/projects/retreon"
-              "~/projects/ambient-computer"
-            ])
+          (user.scope
+            {
+              username = "overlord";
+              name = "Jesse Gibson";
+              email = "JesseTheGibson@gmail.com";
+            }
+            [
+              self.account
 
-            profiles.substrate.unit
-            profiles.full.unit
-            profiles.home-lab-admin.unit
-            profiles.linux-desktop.unit
-          ]
-        )
-      ];
-})
+              (map user.trusted-directory [
+                "~/projects/psychollama"
+                "~/projects/@scratch"
+                "~/projects/retreon"
+                "~/projects/ambient-computer"
+              ])
+
+              profiles.substrate.unit
+              profiles.full.unit
+              profiles.home-lab-admin.unit
+              profiles.linux-desktop.unit
+            ]
+          )
+        ]
+      )
+    ];
+  };
+}

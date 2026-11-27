@@ -1,29 +1,31 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) home-manager;
 in
 
-rhizome.unit "gh" {
-  unit = rhizome.component [
-    (home-manager.module (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }:
+{
+  unit = module.component "unit" {
+    config = [
+      (home-manager.module (
+        {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
 
-      {
-        programs.gh = {
-          enable = lib.mkDefault true;
-          package = pkgs.unstable.gh;
+        {
+          programs.gh = {
+            enable = lib.mkDefault true;
+            package = pkgs.unstable.gh;
 
-          settings = {
-            git_protocol = "ssh";
+            settings = {
+              git_protocol = "ssh";
+            };
           };
-        };
-      }
-    ))
-  ];
+        }
+      ))
+    ];
+  };
 }

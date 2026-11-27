@@ -1,28 +1,34 @@
-{ rhizome, units, ... }:
+{
+  rhizome,
+  units,
+  self,
+  module,
+  ...
+}:
 
 let
   t = rhizome.types;
   inherit (units.platform) home-manager user;
 in
 
-rhizome.unit "nushell" (nushell: {
+{
   # Abbreviations expanded inline at the prompt, by what is typed. Unlike
   # aliases, the expansion is committed to history, keeping substring search
   # reliable.
-  abbreviation = rhizome.channel {
+  abbreviation = module.channel "abbreviation" {
     level = user.level;
     type = t.attrs-of t.str;
     merge = rhizome.merge.list;
     optional = true;
   };
 
-  unit = rhizome.component {
-    uses.abbreviations = nushell.abbreviation;
+  unit = module.component "unit" {
+    uses.abbreviations = self.abbreviation;
 
     config =
       { abbreviations }:
       [
-        (home-manager.program "nushell")
+        (home-manager.lib.program "nushell")
 
         (home-manager.module (
           {
@@ -89,4 +95,4 @@ rhizome.unit "nushell" (nushell: {
         ))
       ];
   };
-})
+}

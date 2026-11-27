@@ -3,56 +3,52 @@
   rhizome,
   units,
   inputs,
+  self,
+  module,
   ...
 }:
 
 let
   t = rhizome.types;
   inherit (units.platform) nixos;
+
+  fact =
+    name: type:
+    module.channel name {
+      level = self.level;
+      inherit type;
+      merge = rhizome.merge.one;
+      optional = true;
+    };
 in
 
-rhizome.unit "host" (
-  host:
+{
+  level = module.level "level" { within = rhizome.root; };
 
-  let
-    fact =
-      type:
-      rhizome.channel {
-        level = host.level;
-        inherit type;
-        merge = rhizome.merge.one;
-        optional = true;
-      };
-  in
+  name = fact "name" t.str;
+  system = fact "system" t.str;
 
-  {
-    level = rhizome.level { within = rhizome.root; };
+  scope = self.level.scope module "scope" (cfg: {
+    label = cfg.name;
 
-    name = fact t.str;
-    system = fact t.str;
+    input = {
+      name = self.name.type;
+      system = self.system.type;
+    };
 
-    scope = host.level.scope (cfg: {
-      label = cfg.name;
+    config = [
+      (self.name cfg.name)
+      (self.system cfg.system)
 
-      type = {
-        name = host.name.type;
-        system = host.system.type;
-      };
+      (nixos.module {
+        networking.hostName = cfg.name;
+        nixpkgs.hostPlatform = cfg.system;
 
-      config = [
-        (host.name cfg.name)
-        (host.system cfg.system)
+        # Surfaces the source commit in `nixos-version --json`.
+        system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+      })
 
-        (nixos.module {
-          networking.hostName = cfg.name;
-          nixpkgs.hostPlatform = cfg.system;
-
-          # Surfaces the source commit in `nixos-version --json`.
-          system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
-        })
-
-        nixos.unit
-      ];
-    });
-  }
-)
+      nixos.unit
+    ];
+  });
+}

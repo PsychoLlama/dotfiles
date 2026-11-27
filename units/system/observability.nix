@@ -1,4 +1,4 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   # The collector's only listener. Loopback: nothing is exposed off-box.
@@ -15,8 +15,8 @@ let
   inherit (units.platform) home-manager nixos user;
 in
 
-rhizome.unit "observability" {
-  unit = rhizome.component {
+{
+  unit = module.component "unit" {
     uses = {
       inherit (user) identity;
     };

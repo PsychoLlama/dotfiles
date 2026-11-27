@@ -1,10 +1,15 @@
-{ rhizome, units, ... }:
+{
+  units,
+  self,
+  module,
+  ...
+}:
 
 let
   inherit (units.platform) home-manager;
 in
 
-rhizome.unit "sound-theme" (sound-theme: {
+{
   /**
     Plays a sound from the theme by name: `play-sound message-new-instant`.
 
@@ -14,7 +19,7 @@ rhizome.unit "sound-theme" (sound-theme: {
     player :: Pkgs -> Package
     ```
   */
-  player =
+  lib.player =
     pkgs:
     pkgs.writeShellApplication {
       name = "play-sound";
@@ -29,18 +34,20 @@ rhizome.unit "sound-theme" (sound-theme: {
       '';
     };
 
-  unit = rhizome.component [
-    (home-manager.module (
-      { pkgs, ... }:
+  unit = module.component "unit" {
+    config = [
+      (home-manager.module (
+        { pkgs, ... }:
 
-      {
-        home.packages = [ (sound-theme.player pkgs) ];
+        {
+          home.packages = [ (self.lib.player pkgs) ];
 
-        dconf.settings."org/gnome/desktop/sound" = {
-          theme-name = "ocean";
-          event-sounds = true;
-        };
-      }
-    ))
-  ];
-})
+          dconf.settings."org/gnome/desktop/sound" = {
+            theme-name = "ocean";
+            event-sounds = true;
+          };
+        }
+      ))
+    ];
+  };
+}

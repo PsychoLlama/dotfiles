@@ -1,12 +1,12 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units) agents;
   inherit (units.platform) home-manager nixos;
 in
 
-rhizome.unit "codex" {
-  unit = rhizome.component {
+{
+  unit = module.component "unit" {
     uses = {
       inherit (agents) memory;
       skills = agents.skill;

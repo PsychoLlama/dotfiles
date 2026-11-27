@@ -1,17 +1,17 @@
-{ rhizome, units, ... }:
+{ units, module, ... }:
 
 let
   inherit (units.platform) home-manager theme;
 in
 
-rhizome.unit "wezterm" {
-  unit = rhizome.component {
+{
+  unit = module.component "unit" {
     uses = {
       inherit (theme) palette;
     };
 
     config = { palette }: [
-      (home-manager.program "wezterm")
+      (home-manager.lib.program "wezterm")
 
       (home-manager.module (
         {
