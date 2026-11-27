@@ -1,7 +1,7 @@
 # The way out of Home Manager is through it. A unit writes a Home Manager
 # module here until it owns its files itself.
 {
-  rhizome,
+  types,
   units,
   inputs,
   self,
@@ -10,7 +10,7 @@
 }:
 
 let
-  t = rhizome.types;
+  t = types;
   inherit (units.platform) nixos user;
 in
 

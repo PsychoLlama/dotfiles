@@ -1,6 +1,6 @@
 # A machine, and what is true of all of it.
 {
-  rhizome,
+  types,
   units,
   inputs,
   self,
@@ -9,7 +9,7 @@
 }:
 
 let
-  t = rhizome.types;
+  t = types;
   inherit (units.platform) nixos;
 
   fact =
@@ -22,7 +22,7 @@ let
 in
 
 {
-  scope = define.scope { within = rhizome.root; };
+  scope = define.scope { };
 
   name = fact t.str;
   system = fact t.str;

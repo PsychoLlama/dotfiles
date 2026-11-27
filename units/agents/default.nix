@@ -2,7 +2,7 @@
 # renders them its own way.
 {
   lib,
-  rhizome,
+  types,
   units,
   self,
   define,
@@ -10,7 +10,7 @@
 }:
 
 let
-  t = rhizome.types;
+  t = types;
   inherit (units.platform) user;
 in
 

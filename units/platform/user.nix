@@ -1,6 +1,6 @@
 # A person on the machine, and facts about them.
 {
-  rhizome,
+  types,
   units,
   self,
   define,
@@ -8,12 +8,12 @@
 }:
 
 let
-  t = rhizome.types;
+  t = types;
   inherit (units.platform) home-manager host;
 in
 
 {
-  scope = define.scope { within = host.scope; };
+  scope = define.scope { };
 
   # Who they are, for anything that addresses or attributes them: the login,
   # git, group membership.

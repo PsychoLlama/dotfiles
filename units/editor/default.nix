@@ -3,7 +3,7 @@
 # Lua `core` library that reads what is generated here.
 {
   lib,
-  rhizome,
+  types,
   units,
   self,
   define,
@@ -11,7 +11,7 @@
 }:
 
 let
-  t = rhizome.types;
+  t = types;
   inherit (units.platform) home-manager user;
 
   optional = type: t.default (t.either type t.null) null;

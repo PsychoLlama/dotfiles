@@ -1,5 +1,5 @@
 {
-  rhizome,
+  types,
   units,
   self,
   define,
@@ -7,7 +7,7 @@
 }:
 
 let
-  t = rhizome.types;
+  t = types;
   inherit (units.platform) host;
 in
 

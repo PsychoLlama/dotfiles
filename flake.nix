@@ -82,10 +82,11 @@
       inherit (units) editor;
 
       # One tree per machine in `units/hosts`.
-      hosts = lib.mapAttrs (_: host: rhizome.eval { } host.unit) units.hosts;
+      hosts = lib.mapAttrs (_: host: rhizome.eval { name = "dotfiles"; } host.unit) units.hosts;
 
       # The editor's units, evaluated with no machine around them.
       standalone = rhizome.eval {
+        name = "dotfiles";
         scopes = [
           units.platform.host.scope
           units.platform.user.scope

@@ -3,14 +3,14 @@
 # wrong side of what I wanted: one does too little, the other reaches into
 # programs I would rather configure myself.
 {
-  rhizome,
+  types,
   units,
   define,
   ...
 }:
 
 let
-  t = rhizome.types;
+  t = types;
   inherit (units.platform) host;
 
   colors = {
