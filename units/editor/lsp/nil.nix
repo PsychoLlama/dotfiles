@@ -5,7 +5,7 @@ let
 in
 
 {
-  unit = module.component "unit" {
+  unit = module.component {
     config = [
       (editor.server {
         name = "nil";

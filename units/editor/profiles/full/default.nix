@@ -12,7 +12,7 @@ let
 in
 
 {
-  main = module.component "main" {
+  main = module.component {
     config = [
       (editor.neovim (
         pkgs:
@@ -29,7 +29,7 @@ in
     ];
   };
 
-  unit = module.group "unit" {
+  unit = module.group {
     config = [
       self.main
       editor.lsp.clangd.unit

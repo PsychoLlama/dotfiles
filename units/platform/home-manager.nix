@@ -16,7 +16,7 @@ in
 
 {
   # A Home Manager module for the user.
-  module = module.channel "module" {
+  module = module.channel {
     level = user.level;
     type = t.any;
     merge = rhizome.merge.entries;
@@ -62,7 +62,7 @@ in
     );
 
   # Hands what the user's scope wrote to their account.
-  unit = module.component "unit" {
+  unit = module.component {
     uses = {
       inherit (user) identity;
       entries = self.module;

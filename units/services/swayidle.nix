@@ -14,7 +14,7 @@ in
   # inhibitor setting between NixOS activations.
   lib.disabled-flag = username: "/tmp/swayidle/${username}.disabled";
 
-  unit = module.component "unit" {
+  unit = module.component {
     config = [
       (home-manager.module (
         {

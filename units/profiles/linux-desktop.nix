@@ -10,14 +10,14 @@ let
 in
 
 {
-  main = module.component "main" {
+  main = module.component {
     config = [
 
       (home-manager.module ({ pkgs, ... }: { home.packages = [ pkgs.signal-desktop ]; }))
     ];
   };
 
-  unit = module.group "unit" {
+  unit = module.group {
     config = [
       self.main
       (home-manager.lib.package "acpi")

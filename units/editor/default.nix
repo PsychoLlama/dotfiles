@@ -17,8 +17,8 @@ let
   optional = type: t.default (t.either type t.null) null;
 
   channel =
-    name: type:
-    module.channel name {
+    type:
+    module.channel {
       level = user.level;
       inherit type;
       merge = rhizome.merge.list;
@@ -31,7 +31,7 @@ in
 
 {
   # The editor itself, given `pkgs`. Defaults to `pkgs.unstable.neovim`.
-  neovim = module.channel "neovim" {
+  neovim = module.channel {
     level = user.level;
     type = t.function;
     merge = rhizome.merge.one-or-none;
@@ -39,7 +39,7 @@ in
   };
 
   # A plugin to install.
-  plugin = channel "plugin" {
+  plugin = channel {
     # Its attribute in `vimPlugins`, or in `pkgs.custom.vimPlugins`.
     name = t.str;
 
@@ -61,7 +61,7 @@ in
   };
 
   # A language server. Fields mirror `vim.lsp.Config`.
-  server = channel "server" {
+  server = channel {
     name = t.str;
 
     # The executable and its arguments. Given `pkgs` if it is a function.
@@ -77,10 +77,10 @@ in
   };
 
   # Lines of `init.lua`. Given `pkgs` if it is a function.
-  config = channel "config" (t.either t.str t.function);
+  config = channel (t.either t.str t.function);
 
   # A program on the editor's `PATH`, given `pkgs`.
-  tool = channel "tool" t.function;
+  tool = channel t.function;
 
   lib = {
     /**
@@ -231,7 +231,7 @@ in
   };
 
   # Builds the editor and installs it for the user.
-  unit = module.component "unit" {
+  unit = module.component {
     uses = {
       inherit (self) neovim;
       plugins = self.plugin;

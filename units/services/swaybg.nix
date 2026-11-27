@@ -2,7 +2,7 @@
 { units, module, ... }:
 
 {
-  unit = module.component "unit" {
+  unit = module.component {
     config = [
       (units.platform.home-manager.module (
         { pkgs, ... }:

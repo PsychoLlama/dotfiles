@@ -15,7 +15,7 @@ let
 in
 
 {
-  unit = module.component "unit" {
+  unit = module.component {
     config = [
       (nixos.module (
         { lib, ... }:

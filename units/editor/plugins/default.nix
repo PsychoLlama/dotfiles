@@ -14,7 +14,7 @@ let
 in
 
 {
-  main = module.component "main" {
+  main = module.component {
     config = [
       (plugin "cmp-buffer" null)
       (plugin "cmp-cmdline" null)
@@ -103,7 +103,7 @@ in
     ];
   };
 
-  unit = module.group "unit" {
+  unit = module.group {
     config = [
       self.main
       plugins.alternaut.unit

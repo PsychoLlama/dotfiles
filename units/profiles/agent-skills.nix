@@ -1,7 +1,7 @@
 { units, module, ... }:
 
 {
-  unit = module.group "unit" {
+  unit = module.group {
     config = [
       units.agents.skills.codex-review.unit
       units.agents.skills.notify.unit

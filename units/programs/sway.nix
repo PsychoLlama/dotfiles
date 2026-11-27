@@ -10,7 +10,7 @@ let
 in
 
 {
-  unit = module.component "unit" {
+  unit = module.component {
     uses = {
       inherit (theme) palette;
     };

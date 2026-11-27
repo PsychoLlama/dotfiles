@@ -1,7 +1,7 @@
 { units, module, ... }:
 
 {
-  unit = module.component "unit" {
+  unit = module.component {
     config = [
       (units.agents.skill {
         name = "pull-requests";

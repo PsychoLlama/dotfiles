@@ -8,7 +8,7 @@ let
 in
 
 {
-  unit = module.component "unit" {
+  unit = module.component {
     config = [
       (claude-code.settings (
         {

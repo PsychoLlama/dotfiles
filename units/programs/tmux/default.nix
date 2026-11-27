@@ -5,7 +5,7 @@ let
 in
 
 {
-  unit = module.component "unit" {
+  unit = module.component {
     config = [
       (home-manager.lib.program "tmux")
       (units.programs.nushell.abbreviation { t = "tmux"; })

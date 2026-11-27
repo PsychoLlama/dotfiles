@@ -13,8 +13,8 @@ let
   inherit (units.platform) nixos;
 
   fact =
-    name: type:
-    module.channel name {
+    type:
+    module.channel {
       level = self.level;
       inherit type;
       merge = rhizome.merge.one;
@@ -23,12 +23,12 @@ let
 in
 
 {
-  level = module.level "level" { within = rhizome.root; };
+  level = module.level { within = rhizome.root; };
 
-  name = fact "name" t.str;
-  system = fact "system" t.str;
+  name = fact t.str;
+  system = fact t.str;
 
-  scope = self.level.scope module "scope" (cfg: {
+  scope = self.level.scope (cfg: {
     label = cfg.name;
 
     input = {

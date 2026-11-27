@@ -13,14 +13,14 @@ let
 in
 
 {
-  main = module.component "main" {
+  main = module.component {
     config = [
       (nixos.module { imports = [ agenix.nixosModules.default ]; })
       (home-manager.module { imports = [ agenix.homeManagerModules.default ]; })
     ];
   };
 
-  unit = module.group "unit" {
+  unit = module.group {
     config = [
       self.main
       units.system.nix-daemon.unit

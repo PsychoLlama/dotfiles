@@ -10,7 +10,7 @@ let
 in
 
 {
-  main = module.component "main" {
+  main = module.component {
     config = [
 
       (home-manager.module (
@@ -86,7 +86,7 @@ in
     ];
   };
 
-  unit = module.group "unit" {
+  unit = module.group {
     config = [
       self.main
       units.system.sound-theme.unit

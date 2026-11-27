@@ -34,7 +34,7 @@ in
       '';
     };
 
-  unit = module.component "unit" {
+  unit = module.component {
     config = [
       (home-manager.module (
         { pkgs, ... }:

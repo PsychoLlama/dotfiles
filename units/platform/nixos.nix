@@ -13,14 +13,14 @@ in
 
 {
   # A NixOS module for the host.
-  module = module.channel "module" {
+  module = module.channel {
     level = host.level;
     type = t.any;
     merge = rhizome.merge.entries;
   };
 
   # A machine to build, with every module written for it.
-  machine = module.channel "machine" {
+  machine = module.channel {
     merge = rhizome.merge.list;
 
     type = {
@@ -48,7 +48,7 @@ in
       };
   };
 
-  unit = module.component "unit" {
+  unit = module.component {
     uses = {
       inherit (host) name system;
       entries = self.module;

@@ -14,8 +14,8 @@ let
   # Everything written here may hold packages, so it may be a function of
   # the Home Manager module's arguments: `{ config, lib, pkgs, ... }: { }`.
   written =
-    name: type:
-    module.channel name {
+    type:
+    module.channel {
       level = user.level;
       type = t.either type t.function;
       merge = rhizome.merge.list;
@@ -35,21 +35,21 @@ in
 
 {
   # Part of `settings.json`. Attrsets merge and lists join.
-  settings = written "settings" t.attrs;
+  settings = written t.attrs;
 
   # A locally-defined plugin, published through an inline marketplace.
   #
   # Every plugin is provisioned *disabled*: the marketplace makes it
   # available, and each repository enables the ones it wants through its own
   # project settings.
-  plugin = written "plugin" plugin;
+  plugin = written plugin;
 
   # Replaces home-manager's `programs.claude-code`. We use almost none of it
   # and fight the rest: its plugin support wraps the binary (which breaks
   # Claude's CLI flag parsing outright), its `marketplaces` option overwrites
   # `settings.extraKnownMarketplaces` wholesale, and its `skills` rejects
   # derivations. What's left is a thin mapping onto `home.file`.
-  main = module.component "main" {
+  main = module.component {
     uses = {
       inherit (agents) memory;
       skills = agents.skill;
@@ -293,7 +293,7 @@ in
       ];
   };
 
-  unit = module.group "unit" {
+  unit = module.group {
     config = [
       self.main
       units.programs.claude-code.hooks.agent-history.unit

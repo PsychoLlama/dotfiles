@@ -21,7 +21,7 @@ in
 
 {
   # The login, and what only this machine wants in it.
-  account = module.component "account" {
+  account = module.component {
     uses = { inherit (user) identity; };
 
     config =
@@ -78,7 +78,7 @@ in
       ];
   };
 
-  hardware = module.component "hardware" {
+  hardware = module.component {
     config = [
       (nixos.module (
         { lib, ... }:
@@ -112,7 +112,7 @@ in
     ];
   };
 
-  unit = module.group "unit" {
+  unit = module.group {
     config = [
       (host.scope
         {

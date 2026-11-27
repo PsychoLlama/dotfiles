@@ -10,7 +10,7 @@ let
 in
 
 {
-  main = module.component "main" {
+  main = module.component {
     config = [
 
       (nixos.module (
@@ -64,7 +64,7 @@ in
     ];
   };
 
-  unit = module.group "unit" {
+  unit = module.group {
     config = [
       self.main
       units.agents.unit
