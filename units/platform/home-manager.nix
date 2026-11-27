@@ -18,7 +18,7 @@ in
   # A Home Manager module for the user.
   module = define.collection {
     scope = user.scope;
-    type = t.any;
+    type = t.module;
     combine = entries: entries;
   };
 

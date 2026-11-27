@@ -15,7 +15,7 @@ in
   # A NixOS module for the host.
   module = define.collection {
     scope = host.scope;
-    type = t.any;
+    type = t.module;
     combine = entries: entries;
   };
 
@@ -24,7 +24,7 @@ in
     type = {
       name = t.str;
       system = t.str;
-      modules = t.list t.any;
+      modules = t.list t.module;
     };
   };
 
