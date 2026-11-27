@@ -15,12 +15,14 @@ let
   # the Home Manager module's arguments: `{ config, lib, pkgs, ... }: { }`.
   written =
     type:
-    define.fact {
-      scope = user.scope;
-      type = t.either type t.function;
-      merge = rhizome.merge.list;
-      optional = true;
-    };
+    define.fact (
+      { many, as, ... }: {
+        scope = user.scope;
+        type = t.either type t.function;
+        holds = many as.list;
+        allow-unread = true;
+      }
+    );
 
   plugin = t.from {
     name = t.str;

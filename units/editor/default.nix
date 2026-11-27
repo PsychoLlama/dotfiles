@@ -18,12 +18,14 @@ let
 
   channel =
     type:
-    define.fact {
-      scope = user.scope;
-      inherit type;
-      merge = rhizome.merge.list;
-      optional = true;
-    };
+    define.fact (
+      { many, as, ... }: {
+        scope = user.scope;
+        inherit type;
+        holds = many as.list;
+        allow-unread = true;
+      }
+    );
 
   # With `pkgs`, for values that hold packages.
   resolve = pkgs: value: if lib.isFunction value then value pkgs else value;
@@ -31,12 +33,14 @@ in
 
 {
   # The editor itself, given `pkgs`. Defaults to `pkgs.unstable.neovim`.
-  neovim = define.fact {
-    scope = user.scope;
-    type = t.function;
-    merge = rhizome.merge.one-or-none;
-    optional = true;
-  };
+  neovim = define.fact (
+    { one, ... }: {
+      scope = user.scope;
+      type = t.function;
+      holds = one.with-default (pkgs: pkgs.unstable.neovim);
+      allow-unread = true;
+    }
+  );
 
   # A plugin to install.
   plugin = channel {

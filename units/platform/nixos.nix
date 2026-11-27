@@ -13,22 +13,26 @@ in
 
 {
   # A NixOS module for the host.
-  module = define.fact {
-    scope = host.scope;
-    type = t.any;
-    merge = rhizome.merge.entries;
-  };
+  module = define.fact (
+    { many, as, ... }: {
+      scope = host.scope;
+      type = t.any;
+      holds = many as.entries;
+    }
+  );
 
   # A machine to build, with every module written for it.
-  machine = define.fact {
-    merge = rhizome.merge.list;
+  machine = define.fact (
+    { many, as, ... }: {
+      holds = many as.list;
 
-    type = {
-      name = t.str;
-      system = t.str;
-      modules = t.list t.any;
-    };
-  };
+      type = {
+        name = t.str;
+        system = t.str;
+        modules = t.list t.any;
+      };
+    }
+  );
 
   lib = {
     /**

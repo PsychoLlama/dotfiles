@@ -14,12 +14,14 @@ let
 
   fact =
     type:
-    define.fact {
-      scope = self.scope;
-      inherit type;
-      merge = rhizome.merge.one;
-      optional = true;
-    };
+    define.fact (
+      { one, ... }: {
+        scope = self.scope;
+        inherit type;
+        holds = one;
+        allow-unread = true;
+      }
+    );
 in
 
 {

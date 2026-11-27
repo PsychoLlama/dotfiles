@@ -17,28 +17,32 @@ in
 
   # Who they are, for anything that addresses or attributes them: the login,
   # git, group membership.
-  identity = define.fact {
-    scope = self.scope;
-    merge = rhizome.merge.one;
-    optional = true;
+  identity = define.fact (
+    { one, ... }: {
+      scope = self.scope;
+      holds = one;
+      allow-unread = true;
 
-    type = {
-      username = t.str;
-      name = t.str;
-      email = t.str;
-    };
-  };
+      type = {
+        username = t.str;
+        name = t.str;
+        email = t.str;
+      };
+    }
+  );
 
   # A directory prefix trusted across tools. At or beneath one, the editor
   # sources a project-local vimrc, direnv loads `.envrc`, and Claude Code is
   # granted filesystem access, all without prompting. `~`-relative; readers
   # that need absolute paths expand it.
-  trusted-directory = define.fact {
-    scope = self.scope;
-    type = t.str;
-    merge = rhizome.merge.list;
-    optional = true;
-  };
+  trusted-directory = define.fact (
+    { many, as, ... }: {
+      scope = self.scope;
+      type = t.str;
+      holds = many as.list;
+      allow-unread = true;
+    }
+  );
 
   instance = self.scope.instance (input: {
     label = input.username;
