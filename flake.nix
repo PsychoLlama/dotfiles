@@ -84,6 +84,25 @@
       # One tree per machine in `units/hosts`.
       hosts = lib.mapAttrs (_: host: rhizome.eval { name = "dotfiles"; } host.unit) units.hosts;
 
+      # What the graph prints for a box or an edge: the name without what is
+      # the same everywhere. `platform.host.instance[nas-001]` is
+      # `host[nas-001]`, and `services.ntfy.unit` is `services.ntfy`.
+      display =
+        { address, label }:
+        let
+          parts =
+            lib.remove "platform" address.path
+            ++ lib.optional (
+              !lib.elem address.name [
+                "unit"
+                "instance"
+              ]
+            ) address.name;
+
+          name = lib.concatStringsSep "." parts;
+        in
+        if label == null then name else "${name}[${label}]";
+
       # The editor's units, evaluated with no machine around them.
       standalone = rhizome.eval {
         name = "dotfiles";
@@ -115,7 +134,7 @@
       ) hosts;
 
       # Who writes what to whom, as Graphviz. See `just graph`.
-      graphs = lib.mapAttrs (_: host: rhizome.graph.dot host.routes) hosts;
+      graphs = lib.mapAttrs (_: host: rhizome.graph.dot { inherit display; } host.routes) hosts;
 
       packages = eachSystem (
         _: pkgs: {
