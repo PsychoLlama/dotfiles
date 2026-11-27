@@ -2,7 +2,7 @@
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (units.agents.skill {
         name = "codex-review";
         targets = [ "claude" ];

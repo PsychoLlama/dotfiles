@@ -10,7 +10,7 @@ in
       inherit (theme) palette;
     };
 
-    config = { palette }: [
+    provides = { palette }: [
       (home-manager.module (
         {
           lib,

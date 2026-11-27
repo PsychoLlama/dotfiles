@@ -24,7 +24,7 @@ in
   account = define.unit {
     uses = { inherit (user) identity; };
 
-    config =
+    provides =
       { identity }:
       [
         (nixos.module (
@@ -79,7 +79,7 @@ in
   };
 
   hardware = define.unit {
-    config = [
+    provides = [
       (nixos.module (
         { lib, ... }:
 
@@ -113,7 +113,7 @@ in
   };
 
   unit = define.group {
-    config = [
+    includes = [
       (host.instance
         {
           name = "ava";

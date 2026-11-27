@@ -12,7 +12,7 @@ in
       skills = agents.skill;
     };
 
-    config = { memory, skills }: [
+    provides = { memory, skills }: [
       (home-manager.module (
         { lib, pkgs, ... }:
         {

@@ -9,7 +9,7 @@ in
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (claude-code.settings (
         {
           config,

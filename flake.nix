@@ -86,9 +86,9 @@
 
       # The editor's units, evaluated with no machine around them.
       standalone = rhizome.eval {
-        levels = [
-          units.platform.host.level
-          units.platform.user.level
+        scopes = [
+          units.platform.host.scope
+          units.platform.user.scope
         ];
       } editor.profiles.full.unit;
 

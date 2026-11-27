@@ -9,7 +9,7 @@ Nix configs for my workstations. Includes many custom features.
   - `overlays.nix`: Every overlay the package set is built with.
   - `*.nvim/`: Custom neovim plugins.
 - `units/`: Everything else, composed with `rhizome` (typed facts shared between units). Loaded as `units.<path>`.
-  - `platform/`: The `host` and `user` levels and instances, and the facts every unit shares.
+  - `platform/`: The `host` and `user` scopes and instances, and the facts every unit shares.
   - `programs/`, `services/`, `system/`, `agents/`: One unit per concern.
   - `editor/`: Neovim, assembled from facts. An unopinionated nixvim alternative.
     - `runtime/`: Lua `core` library. Reads what the build generates.

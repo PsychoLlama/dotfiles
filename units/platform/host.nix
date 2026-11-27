@@ -15,7 +15,7 @@ let
   fact =
     type:
     define.fact {
-      level = self.level;
+      scope = self.scope;
       inherit type;
       merge = rhizome.merge.one;
       optional = true;
@@ -23,26 +23,26 @@ let
 in
 
 {
-  level = define.level { within = rhizome.root; };
+  scope = define.scope { within = rhizome.root; };
 
   name = fact t.str;
   system = fact t.str;
 
-  instance = self.level.instance (cfg: {
-    label = cfg.name;
+  instance = self.scope.instance (input: {
+    label = input.name;
 
-    input = {
+    type = {
       name = self.name.type;
       system = self.system.type;
     };
 
-    config = [
-      (self.name cfg.name)
-      (self.system cfg.system)
+    includes = [
+      (self.name input.name)
+      (self.system input.system)
 
       (nixos.module {
-        networking.hostName = cfg.name;
-        nixpkgs.hostPlatform = cfg.system;
+        networking.hostName = input.name;
+        nixpkgs.hostPlatform = input.system;
 
         # Surfaces the source commit in `nixos-version --json`.
         system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;

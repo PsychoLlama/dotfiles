@@ -13,12 +13,12 @@ let
 in
 
 {
-  level = define.level { within = host.level; };
+  scope = define.scope { within = host.scope; };
 
   # Who they are, for anything that addresses or attributes them: the login,
   # git, group membership.
   identity = define.fact {
-    level = self.level;
+    scope = self.scope;
     merge = rhizome.merge.one;
     optional = true;
 
@@ -34,18 +34,18 @@ in
   # granted filesystem access, all without prompting. `~`-relative; readers
   # that need absolute paths expand it.
   trusted-directory = define.fact {
-    level = self.level;
+    scope = self.scope;
     type = t.str;
     merge = rhizome.merge.list;
     optional = true;
   };
 
-  instance = self.level.instance (cfg: {
-    label = cfg.username;
-    input = self.identity.type;
+  instance = self.scope.instance (input: {
+    label = input.username;
+    type = self.identity.type;
 
-    config = [
-      (self.identity cfg)
+    includes = [
+      (self.identity input)
       home-manager.unit
     ];
   });

@@ -16,7 +16,7 @@ in
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (nixos.module (
         { pkgs, ... }:
 

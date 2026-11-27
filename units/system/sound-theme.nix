@@ -35,7 +35,7 @@ in
     };
 
   unit = define.unit {
-    config = [
+    provides = [
       (home-manager.module (
         { pkgs, ... }:
 

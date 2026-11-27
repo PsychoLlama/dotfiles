@@ -2,7 +2,7 @@
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (units.agents.skill {
         name = "notify";
         description = "Send a desktop notification to get the user's attention. Use after a long-running task finishes, or when you need a response and the user is likely away from the terminal.";

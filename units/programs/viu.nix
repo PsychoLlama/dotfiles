@@ -2,7 +2,7 @@
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (units.platform.home-manager.module (
         { pkgs, ... }:
 

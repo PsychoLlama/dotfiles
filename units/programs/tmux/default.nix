@@ -6,7 +6,7 @@ in
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (home-manager.lib.program "tmux")
       (units.programs.nushell.abbreviation { t = "tmux"; })
 

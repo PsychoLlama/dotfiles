@@ -11,7 +11,7 @@ in
 
 {
   main = define.unit {
-    config = [
+    provides = [
 
       (nixos.module (
         { lib, ... }:
@@ -65,7 +65,7 @@ in
   };
 
   unit = define.group {
-    config = [
+    includes = [
       self.main
       units.agents.unit
       units.profiles.agent-skills.unit

@@ -14,7 +14,7 @@ in
 {
   # A NixOS module for the host.
   module = define.fact {
-    level = host.level;
+    scope = host.scope;
     type = t.any;
     merge = rhizome.merge.entries;
   };
@@ -54,7 +54,7 @@ in
       entries = self.module;
     };
 
-    config =
+    provides =
       {
         name,
         system,

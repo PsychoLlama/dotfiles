@@ -21,7 +21,7 @@ in
       inherit (user) identity;
     };
 
-    config = { identity }: [
+    provides = { identity }: [
       (nixos.module (
         let
           inherit (identity) username;

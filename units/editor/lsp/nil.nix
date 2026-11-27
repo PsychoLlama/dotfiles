@@ -6,7 +6,7 @@ in
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (editor.server {
         name = "nil";
         cmd = pkgs: [ "${pkgs.unstable.nil}/bin/nil" ];

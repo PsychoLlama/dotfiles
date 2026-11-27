@@ -17,7 +17,7 @@ in
 {
   # A Home Manager module for the user.
   module = define.fact {
-    level = user.level;
+    scope = user.scope;
     type = t.any;
     merge = rhizome.merge.entries;
   };
@@ -68,7 +68,7 @@ in
       entries = self.module;
     };
 
-    config =
+    provides =
       { identity, entries }:
       [
         (nixos.module (

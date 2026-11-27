@@ -2,7 +2,7 @@
 
 {
   unit = define.group {
-    config = [
+    includes = [
       units.agents.skills.codex-review.unit
       units.agents.skills.notify.unit
       units.agents.skills.nushell-development.unit

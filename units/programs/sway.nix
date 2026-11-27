@@ -15,7 +15,7 @@ in
       inherit (theme) palette;
     };
 
-    config = { palette }: [
+    provides = { palette }: [
       (nixos.module (
         { lib, ... }:
 

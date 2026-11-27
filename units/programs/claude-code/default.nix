@@ -16,7 +16,7 @@ let
   written =
     type:
     define.fact {
-      level = user.level;
+      scope = user.scope;
       type = t.either type t.function;
       merge = rhizome.merge.list;
       optional = true;
@@ -58,7 +58,7 @@ in
       plugins = self.plugin;
     };
 
-    config =
+    provides =
       {
         memory,
         skills,
@@ -294,7 +294,7 @@ in
   };
 
   unit = define.group {
-    config = [
+    includes = [
       self.main
       units.programs.claude-code.hooks.agent-history.unit
       units.programs.claude-code.hooks.auto-format.unit

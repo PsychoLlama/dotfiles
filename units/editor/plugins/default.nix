@@ -15,7 +15,7 @@ in
 
 {
   main = define.unit {
-    config = [
+    provides = [
       (plugin "cmp-buffer" null)
       (plugin "cmp-cmdline" null)
       (plugin "cmp-nvim-lsp" null)
@@ -104,7 +104,7 @@ in
   };
 
   unit = define.group {
-    config = [
+    includes = [
       self.main
       plugins.alternaut.unit
       plugins.conform.unit

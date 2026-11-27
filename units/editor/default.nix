@@ -19,7 +19,7 @@ let
   channel =
     type:
     define.fact {
-      level = user.level;
+      scope = user.scope;
       inherit type;
       merge = rhizome.merge.list;
       optional = true;
@@ -32,7 +32,7 @@ in
 {
   # The editor itself, given `pkgs`. Defaults to `pkgs.unstable.neovim`.
   neovim = define.fact {
-    level = user.level;
+    scope = user.scope;
     type = t.function;
     merge = rhizome.merge.one-or-none;
     optional = true;
@@ -244,7 +244,7 @@ in
       trusted = user.trusted-directory;
     };
 
-    config = collected: [
+    provides = collected: [
       (home-manager.module (
         { pkgs, ... }:
 

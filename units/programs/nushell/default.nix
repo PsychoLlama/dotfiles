@@ -16,7 +16,7 @@ in
   # aliases, the expansion is committed to history, keeping substring search
   # reliable.
   abbreviation = define.fact {
-    level = user.level;
+    scope = user.scope;
     type = t.attrs-of t.str;
     merge = rhizome.merge.list;
     optional = true;
@@ -25,7 +25,7 @@ in
   unit = define.unit {
     uses.abbreviations = self.abbreviation;
 
-    config =
+    provides =
       { abbreviations }:
       [
         (home-manager.lib.program "nushell")

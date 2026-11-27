@@ -6,7 +6,7 @@ in
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (editor.plugin {
         name = "conform-nvim";
         config = ./config.lua;

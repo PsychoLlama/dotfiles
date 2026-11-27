@@ -6,7 +6,7 @@ in
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (editor.server {
         name = "luals";
         cmd = pkgs: [ "${pkgs.unstable.lua-language-server}/bin/lua-language-server" ];

@@ -14,14 +14,14 @@ in
 
 {
   main = define.unit {
-    config = [
+    provides = [
       (nixos.module { imports = [ agenix.nixosModules.default ]; })
       (home-manager.module { imports = [ agenix.homeManagerModules.default ]; })
     ];
   };
 
   unit = define.group {
-    config = [
+    includes = [
       self.main
       units.system.nix-daemon.unit
       units.system.package-set.unit

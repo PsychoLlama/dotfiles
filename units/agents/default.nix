@@ -16,7 +16,7 @@ in
 
 {
   memory = define.fact {
-    level = user.level;
+    scope = user.scope;
 
     type = {
       # Global memory: Claude Code's `CLAUDE.md` context, codex's session
@@ -37,7 +37,7 @@ in
 
   # Something an agent can be taught to do. Each tool renders it its own way.
   skill = define.fact {
-    level = user.level;
+    scope = user.scope;
     merge = rhizome.merge.list;
     optional = true;
 
@@ -111,7 +111,7 @@ in
   };
 
   unit = define.unit {
-    config = [
+    provides = [
       (self.memory {
         context = ''
           # Environment

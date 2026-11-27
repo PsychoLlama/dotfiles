@@ -11,14 +11,14 @@ in
 
 {
   main = define.unit {
-    config = [
+    provides = [
 
       (home-manager.module ({ pkgs, ... }: { home.packages = [ pkgs.signal-desktop ]; }))
     ];
   };
 
   unit = define.group {
-    config = [
+    includes = [
       self.main
       (home-manager.lib.package "acpi")
       units.programs.bemoji.unit

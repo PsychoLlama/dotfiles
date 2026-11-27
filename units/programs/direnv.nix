@@ -10,7 +10,7 @@ in
       trusted-directories = user.trusted-directory;
     };
 
-    config = { trusted-directories }: [
+    provides = { trusted-directories }: [
       (home-manager.module (
         {
           config,

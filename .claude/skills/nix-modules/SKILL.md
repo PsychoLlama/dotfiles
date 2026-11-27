@@ -9,7 +9,7 @@ description: Use when reading or writing Nix config in this repo — units, prof
 ## House conventions
 
 - `unit` is what a consumer includes: one unit, or a group.
-- Typed input is named `cfg`.
+- Typed input is named `input`, and its type goes in `type`.
 - A unit that is a group names its own unit `main`.
 - A file reaches its own definitions through `self`, never `rec`.
 - No NixOS or Home Manager `options`. A unit's settings are its input or a fact.

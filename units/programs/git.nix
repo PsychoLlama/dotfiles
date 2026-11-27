@@ -11,7 +11,7 @@ in
       inherit (user) identity;
     };
 
-    config = { identity }: [
+    provides = { identity }: [
       (home-manager.lib.program "git")
 
       (nushell.abbreviation {

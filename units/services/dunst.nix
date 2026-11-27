@@ -11,7 +11,7 @@ in
 
 {
   main = define.unit {
-    config = [
+    provides = [
 
       (home-manager.module (
         { lib, pkgs, ... }:
@@ -87,7 +87,7 @@ in
   };
 
   unit = define.group {
-    config = [
+    includes = [
       self.main
       units.system.sound-theme.unit
     ];

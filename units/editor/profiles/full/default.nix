@@ -13,7 +13,7 @@ in
 
 {
   main = define.unit {
-    config = [
+    provides = [
       (editor.neovim (
         pkgs:
         if pkgs.stdenv.hostPlatform.isLinux then pkgs.unstable.custom.nvim-rs else pkgs.unstable.neovim
@@ -30,7 +30,7 @@ in
   };
 
   unit = define.group {
-    config = [
+    includes = [
       self.main
       editor.lsp.clangd.unit
       editor.lsp.jsonls.unit

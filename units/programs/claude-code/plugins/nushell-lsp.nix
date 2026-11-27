@@ -6,7 +6,7 @@ in
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (claude-code.plugin ({
         name = "nushell-lsp";
         description = "Nushell Language Server for Claude Code.";

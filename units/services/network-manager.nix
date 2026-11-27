@@ -10,7 +10,7 @@ in
       inherit (user) identity;
     };
 
-    config = { identity }: [
+    provides = { identity }: [
       (nixos.module (
         { lib, ... }:
 

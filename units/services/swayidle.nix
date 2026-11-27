@@ -15,7 +15,7 @@ in
   lib.disabled-flag = username: "/tmp/swayidle/${username}.disabled";
 
   unit = define.unit {
-    config = [
+    provides = [
       (home-manager.module (
         {
           config,

@@ -28,7 +28,7 @@ in
 {
   # The two halves of a base16 palette.
   palette = define.fact {
-    level = host.level;
+    scope = host.scope;
     merge = rhizome.merge.one;
     optional = true;
 

@@ -6,7 +6,7 @@ in
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (editor.server {
         name = "rust-analyzer";
         cmd = [ "rust-analyzer" ];

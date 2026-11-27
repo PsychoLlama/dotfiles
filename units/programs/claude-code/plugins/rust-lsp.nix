@@ -6,7 +6,7 @@ in
 
 {
   unit = define.unit {
-    config = [
+    provides = [
       (claude-code.plugin ({
         name = "rust-lsp";
         description = "Rust Language Server for Claude Code.";
