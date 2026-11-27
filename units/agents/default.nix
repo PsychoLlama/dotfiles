@@ -25,10 +25,10 @@ in
 
       # Rule files by name. Markdown, in Claude Code's path-scoped rule
       # format. Tools without an equivalent may render a subset or ignore them.
-      rules = t.attrs-of t.any;
+      rules = t.attrs-of t.path;
 
       # Slash-command files by name. Not every tool supports commands.
-      commands = t.default (t.attrs-of t.any) { };
+      commands = t.default (t.attrs-of t.path) { };
     };
 
     allow-unread = true;
@@ -47,7 +47,7 @@ in
       description = t.str;
 
       # Markdown body without frontmatter. A minijinja template.
-      body = t.any;
+      body = t.path;
 
       # Agents for which this skill is provisioned.
       targets = t.default (t.list t.str) [

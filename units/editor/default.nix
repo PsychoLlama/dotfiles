@@ -46,7 +46,7 @@ in
     package = optional t.function;
 
     # A Lua file, or inline Lua. Runs after the plugin loads.
-    config = optional t.any;
+    config = optional (t.either t.path t.str);
 
     # Passed to the config if it returns a function. Given `pkgs` if it is a
     # function itself.
