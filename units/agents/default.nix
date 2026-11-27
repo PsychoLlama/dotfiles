@@ -15,63 +15,57 @@ let
 in
 
 {
-  memory = define.fact (
-    { one, ... }: {
-      scope = user.scope;
+  memory = define.fact {
+    scope = user.scope;
 
-      type = {
-        # Global memory: Claude Code's `CLAUDE.md` context, codex's session
-        # instructions, and so on.
-        context = t.str;
+    type = {
+      # Global memory: Claude Code's `CLAUDE.md` context, codex's session
+      # instructions, and so on.
+      context = t.str;
 
-        # Rule files by name. Markdown, in Claude Code's path-scoped rule
-        # format. Tools without an equivalent may render a subset or ignore them.
-        rules = t.attrs-of t.any;
+      # Rule files by name. Markdown, in Claude Code's path-scoped rule
+      # format. Tools without an equivalent may render a subset or ignore them.
+      rules = t.attrs-of t.any;
 
-        # Slash-command files by name. Not every tool supports commands.
-        commands = t.default (t.attrs-of t.any) { };
-      };
+      # Slash-command files by name. Not every tool supports commands.
+      commands = t.default (t.attrs-of t.any) { };
+    };
 
-      holds = one;
-      allow-unread = true;
-    }
-  );
+    allow-unread = true;
+  };
 
   # Something an agent can be taught to do. Each tool renders it its own way.
-  skill = define.fact (
-    { many, as, ... }: {
-      scope = user.scope;
-      holds = many as.list;
-      allow-unread = true;
+  skill = define.collection {
+    scope = user.scope;
+    allow-unread = true;
 
-      type = {
-        # Written to frontmatter and used as its directory name.
-        name = t.str;
+    type = {
+      # Written to frontmatter and used as its directory name.
+      name = t.str;
 
-        # When the agent should use this skill.
-        description = t.str;
+      # When the agent should use this skill.
+      description = t.str;
 
-        # Markdown body without frontmatter. A minijinja template.
-        body = t.any;
+      # Markdown body without frontmatter. A minijinja template.
+      body = t.any;
 
-        # Agents for which this skill is provisioned.
-        targets = t.default (t.list t.str) [
-          "claude"
-          "codex"
-        ];
+      # Agents for which this skill is provisioned.
+      targets = t.default (t.list t.str) [
+        "claude"
+        "codex"
+      ];
 
-        # More YAML frontmatter fields.
-        frontmatter = t.default t.attrs { };
+      # More YAML frontmatter fields.
+      frontmatter = t.default t.attrs { };
 
-        # Template variables by name, then by agent.
-        vars = t.default (t.attrs-of t.attrs) { };
+      # Template variables by name, then by agent.
+      vars = t.default (t.attrs-of t.attrs) { };
 
-        # Files or directories linked alongside `SKILL.md`: shared paths, or
-        # paths by agent. Given `pkgs` if it is a function.
-        files = t.default t.any { };
-      };
-    }
-  );
+      # Files or directories linked alongside `SKILL.md`: shared paths, or
+      # paths by agent. Given `pkgs` if it is a function.
+      files = t.default t.any { };
+    };
+  };
 
   lib = {
     /**

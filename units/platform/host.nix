@@ -14,14 +14,11 @@ let
 
   fact =
     type:
-    define.fact (
-      { one, ... }: {
-        scope = self.scope;
-        inherit type;
-        holds = one;
-        allow-unread = true;
-      }
-    );
+    define.fact {
+      scope = self.scope;
+      inherit type;
+      allow-unread = true;
+    };
 in
 
 {

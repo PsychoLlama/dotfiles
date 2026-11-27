@@ -27,18 +27,15 @@ in
 
 {
   # The two halves of a base16 palette.
-  palette = define.fact (
-    { one, ... }: {
-      scope = host.scope;
-      holds = one;
-      allow-unread = true;
+  palette = define.fact {
+    scope = host.scope;
+    allow-unread = true;
 
-      type = {
-        normal = colors;
-        bright = colors;
-      };
-    }
-  );
+    type = {
+      normal = colors;
+      bright = colors;
+    };
+  };
 
   values.palettes.one-dark = {
     normal = {

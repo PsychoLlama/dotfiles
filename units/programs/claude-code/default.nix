@@ -15,14 +15,11 @@ let
   # the Home Manager module's arguments: `{ config, lib, pkgs, ... }: { }`.
   written =
     type:
-    define.fact (
-      { many, as, ... }: {
-        scope = user.scope;
-        type = t.either type t.function;
-        holds = many as.list;
-        allow-unread = true;
-      }
-    );
+    define.collection {
+      scope = user.scope;
+      type = t.either type t.function;
+      allow-unread = true;
+    };
 
   plugin = t.from {
     name = t.str;

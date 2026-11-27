@@ -15,14 +15,11 @@ in
   # Abbreviations expanded inline at the prompt, by what is typed. Unlike
   # aliases, the expansion is committed to history, keeping substring search
   # reliable.
-  abbreviation = define.fact (
-    { many, as, ... }: {
-      scope = user.scope;
-      type = t.attrs-of t.str;
-      holds = many as.list;
-      allow-unread = true;
-    }
-  );
+  abbreviation = define.collection {
+    scope = user.scope;
+    type = t.attrs-of t.str;
+    allow-unread = true;
+  };
 
   unit = define.unit {
     uses.abbreviations = self.abbreviation;

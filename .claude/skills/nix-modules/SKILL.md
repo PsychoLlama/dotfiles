@@ -1,6 +1,6 @@
 ---
 name: nix-modules
-description: Use when reading or writing Nix config in this repo — units, profiles, hosts and facts. Covers this repo's facts, layout and house conventions. For rhizome itself, load the `rhizome` skill.
+description: Use when reading or writing Nix config in this repo — units, profiles, hosts, facts and collections. Covers this repo's facts and collections, layout and house conventions. For rhizome itself, load the `rhizome` skill.
 ---
 
 - Config is composed with rhizome. The `rhizome` skill documents the library; this one covers only what is specific to this repo.
@@ -10,20 +10,20 @@ description: Use when reading or writing Nix config in this repo — units, prof
 
 - `unit` is what a consumer includes: one unit, or a group.
 - Typed input is named `input`, and its type goes in `type`.
-- A fact says what it holds: `define.fact ({ many, as, ... }: { holds = many as.list; })`, or `one`, or `one.with-default value`. `allow-unread = true` lets it go unread.
+- One value is a fact (`define.fact`, optionally with a `default`). Any number of values is a collection (`define.collection`, read as a list unless it has a `combine`). `allow-unread = true` lets either go unread.
 - A unit that is a group names its own unit `main`.
 - A file reaches its own definitions through `self`, never `rec`.
-- No NixOS or Home Manager `options`. A unit's settings are its input or a fact.
+- No NixOS or Home Manager `options`. A unit's settings are its input, a fact or a collection.
 
 ## Facts
 
 - `nixos.module`, `home-manager.module`: a module for that class. Units write to them; the host and user instances hand them over.
 - `home-manager.lib.program "name"` installs through a Home Manager module that exists upstream. `home-manager.lib.package "name"` installs a bare package. Both from `pkgs.unstable`.
-- `user.identity`, `user.trusted-directory`, `theme.palette`, `agents.memory`: facts. There is no `host` module argument.
+- `user.identity`, `theme.palette`, `agents.memory`: facts. `user.trusted-directory`: a collection. There is no `host` module argument.
 - `nushell.abbreviation`: shell abbreviations, from any unit.
 - `agents.skill`: a skill for every agent. `claude-code.settings` and `claude-code.plugin`: Claude Code only.
-- A value that holds a package is a function of `pkgs` (`cmd = pkgs: [ ... ]`), or of the Home Manager module's arguments where the fact says so.
-- What another unit needs that is not a fact is a function in `lib` or a constant in `values`: `swayidle.lib.disabled-flag`, `sound-theme.lib.player`, `theme.values.palettes`.
+- A value that holds a package is a function of `pkgs` (`cmd = pkgs: [ ... ]`), or of the Home Manager module's arguments where the collection says so.
+- What another unit needs that is not a fact or collection is a function in `lib` or a constant in `values`: `swayidle.lib.disabled-flag`, `sound-theme.lib.player`, `theme.values.palettes`.
 
 ## Editor (`units/editor/`)
 

@@ -13,26 +13,20 @@ in
 
 {
   # A NixOS module for the host.
-  module = define.fact (
-    { many, as, ... }: {
-      scope = host.scope;
-      type = t.any;
-      holds = many as.entries;
-    }
-  );
+  module = define.collection {
+    scope = host.scope;
+    type = t.any;
+    combine = entries: entries;
+  };
 
   # A machine to build, with every module written for it.
-  machine = define.fact (
-    { many, as, ... }: {
-      holds = many as.list;
-
-      type = {
-        name = t.str;
-        system = t.str;
-        modules = t.list t.any;
-      };
-    }
-  );
+  machine = define.collection {
+    type = {
+      name = t.str;
+      system = t.str;
+      modules = t.list t.any;
+    };
+  };
 
   lib = {
     /**

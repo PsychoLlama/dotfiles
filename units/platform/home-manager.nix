@@ -16,13 +16,11 @@ in
 
 {
   # A Home Manager module for the user.
-  module = define.fact (
-    { many, as, ... }: {
-      scope = user.scope;
-      type = t.any;
-      holds = many as.entries;
-    }
-  );
+  module = define.collection {
+    scope = user.scope;
+    type = t.any;
+    combine = entries: entries;
+  };
 
   /**
     Installs a package from `pkgs.unstable`.

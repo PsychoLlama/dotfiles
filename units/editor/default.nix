@@ -18,14 +18,11 @@ let
 
   channel =
     type:
-    define.fact (
-      { many, as, ... }: {
-        scope = user.scope;
-        inherit type;
-        holds = many as.list;
-        allow-unread = true;
-      }
-    );
+    define.collection {
+      scope = user.scope;
+      inherit type;
+      allow-unread = true;
+    };
 
   # With `pkgs`, for values that hold packages.
   resolve = pkgs: value: if lib.isFunction value then value pkgs else value;
@@ -33,14 +30,12 @@ in
 
 {
   # The editor itself, given `pkgs`. Defaults to `pkgs.unstable.neovim`.
-  neovim = define.fact (
-    { one, ... }: {
-      scope = user.scope;
-      type = t.function;
-      holds = one.with-default (pkgs: pkgs.unstable.neovim);
-      allow-unread = true;
-    }
-  );
+  neovim = define.fact {
+    scope = user.scope;
+    type = t.function;
+    default = pkgs: pkgs.unstable.neovim;
+    allow-unread = true;
+  };
 
   # A plugin to install.
   plugin = channel {
