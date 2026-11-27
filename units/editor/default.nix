@@ -6,7 +6,7 @@
   rhizome,
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -18,7 +18,7 @@ let
 
   channel =
     type:
-    module.channel {
+    define.fact {
       level = user.level;
       inherit type;
       merge = rhizome.merge.list;
@@ -31,7 +31,7 @@ in
 
 {
   # The editor itself, given `pkgs`. Defaults to `pkgs.unstable.neovim`.
-  neovim = module.channel {
+  neovim = define.fact {
     level = user.level;
     type = t.function;
     merge = rhizome.merge.one-or-none;
@@ -231,7 +231,7 @@ in
   };
 
   # Builds the editor and installs it for the user.
-  unit = module.component {
+  unit = define.unit {
     uses = {
       inherit (self) neovim;
       plugins = self.plugin;

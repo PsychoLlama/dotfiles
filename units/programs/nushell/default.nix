@@ -2,7 +2,7 @@
   rhizome,
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -15,14 +15,14 @@ in
   # Abbreviations expanded inline at the prompt, by what is typed. Unlike
   # aliases, the expansion is committed to history, keeping substring search
   # reliable.
-  abbreviation = module.channel {
+  abbreviation = define.fact {
     level = user.level;
     type = t.attrs-of t.str;
     merge = rhizome.merge.list;
     optional = true;
   };
 
-  unit = module.component {
+  unit = define.unit {
     uses.abbreviations = self.abbreviation;
 
     config =

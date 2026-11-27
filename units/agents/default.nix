@@ -5,7 +5,7 @@
   rhizome,
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -15,7 +15,7 @@ let
 in
 
 {
-  memory = module.channel {
+  memory = define.fact {
     level = user.level;
 
     type = {
@@ -36,7 +36,7 @@ in
   };
 
   # Something an agent can be taught to do. Each tool renders it its own way.
-  skill = module.channel {
+  skill = define.fact {
     level = user.level;
     merge = rhizome.merge.list;
     optional = true;
@@ -110,7 +110,7 @@ in
       );
   };
 
-  unit = module.component {
+  unit = define.unit {
     config = [
       (self.memory {
         context = ''

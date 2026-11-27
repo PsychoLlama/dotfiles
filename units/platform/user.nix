@@ -3,7 +3,7 @@
   rhizome,
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -13,11 +13,11 @@ let
 in
 
 {
-  level = module.level { within = host.level; };
+  level = define.level { within = host.level; };
 
   # Who they are, for anything that addresses or attributes them: the login,
   # git, group membership.
-  identity = module.channel {
+  identity = define.fact {
     level = self.level;
     merge = rhizome.merge.one;
     optional = true;
@@ -33,14 +33,14 @@ in
   # sources a project-local vimrc, direnv loads `.envrc`, and Claude Code is
   # granted filesystem access, all without prompting. `~`-relative; readers
   # that need absolute paths expand it.
-  trusted-directory = module.channel {
+  trusted-directory = define.fact {
     level = self.level;
     type = t.str;
     merge = rhizome.merge.list;
     optional = true;
   };
 
-  scope = self.level.scope (cfg: {
+  instance = self.level.instance (cfg: {
     label = cfg.username;
     input = self.identity.type;
 

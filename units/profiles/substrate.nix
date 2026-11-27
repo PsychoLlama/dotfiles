@@ -3,7 +3,7 @@
   units,
   inputs,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -13,14 +13,14 @@ let
 in
 
 {
-  main = module.component {
+  main = define.unit {
     config = [
       (nixos.module { imports = [ agenix.nixosModules.default ]; })
       (home-manager.module { imports = [ agenix.homeManagerModules.default ]; })
     ];
   };
 
-  unit = module.group {
+  unit = define.group {
     config = [
       self.main
       units.system.nix-daemon.unit

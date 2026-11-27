@@ -1,11 +1,11 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 let
   inherit (units) editor;
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       (editor.server {
         name = "nushell";

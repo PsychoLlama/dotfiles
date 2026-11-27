@@ -1,7 +1,7 @@
 {
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -34,7 +34,7 @@ in
       '';
     };
 
-  unit = module.component {
+  unit = define.unit {
     config = [
       (home-manager.module (
         { pkgs, ... }:

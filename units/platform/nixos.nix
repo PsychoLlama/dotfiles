@@ -2,7 +2,7 @@
   rhizome,
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -13,14 +13,14 @@ in
 
 {
   # A NixOS module for the host.
-  module = module.channel {
+  module = define.fact {
     level = host.level;
     type = t.any;
     merge = rhizome.merge.entries;
   };
 
   # A machine to build, with every module written for it.
-  machine = module.channel {
+  machine = define.fact {
     merge = rhizome.merge.list;
 
     type = {
@@ -48,7 +48,7 @@ in
       };
   };
 
-  unit = module.component {
+  unit = define.unit {
     uses = {
       inherit (host) name system;
       entries = self.module;

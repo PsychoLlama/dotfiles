@@ -1,28 +1,28 @@
 ---
 name: nix-modules
-description: Use when reading or writing Nix config in this repo — units, profiles, hosts and channels. Covers this repo's channels, layout and house conventions. For rhizome itself, load the `rhizome` skill.
+description: Use when reading or writing Nix config in this repo — units, profiles, hosts and facts. Covers this repo's facts, layout and house conventions. For rhizome itself, load the `rhizome` skill.
 ---
 
 - Config is composed with rhizome. The `rhizome` skill documents the library; this one covers only what is specific to this repo.
-- `flake.nix` loads `units/` with `rhizome.load`. Every file takes `{ lib, rhizome, inputs, units, self, module, ... }` and returns an attrset.
+- `flake.nix` loads `units/` with `rhizome.load`. Every file takes `{ lib, rhizome, inputs, units, self, define, ... }` and returns an attrset.
 
 ## House conventions
 
-- `unit` is what a consumer includes: a component, or a group.
+- `unit` is what a consumer includes: one unit, or a group.
 - Typed input is named `cfg`.
-- A unit that is a group names its own component `main`.
+- A unit that is a group names its own unit `main`.
 - A file reaches its own definitions through `self`, never `rec`.
-- No NixOS or Home Manager `options`. A unit's settings are its input or a channel.
+- No NixOS or Home Manager `options`. A unit's settings are its input or a fact.
 
-## Channels
+## Facts
 
-- `nixos.module`, `home-manager.module`: a module for that class. Units write to them; the host and user scopes hand them over.
+- `nixos.module`, `home-manager.module`: a module for that class. Units write to them; the host and user instances hand them over.
 - `home-manager.lib.program "name"` installs through a Home Manager module that exists upstream. `home-manager.lib.package "name"` installs a bare package. Both from `pkgs.unstable`.
 - `user.identity`, `user.trusted-directory`, `theme.palette`, `agents.memory`: facts. There is no `host` module argument.
 - `nushell.abbreviation`: shell abbreviations, from any unit.
 - `agents.skill`: a skill for every agent. `claude-code.settings` and `claude-code.plugin`: Claude Code only.
-- A value that holds a package is a function of `pkgs` (`cmd = pkgs: [ ... ]`), or of the Home Manager module's arguments where the channel says so.
-- What another unit needs that is not a channel is a function in `lib` or a constant in `values`: `swayidle.lib.disabled-flag`, `sound-theme.lib.player`, `theme.values.palettes`.
+- A value that holds a package is a function of `pkgs` (`cmd = pkgs: [ ... ]`), or of the Home Manager module's arguments where the fact says so.
+- What another unit needs that is not a fact is a function in `lib` or a constant in `values`: `swayidle.lib.disabled-flag`, `sound-theme.lib.player`, `theme.values.palettes`.
 
 ## Editor (`units/editor/`)
 
@@ -38,7 +38,7 @@ description: Use when reading or writing Nix config in this repo — units, prof
 
 ## Hosts
 
-- `units/hosts/<name>/default.nix` is a group around a `host.scope` holding a `user.scope`.
+- `units/hosts/<name>/default.nix` is a group around a `host.instance` holding a `user.instance`.
 - The host writes the facts: identity, trusted directories, palette.
 - Every host becomes `nixosConfigurations.<name>`.
 

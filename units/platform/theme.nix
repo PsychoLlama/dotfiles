@@ -5,7 +5,7 @@
 {
   rhizome,
   units,
-  module,
+  define,
   ...
 }:
 
@@ -27,7 +27,7 @@ in
 
 {
   # The two halves of a base16 palette.
-  palette = module.channel {
+  palette = define.fact {
     level = host.level;
     merge = rhizome.merge.one;
     optional = true;

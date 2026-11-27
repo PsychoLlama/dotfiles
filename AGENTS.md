@@ -8,10 +8,10 @@ Nix configs for my workstations. Includes many custom features.
 - `pkgs/`: Custom package derivations. Overlayed as `pkgs.custom`.
   - `overlays.nix`: Every overlay the package set is built with.
   - `*.nvim/`: Custom neovim plugins.
-- `units/`: Everything else, composed with `rhizome` (typed channels). Loaded as `units.<path>`.
-  - `platform/`: The `host` and `user` levels and scopes, and the channels every unit shares.
+- `units/`: Everything else, composed with `rhizome` (typed facts shared between units). Loaded as `units.<path>`.
+  - `platform/`: The `host` and `user` levels and instances, and the facts every unit shares.
   - `programs/`, `services/`, `system/`, `agents/`: One unit per concern.
-  - `editor/`: Neovim, assembled from channels. An unopinionated nixvim alternative.
+  - `editor/`: Neovim, assembled from facts. An unopinionated nixvim alternative.
     - `runtime/`: Lua `core` library. Reads what the build generates.
   - `profiles/`: Groups of units. Hold no opinions themselves.
   - `hosts/`: One tree per machine. Becomes `nixosConfigurations.<name>`.

@@ -3,7 +3,7 @@
 {
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -12,7 +12,7 @@ let
 in
 
 {
-  main = module.component {
+  main = define.unit {
     config = [
       (editor.neovim (
         pkgs:
@@ -29,7 +29,7 @@ in
     ];
   };
 
-  unit = module.group {
+  unit = define.group {
     config = [
       self.main
       editor.lsp.clangd.unit

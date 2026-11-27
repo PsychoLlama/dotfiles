@@ -2,7 +2,7 @@
   rhizome,
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -15,7 +15,7 @@ let
   # the Home Manager module's arguments: `{ config, lib, pkgs, ... }: { }`.
   written =
     type:
-    module.channel {
+    define.fact {
       level = user.level;
       type = t.either type t.function;
       merge = rhizome.merge.list;
@@ -49,7 +49,7 @@ in
   # Claude's CLI flag parsing outright), its `marketplaces` option overwrites
   # `settings.extraKnownMarketplaces` wholesale, and its `skills` rejects
   # derivations. What's left is a thin mapping onto `home.file`.
-  main = module.component {
+  main = define.unit {
     uses = {
       inherit (agents) memory;
       skills = agents.skill;
@@ -293,7 +293,7 @@ in
       ];
   };
 
-  unit = module.group {
+  unit = define.group {
     config = [
       self.main
       units.programs.claude-code.hooks.agent-history.unit

@@ -1,7 +1,7 @@
 {
   units,
   inputs,
-  module,
+  define,
   ...
 }:
 
@@ -10,7 +10,7 @@ let
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     uses = {
       inherit (theme) palette;
     };

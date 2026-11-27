@@ -1,4 +1,4 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 let
   inherit (units.platform) home-manager user;
@@ -6,7 +6,7 @@ let
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     uses = {
       inherit (user) identity;
     };

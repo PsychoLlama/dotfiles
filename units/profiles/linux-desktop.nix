@@ -1,7 +1,7 @@
 {
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -10,14 +10,14 @@ let
 in
 
 {
-  main = module.component {
+  main = define.unit {
     config = [
 
       (home-manager.module ({ pkgs, ... }: { home.packages = [ pkgs.signal-desktop ]; }))
     ];
   };
 
-  unit = module.group {
+  unit = define.group {
     config = [
       self.main
       (home-manager.lib.package "acpi")

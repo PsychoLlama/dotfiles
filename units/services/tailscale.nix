@@ -1,11 +1,11 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 let
   inherit (units.platform) nixos;
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       (nixos.module (
         { config, lib, ... }:

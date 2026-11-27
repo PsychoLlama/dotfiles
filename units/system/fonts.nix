@@ -1,11 +1,11 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 let
   inherit (units.platform) home-manager nixos;
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       (nixos.module (
         { lib, pkgs, ... }:

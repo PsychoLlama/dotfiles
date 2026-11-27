@@ -1,4 +1,4 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 # Part of the `agent` nushell command. Saves bash history to a SQLite DB
 # that's queried similar to nushell's `history` builtin.
@@ -8,7 +8,7 @@ let
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       (claude-code.settings (
         {

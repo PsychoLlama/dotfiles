@@ -1,4 +1,4 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 let
   # The collector's only listener. Loopback: nothing is exposed off-box.
@@ -16,7 +16,7 @@ let
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     uses = {
       inherit (user) identity;
     };

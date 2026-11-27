@@ -1,7 +1,7 @@
 {
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -10,7 +10,7 @@ let
 in
 
 {
-  main = module.component {
+  main = define.unit {
     config = [
 
       (home-manager.module (
@@ -86,7 +86,7 @@ in
     ];
   };
 
-  unit = module.group {
+  unit = define.group {
     config = [
       self.main
       units.system.sound-theme.unit

@@ -4,7 +4,7 @@
   units,
   inputs,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -14,7 +14,7 @@ let
 
   fact =
     type:
-    module.channel {
+    define.fact {
       level = self.level;
       inherit type;
       merge = rhizome.merge.one;
@@ -23,12 +23,12 @@ let
 in
 
 {
-  level = module.level { within = rhizome.root; };
+  level = define.level { within = rhizome.root; };
 
   name = fact t.str;
   system = fact t.str;
 
-  scope = self.level.scope (cfg: {
+  instance = self.level.instance (cfg: {
     label = cfg.name;
 
     input = {

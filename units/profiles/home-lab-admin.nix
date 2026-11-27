@@ -1,11 +1,11 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 let
   inherit (units.platform) nixos user;
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     uses = {
       inherit (user) identity;
     };

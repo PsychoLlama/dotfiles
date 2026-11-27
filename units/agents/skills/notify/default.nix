@@ -1,7 +1,7 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       (units.agents.skill {
         name = "notify";

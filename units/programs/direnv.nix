@@ -1,11 +1,11 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 let
   inherit (units.platform) home-manager user;
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     uses = {
       trusted-directories = user.trusted-directory;
     };

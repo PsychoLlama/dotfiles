@@ -1,7 +1,7 @@
 {
   units,
   inputs,
-  module,
+  define,
   ...
 }:
 
@@ -15,7 +15,7 @@ let
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       (nixos.module (
         { lib, ... }:

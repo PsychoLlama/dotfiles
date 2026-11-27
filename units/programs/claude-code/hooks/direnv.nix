@@ -1,11 +1,11 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 let
   inherit (units.programs) claude-code;
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       (claude-code.settings (
         {

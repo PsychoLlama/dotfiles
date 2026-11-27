@@ -1,8 +1,8 @@
 # The wallpaper.
-{ units, module, ... }:
+{ units, define, ... }:
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       (units.platform.home-manager.module (
         { pkgs, ... }:

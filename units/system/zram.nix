@@ -1,11 +1,11 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 let
   inherit (units.platform) nixos;
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       # Compressed. Defaults to 50% max of total RAM before paging to disk.
       # Competes with ARC for available memory.

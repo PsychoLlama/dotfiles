@@ -1,7 +1,7 @@
 {
   units,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -10,7 +10,7 @@ let
 in
 
 {
-  main = module.component {
+  main = define.unit {
     config = [
 
       (nixos.module (
@@ -64,7 +64,7 @@ in
     ];
   };
 
-  unit = module.group {
+  unit = define.group {
     config = [
       self.main
       units.agents.unit

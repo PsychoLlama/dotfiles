@@ -1,11 +1,11 @@
-{ units, module, ... }:
+{ units, define, ... }:
 
 let
   inherit (units.platform) home-manager;
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       (home-manager.lib.program "tmux")
       (units.programs.nushell.abbreviation { t = "tmux"; })

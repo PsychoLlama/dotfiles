@@ -3,7 +3,7 @@
   units,
   inputs,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -21,7 +21,7 @@ in
 
 {
   # The login, and what only this machine wants in it.
-  account = module.component {
+  account = define.unit {
     uses = { inherit (user) identity; };
 
     config =
@@ -78,7 +78,7 @@ in
       ];
   };
 
-  hardware = module.component {
+  hardware = define.unit {
     config = [
       (nixos.module (
         { lib, ... }:
@@ -112,9 +112,9 @@ in
     ];
   };
 
-  unit = module.group {
+  unit = define.group {
     config = [
-      (host.scope
+      (host.instance
         {
           name = "ava";
           system = "x86_64-linux";
@@ -123,7 +123,7 @@ in
           self.hardware
           (theme.palette theme.values.palettes.one-dark)
 
-          (user.scope
+          (user.instance
             {
               username = "overlord";
               name = "Jesse Gibson";

@@ -2,7 +2,7 @@
   units,
   inputs,
   self,
-  module,
+  define,
   ...
 }:
 
@@ -15,7 +15,7 @@ let
 in
 
 {
-  unit = module.component {
+  unit = define.unit {
     config = [
       (nixos.module (
         { pkgs, ... }:
