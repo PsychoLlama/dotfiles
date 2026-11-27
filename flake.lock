@@ -195,11 +195,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795818855,
-        "narHash": "sha256-FJvKBvYzYhqEFHupcPqQKeI1gtkgiTmNUhfRRC/j+KY=",
+        "lastModified": 1795823203,
+        "narHash": "sha256-m2mGcWNQcSs2k1SMYqqCIBg5oFBaLEdevTMl8ngBZ0s=",
         "owner": "PsychoLlama",
         "repo": "rhizome.nix",
-        "rev": "81365981bb0b69e5f23b0a2d793916d810ed0e9e",
+        "rev": "c134f64fc3d1770d2ad329e24b01ba57112c184a",
         "type": "github"
       },
       "original": {

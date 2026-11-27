@@ -30,18 +30,19 @@ in
 
   lib = {
     /**
-      A module as its writer emitted it, wrapped so errors name the unit.
+      A module as its writer emitted it, wrapped so errors name the file
+      of the unit that wrote it.
 
       # Type
 
       ```
-      locate :: { from :: String, value :: Module } -> Module
+      locate :: { file :: Path, value :: Module } -> Module
       ```
     */
     locate =
-      { from, value }:
+      { file, value }:
       {
-        _file = from;
+        _file = file;
         imports = [ value ];
       };
   };
