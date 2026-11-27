@@ -16,7 +16,7 @@ let
 
   optional = type: t.default (t.either type t.null) null;
 
-  channel =
+  collection =
     type:
     define.collection {
       scope = user.scope;
@@ -38,7 +38,7 @@ in
   };
 
   # A plugin to install.
-  plugin = channel {
+  plugin = collection {
     # Its attribute in `vimPlugins`, or in `pkgs.custom.vimPlugins`.
     name = t.str;
 
@@ -60,7 +60,7 @@ in
   };
 
   # A language server. Fields mirror `vim.lsp.Config`.
-  server = channel {
+  server = collection {
     name = t.str;
 
     # The executable and its arguments. Given `pkgs` if it is a function.
@@ -76,14 +76,14 @@ in
   };
 
   # Lines of `init.lua`. Given `pkgs` if it is a function.
-  config = channel (t.either t.str t.function);
+  config = collection (t.either t.str t.function);
 
   # A program on the editor's `PATH`, given `pkgs`.
-  tool = channel t.function;
+  tool = collection t.function;
 
   lib = {
     /**
-      Build the editor from what was written to its channels.
+      Build the editor from what was added to its collections.
 
       # Type
 
