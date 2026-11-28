@@ -160,7 +160,7 @@
               pkgs.unstable.lua-language-server
               pkgs.unstable.luajitPackages.luacheck
               pkgs.unstable.luajitPackages.vusted
-              pkgs.unstable.nh
+              pkgs.nh
               pkgs.unstable.nix-update
               pkgs.unstable.nixfmt
               pkgs.unstable.prettier
